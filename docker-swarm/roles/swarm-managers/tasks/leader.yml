@@ -1,0 +1,32 @@
+---
+- name: Check if Swarm has already been initialized
+  shell: docker node ls
+  register: swarm_status
+  ignore_errors: true
+  become: true
+
+- name: Initialize new Docker Swarm Leader
+  shell: docker swarm init --advertise-addr={{ inventory_hostname }}
+  when: swarm_status.rc != 0 and inventory_hostname == groups['swarm_leader_{{cluster_name}}'][0]
+  run_once: true
+  become: true
+
+- name: Get the Manager join-token
+  shell: docker swarm join-token --quiet manager
+  when: inventory_hostname == groups['swarm_leader_{{cluster_name}}'][0]
+  register: manager_token
+  become: true
+
+- name: Get the worker join-token
+  when: inventory_hostname == groups['swarm_leader_{{cluster_name}}'][0]
+  shell: docker swarm join-token --quiet worker
+  register: worker_token
+  become: true
+
+- name: Check and create docker volume {{volume_name | default('haproxy')}} if not existed...
+  shell: |
+    docker volume ls|grep {{volume_name | default('haproxy')}} > /dev/null || docker volume create {{volume_name | default('haproxy')}}
+    docker network ls|grep nexdev > /dev/null || docker network create --attachable --driver overlay nexdev
+  become: yes
+
+

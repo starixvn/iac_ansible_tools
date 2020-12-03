@@ -1,0 +1,12 @@
+---
+# - hosts: swarm_leader
+#   roles:
+#     - role: swarm-managers
+
+- hosts: swarm_managers
+  roles:
+    - role: swarm-managers
+
+- hosts: swarm_workers
+  roles:
+    - role: swarm-workers

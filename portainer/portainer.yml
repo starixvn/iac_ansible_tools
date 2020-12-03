@@ -1,0 +1,10 @@
+---
+- hosts: all
+  roles:
+  - role: portainer-server
+    tags: portainer-server
+
+- hosts: all
+  roles:
+  - role: portainer-agent
+    tags: portainer-agent

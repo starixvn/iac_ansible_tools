@@ -1,0 +1,18 @@
+---
+- name: Check if Swarm has already been initialized
+  shell: docker node ls
+  register: swarm_status
+  ignore_errors: true
+  become: true
+
+- name: Add Docker node to existing Swarm as manager
+  shell: docker swarm join --token {{hostvars[groups['swarm_leader_vars[cluster_name]'][0]]['manager_token']['stdout']}} {{groups['swarm_leader_vars[cluster_name]'][0]}}:2377
+  when: swarm_status.rc != 0 and inventory_hostname != groups['swarm_leader'][0]
+  become: true
+  ignore_errors: true
+
+- name: Check and create docker volume {{volume_name | default('haproxy')}} if not existed...
+  shell: |
+    docker volume ls|grep {{volume_name | default('haproxy')}} > /dev/null || docker volume create {{volume_name | default('haproxy')}}
+    docker network ls|grep nexdev > /dev/null || docker network create --attachable --driver overlay nexdev
+  become: yes

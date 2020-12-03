@@ -1,0 +1,58 @@
+---
+- name: create working path
+  file:
+    path: /var/www/{{ container_name }}
+    state: directory
+    mode: 0755
+  become: yes
+
+- name: cp docker-compose file
+  template:
+    src: 'templates/{{ item }}'
+    dest: /var/www/{{ container_name }}/
+  with_items: 
+    - docker-compose.yml
+    - Dockerfile
+  become: yes
+
+#Generate Dockerfile file
+- name: Generate Dockerfile file
+  blockinfile:
+    dest: "/var/www/{{ container_name }}/Dockerfile"
+    insertafter: '#Dockerfile'
+    marker: "# {mark} -- Official Image"
+    block: |
+      FROM portainer/agent:{{ img_version | default('latest')}}
+      MAINTAINER NexOps "troy.vo@starixsoft.com"
+  become: yes
+#Generate docker-compose
+- name: Generate docker-compose
+  blockinfile: 
+    dest: /var/www/{{ container_name }}/docker-compose.yml
+    insertafter: '# compose script' 
+    marker: "# {mark} -- setting docker compose script by Ansible" 
+    block: |
+      version: '3.0'
+      services:
+        portainer:
+          image: regdocker.nexdev.net/nexops/portainer-agent:{{ img_version | default('latest')}}
+          build:
+           context: ./
+          container_name: {{ container_name }}
+          hostname: {{ container_name }}
+          restart: always
+          ports:
+           - {{ container_port }}:9001
+          environment:
+            AGENT_CLUSTER_ADDR: tasks.agent
+          volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+          restart: always
+          network_mode: bridge
+  become: yes
+#Build up and run container...
+- name: Build up and run container {{ container_name }}
+  shell: |
+    cd /var/www/{{ container_name }}
+    docker-compose up -d
+  become: yes
