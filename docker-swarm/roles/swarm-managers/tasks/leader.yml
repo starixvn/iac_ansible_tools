@@ -7,18 +7,18 @@
 
 - name: Initialize new Docker Swarm Leader
   shell: docker swarm init --advertise-addr={{ inventory_hostname }}
-  when: swarm_status.rc != 0 and inventory_hostname == groups['swarm_leader_{{cluster_name}}'][0]
+  when: swarm_status.rc != 0 and inventory_hostname == groups['swarm_leader'][0]
   run_once: true
   become: true
 
 - name: Get the Manager join-token
   shell: docker swarm join-token --quiet manager
-  when: inventory_hostname == groups['swarm_leader_{{cluster_name}}'][0]
+  when: inventory_hostname == groups['swarm_leader'][0]
   register: manager_token
   become: true
 
 - name: Get the worker join-token
-  when: inventory_hostname == groups['swarm_leader_{{cluster_name}}'][0]
+  when: inventory_hostname == groups['swarm_leader'][0]
   shell: docker swarm join-token --quiet worker
   register: worker_token
   become: true
