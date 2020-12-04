@@ -1,58 +1,20 @@
 ---
-- name: create working path
+- name: Verify stacks directory exists (on first swarm node)
+  when: inventory_hostname == groups['swarm_leader'][0]
   file:
-    path: /var/www/{{ container_name }}
+    path: "/home/{{ansible_user}}/stacks"
     state: directory
-    mode: 0755
-  become: yes
 
-- name: cp docker-compose file
+- name: Copy docker-compose file
+  when: inventory_hostname == groups['swarm_leader'][0]
   template:
-    src: 'templates/{{ item }}'
-    dest: /var/www/{{ container_name }}/
-  with_items: 
-    - docker-compose.yml
-    - Dockerfile
+    src: 'templates/docker-compose.yml.j2'
+    dest: /home/{{ansible_user}}/stacks/portainer-agent-stack.yml
   become: yes
 
-#Generate Dockerfile file
-- name: Generate Dockerfile file
-  blockinfile:
-    dest: "/var/www/{{ container_name }}/Dockerfile"
-    insertafter: '#Dockerfile'
-    marker: "# {mark} -- Official Image"
-    block: |
-      FROM portainer/agent:{{ img_version | default('latest')}}
-      MAINTAINER NexOps "troy.vo@starixsoft.com"
-  become: yes
-#Generate docker-compose
-- name: Generate docker-compose
-  blockinfile: 
-    dest: /var/www/{{ container_name }}/docker-compose.yml
-    insertafter: '# compose script' 
-    marker: "# {mark} -- setting docker compose script by Ansible" 
-    block: |
-      version: '3.0'
-      services:
-        portainer:
-          image: regdocker.nexdev.net/nexops/portainer-agent:{{ img_version | default('latest')}}
-          build:
-           context: ./
-          container_name: {{ container_name }}
-          hostname: {{ container_name }}
-          restart: always
-          ports:
-           - {{ container_port }}:9001
-          environment:
-            AGENT_CLUSTER_ADDR: tasks.agent
-          volumes:
-            - /var/run/docker.sock:/var/run/docker.sock
-          restart: always
-          network_mode: bridge
-  become: yes
-#Build up and run container...
-- name: Build up and run container {{ container_name }}
+- name: Build up and run container
+  when: inventory_hostname == groups['swarm_leader'][0]
   shell: |
-    cd /var/www/{{ container_name }}
-    docker-compose up -d
+    cd /home/{{ansible_user}}/stacks
+    docker stack deploy --compose-file=portainer-agent-stack.yml portainer
   become: yes
