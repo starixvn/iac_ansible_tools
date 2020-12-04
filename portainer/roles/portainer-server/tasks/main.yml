@@ -1,21 +1,17 @@
 ---
 - name: Create working path
   file:
-    path: /var/www/{{ container_name }}
+    path: /var/www/portainer
     state: directory
     mode: 0755
   become: yes
 
-- name: cp docker-compose file
+- name: Copy docker-compose file
   template:
-    src: 'templates/{{ item }}'
-    dest: /var/www/{{ container_name }}/
-  with_items: 
-    - docker-compose.yml
-    - Dockerfile
+    src: 'templates/docker-compose.yml.j2'
+    dest: /var/www/portainer/docker-compose.yml
   become: yes
 
-- name: Create portainer volumes
 #Log into Nexcel private registry and force re-authorization
 # - name: Log into Nexcel private registry and force re-authorization
 #   docker_login:
@@ -27,43 +23,20 @@
 
 
 #Generate Dockerfile file
-- name: Generate Dockerfile file
-  blockinfile:
-    dest: "/var/www/{{ container_name }}/Dockerfile"
-    insertafter: '#Dockerfile'
-    marker: "# {mark} -- Official Image"
-    block: |
-      FROM portainer/portainer:{{ img_version | default('latest')}}
-      MAINTAINER NexOps "troy.vo@starixsoft.com"
-  become: yes
+# - name: Generate Dockerfile file
+#   blockinfile:
+#     dest: "/var/www/{{ container_name }}/Dockerfile"
+#     insertafter: '#Dockerfile'
+#     marker: "# {mark} -- Official Image"
+#     block: |
+#       FROM portainer/portainer:{{ img_version | default('latest')}}
+#       MAINTAINER NexOps "troy.vo@starixsoft.com"
+#   become: yes
 #Generate docker-compose
-- name: Generate docker-compose
-  blockinfile: 
-    dest: /var/www/{{ container_name }}/docker-compose.yml
-    insertafter: '# compose script' 
-    marker: "# {mark} -- setting docker compose script by Ansible" 
-    block: |
-      version: '3.0'
-      services:
-        portainer:
-          image: regdocker.nexdev.net/nexops/portainer:{{ img_version | default('latest')}}
-          build:
-           context: ./
-          container_name: {{ container_name }}
-          hostname: {{ container_name }}
-          restart: always
-          ports:
-           - {{ container_port }}:9000
-          volumes:
-            - /var/run/docker.sock:/var/run/docker.sock
-            - /var/www/{{ container_name }}/data:/data
-            - /etc/localtime:/etc/localtime:ro
-          restart: always
-          network_mode: bridge
-  become: yes
+
 #Build up and run container...
-- name: Build up and run container {{ container_name }}
+- name: Build up and run container
   shell: |
-    cd /var/www/{{ container_name }}
-    docker-compose up -d
+    cd /var/www/portainer
+    docker stack deploy --compose-file=docker-compose.yml portainer
   become: yes
