@@ -1,0 +1,11 @@
+---
+- name: Create .ssh folder 
+  file:
+    path: "/home/{{provision_user}}/.ssh"
+    state: directory
+
+- name: Copy authorized_keys file
+  template:
+    src: 'files/authorized_keys'
+    dest: /home/{{provision_user}}/.ssh/authorized_keys
+  become: yes
