@@ -3,6 +3,7 @@
   file:
     path: "/home/{{provision_user}}/.ssh"
     state: directory
+  become: yes
 
 - name: Copy authorized_keys file
   template:

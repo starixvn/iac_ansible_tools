@@ -1,0 +1,16 @@
+---
+- hosts: all
+  roles:
+  - role: add-ssh-pubkey
+    tags: add-ssh-pubkey
+
+- hosts: all
+  roles:
+    - create-user
+    - add-ssh-pubkey
+  tags: create-user
+
+- hosts: all
+  roles:
+    - change-hostname
+  tags: change-hostname

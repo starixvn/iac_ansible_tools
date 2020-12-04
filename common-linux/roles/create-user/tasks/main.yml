@@ -10,6 +10,4 @@
       dest: "/etc/sudoers.d/{{ provision_user }}"
       content: "{{ provision_user }}  ALL=(ALL)  NOPASSWD: ALL"
   become: yes
-
-  notify:
-  - restart ssh
+  notify: restart ssh
