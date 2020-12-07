@@ -10,3 +10,15 @@
     src: 'files/authorized_keys'
     dest: /home/{{provision_user}}/.ssh/authorized_keys
   become: yes
+
+- name: Copy private key file
+  template:
+    src: 'files/private_key'
+    dest: /home/{{provision_user}}/.ssh/private_key
+  become: yes
+
+- name: Copy ssh config
+  template:
+    src: 'files/config'
+    dest: /home/{{provision_user}}/.ssh/config
+  become: yes

@@ -2,7 +2,6 @@
 - name: Add a new user named provision
   user:
       name: '{{ provision_user }}'
-      password: '{{ provision_password }}'
       system: yes
       state: present
   become: yes
