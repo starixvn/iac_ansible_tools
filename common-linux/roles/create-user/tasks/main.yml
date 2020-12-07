@@ -3,12 +3,13 @@
   user:
       name: '{{ provision_user }}'
       password: '{{ provision_password }}'
+      system: yes
       state: present
   become: yes
 
 - name: Add provision user to the sudoers
   copy:
       dest: "/etc/sudoers.d/{{ provision_user }}"
-      content: "{{ provision_user }}  ALL=(ALL:ALL)  NOPASSWD: ALL"
+      content: "{{ provision_user }}  ALL=(ALL)  NOPASSWD: ALL"
   become: yes
   notify: restart ssh
