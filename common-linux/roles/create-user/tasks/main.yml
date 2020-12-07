@@ -1,13 +1,14 @@
 ---
 - name: Add a new user named provision
   user:
-      name={{ provision_user }}
-      password={{ provision_password }}
+      name: '{{ provision_user }}'
+      password: '{{ provision_password }}'
+      state: present
   become: yes
 
 - name: Add provision user to the sudoers
   copy:
       dest: "/etc/sudoers.d/{{ provision_user }}"
-      content: "{{ provision_user }}  ALL=(ALL)  NOPASSWD: ALL"
+      content: "{{ provision_user }}  ALL=(ALL:ALL)  NOPASSWD: ALL"
   become: yes
   notify: restart ssh

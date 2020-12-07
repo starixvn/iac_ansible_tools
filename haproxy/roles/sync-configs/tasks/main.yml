@@ -1,0 +1,56 @@
+- name: Create HAProxy directory
+  file:
+    path: '{{ working_path }}'
+    state: directory
+  become: yes
+
+- name: Clean HAProxy config directory
+  file:
+    state: absent
+    path: '{{ working_path }}/config'
+  become: yes
+
+- name: Copy HAProxy configuration.
+  copy:
+    src: 'files/{{team}}/{{ env }}'
+    dest: '{{ working_path }}/config'
+  become: yes
+
+- name: Build HAProxy configurations
+  assemble:
+    src: '{{ working_path }}/config/{{ env }}'
+    dest: '{{ working_path }}/{{ config_filename }}'
+  become: yes
+
+- name: Copy whitelist configuration.
+  template:
+    src: 'files/whitelisted.ips'
+    dest: '{{ working_path }}/whitelisted.ips'
+  become: yes
+
+- name: Copy HAProxy Dockerfile.
+  copy:
+    src: 'files/Dockerfile'
+    dest: '{{ working_path }}'
+  become: yes
+
+- name: Install Python docker
+  apt:
+    name: python-docker
+    state: present
+  become: yes
+  ignore_errors: yes
+
+- name: Remove HAProxy image for syntax check
+  shell: docker image rm haproxy-check-config
+  ignore_errors: yes
+
+- name: Build HAProxy container for syntax check
+  docker_image:
+    name: haproxy-check-config
+    build:
+      path: '{{ working_path }}'
+    state: present
+
+- name: Check HAProxy config
+  shell: docker run -it --rm haproxy-check-config haproxy -c -V -f /etc/haproxy/haproxy.cfg
