@@ -1,6 +1,6 @@
 - name: Create HAProxy directory
   file:
-    path: '{{ working_path }}'
+    path: '{{ volume_path }}'
     state: directory
     mode: '0777'
   become: yes
@@ -8,31 +8,31 @@
 - name: Clean HAProxy config directory
   file:
     state: absent
-    path: '{{ working_path }}/config'
+    path: '{{ volume_path }}/config'
   become: yes
 
 - name: Copy HAProxy configuration.
   copy:
     src: 'files/{{team}}/{{ env }}'
-    dest: '{{ working_path }}/config'
+    dest: '{{ volume_path }}/config'
   become: yes
 
 - name: Build HAProxy configurations
   assemble:
-    src: '{{ working_path }}/config/{{ env }}'
-    dest: '{{ working_path }}/{{ config_filename }}'
+    src: '{{ volume_path }}/config/{{ env }}'
+    dest: '{{ volume_path }}/{{ config_filename }}'
   become: yes
 
 - name: Copy whitelist configuration.
   template:
     src: 'files/whitelisted.ips'
-    dest: '{{ working_path }}/whitelisted.ips'
+    dest: '{{ volume_path }}/whitelisted.ips'
   become: yes
 
 - name: Copy HAProxy Dockerfile.
   copy:
     src: 'files/Dockerfile'
-    dest: '{{ working_path }}'
+    dest: '{{ volume_path }}'
   become: yes
 
 - name: Install Python docker
@@ -51,7 +51,7 @@
   docker_image:
     name: haproxy-check-config
     build:
-      path: '{{ working_path }}'
+      path: '{{ volume_path }}'
     state: present
   become: yes
 

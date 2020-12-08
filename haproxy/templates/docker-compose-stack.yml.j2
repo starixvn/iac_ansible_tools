@@ -1,0 +1,39 @@
+version: '3.5'
+
+services:
+  service:
+    image: haproxytech/haproxy-debian:{{haproxy_version}}
+    volumes:
+      - data:/usr/local/etc/haproxy/
+    ports:
+{% for port in lookup('vars', team + '_ports_' + env) %}
+      - published: {{port.published}}
+        target: {{port.target}}
+        mode: {{port.mode}}
+{% endfor %}
+
+    dns:
+      - 127.0.0.11
+    networks:
+      - {{swarm_network_name}}
+    deploy:
+        mode: global
+        placement:
+          constraints: 
+            - node.platform.os == linux
+            - node.role == manager
+
+networks:
+  {{swarm_network_name}}:
+     external: true
+#    driver: overlay
+#    attachable: true
+#    name: {{swarm_network_name}}
+
+volumes:
+  data:
+    driver: local
+    driver_opts:
+       o: bind
+       type: none
+       device: {{volume_path}}

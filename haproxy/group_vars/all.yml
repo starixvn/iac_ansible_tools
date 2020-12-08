@@ -1,0 +1,18 @@
+---
+# Variables here are applicable to all host groups
+haproxy_version: 2.2
+stack_name: haproxy
+volume_path: /var/www/haproxy
+config_filename: haproxy.cfg
+
+nexcel_ports_local: [
+  {"published": 80, "target": 80, "mode": "ingress"},
+  {"published": 8001, "target": 8001, "mode": "ingress"}
+]
+
+luminet_ports_local: [
+  {"published": 80, "target": 80, "mode": "ingress"},
+  {"published": 7000, "target": 7000, "mode": "ingress"},
+  {"published": 7001, "target": 7001, "mode": "ingress"},
+  {"published": 7002, "target": 7002, "mode": "ingress"}
+]
