@@ -1,0 +1,6 @@
+---
+- hosts: swarm_managers
+  roles:
+  - role: reload-configs-swarm
+  - role: sync-configs-swarm
+    tags: reload-configs-swarm

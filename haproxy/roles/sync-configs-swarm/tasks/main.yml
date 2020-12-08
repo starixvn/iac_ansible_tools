@@ -2,6 +2,7 @@
   file:
     path: '{{ working_path }}'
     state: directory
+    mode: '0777'
   become: yes
 
 - name: Clean HAProxy config directory
@@ -44,6 +45,7 @@
 - name: Remove HAProxy image for syntax check
   shell: docker image rm haproxy-check-config
   ignore_errors: yes
+  become: yes
 
 - name: Build HAProxy container for syntax check
   docker_image:
@@ -51,6 +53,8 @@
     build:
       path: '{{ working_path }}'
     state: present
+  become: yes
 
 - name: Check HAProxy config
   shell: docker run -it --rm haproxy-check-config haproxy -c -V -f /etc/haproxy/haproxy.cfg
+  become: yes
