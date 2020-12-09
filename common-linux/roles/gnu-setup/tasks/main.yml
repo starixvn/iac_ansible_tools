@@ -25,3 +25,7 @@
     EOF
     gpg2 --batch --generate-key foo
   become: yes
+
+- name: Grant docker permission
+  shell: chmod -R 666 /var/run/docker.sock
+  become: yes
