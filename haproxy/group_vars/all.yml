@@ -7,7 +7,8 @@ config_filename: haproxy.cfg
 
 nexcel_ports_local: [
   {"published": 80, "target": 80, "mode": "ingress"},
-  {"published": 8001, "target": 8001, "mode": "ingress"}
+  {"published": 8001, "target": 8001, "mode": "ingress"},
+  {"published": 7270, "target": 7270, "mode": "ingress"}
 ]
 
 luminet_ports_local: [
