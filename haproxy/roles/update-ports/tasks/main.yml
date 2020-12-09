@@ -1,4 +1,0 @@
-- name: Update ports
-  when: inventory_hostname == groups['swarm_leader'][0]
-  command: docker service update --publish-add {{ {{team}}_{{env}}_ports | join(' --publish-add ') }} {{stack_name}}_service
-  become: yes

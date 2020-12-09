@@ -20,8 +20,9 @@ services:
         mode: global
         placement:
           constraints: 
-            - node.platform.os == linux
-            - node.role == manager
+            #- node.platform.os == linux
+            #- node.role == manager
+            - node.labels.HAPROXY == yes
 
 networks:
   {{swarm_network_name}}:
