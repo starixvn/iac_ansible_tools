@@ -25,3 +25,9 @@
     - gnu-setup
     - docker-registry-login
   tags: docker-registry-login
+
+- hosts: all
+  roles:
+    - set-permission-folder
+  tags: set-permission-folder
+

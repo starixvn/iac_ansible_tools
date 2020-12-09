@@ -1,0 +1,3 @@
+- name: set full permission folder
+  shell: chmod -R 777 {{folder_path}}
+  become: yes
