@@ -14,3 +14,14 @@
   roles:
     - change-hostname
   tags: change-hostname
+
+- hosts: all
+  roles:
+    - gnu-setup
+  tags: gnu-setup
+
+- hosts: all
+  roles:
+    - gnu-setup
+    - docker-registry-login
+  tags: docker-registry-login
