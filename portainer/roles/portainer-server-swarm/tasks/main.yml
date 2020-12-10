@@ -5,6 +5,14 @@
     path: "/home/{{ansible_user}}/stacks"
     state: directory
 
+- name: Create network
+  docker_network:
+    name: "{{swarm_network_name}}"
+    driver: "overlay"
+    attachable: true
+  ignore_errors: yes
+  become: yes
+
 - name: Copy docker-compose file
   when: inventory_hostname == groups['swarm_leader'][0]
   template:
