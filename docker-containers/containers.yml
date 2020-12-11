@@ -1,0 +1,21 @@
+---
+- hosts: all
+  roles:
+    - role: directory-init
+    - role: nginx-static-site
+    - role: docker-container-init
+  tags: static-site-nginx
+
+- hosts: all
+  roles:
+    - role: directory-init
+    - role: dotnetcore
+    - role: docker-container-init
+  tags: dotnetcore
+
+- hosts: all
+  roles:
+    - role: directory-init
+    - role: nodejs
+    - role: docker-container-init
+  tags: nodejs

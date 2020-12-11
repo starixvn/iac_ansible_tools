@@ -1,0 +1,12 @@
+- name: Build up with latest Dockerfile
+  shell: |
+    cd {{ working_directory }}
+    docker-compose pull | true && docker-compose build
+  become: yes
+  ignore_errors: true
+
+- name: Creating container by docker-compose...
+  shell: |
+    cd {{ working_directory }}
+    docker-compose up -d
+  become: yes

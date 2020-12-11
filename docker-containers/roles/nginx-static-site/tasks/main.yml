@@ -1,0 +1,24 @@
+- name: Coppy docker-compose nginx template
+  template:
+    src: 'templates/nginx.docker-compose.yml.j2'
+    dest: "{{ working_directory }}/docker-compose.yml"
+  become: yes
+
+- name: Copy nginx dockerfile template
+  template:
+    src: 'templates/nginx.Dockerfile.j2'
+    dest: "{{ working_directory }}/conf/Dockerfile"
+  become: yes
+
+- name: Copy whitelist.conf template
+  template:
+    src: "templates/whitelist.conf.j2"
+    dest: "{{ working_directory }}/conf/whitelist.conf"
+  become: yes
+
+- name: Copy nginx static site config template
+  template:
+    src: 'templates/nginx-static-site.conf.j2'
+    dest: "{{ working_directory }}/conf/nginx.conf"
+  become: yes
+  ignore_errors: true

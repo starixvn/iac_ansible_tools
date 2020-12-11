@@ -1,0 +1,8 @@
+########################################################################
+# File managed by Ansible - NexOps
+# Your changes will be overwritten.
+#######################################################################
+FROM registry.nexdev.net:5050/docker/node:{{nodejs_version}}
+WORKDIR /app
+EXPOSE {{proxy_port| default('80')}}
+CMD [ "node", {{cmd_nodejs | default('')}}"--max-old-space-size={{memory_nodejs | default('2048')}}", "{{app_js| default('server.js')}}" ]
