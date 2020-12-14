@@ -1,0 +1,17 @@
+---
+- name: Add IP address of all hosts to all hosts
+  lineinfile:
+    dest: /etc/hosts
+    regexp: '.*{{ item }}$'
+    line: "{{ hostvars[item].ansible_host }} {{item}}"
+    state: present
+  when: hostvars[item].ansible_host is defined
+  with_items: "{{ groups.all }}"
+
+#- name: Update /etc/hosts
+#  become: true
+#  blockinfile:
+#      path: /etc/hosts
+#      create: yes
+#      block: |
+#        127.0.0.1 localhost
