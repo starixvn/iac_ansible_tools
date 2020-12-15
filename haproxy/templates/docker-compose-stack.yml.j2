@@ -2,7 +2,7 @@ version: '3.5'
 
 services:
   service:
-    image: haproxytech/haproxy-debian:{{haproxy_version}}
+    image: {{haproxy_image_name}}:{{haproxy_version}}
     volumes:
       - data:{{image_config_path}}
     ports:

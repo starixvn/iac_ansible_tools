@@ -5,6 +5,7 @@ stack_name: haproxy
 volume_path: /var/www/haproxy
 config_filename: haproxy.cfg
 image_config_path: /usr/local/etc/haproxy/
+image_name: haproxytech/haproxy-debian
 
 nexcel_ports_local: [
   {"published": 80, "target": 80, "mode": "ingress"},
