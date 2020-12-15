@@ -3,6 +3,10 @@
 # Your changes will be overwritten.
 #######################################################################
 FROM {{node_image | default('node')}}:{{nodejs_version}}
+RUN apt-get update && apt-get install -y curl
+
+HEALTHCHECK CMD curl --fail http://localhost:{{ target_port | default('80') }}{{ healthcheck_path | default('') }} || exit 1  
+
 WORKDIR /app
-EXPOSE {{proxy_port| default('80')}}
+EXPOSE {{target_port | default('80')}}
 CMD [ "node", {{cmd_nodejs | default('')}}"--max-old-space-size={{memory_nodejs | default('2048')}}", "{{app_js| default('server.js')}}" ]
