@@ -4,7 +4,7 @@ services:
   service:
     image: haproxytech/haproxy-debian:{{haproxy_version}}
     volumes:
-      - data:/usr/local/etc/haproxy/
+      - data:{{image_config_path}}
     ports:
 {% for port in lookup('vars', team + '_ports_' + env) %}
       - published: {{port.published}}

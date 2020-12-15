@@ -8,31 +8,31 @@
 - name: Clean HAProxy config directory
   file:
     state: absent
-    path: '{{ volume_path }}/config'
+    path: '{{ volume_path }}/configs'
   become: yes
 
 - name: Copy HAProxy configuration.
   copy:
-    src: 'files/{{team}}/{{ env }}'
-    dest: '{{ volume_path }}/config'
+    src: 'files/{{team}}/configs/{{ env }}'
+    dest: '{{ volume_path }}/configs'
   become: yes
 
 - name: Build HAProxy configurations
   assemble:
-    src: '{{ volume_path }}/config/{{ env }}'
+    src: '{{ volume_path }}/configs/{{ env }}'
     dest: '{{ volume_path }}/{{ config_filename }}'
   become: yes
 
 - name: Copy whitelist configuration.
   template:
-    src: 'files/whitelisted.ips'
+    src: 'files/{{team}}/whitelisted.ips'
     dest: '{{ volume_path }}/whitelisted.ips'
   become: yes
 
 
 - name: Copy SSL Certs configuration.
   template:
-    src: 'files/certs/{{item}}'
+    src: 'files/{{team}}/certs/{{item}}'
     dest: '{{ volume_path }}/{{item}}'
   become: yes
   with_items: 
@@ -41,8 +41,8 @@
   ignore_errors: yes
 
 - name: Copy HAProxy Dockerfile.
-  copy:
-    src: 'files/Dockerfile'
+  template:
+    src: 'templates/Dockerfile.j2'
     dest: '{{ volume_path }}'
   become: yes
 
