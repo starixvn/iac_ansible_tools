@@ -29,6 +29,17 @@
     dest: '{{ volume_path }}/whitelisted.ips'
   become: yes
 
+
+- name: Copy SSL Certs configuration.
+  template:
+    src: 'files/certs/{{item}}'
+    dest: '{{ volume_path }}/{{item}}'
+  become: yes
+  with_items: 
+    - nexdev.net.pem
+    - lumigame.com.pem
+  ignore_errors: yes
+
 - name: Copy HAProxy Dockerfile.
   copy:
     src: 'files/Dockerfile'
