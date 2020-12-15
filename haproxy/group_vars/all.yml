@@ -14,6 +14,14 @@ nexcel_ports_local: [
   {"published": 7270, "target": 7270, "mode": "ingress"}
 ]
 
+nexcel_ports_uat: [
+  {"published": 7000, "target": 7000, "mode": "ingress"},
+]
+
+nexcel_ports_nex3-prod: [
+  {"published": 8000, "target": 8000, "mode": "ingress"},
+]
+
 luminet_ports_local: [
   {"published": 80, "target": 80, "mode": "ingress"},
   {"published": 7000, "target": 7000, "mode": "ingress"},
