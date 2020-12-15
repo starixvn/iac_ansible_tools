@@ -42,7 +42,7 @@
 
 - name: Copy HAProxy Dockerfile.
   template:
-    src: 'templates/Dockerfile.j2'
+    src: 'templates/check-config.Dockerfile.j2'
     dest: '{{ volume_path }}'
   become: yes
 
