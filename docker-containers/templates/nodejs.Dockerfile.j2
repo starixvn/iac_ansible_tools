@@ -4,7 +4,8 @@
 #######################################################################
 FROM {{node_image | default('node')}}:{{nodejs_version}}
 
-HEALTHCHECK CMD curl --fail http://localhost:{{ target_port | default('80') }}{{ healthcheck_path | default('') }} || exit 1  
+COPY ./healthcheck.js .
+HEALTHCHECK --interval=10s --timeout=2s --start-period=15s CMD node /healthcheck.js
 
 WORKDIR /app
 EXPOSE {{target_port | default('80')}}
