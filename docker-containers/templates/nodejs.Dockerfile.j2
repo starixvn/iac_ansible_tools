@@ -3,7 +3,7 @@
 # Your changes will be overwritten.
 #######################################################################
 FROM {{node_image | default('node')}}:{{nodejs_version}}
-RUN apt-get update && apt-get install -y curl
+RUN apt-get update -y && apt-get install -y curl
 
 HEALTHCHECK CMD curl --fail http://localhost:{{ target_port | default('80') }}{{ healthcheck_path | default('') }} || exit 1  
 
