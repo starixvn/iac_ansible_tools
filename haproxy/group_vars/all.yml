@@ -1,6 +1,6 @@
 ---
 # Variables here are applicable to all host groups
-haproxy_version: 2.2
+haproxy_version: 2.2.4
 stack_name: haproxy
 volume_path: /var/www/haproxy
 config_filename: haproxy.cfg
