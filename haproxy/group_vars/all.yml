@@ -18,7 +18,7 @@ nexcel_ports_sit: [
   {"published": 7000, "target": 7000, "mode": "ingress"},
 ]
 
-nexcel_ports_nex3-prod: [
+nexcel_ports_prod-nex3: [
   {"published": 8000, "target": 8000, "mode": "ingress"},
 ]
 
