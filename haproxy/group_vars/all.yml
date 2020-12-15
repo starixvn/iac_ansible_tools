@@ -14,7 +14,7 @@ nexcel_ports_local: [
   {"published": 7270, "target": 7270, "mode": "ingress"}
 ]
 
-nexcel_ports_uat: [
+nexcel_ports_sit: [
   {"published": 7000, "target": 7000, "mode": "ingress"},
 ]
 
