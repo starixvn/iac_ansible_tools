@@ -4,7 +4,7 @@
     dest: "{{ working_directory }}/Dockerfile"
   become: yes
 
-- name: Copy docker-compose build dotnetcore image template
+- name: Copy docker-compose build nodejs image template
   template:
     src: 'templates/build-image.docker-compose.yml.j2'
     dest: "{{ working_directory }}/docker-compose.yml"
