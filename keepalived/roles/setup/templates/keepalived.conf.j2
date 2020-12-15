@@ -1,0 +1,32 @@
+global_defs {
+  smtp_server localhost
+  vrrp_version 3
+  script_user root root enable_script_security
+}
+
+vrrp_script haproxy_container {
+    script "/usr/bin/docker container ls --filter name=haproxy-service"
+    interval 5
+    weight -20
+    fall 2
+    rise 2
+}
+
+vrrp_instance VI_1 {
+    interface {{nic}}
+    state {{keepalive_role}}
+    virtual_router_id {{virtual_router_id | default('250')}}
+    priority {{keepalive_priority}}
+    virtual_ipaddress {
+        {{vip}}
+    }
+    authentication {
+    auth_type PASS
+    auth_pass {{ keepalived_password }}
+  	}
+    track_script {
+        haproxy_container
+    }
+    notify "/etc/keepalived/keepalived_notify.sh"
+}
+#########
