@@ -1,7 +1,7 @@
 version: "3.3"
 services:
   prometheus:
-    image: 127.0.0.1:5000/prometheus
+    image: registry.nexdev.net:5050/docker/nexops-tools/prometheus
     build:
       context: ./
       dockerfile: ./Dockerfile

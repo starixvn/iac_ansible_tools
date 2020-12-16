@@ -1,7 +1,7 @@
 version: "3.3"
 services:
   alertmanager:
-    image: 127.0.0.1:5000/alertmanager
+    image: registry.nexdev.net:5050/docker/nexops-tools/alertmanager
     build:
       context: ./
       dockerfile: ./Dockerfile
