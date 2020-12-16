@@ -5,6 +5,13 @@
     dest: "{{ working_directory }}/docker-compose.yml"
   become: yes
 
+- name: Pull latest images
+  shell: |
+    export ENV={{ENV}}
+    cd {{ working_directory }}
+    docker-compose pull
+  become: yes
+
 - name: Deploy NexOps monitoring tools
   shell: |
     cd {{ working_directory }}
