@@ -20,4 +20,5 @@
     - grafana
     - node-exporter
     - prometheus
+    - dockerd-exporter
   ignore_errors: yes
