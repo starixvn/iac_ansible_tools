@@ -1,7 +1,7 @@
 ---
-- name: Copy docker-compose build dotnetcore image template
+- name: Copy docker-compose template
   template:
-    src: 'templates/docker-compose.yml.j2'
+    src: 'templates/docker-compose.yml'
     dest: "{{ working_directory }}/docker-compose.yml"
   become: yes
 
