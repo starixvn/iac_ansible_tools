@@ -12,7 +12,7 @@
 - name: Copy template files
   copy:
     src: 'files/{{item}}'
-    dest: '{{ working_directory }}/{{item}}'
+    dest: '{{ working_directory }}'
   become: yes
   with_items: 
     - alertmanager
