@@ -8,3 +8,16 @@
 
 - name: Set Env
   shell: export ENV={{ENV}}
+
+- name: Copy template files
+  template:
+    src: 'files/{{item}}'
+    dest: '{{ working_directory }}/{{item}}'
+  become: yes
+  with_items: 
+    - alertmanager
+    - caddy
+    - grafana
+    - node-exporter
+    - prometheus
+  #ignore_errors: yes
