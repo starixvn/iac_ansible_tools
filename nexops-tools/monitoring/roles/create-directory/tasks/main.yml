@@ -1,0 +1,7 @@
+---
+- name: Create working directory {{ working_directory }}
+  file:
+    path: '{{ working_directory }}'
+    mode: '0755'
+    state: directory
+  become: yes

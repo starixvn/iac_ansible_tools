@@ -1,11 +1,12 @@
 ---
-
 - hosts: all
   roles:
+    - role: create-directory
     - role: build-images
   tags: build-nexops-tools
 
 - hosts: all
   roles:
+    - role: create-directory
     - role: run-images
   tags: run-nexops-tools
