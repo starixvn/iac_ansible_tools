@@ -5,7 +5,7 @@ global_defs {
 }
 
 vrrp_script haproxy_container {
-    script "/usr/bin/docker container ls --filter name=haproxy-service"
+    script "/usr/bin/docker container ls --filter name={{haproxy_service_name | default('haproxy-service')}}"
     interval 5
     weight -20
     fall 2

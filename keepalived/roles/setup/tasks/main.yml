@@ -48,13 +48,14 @@
   set_fact:
     keepalive_role: "BACKUP"
     keepalive_priority: "100"
+  when: keepalived_master is undefined or keepalived_master == false
   become: yes
 
 - name: Set keepalived variables for master server
   set_fact:
     keepalive_role: "MASTER"
     keepalive_priority: "110"
-  when: "ansible_host == master_server_ip"
+  when: keepalived_master is defined and keepalived_master == true
   become: yes
 
 - name: Create config directory
