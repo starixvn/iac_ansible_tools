@@ -17,7 +17,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1520585594614,
+  "iteration": 1607306805147,
   "links": [],
   "panels": [
     {
@@ -29,8 +29,14 @@
         "rgba(237, 129, 40, 0.89)",
         "rgba(50, 172, 45, 0.97)"
       ],
-      "datasource": null,
+      "datasource": "Prometheus-Lumi",
       "decimals": 0,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -114,8 +120,14 @@
         "rgba(237, 129, 40, 0.89)",
         "rgba(50, 172, 45, 0.97)"
       ],
-      "datasource": null,
+      "datasource": "Prometheus-Lumi",
       "decimals": 0,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -199,8 +211,14 @@
         "rgba(237, 129, 40, 0.89)",
         "rgba(50, 172, 45, 0.97)"
       ],
-      "datasource": null,
+      "datasource": "Prometheus-Lumi",
       "decimals": 0,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -284,8 +302,14 @@
         "rgba(237, 129, 40, 0.89)",
         "rgba(50, 172, 45, 0.97)"
       ],
-      "datasource": null,
+      "datasource": "Prometheus-Lumi",
       "decimals": 0,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -364,15 +388,23 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": null,
+      "datasource": "Prometheus-Lumi",
       "decimals": 0,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 5,
+      "fillGradient": 0,
       "gridPos": {
         "h": 7,
         "w": 12,
         "x": 0,
         "y": 4
       },
+      "hiddenSeries": false,
       "id": 12,
       "legend": {
         "alignAsTable": true,
@@ -393,7 +425,11 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
+      "pluginVersion": "7.3.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -413,6 +449,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Service Tasks",
       "tooltip": {
@@ -445,22 +482,34 @@
           "min": null,
           "show": true
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {},
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": null,
+      "datasource": "Prometheus-Lumi",
       "decimals": 0,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 7,
         "w": 12,
         "x": 12,
         "y": 4
       },
+      "hiddenSeries": false,
       "id": 32,
       "legend": {
         "alignAsTable": true,
@@ -481,7 +530,11 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
+      "pluginVersion": "7.3.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -509,6 +562,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Health Checks",
       "tooltip": {
@@ -541,22 +595,34 @@
           "min": null,
           "show": true
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {},
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": null,
+      "datasource": "Prometheus-Lumi",
       "decimals": 2,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 7,
         "w": 20,
         "x": 0,
         "y": 11
       },
+      "hiddenSeries": false,
       "id": 22,
       "legend": {
         "alignAsTable": true,
@@ -577,7 +643,11 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
+      "pluginVersion": "7.3.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -597,6 +667,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "CPU usage by Service",
       "tooltip": {
@@ -629,7 +700,11 @@
           "min": null,
           "show": false
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "cacheTimeout": null,
@@ -640,8 +715,14 @@
         "rgba(237, 129, 40, 0.89)",
         "rgba(50, 172, 45, 0.97)"
       ],
-      "datasource": null,
+      "datasource": "Prometheus-Lumi",
       "decimals": null,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "format": "percent",
       "gauge": {
         "maxValue": 100,
@@ -722,15 +803,23 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": null,
+      "datasource": "Prometheus-Lumi",
       "decimals": 2,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 7,
         "w": 24,
         "x": 0,
         "y": 18
       },
+      "hiddenSeries": false,
       "id": 33,
       "legend": {
         "alignAsTable": true,
@@ -751,7 +840,11 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null as zero",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
+      "pluginVersion": "7.3.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -771,6 +864,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "CPU usage by Container (top 10)",
       "tooltip": {
@@ -803,21 +897,33 @@
           "min": null,
           "show": false
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {},
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": null,
+      "datasource": "Prometheus-Lumi",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 7,
         "w": 20,
         "x": 0,
         "y": 25
       },
+      "hiddenSeries": false,
       "id": 24,
       "legend": {
         "alignAsTable": true,
@@ -836,7 +942,11 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
+      "pluginVersion": "7.3.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -864,6 +974,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Memory usage by Service",
       "tooltip": {
@@ -896,7 +1007,11 @@
           "min": null,
           "show": true
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "cacheTimeout": null,
@@ -907,7 +1022,13 @@
         "rgba(237, 129, 40, 0.89)",
         "rgba(50, 172, 45, 0.97)"
       ],
-      "datasource": null,
+      "datasource": "Prometheus-Lumi",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "format": "percent",
       "gauge": {
         "maxValue": 100,
@@ -985,14 +1106,22 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": null,
+      "datasource": "Prometheus-Lumi",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 7,
         "w": 24,
         "x": 0,
         "y": 32
       },
+      "hiddenSeries": false,
       "id": 34,
       "legend": {
         "alignAsTable": true,
@@ -1013,7 +1142,11 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
+      "pluginVersion": "7.3.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -1033,6 +1166,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Memory usage by Container (top 10)",
       "tooltip": {
@@ -1065,21 +1199,33 @@
           "min": null,
           "show": false
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {},
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": null,
+      "datasource": "Prometheus-Lumi",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 7,
         "w": 24,
         "x": 0,
         "y": 39
       },
+      "hiddenSeries": false,
       "id": 17,
       "legend": {
         "alignAsTable": true,
@@ -1098,7 +1244,11 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
+      "pluginVersion": "7.3.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -1118,6 +1268,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Network received by Service",
       "tooltip": {
@@ -1150,21 +1301,33 @@
           "min": null,
           "show": true
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {},
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": null,
+      "datasource": "Prometheus-Lumi",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 7,
         "w": 24,
         "x": 0,
         "y": 46
       },
+      "hiddenSeries": false,
       "id": 25,
       "legend": {
         "alignAsTable": true,
@@ -1183,7 +1346,11 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
+      "pluginVersion": "7.3.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -1204,6 +1371,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Network transmitted by Service",
       "tooltip": {
@@ -1236,21 +1404,33 @@
           "min": null,
           "show": true
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {},
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": null,
+      "datasource": "Prometheus-Lumi",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 7,
         "w": 10,
         "x": 0,
         "y": 53
       },
+      "hiddenSeries": false,
       "id": 31,
       "legend": {
         "avg": true,
@@ -1265,7 +1445,11 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
+      "pluginVersion": "7.3.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -1293,6 +1477,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Cluster Network Traffic",
       "tooltip": {
@@ -1325,21 +1510,33 @@
           "min": null,
           "show": true
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {},
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": null,
+      "datasource": "Prometheus-Lumi",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 7,
         "w": 10,
         "x": 10,
         "y": 53
       },
+      "hiddenSeries": false,
       "id": 26,
       "legend": {
         "alignAsTable": false,
@@ -1356,7 +1553,11 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
+      "pluginVersion": "7.3.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -1384,6 +1585,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Cluster IOPS",
       "tooltip": {
@@ -1416,7 +1618,11 @@
           "min": null,
           "show": true
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "cacheTimeout": null,
@@ -1427,7 +1633,13 @@
         "rgba(237, 129, 40, 0.89)",
         "rgba(50, 172, 45, 0.97)"
       ],
-      "datasource": null,
+      "datasource": "Prometheus-Lumi",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "format": "percent",
       "gauge": {
         "maxValue": 100,
@@ -1479,8 +1691,9 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "sum((node_filesystem_free_bytes{mountpoint=\"/rootfs\"} / node_filesystem_size_bytes{mountpoint=\"/rootfs\"}) * on(instance) group_left(node_name) node_meta{node_id=~\"$node_id\"} * 100) / count(node_meta * on(instance) group_left(node_name) node_meta{node_id=~\"$node_id\"})",
+          "expr": "sum((node_filesystem_free_bytes{mountpoint=\"/\"} / node_filesystem_size_bytes{mountpoint=\"/\"}) * on(instance) group_left(node_name) node_meta{node_id=~\"$node_id\"} * 100) / count(node_load1 * on(instance) group_left(node_name) node_meta{node_id=~\"$node_id\"})",
           "format": "time_series",
+          "interval": "",
           "intervalFactor": 2,
           "legendFormat": "",
           "refId": "A",
@@ -1505,15 +1718,23 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": null,
+      "datasource": "Prometheus-Lumi",
       "decimals": 0,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 7,
         "w": 12,
         "x": 0,
         "y": 60
       },
+      "hiddenSeries": false,
       "id": 29,
       "legend": {
         "alignAsTable": true,
@@ -1534,7 +1755,11 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
+      "pluginVersion": "7.3.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -1546,6 +1771,7 @@
         {
           "expr": "sum(engine_daemon_container_actions_seconds_count * on(instance) group_left(node_id) swarm_node_info{node_id=~\"$node_id\"})  by (action)",
           "format": "time_series",
+          "interval": "",
           "intervalFactor": 10,
           "legendFormat": "{{action }}",
           "refId": "A",
@@ -1554,6 +1780,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Docker Daemon Container Actions",
       "tooltip": {
@@ -1586,22 +1813,34 @@
           "min": null,
           "show": true
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {},
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": null,
+      "datasource": "Prometheus-Lumi",
       "decimals": 0,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 7,
         "w": 12,
         "x": 12,
         "y": 60
       },
+      "hiddenSeries": false,
       "id": 30,
       "legend": {
         "alignAsTable": true,
@@ -1622,7 +1861,11 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
+      "pluginVersion": "7.3.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -1642,6 +1885,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Docker Daemon Network Actions",
       "tooltip": {
@@ -1674,7 +1918,11 @@
           "min": null,
           "show": true
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "columns": [
@@ -1683,7 +1931,13 @@
           "value": "avg"
         }
       ],
-      "datasource": null,
+      "datasource": "Prometheus-Lumi",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fontSize": "100%",
       "gridPos": {
         "h": 7,
@@ -1705,12 +1959,14 @@
       "styles": [
         {
           "alias": "Time",
+          "align": "auto",
           "dateFormat": "YYYY-MM-DD HH:mm:ss",
           "pattern": "Time",
           "type": "hidden"
         },
         {
           "alias": "",
+          "align": "auto",
           "colorMode": null,
           "colors": [
             "rgba(245, 54, 54, 0.9)",
@@ -1737,12 +1993,12 @@
       ],
       "timeFrom": "1s",
       "title": "Docker Engine Info",
-      "transform": "timeseries_to_rows",
-      "type": "table"
+      "transform": "table",
+      "type": "table-old"
     }
   ],
   "refresh": "30s",
-  "schemaVersion": 16,
+  "schemaVersion": 26,
   "style": "dark",
   "tags": [
     "swarmprom"
@@ -1752,24 +2008,58 @@
       {
         "allValue": ".+",
         "current": {
-          "text": "All",
-          "value": "$__all"
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
         },
-        "datasource": "Prometheus",
+        "datasource": "Prometheus-Lumi",
+        "definition": "",
+        "error": null,
         "hide": 0,
         "includeAll": true,
         "label": "Swarm Node",
-        "multi": false,
+        "multi": true,
         "name": "node_id",
         "options": [],
         "query": "node_meta",
         "refresh": 2,
         "regex": "/node_id=\"([^\"]+)\"/",
+        "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "label_values({node_id=\"$tag\"},node_name)",
         "tags": [
-          "ofdocker",
-          "ofmon"
+          {
+            "selected": false,
+            "text": "DKSwarm-18-137"
+          },
+          {
+            "selected": false,
+            "text": "docker-200-144"
+          },
+          {
+            "selected": false,
+            "text": "DKSwarm-18-138"
+          },
+          {
+            "selected": false,
+            "text": "DKSwarm-18-139"
+          },
+          {
+            "selected": false,
+            "text": "docker-200-133"
+          },
+          {
+            "selected": false,
+            "text": "SP-011"
+          },
+          {
+            "selected": false,
+            "text": "docker-200-134"
+          }
         ],
         "tagsQuery": "label_values(node_meta, node_name)",
         "type": "query",
@@ -1780,9 +2070,11 @@
         "auto_count": 30,
         "auto_min": "30s",
         "current": {
+          "selected": false,
           "text": "auto",
           "value": "$__auto_interval_interval"
         },
+        "error": null,
         "hide": 0,
         "label": "Interval",
         "name": "interval",
@@ -1845,6 +2137,7 @@
         ],
         "query": "1m,10m,30m,1h,6h,12h,1d,7d,14d,30d",
         "refresh": 2,
+        "skipUrlSync": false,
         "type": "interval"
       }
     ]
@@ -1880,6 +2173,6 @@
   },
   "timezone": "",
   "title": "Docker Swarm Services",
-  "uid": "zr_baSRmk",
+  "uid": "z2_baSRmk",
   "version": 1
 }

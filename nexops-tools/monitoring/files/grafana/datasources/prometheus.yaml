@@ -11,3 +11,10 @@ datasources:
   isDefault: true
   version: 1
   editable: true
+- name: Prometheus-Lumi
+  type: prometheus
+  access: proxy
+  url: http://portainer.lumigame.com:9092
+  isDefault: true
+  version: 1
+  editable: true
