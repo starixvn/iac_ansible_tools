@@ -48,13 +48,14 @@
   set_fact:
     keepalive_role: "BACKUP"
     keepalive_priority: "100"
+  when: inventory_hostname != groups['swarm_leader'][0]
   become: yes
 
 - name: Set keepalived variables for master server
   set_fact:
     keepalive_role: "MASTER"
     keepalive_priority: "110"
-  when: "ansible_host == master_server_ip"
+  when: inventory_hostname == groups['swarm_leader'][0]
   become: yes
 
 - name: Create config directory

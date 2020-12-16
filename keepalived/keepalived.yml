@@ -1,0 +1,4 @@
+---
+- hosts: swarm_managers
+  roles:
+    - role: setup
