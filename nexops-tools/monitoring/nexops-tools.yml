@@ -1,0 +1,11 @@
+---
+
+- hosts: all
+  roles:
+    - role: build-images
+  tags: build-nexops-tools
+
+- hosts: all
+  roles:
+    - role: run-images
+  tags: run-nexops-tools
