@@ -12,7 +12,7 @@
 - name: Copy template files
   template:
     src: 'files/{{item}}'
-    dest: '{{ working_directory }}/{{item}}'
+    dest: '{{ working_directory }}/'
   become: yes
   with_items: 
     - alertmanager
@@ -20,4 +20,4 @@
     - grafana
     - node-exporter
     - prometheus
-  #ignore_errors: yes
+  ignore_errors: yes
