@@ -2,7 +2,6 @@
   "annotations": {
     "list": [
       {
-        "$$hashKey": "object:429",
         "builtIn": 1,
         "datasource": "-- Grafana --",
         "enable": true,
@@ -17,7 +16,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1607306805147,
+  "id": 9,
+  "iteration": 1608112460864,
   "links": [],
   "panels": [
     {
@@ -29,7 +29,7 @@
         "rgba(237, 129, 40, 0.89)",
         "rgba(50, 172, 45, 0.97)"
       ],
-      "datasource": null,
+      "datasource": "Prometheus-Lumi",
       "decimals": 0,
       "fieldConfig": {
         "defaults": {
@@ -120,7 +120,7 @@
         "rgba(237, 129, 40, 0.89)",
         "rgba(50, 172, 45, 0.97)"
       ],
-      "datasource": null,
+      "datasource": "Prometheus-Lumi",
       "decimals": 0,
       "fieldConfig": {
         "defaults": {
@@ -211,7 +211,7 @@
         "rgba(237, 129, 40, 0.89)",
         "rgba(50, 172, 45, 0.97)"
       ],
-      "datasource": null,
+      "datasource": "Prometheus-Lumi",
       "decimals": 0,
       "fieldConfig": {
         "defaults": {
@@ -302,7 +302,7 @@
         "rgba(237, 129, 40, 0.89)",
         "rgba(50, 172, 45, 0.97)"
       ],
-      "datasource": null,
+      "datasource": "Prometheus-Lumi",
       "decimals": 0,
       "fieldConfig": {
         "defaults": {
@@ -388,7 +388,7 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": null,
+      "datasource": "Prometheus-Lumi",
       "decimals": 0,
       "fieldConfig": {
         "defaults": {
@@ -493,7 +493,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": null,
+      "datasource": "Prometheus-Lumi",
       "decimals": 0,
       "fieldConfig": {
         "defaults": {
@@ -606,7 +606,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": null,
+      "datasource": "Prometheus-Lumi",
       "decimals": 2,
       "fieldConfig": {
         "defaults": {
@@ -715,7 +715,7 @@
         "rgba(237, 129, 40, 0.89)",
         "rgba(50, 172, 45, 0.97)"
       ],
-      "datasource": null,
+      "datasource": "Prometheus-Lumi",
       "decimals": null,
       "fieldConfig": {
         "defaults": {
@@ -803,7 +803,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": null,
+      "datasource": "Prometheus-Lumi",
       "decimals": 2,
       "fieldConfig": {
         "defaults": {
@@ -908,7 +908,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": null,
+      "datasource": "Prometheus-Lumi",
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -1022,7 +1022,7 @@
         "rgba(237, 129, 40, 0.89)",
         "rgba(50, 172, 45, 0.97)"
       ],
-      "datasource": null,
+      "datasource": "Prometheus-Lumi",
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -1106,7 +1106,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": null,
+      "datasource": "Prometheus-Lumi",
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -1210,7 +1210,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": null,
+      "datasource": "Prometheus-Lumi",
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -1312,7 +1312,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": null,
+      "datasource": "Prometheus-Lumi",
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -1415,7 +1415,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": null,
+      "datasource": "Prometheus-Lumi",
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -1521,7 +1521,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": null,
+      "datasource": "Prometheus-Lumi",
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -1633,7 +1633,7 @@
         "rgba(237, 129, 40, 0.89)",
         "rgba(50, 172, 45, 0.97)"
       ],
-      "datasource": null,
+      "datasource": "Prometheus-Lumi",
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -1718,7 +1718,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": null,
+      "datasource": "Prometheus-Lumi",
       "decimals": 0,
       "fieldConfig": {
         "defaults": {
@@ -1824,7 +1824,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": null,
+      "datasource": "Prometheus-Lumi",
       "decimals": 0,
       "fieldConfig": {
         "defaults": {
@@ -1931,7 +1931,7 @@
           "value": "avg"
         }
       ],
-      "datasource": null,
+      "datasource": "Prometheus-Lumi",
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -2001,7 +2001,9 @@
   "schemaVersion": 26,
   "style": "dark",
   "tags": [
-    "swarmprom"
+    "Lumi",
+    "Service",
+    "Swarm"
   ],
   "templating": {
     "list": [
@@ -2016,7 +2018,7 @@
             "$__all"
           ]
         },
-        "datasource": "Prometheus",
+        "datasource": "Prometheus-Lumi",
         "definition": "",
         "error": null,
         "hide": 0,
@@ -2034,31 +2036,19 @@
         "tags": [
           {
             "selected": false,
-            "text": "DKSwarm-18-137"
+            "text": "local-.14"
           },
           {
             "selected": false,
-            "text": "docker-200-144"
+            "text": "local-.19"
           },
           {
             "selected": false,
-            "text": "DKSwarm-18-138"
+            "text": "local-.20"
           },
           {
             "selected": false,
-            "text": "DKSwarm-18-139"
-          },
-          {
-            "selected": false,
-            "text": "docker-200-133"
-          },
-          {
-            "selected": false,
-            "text": "SP-011"
-          },
-          {
-            "selected": false,
-            "text": "docker-200-134"
+            "text": "local-18"
           }
         ],
         "tagsQuery": "label_values(node_meta, node_name)",
@@ -2172,7 +2162,7 @@
     ]
   },
   "timezone": "",
-  "title": "Docker Swarm Services",
-  "uid": "z2_baSRmk",
-  "version": 1
+  "title": "Lumi - Docker Swarm Services",
+  "uid": "z2_baw4Rmk",
+  "version": 2
 }
