@@ -1,6 +1,7 @@
 ---
 - name: Executing script to build and push images
   shell: |
+    export ENV={{ENV}}
     cd {{ working_directory }}
     docker-compose -f grafana/docker-compose.yml build
     docker-compose -f grafana/docker-compose.yml push

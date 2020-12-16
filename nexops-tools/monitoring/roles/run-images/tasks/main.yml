@@ -8,5 +8,6 @@
 - name: Deploy NexOps monitoring tools
   shell: |
     cd {{ working_directory }}
+    export ENV={{ENV}}
     docker stack deploy --compose-file=docker-compose.yml mon
   become: yes

@@ -6,9 +6,6 @@
     state: directory
   become: yes
 
-- name: Set Env
-  shell: export ENV={{ENV}}
-
 - name: Copy template files
   copy:
     src: 'files/{{item}}'
