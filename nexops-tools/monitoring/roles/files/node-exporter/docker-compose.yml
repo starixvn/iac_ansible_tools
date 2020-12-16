@@ -1,0 +1,7 @@
+version: "3.3"
+services:
+  node-exporter:
+    image: 127.0.0.1:5000/node-exporter
+    build:
+      context: ./
+      dockerfile: ./Dockerfile

@@ -1,0 +1,26 @@
+---
+- name: Copy template files
+  template:
+    src: 'files/{{item}}'
+    dest: '{{ working_directory }}/{{item}}'
+  become: yes
+  with_items: 
+    - alertmanager
+    - caddy
+    - grafana
+    - node-exporter
+    - prometheus
+  #ignore_errors: yes
+
+- name: Executing script to build and push images
+  shell: |
+    cd {{ working_directory }}
+    docker-compose -f grafana/docker-compose.yml build
+    docker-compose -f grafana/docker-compose.yml push
+    docker-compose -f node-exporter/docker-compose.yml build
+    docker-compose -f node-exporter/docker-compose.yml push
+    docker-compose -f prometheus/docker-compose.yml build
+    docker-compose -f prometheus/docker-compose.yml push
+    docker-compose -f alertmanager/docker-compose.yml build
+    docker-compose -f alertmanager/docker-compose.yml push
+  become: yes
