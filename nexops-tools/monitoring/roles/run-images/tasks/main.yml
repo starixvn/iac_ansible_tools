@@ -1,6 +1,6 @@
 ---
 - name: Copy docker-compose template
-  template:
+  copy:
     src: 'templates/docker-compose.yml'
     dest: "{{ working_directory }}/docker-compose.yml"
   become: yes

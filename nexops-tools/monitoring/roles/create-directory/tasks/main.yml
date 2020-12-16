@@ -10,9 +10,9 @@
   shell: export ENV={{ENV}}
 
 - name: Copy template files
-  template:
+  copy:
     src: 'files/{{item}}'
-    dest: '{{ working_directory }}/'
+    dest: '{{ working_directory }}/{{item}}'
   become: yes
   with_items: 
     - alertmanager
