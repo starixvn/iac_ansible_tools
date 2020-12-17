@@ -5,9 +5,9 @@
   register: "_keepalived_installed"
   become: yes
 
-- name: Download keepalived
-  get_url:
-    url: "{{ keepalived_source_url }}"
+- name: Copy keepalived setup file
+  copy:
+    src: files/keepalived-2.0.20.tar.gz
     dest: "/tmp/keepalived.tar.gz"
   register: keepalived_source
   when:
