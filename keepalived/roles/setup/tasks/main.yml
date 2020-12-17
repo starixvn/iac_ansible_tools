@@ -1,8 +1,7 @@
 ---
-- name: Check if keepalived has already been installed
-  stat:
-    path: /etc/_keepalived_installed
-  register: "_keepalived_installed"
+- name: Check if Service Exists
+  stat: path=/etc/init.d/{{service_name}}
+  register: service_status
   become: yes
 
 - name: Copy keepalived setup file
@@ -11,7 +10,7 @@
     dest: "/tmp/keepalived.tar.gz"
   register: keepalived_source
   when:
-    - not _keepalived_installed.stat.exists
+    - not service_status.stat.exists
   become: yes
 
 - name: Unpack keepalived
@@ -20,17 +19,17 @@
     dest: /tmp/
     src: "{{ keepalived_source.dest }}"
   when:
-    - not _keepalived_installed.stat.exists
+    - not service_status.stat.exists
     - keepalived_source.changed
   register: keepalived_source_unpack
   become: yes
 
-- name: Configure keepalived source
+- name: Configure keepalived
   command: "./configure"
   args:
     chdir: "{{ keepalived_install_dir }}"
   when:
-    - not _keepalived_installed.stat.exists
+    - not service_status.stat.exists
     - keepalived_source_unpack.changed
   register: keepalived_configure
   become: yes
@@ -40,11 +39,11 @@
   args:
     chdir: "{{ keepalived_install_dir }}"
   when:
-    - not _keepalived_installed.stat.exists
+    - not service_status.stat.exists
     - keepalived_configure.changed
   become: yes
 
-- name: Set keepalived variables for standby servers
+- name: Set keepalived variables for backup servers
   set_fact:
     keepalive_role: "BACKUP"
     keepalive_priority: "100"
@@ -64,7 +63,7 @@
     state: directory
   become: yes
 
-- name: Create keepalived conf file
+- name: Create keepalived config file
   template:
     src: "{{item}}.j2"
     dest: "{{ keepalived_conf_dir }}/{{item}}"
@@ -74,7 +73,7 @@
     - keepalived.conf
     - keepalived_notify.sh
 
-- name: file permission keepalived_notify.sh
+- name: Set permission keepalived_notify.sh
   shell: chmod +x {{ keepalived_conf_dir }}/keepalived_notify.sh
   become: yes
 
@@ -90,10 +89,4 @@
     name: keepalived
     state: started
     enabled: yes
-  become: yes
-
-- name: Mark keepalived as installed
-  file:
-    path: /etc/_keepalived_installed
-    state: touch
   become: yes

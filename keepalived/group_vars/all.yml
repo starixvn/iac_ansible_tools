@@ -4,3 +4,4 @@ keepalived_source_url: "http://www.keepalived.org/software/keepalived-{{ keepali
 keepalived_install_dir: "/tmp/keepalived-{{ keepalived_version }}"
 keepalived_conf_dir: /etc/keepalived/
 keepalived_conf_name: keepalived.conf
+service_name: keepalived
