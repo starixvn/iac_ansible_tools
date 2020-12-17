@@ -60,14 +60,14 @@
 
 - name: Create config directory
   file:
-    path: /etc/keepalived
+    path: '{{ keepalived_conf_path }}'
     state: directory
   become: yes
 
 - name: Create keepalived conf file
   template:
     src: "{{item}}.j2"
-    dest: "{{ keepalived_conf_path }}/{{item}}"
+    dest: "{{ keepalived_conf_dir }}/{{item}}"
   notify: Restart keepalived
   become: yes
   with_items: 
@@ -75,7 +75,7 @@
     - keepalived_notify.sh
 
 - name: file permission keepalived_notify.sh
-  shell: chmod +x {{ keepalived_conf_path }}/keepalived_notify.sh
+  shell: chmod +x {{ keepalived_conf_dir }}/keepalived_notify.sh
   become: yes
 
 - name: Install keepalived service
