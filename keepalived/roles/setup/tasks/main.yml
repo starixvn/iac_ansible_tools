@@ -4,6 +4,11 @@
   register: service_status
   become: yes
 
+- name: Install necessary apt package
+  apt:
+    name:  libssl-dev
+  become: yes
+
 - name: Copy keepalived setup file
   copy:
     src: files/keepalived-2.0.20.tar.gz
@@ -19,8 +24,7 @@
     dest: /tmp/
     src: "{{ keepalived_source.dest }}"
   when:
-    - not service_status.stat.exists
-    - keepalived_source.changed
+    - not service_status.stat.exists or keepalived_source.changed
   register: keepalived_source_unpack
   become: yes
 
@@ -29,8 +33,7 @@
   args:
     chdir: "{{ keepalived_install_dir }}"
   when:
-    - not service_status.stat.exists
-    - keepalived_source_unpack.changed
+    - not service_status.stat.exists or keepalived_source_unpack.changed
   register: keepalived_configure
   become: yes
 
@@ -39,8 +42,7 @@
   args:
     chdir: "{{ keepalived_install_dir }}"
   when:
-    - not service_status.stat.exists
-    - keepalived_configure.changed
+    - not service_status.stat.exists or keepalived_configure.changed
   become: yes
 
 - name: Set keepalived variables for backup servers
