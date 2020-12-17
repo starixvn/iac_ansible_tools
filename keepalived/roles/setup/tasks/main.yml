@@ -60,7 +60,7 @@
 
 - name: Create config directory
   file:
-    path: '{{ keepalived_conf_path }}'
+    path: '{{ keepalived_conf_dir }}'
     state: directory
   become: yes
 
