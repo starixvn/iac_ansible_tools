@@ -10,8 +10,8 @@
     src: files/keepalived-2.0.20.tar.gz
     dest: "/tmp/keepalived.tar.gz"
   register: keepalived_source
-  # when:
-  #   - not _keepalived_installed.stat.exists
+  when:
+    - not _keepalived_installed.stat.exists
   become: yes
 
 - name: Unpack keepalived
@@ -19,9 +19,9 @@
     copy: no
     dest: /tmp/
     src: "{{ keepalived_source.dest }}"
-  # when:
-  #   - not _keepalived_installed.stat.exists
-  #   - keepalived_source.changed
+  when:
+    - not _keepalived_installed.stat.exists
+    - keepalived_source.changed
   register: keepalived_source_unpack
   become: yes
 
@@ -29,9 +29,9 @@
   command: "./configure"
   args:
     chdir: "{{ keepalived_install_dir }}"
-  # when:
-  #   - not _keepalived_installed.stat.exists
-  #   - keepalived_source_unpack.changed
+  when:
+    - not _keepalived_installed.stat.exists
+    - keepalived_source_unpack.changed
   register: keepalived_configure
   become: yes
 
@@ -39,9 +39,9 @@
   shell: make && make install
   args:
     chdir: "{{ keepalived_install_dir }}"
-  # when:
-  #   - not _keepalived_installed.stat.exists
-  #   - keepalived_configure.changed
+  when:
+    - not _keepalived_installed.stat.exists
+    - keepalived_configure.changed
   become: yes
 
 - name: Set keepalived variables for standby servers
