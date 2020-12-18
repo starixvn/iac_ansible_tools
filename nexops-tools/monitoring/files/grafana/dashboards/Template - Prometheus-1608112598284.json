@@ -1416,7 +1416,7 @@
   "style": "dark",
   "tags": [
     "prometheus",
-    "Nexcel"
+    "Template"
   ],
   "templating": {
     "list": []
@@ -1452,7 +1452,7 @@
     ]
   },
   "timezone": "browser",
-  "title": "Nexcel - Prometheus",
+  "title": "Template - Prometheus",
   "uid": "mrFfY3SRiz",
   "version": 3
 }

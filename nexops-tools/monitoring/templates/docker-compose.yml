@@ -9,34 +9,39 @@ volumes:
   prometheus: {}
   grafana: {}
   alertmanager: {}
+  mysql:
+    driver_opts:
+      o: bind
+      type: none
+      device: /var/www/monitoring-swarm/mysql
 
 configs:
   caddy_config:
     file: ./caddy/Caddyfile
-  dockerd_config:
-    file: ./dockerd-exporter/Caddyfile
+  # dockerd_config:
+  #   file: ./dockerd-exporter/Caddyfile
   node_rules:
     file: ./prometheus/rules/swarm_node.rules.yml
   task_rules:
     file: ./prometheus/rules/swarm_task.rules.yml
 
 services:
-  dockerd-exporter:
-    image: registry.nexdev.net:5050/docker/nexops-tools/dockerd-exporter #stefanprodan/caddy #stefanprodan/dockerd-exporter
-    networks:
-      - net
-    environment:
-      - DOCKER_GWBRIDGE_IP=172.18.0.1
-    configs:
-      - source: dockerd_config
-        target: /etc/caddy/Caddyfile
-    deploy:
-      mode: global
-      resources:
-        limits:
-          memory: 128M
-        reservations:
-          memory: 64M
+  # dockerd-exporter:
+  #   image: registry.nexdev.net:5050/docker/nexops-tools/dockerd-exporter #stefanprodan/caddy #stefanprodan/dockerd-exporter
+  #   networks:
+  #     - net
+  #   environment:
+  #     - DOCKER_GWBRIDGE_IP=172.18.0.1
+  #   configs:
+  #     - source: dockerd_config
+  #       target: /etc/caddy/Caddyfile
+  #   deploy:
+  #     mode: global
+  #     resources:
+  #       limits:
+  #         memory: 128M
+  #       reservations:
+  #         memory: 64M
 
   cadvisor:
     image: registry.nexdev.net:5050/docker/nexops-tools/cadvisor
@@ -57,30 +62,30 @@ services:
         reservations:
           memory: 64M
 
-  alertmanager:
-    image: registry.nexdev.net:5050/docker/nexops-tools/alertmanager # stefanprodan/swarmprom-alertmanager:v0.14.0
-    networks:
-      - net
-    environment:
-      - SLACK_URL=${SLACK_URL:-https://hooks.slack.com/services/TOKEN}
-      - SLACK_CHANNEL=${SLACK_CHANNEL:-general}
-      - SLACK_USER=${SLACK_USER:-alertmanager}
-    command:
-      - '--config.file=/etc/alertmanager/alertmanager.yml'
-      - '--storage.path=/alertmanager'
-    volumes:
-      - alertmanager:/alertmanager
-    deploy:
-      mode: replicated
-      replicas: 1
-      placement:
-        constraints:
-          - node.role == manager
-      resources:
-        limits:
-          memory: 128M
-        reservations:
-          memory: 64M
+  # alertmanager:
+  #   image: registry.nexdev.net:5050/docker/nexops-tools/alertmanager # stefanprodan/swarmprom-alertmanager:v0.14.0
+  #   networks:
+  #     - net
+  #   environment:
+  #     - SLACK_URL=${SLACK_URL:-https://hooks.slack.com/services/TOKEN}
+  #     - SLACK_CHANNEL=${SLACK_CHANNEL:-general}
+  #     - SLACK_USER=${SLACK_USER:-alertmanager}
+  #   command:
+  #     - '--config.file=/etc/alertmanager/alertmanager.yml'
+  #     - '--storage.path=/alertmanager'
+  #   volumes:
+  #     - alertmanager:/alertmanager
+  #   deploy:
+  #     mode: replicated
+  #     replicas: 1
+  #     placement:
+  #       constraints:
+  #         - node.role == manager
+  #     resources:
+  #       limits:
+  #         memory: 128M
+  #       reservations:
+  #         memory: 64M
 
   node-exporter:
     image: registry.nexdev.net:5050/docker/nexops-tools/node-exporter #stefanprodan/swarmprom-node-exporter:v0.16.0
@@ -171,7 +176,6 @@ services:
     #  timeout: 1s
     #  retries: 5
 
-
   caddy:
     image: registry.nexdev.net:5050/docker/nexops-tools/caddy
     ports:
@@ -213,13 +217,6 @@ services:
     deploy:
       mode: replicated
       replicas: 1
-
-volumes:
-  mysql:
-    driver_opts:
-       o: bind
-       type: none
-       device: /var/www/monitoring-swarm/mysql
     #  test: ["CMD", "curl", "-f", "http://localhost:9092"]
     #  interval: 5s
     #  timeout: 1s

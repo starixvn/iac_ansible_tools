@@ -9,6 +9,4 @@
     docker-compose -f node-exporter/docker-compose.yml push
     docker-compose -f prometheus/docker-compose.yml build
     docker-compose -f prometheus/docker-compose.yml push
-    docker-compose -f alertmanager/docker-compose.yml build
-    docker-compose -f alertmanager/docker-compose.yml push
   become: yes

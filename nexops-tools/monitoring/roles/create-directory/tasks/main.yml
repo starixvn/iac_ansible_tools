@@ -11,11 +11,11 @@
     src: 'files/{{item}}'
     dest: '{{ working_directory }}'
   become: yes
-  with_items: 
-    - alertmanager
+  with_items:
+    # - alertmanager
     - caddy
     - grafana
     - node-exporter
     - prometheus
-    - dockerd-exporter
+    # - dockerd-exporter
   ignore_errors: yes
