@@ -3,10 +3,10 @@
   roles:
     - role: create-directory
     - role: build-images
-  tags: build-nexops-tools
+  tags: build-monitoring-tools
 
 - hosts: swarm_leader
   roles:
     - role: create-directory
     - role: run-images
-  tags: run-nexops-tools
+  tags: run-monitoring-tools
