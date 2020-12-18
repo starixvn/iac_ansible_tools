@@ -1,7 +1,7 @@
-version: "3.3"
+version: '3.3'
 services:
   node-exporter:
-    image: 127.0.0.1:5000/node-exporter
+    image: registry.nexdev.net:5050/docker/nexops-tools/node-exporter
     build:
       context: ./
       dockerfile: ./Dockerfile
