@@ -171,6 +171,7 @@ services:
     #  timeout: 1s
     #  retries: 5
 
+
   caddy:
     image: registry.nexdev.net:5050/docker/nexops-tools/caddy
     ports:
@@ -197,7 +198,28 @@ services:
           memory: 128M
         reservations:
           memory: 64M
-    #healthcheck:
+
+  mysql:
+    image: registry.nexdev.net:5050/docker/mysql:8.0
+    container_name: grafana_mysql
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      - MYSQL_DATABASE=grafana
+      - MYSQL_ROOT_PASSWORD=Ilu@n3xc3l
+      - MYSQL_USER=grafana
+      - MYSQL_PASSWORD=grafana
+    volumes:
+      - mysql:/var/lib/mysql
+    deploy:
+      mode: replicated
+      replicas: 1
+
+volumes:
+  mysql:
+    driver_opts:
+       o: bind
+       type: none
+       device: /var/www/monitoring-swarm/mysql
     #  test: ["CMD", "curl", "-f", "http://localhost:9092"]
     #  interval: 5s
     #  timeout: 1s
