@@ -208,6 +208,8 @@ services:
   mysql:
     image: registry.nexdev.net:5050/docker/mysql:8.0
     container_name: grafana_mysql
+    networks:
+      - net
     command: --default-authentication-plugin=mysql_native_password
     environment:
       - MYSQL_DATABASE=grafana
