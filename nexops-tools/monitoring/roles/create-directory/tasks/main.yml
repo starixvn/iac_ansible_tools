@@ -6,6 +6,13 @@
     state: directory
   become: yes
 
+- name: Create working directory mysql
+  file:
+    path: '{{ working_directory }}/mysql'
+    mode: '0755'
+    state: directory
+  become: yes
+
 - name: Copy template files
   copy:
     src: 'files/{{item}}'

@@ -1,6 +1,6 @@
 global_defs {
   smtp_server localhost
-  vrrp_version 3
+  vrrp_version 2
   script_user root root enable_script_security
 }
 
@@ -15,7 +15,7 @@ vrrp_script haproxy_container {
 vrrp_instance VI_1 {
     interface {{nic}}
     state {{keepalive_role}}
-    virtual_router_id {{virtual_router_id | default('250')}}
+    virtual_router_id {{virtual_router_id | default('205')}}
     priority {{keepalive_priority}}
     virtual_ipaddress {
         {{vip}}
@@ -34,7 +34,7 @@ vrrp_instance VI_1 {
 vrrp_instance VI_2 {
     interface {{nic}}
     state {{keepalive_role}}
-    virtual_router_id {{virtual_router_id | default('250')}}
+    virtual_router_id {{virtual_router_id1 | default('206')}}
     priority {{keepalive_priority}}
     virtual_ipaddress {
         {{vip2}}

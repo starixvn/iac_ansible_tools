@@ -170,6 +170,8 @@ services:
           memory: 128M
         reservations:
           memory: 64M
+    links:
+      - mysql
     #healthcheck:
     #  test: ["CMD", "curl", "-f", "http://localhost:3000"]
     #  interval: 5s
