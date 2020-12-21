@@ -148,7 +148,7 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin}
       - GF_USERS_ALLOW_SIGN_UP=false
       #- GF_INSTALL_PLUGINS=alexanderzobnin-zabbix-app
-      - GF_AUTH_LDAP_ENABLED=true
+      #- GF_AUTH_LDAP_ENABLED=false
       #- GF_AUTH_LDAP_CONFIG_FILE=/opt/pf-grafana/ldap.toml
       #- GF_SERVER_ROOT_URL=${GF_SERVER_ROOT_URL:-localhost}
       #- GF_SMTP_ENABLED=${GF_SMTP_ENABLED:-false}
