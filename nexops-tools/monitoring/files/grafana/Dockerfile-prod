@@ -1,4 +1,4 @@
-FROM grafana/grafana:6.7.2
+FROM grafana/grafana
 #:5.3.4
 # https://hub.docker.com/r/grafana/grafana/tags/
 
