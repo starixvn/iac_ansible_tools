@@ -16,8 +16,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 8,
-  "iteration": 1608112479944,
+  "id": 5,
+  "iteration": 1608537087590,
   "links": [],
   "panels": [
     {
@@ -86,7 +86,7 @@
         "lineColor": "rgb(31, 120, 193)",
         "show": false
       },
-      "tableColumn": "{node_name=\"docker-200-133\"}",
+      "tableColumn": "",
       "targets": [
         {
           "expr": "topk(1, sum((node_time_seconds - node_boot_time_seconds) * on(instance) group_left(node_name) node_meta{node_id=~\"$node_id\"}) by (node_name))",
@@ -386,212 +386,6 @@
       "valueName": "avg"
     },
     {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "Prometheus",
-      "decimals": 2,
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 7,
-        "w": 12,
-        "x": 0,
-        "y": 4
-      },
-      "hiddenSeries": false,
-      "id": 13,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": true,
-        "hideEmpty": false,
-        "hideZero": false,
-        "max": true,
-        "min": true,
-        "rightSide": true,
-        "show": false,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 1,
-      "links": [],
-      "nullPointMode": "null",
-      "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "7.3.4",
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "expr": "node_load5 * on(instance) group_left(node_name) node_meta{node_id=~\"$node_id\"}",
-          "format": "time_series",
-          "intervalFactor": 2,
-          "legendFormat": "load5 {{node_name}}",
-          "refId": "A",
-          "step": 2
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "System Load by Node",
-      "tooltip": {
-        "shared": true,
-        "sort": 2,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "Prometheus",
-      "decimals": 2,
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 7,
-        "w": 12,
-        "x": 12,
-        "y": 4
-      },
-      "hiddenSeries": false,
-      "id": 14,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": true,
-        "hideEmpty": true,
-        "hideZero": true,
-        "max": true,
-        "min": true,
-        "rightSide": true,
-        "show": false,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 1,
-      "links": [],
-      "nullPointMode": "null as zero",
-      "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "7.3.4",
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "expr": "100 - (avg(irate(node_cpu_seconds_total{mode=\"idle\"}[$interval])  * on(instance) group_left(node_name) node_meta{node_id=~\"$node_id\"} * 100) by (node_name))",
-          "format": "time_series",
-          "intervalFactor": 2,
-          "legendFormat": "{{node_name}}",
-          "refId": "A",
-          "step": 2
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "CPU Usage by Node",
-      "tooltip": {
-        "shared": true,
-        "sort": 2,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "percent",
-          "label": null,
-          "logBase": 1,
-          "max": "100",
-          "min": null,
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
       "cacheTimeout": null,
       "colorBackground": false,
       "colorValue": false,
@@ -620,7 +414,7 @@
         "h": 4,
         "w": 3,
         "x": 0,
-        "y": 11
+        "y": 4
       },
       "hideTimeOverride": true,
       "id": 3,
@@ -711,7 +505,7 @@
         "h": 4,
         "w": 4,
         "x": 3,
-        "y": 11
+        "y": 4
       },
       "id": 8,
       "interval": null,
@@ -800,7 +594,7 @@
         "h": 4,
         "w": 3,
         "x": 7,
-        "y": 11
+        "y": 4
       },
       "hideTimeOverride": true,
       "id": 22,
@@ -891,7 +685,7 @@
         "h": 4,
         "w": 4,
         "x": 10,
-        "y": 11
+        "y": 4
       },
       "id": 23,
       "interval": null,
@@ -979,7 +773,7 @@
         "h": 4,
         "w": 3,
         "x": 14,
-        "y": 11
+        "y": 4
       },
       "id": 24,
       "interval": null,
@@ -1068,7 +862,7 @@
         "h": 4,
         "w": 3,
         "x": 17,
-        "y": 11
+        "y": 4
       },
       "hideTimeOverride": true,
       "id": 9,
@@ -1160,7 +954,7 @@
         "h": 4,
         "w": 4,
         "x": 20,
-        "y": 11
+        "y": 4
       },
       "id": 10,
       "interval": null,
@@ -1227,6 +1021,109 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "Prometheus",
+      "decimals": 2,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 8
+      },
+      "hiddenSeries": false,
+      "id": 14,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": true,
+        "hideEmpty": true,
+        "hideZero": true,
+        "max": true,
+        "min": false,
+        "rightSide": true,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null as zero",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.3.6",
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "100 - (avg(irate(node_cpu_seconds_total{mode=\"idle\"}[$interval])  * on(instance) group_left(node_name) node_meta{node_id=~\"$node_id\"} * 100) by (node_name))",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "{{node_name}}",
+          "refId": "A",
+          "step": 2
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "CPU Usage by Node",
+      "tooltip": {
+        "shared": true,
+        "sort": 2,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "percent",
+          "label": null,
+          "logBase": 1,
+          "max": "100",
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -1248,7 +1145,7 @@
         "avg": true,
         "current": false,
         "max": true,
-        "min": true,
+        "min": false,
         "rightSide": true,
         "show": true,
         "total": false,
@@ -1262,7 +1159,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "7.3.6",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -1282,6 +1179,7 @@
         {
           "expr": "sum(node_memory_Cached * on(instance) group_left(node_name) node_meta{node_id=~\"$node_id\"}) by (node_name)",
           "format": "time_series",
+          "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Cached {{node_name}}",
           "refId": "B",
@@ -1356,7 +1254,7 @@
         "avg": true,
         "current": false,
         "max": true,
-        "min": true,
+        "min": false,
         "rightSide": true,
         "show": true,
         "total": false,
@@ -1370,7 +1268,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "7.3.6",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -1451,13 +1349,116 @@
         "y": 29
       },
       "hiddenSeries": false,
+      "id": 13,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": true,
+        "hideEmpty": false,
+        "hideZero": false,
+        "max": true,
+        "min": false,
+        "rightSide": true,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.3.6",
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "node_load5 * on(instance) group_left(node_name) node_meta{node_id=~\"$node_id\"}",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "load5 {{node_name}}",
+          "refId": "A",
+          "step": 2
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "System Load by Node",
+      "tooltip": {
+        "shared": true,
+        "sort": 2,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "decimals": 2,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 36
+      },
+      "hiddenSeries": false,
       "id": 16,
       "legend": {
         "alignAsTable": true,
         "avg": true,
         "current": false,
         "max": true,
-        "min": true,
+        "min": false,
         "rightSide": true,
         "show": true,
         "total": false,
@@ -1471,7 +1472,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "7.3.6",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -1557,7 +1558,7 @@
         "h": 7,
         "w": 12,
         "x": 0,
-        "y": 36
+        "y": 43
       },
       "hiddenSeries": false,
       "id": 18,
@@ -1580,7 +1581,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "7.3.6",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -1666,7 +1667,7 @@
         "h": 7,
         "w": 12,
         "x": 12,
-        "y": 36
+        "y": 43
       },
       "hiddenSeries": false,
       "id": 19,
@@ -1691,7 +1692,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "7.3.6",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -1769,7 +1770,7 @@
         "h": 7,
         "w": 18,
         "x": 0,
-        "y": 43
+        "y": 50
       },
       "hiddenSeries": false,
       "id": 12,
@@ -1796,7 +1797,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "7.3.6",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -1883,7 +1884,7 @@
         "h": 7,
         "w": 6,
         "x": 18,
-        "y": 43
+        "y": 50
       },
       "id": 7,
       "interval": null,
@@ -1960,7 +1961,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 50
+        "y": 57
       },
       "hiddenSeries": false,
       "id": 17,
@@ -1983,7 +1984,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "7.3.6",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -2066,7 +2067,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 57
+        "y": 64
       },
       "hideTimeOverride": true,
       "id": 20,
@@ -2132,6 +2133,7 @@
         "allValue": ".+",
         "current": {
           "selected": true,
+          "tags": [],
           "text": [
             "All"
           ],
@@ -2156,28 +2158,10 @@
         "tagValuesQuery": "label_values({node_id=\"$tag\"},node_name)",
         "tags": [
           {
-            "selected": false,
-            "text": "DKSwarm-18-137"
+            "text": "sc-uat-2-69"
           },
           {
-            "selected": false,
-            "text": "docker-200-144"
-          },
-          {
-            "selected": false,
-            "text": "DKSwarm-18-138"
-          },
-          {
-            "selected": false,
-            "text": "DKSwarm-18-139"
-          },
-          {
-            "selected": false,
-            "text": "docker-200-133"
-          },
-          {
-            "selected": false,
-            "text": "docker-200-134"
+            "text": "sc-uat-1"
           }
         ],
         "tagsQuery": "label_values(node_meta, node_name)",
@@ -2292,7 +2276,7 @@
     ]
   },
   "timezone": "",
-  "title": "Template - Docker Swarm Nodes",
+  "title": "Swarm Nodes Info",
   "uid": "BPlb36-Sgik",
   "version": 3
 }
