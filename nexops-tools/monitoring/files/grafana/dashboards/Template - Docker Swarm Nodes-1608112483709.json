@@ -16,8 +16,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 5,
-  "iteration": 1608537087590,
+  "id": 8,
+  "iteration": 1608539452393,
   "links": [],
   "panels": [
     {
@@ -1143,7 +1143,7 @@
       "legend": {
         "alignAsTable": true,
         "avg": true,
-        "current": false,
+        "current": true,
         "max": true,
         "min": false,
         "rightSide": true,
@@ -1252,7 +1252,7 @@
       "legend": {
         "alignAsTable": true,
         "avg": true,
-        "current": false,
+        "current": true,
         "max": true,
         "min": false,
         "rightSide": true,
@@ -1456,7 +1456,7 @@
       "legend": {
         "alignAsTable": true,
         "avg": true,
-        "current": false,
+        "current": true,
         "max": true,
         "min": false,
         "rightSide": true,
@@ -2125,7 +2125,7 @@
   "tags": [
     "Nodes",
     "Swarm",
-    "Template"
+    "PROD"
   ],
   "templating": {
     "list": [
@@ -2133,7 +2133,6 @@
         "allValue": ".+",
         "current": {
           "selected": true,
-          "tags": [],
           "text": [
             "All"
           ],
@@ -2158,10 +2157,24 @@
         "tagValuesQuery": "label_values({node_id=\"$tag\"},node_name)",
         "tags": [
           {
-            "text": "sc-uat-2-69"
+            "selected": false,
+            "text": "sbapp03"
           },
           {
-            "text": "sc-uat-1"
+            "selected": false,
+            "text": "sbapp-70"
+          },
+          {
+            "selected": false,
+            "text": "sbapp01"
+          },
+          {
+            "selected": false,
+            "text": "sbapp04"
+          },
+          {
+            "selected": false,
+            "text": "sbapp02"
           }
         ],
         "tagsQuery": "label_values(node_meta, node_name)",
@@ -2276,7 +2289,7 @@
     ]
   },
   "timezone": "",
-  "title": "Swarm Nodes Info",
-  "uid": "BPlb36-Sgik",
-  "version": 3
+  "title": "Luminet Swarm Nodes Info PROD",
+  "uid": "BPlb36-Sgik11",
+  "version": 4
 }

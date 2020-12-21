@@ -16,8 +16,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 4,
-  "iteration": 1608538268689,
+  "id": 9,
+  "iteration": 1608539503546,
   "links": [],
   "panels": [
     {
@@ -678,7 +678,7 @@
       "legend": {
         "alignAsTable": true,
         "avg": true,
-        "current": false,
+        "current": true,
         "hideEmpty": true,
         "hideZero": true,
         "max": true,
@@ -783,7 +783,7 @@
       "legend": {
         "alignAsTable": true,
         "avg": true,
-        "current": false,
+        "current": true,
         "max": true,
         "min": false,
         "rightSide": true,
@@ -894,10 +894,10 @@
       "legend": {
         "alignAsTable": true,
         "avg": true,
-        "current": false,
+        "current": true,
         "hideEmpty": true,
         "hideZero": true,
-        "max": false,
+        "max": true,
         "min": false,
         "rightSide": true,
         "show": true,
@@ -998,10 +998,10 @@
       "legend": {
         "alignAsTable": true,
         "avg": true,
-        "current": false,
+        "current": true,
         "hideEmpty": false,
         "hideZero": false,
-        "max": false,
+        "max": true,
         "min": false,
         "rightSide": true,
         "show": true,
@@ -1093,8 +1093,8 @@
       "fill": 5,
       "fillGradient": 0,
       "gridPos": {
-        "h": 7,
-        "w": 12,
+        "h": 6,
+        "w": 24,
         "x": 0,
         "y": 39
       },
@@ -1188,119 +1188,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "Prometheus",
-      "decimals": 0,
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 7,
-        "w": 12,
-        "x": 12,
-        "y": 39
-      },
-      "hiddenSeries": false,
-      "id": 32,
-      "legend": {
-        "alignAsTable": true,
-        "avg": false,
-        "current": true,
-        "hideEmpty": true,
-        "hideZero": true,
-        "max": false,
-        "min": false,
-        "rightSide": true,
-        "show": false,
-        "sort": "current",
-        "sortDesc": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 1,
-      "links": [],
-      "nullPointMode": "null",
-      "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "7.3.6",
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "expr": "sum(increase(engine_daemon_health_checks_total[$interval]) * on(instance) group_left(node_id) swarm_node_info{node_id=~\"$node_id\"})  ",
-          "format": "time_series",
-          "intervalFactor": 10,
-          "legendFormat": "checks",
-          "refId": "A",
-          "step": 10
-        },
-        {
-          "expr": "sum(increase(engine_daemon_health_checks_failed_total[$interval]) * on(instance) group_left(node_id) swarm_node_info{node_id=~\"$node_id\"})  ",
-          "format": "time_series",
-          "intervalFactor": 10,
-          "legendFormat": "failed",
-          "refId": "B",
-          "step": 10
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Health Checks",
-      "tooltip": {
-        "shared": true,
-        "sort": 2,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "Prometheus",
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -1313,14 +1200,14 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 46
+        "y": 45
       },
       "hiddenSeries": false,
       "id": 17,
       "legend": {
         "alignAsTable": true,
         "avg": true,
-        "current": false,
+        "current": true,
         "max": true,
         "min": false,
         "rightSide": true,
@@ -1415,14 +1302,14 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 53
+        "y": 52
       },
       "hiddenSeries": false,
       "id": 25,
       "legend": {
         "alignAsTable": true,
         "avg": true,
-        "current": false,
+        "current": true,
         "max": true,
         "min": false,
         "rightSide": true,
@@ -1518,7 +1405,7 @@
         "h": 7,
         "w": 12,
         "x": 0,
-        "y": 60
+        "y": 59
       },
       "hiddenSeries": false,
       "id": 31,
@@ -1624,7 +1511,7 @@
         "h": 7,
         "w": 12,
         "x": 12,
-        "y": 60
+        "y": 59
       },
       "hiddenSeries": false,
       "id": 26,
@@ -1733,7 +1620,7 @@
         "h": 7,
         "w": 12,
         "x": 0,
-        "y": 67
+        "y": 66
       },
       "hiddenSeries": false,
       "id": 29,
@@ -1839,7 +1726,7 @@
         "h": 7,
         "w": 12,
         "x": 12,
-        "y": 67
+        "y": 66
       },
       "hiddenSeries": false,
       "id": 30,
@@ -1944,7 +1831,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 74
+        "y": 73
       },
       "hideTimeOverride": true,
       "id": 28,
@@ -2004,7 +1891,7 @@
   "tags": [
     "Service",
     "Swarm",
-    "Nexce;"
+    "PROD"
   ],
   "templating": {
     "list": [
@@ -2037,11 +1924,23 @@
         "tags": [
           {
             "selected": false,
-            "text": "sc-uat-2-69"
+            "text": "sbapp03"
           },
           {
             "selected": false,
-            "text": "sc-uat-1"
+            "text": "sbapp-70"
+          },
+          {
+            "selected": false,
+            "text": "sbapp01"
+          },
+          {
+            "selected": false,
+            "text": "sbapp04"
+          },
+          {
+            "selected": false,
+            "text": "sbapp02"
           }
         ],
         "tagsQuery": "label_values(node_meta, node_name)",
@@ -2155,7 +2054,7 @@
     ]
   },
   "timezone": "",
-  "title": "Swarm Services",
-  "uid": "z2_1aS4Rmk",
-  "version": 8
+  "title": "Luminet Swarm Services PROD",
+  "uid": "z2_1aS4Rmk11",
+  "version": 4
 }
