@@ -1,8 +1,37 @@
-- import_tasks: build.yml
-  tags:
-    - build-monitoring-tools
+---
+- name: Create working directory {{ working_directory }}
+  file:
+    path: '{{ working_directory }}'
+    mode: '0755'
+    state: directory
+  become: yes
 
-- import_tasks: deploy.yml
-  tags:
+- name: Create working directory mysql
+  file:
+    path: '{{ working_directory }}/mysql'
+    mode: '0755'
+    state: directory
+  become: yes
+
+- name: Copy template files for build
+  when: deploy is undefined or deploy == false
+  copy:
+    src: 'files/{{item}}'
+    dest: '{{ working_directory }}'
+  become: yes
+  with_items:
+    - grafana
+    - node-exporter
+    - prometheus
+  ignore_errors: yes
+
+- name: Copy template files for runtime
+  when: deploy == true
+  copy:
+    src: 'files/{{item}}'
+    dest: '{{ working_directory }}'
+  become: yes
+  with_items:
+    - caddy
+  ignore_errors: yes
     - deploy-prometheus
-    - deploy-monitoring-tools
