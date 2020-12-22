@@ -13,16 +13,26 @@
     state: directory
   become: yes
 
-- name: Copy template files
+- name: Copy template files for build
   copy:
     src: 'files/{{item}}'
     dest: '{{ working_directory }}'
   become: yes
   with_items:
-    # - alertmanager
-    - caddy
     - grafana
     - node-exporter
     - prometheus
-    # - dockerd-exporter
   ignore_errors: yes
+  tags: build-monitoring-tools
+
+- name: Copy template files for runtime
+  copy:
+    src: 'files/{{item}}'
+    dest: '{{ working_directory }}'
+  become: yes
+  with_items:
+    - caddy
+  ignore_errors: yes
+  tags:
+    - deploy-monitoring-tools
+    - deploy-prometheus

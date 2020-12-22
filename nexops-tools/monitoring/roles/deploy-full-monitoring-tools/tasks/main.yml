@@ -1,0 +1,24 @@
+---
+- name: Copy docker-compose template
+  copy:
+    src: 'deploy-compose/{{item}}.docker-compose.yml'
+    dest: '{{ working_directory }}/{{item}}.docker-compose.yml'
+  become: yes
+  with_items:
+    - grafana
+    - prom
+
+- name: Pull latest images
+  shell: |
+    export ENV={{ENV}}
+    cd {{ working_directory }}
+    docker-compose pull
+  become: yes
+
+- name: Deploy NexOps monitoring tools
+  shell: |
+    cd {{ working_directory }}
+    export ENV={{ENV}}
+    docker-compose -f grafana.docker-compose.yml -f prom.docker-compose.yml bundle -o monitoring.dab
+    docker stack deploy --bundle-file monitoring.dab mon
+  become: yes

@@ -2,11 +2,17 @@
 - hosts: swarm_leader
   roles:
     - role: create-directory
-    - role: build-images
+    - role: build-full-monitoring-tools
   tags: build-monitoring-tools
 
 - hosts: swarm_leader
   roles:
     - role: create-directory
-    - role: run-images
-  tags: run-monitoring-tools
+    - role: deploy-full-monitoring-tools
+  tags: deploy-monitoring-tools
+
+- hosts: swarm_leader
+  roles:
+    - role: create-directory
+    - role: deploy-prometheus
+  tags: deploy-prometheus

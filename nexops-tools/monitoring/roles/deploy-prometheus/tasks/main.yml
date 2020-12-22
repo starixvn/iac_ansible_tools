@@ -1,8 +1,8 @@
 ---
 - name: Copy docker-compose template
   copy:
-    src: 'templates/docker-compose.yml'
-    dest: "{{ working_directory }}/docker-compose.yml"
+    src: 'deploy-compose/prom.docker-compose.yml'
+    dest: '{{ working_directory }}/docker-compose.yml'
   become: yes
 
 - name: Pull latest images

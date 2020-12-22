@@ -1,0 +1,160 @@
+#stefanprodan/swarmprom-prometheus:v2.5.0
+version: '3.3'
+
+networks:
+  net:
+    driver: overlay
+    attachable: true
+
+volumes:
+  prometheus: {}
+  alertmanager: {}
+
+configs:
+  caddy_config:
+    file: ./caddy/Caddyfile
+  node_rules:
+    file: ./prometheus/rules/swarm_node.rules.yml
+  task_rules:
+    file: ./prometheus/rules/swarm_task.rules.yml
+
+services:
+  cadvisor:
+    image: registry.nexdev.net:5050/docker/nexops-tools/cadvisor
+    networks:
+      - net
+    command: -logtostderr -docker_only
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /:/rootfs:ro
+      - /var/run:/var/run
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    deploy:
+      mode: global
+      resources:
+        limits:
+          memory: 128M
+        reservations:
+          memory: 64M
+
+  node-exporter:
+    image: registry.nexdev.net:5050/docker/nexops-tools/node-exporter #stefanprodan/swarmprom-node-exporter:v0.16.0
+    networks:
+      - net
+    environment:
+      - NODE_ID={{.Node.ID}}
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+      - /etc/hostname:/etc/nodename
+    command:
+      - '--path.sysfs=/host/sys'
+      - '--path.procfs=/host/proc'
+      - '--collector.textfile.directory=/etc/node-exporter/'
+      - '--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|host|etc)($$|/)'
+      - '--no-collector.ipvs'
+    deploy:
+      mode: global
+      resources:
+        limits:
+          memory: 128M
+        reservations:
+          memory: 64M
+
+  prometheus:
+    image: registry.nexdev.net:5050/docker/nexops-tools/prometheus
+    networks:
+      - net
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention=24h'
+    volumes:
+      - prometheus:/prometheus
+    configs:
+      - source: node_rules
+        target: /etc/prometheus/swarm_node.rules.yml
+      - source: task_rules
+        target: /etc/prometheus/swarm_task.rules.yml
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+      resources:
+        limits:
+          memory: 2048M
+        reservations:
+          memory: 128M
+
+  caddy:
+    image: registry.nexdev.net:5050/docker/nexops-tools/caddy
+    ports:
+      - '3000:3000'
+      - '9092:9090'
+      - '9093:9093'
+      - '9094:9094'
+    networks:
+      - net
+    environment:
+      - ADMIN_USER=admin
+      - ADMIN_PASSWORD=admin
+    configs:
+      - source: caddy_config
+        target: /etc/caddy/Caddyfile
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+      resources:
+        limits:
+          memory: 128M
+        reservations:
+          memory: 64M
+
+  # dockerd-exporter:
+  #   image: registry.nexdev.net:5050/docker/nexops-tools/dockerd-exporter #stefanprodan/caddy #stefanprodan/dockerd-exporter
+  #   networks:
+  #     - net
+  #   environment:
+  #     - DOCKER_GWBRIDGE_IP=172.18.0.1
+  #   configs:
+  #     - source: dockerd_config
+  #       target: /etc/caddy/Caddyfile
+  #   deploy:
+  #     mode: global
+  #     resources:
+  #       limits:
+  #         memory: 128M
+  #       reservations:
+  #         memory: 64M
+
+  # alertmanager:
+  #   image: registry.nexdev.net:5050/docker/nexops-tools/alertmanager # stefanprodan/swarmprom-alertmanager:v0.14.0
+  #   networks:
+  #     - net
+  #   environment:
+  #     - SLACK_URL=${SLACK_URL:-https://hooks.slack.com/services/TOKEN}
+  #     - SLACK_CHANNEL=${SLACK_CHANNEL:-general}
+  #     - SLACK_USER=${SLACK_USER:-alertmanager}
+  #   command:
+  #     - '--config.file=/etc/alertmanager/alertmanager.yml'
+  #     - '--storage.path=/alertmanager'
+  #   volumes:
+  #     - alertmanager:/alertmanager
+  #   deploy:
+  #     mode: replicated
+  #     replicas: 1
+  #     placement:
+  #       constraints:
+  #         - node.role == manager
+  #     resources:
+  #       limits:
+  #         memory: 128M
+  #       reservations:
+  #         memory: 64M
