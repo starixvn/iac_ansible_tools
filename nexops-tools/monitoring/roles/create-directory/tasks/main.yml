@@ -1,38 +1,8 @@
----
-- name: Create working directory {{ working_directory }}
-  file:
-    path: '{{ working_directory }}'
-    mode: '0755'
-    state: directory
-  become: yes
-
-- name: Create working directory mysql
-  file:
-    path: '{{ working_directory }}/mysql'
-    mode: '0755'
-    state: directory
-  become: yes
-
-- name: Copy template files for build
-  copy:
-    src: 'files/{{item}}'
-    dest: '{{ working_directory }}'
-  become: yes
-  with_items:
-    - grafana
-    - node-exporter
-    - prometheus
-  ignore_errors: yes
-  tags: build-monitoring-tools
-
-- name: Copy template files for runtime
-  copy:
-    src: 'files/{{item}}'
-    dest: '{{ working_directory }}'
-  become: yes
-  with_items:
-    - caddy
-  ignore_errors: yes
+- import_tasks: build.yml
   tags:
-    - deploy-monitoring-tools
+    - build-monitoring-tools
+
+- import_tasks: deploy.yml
+  tags:
     - deploy-prometheus
+    - deploy-monitoring-tools

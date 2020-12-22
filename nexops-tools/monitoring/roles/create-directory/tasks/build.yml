@@ -1,0 +1,18 @@
+---
+- name: Create working directory {{ working_directory }}
+  file:
+    path: '{{ working_directory }}'
+    mode: '0755'
+    state: directory
+  become: yes
+
+- name: Copy template files for build
+  copy:
+    src: 'files/{{item}}'
+    dest: '{{ working_directory }}'
+  become: yes
+  with_items:
+    - grafana
+    - node-exporter
+    - prometheus
+  ignore_errors: yes
