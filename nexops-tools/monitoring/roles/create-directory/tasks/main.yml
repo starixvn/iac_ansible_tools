@@ -6,12 +6,15 @@
     state: directory
   become: yes
 
-- name: Create working directory mysql
+- name: Create working directory for data
   file:
-    path: '{{ working_directory }}/mysql'
+    path: '{{ working_directory }}/{{item}}'
     mode: '0755'
     state: directory
   become: yes
+  with_items:
+    - mysql
+    - prometheus
 
 - name: Copy template files for build
   when: deploy is undefined or deploy == false
@@ -25,6 +28,16 @@
     - prometheus
   ignore_errors: yes
 
+- name: Copy configs files for runtime
+  when: deploy == true
+  template:
+    src: 'templates/{{item}}/configs/{{item}}.yml.j2'
+    dest: '{{ working_directory }}/{{item}}/{{item}}.yml'
+  become: yes
+  with_items:
+    - prometheus
+  ignore_errors: yes
+
 - name: Copy template files for runtime
   when: deploy == true
   copy:
@@ -34,4 +47,3 @@
   with_items:
     - caddy
   ignore_errors: yes
-    - deploy-prometheus

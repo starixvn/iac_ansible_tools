@@ -46,11 +46,3 @@ scrape_configs:
           - 'tasks.node-exporter'
         type: 'A'
         port: 9100
-
-  - job_name: 'haproxy-lumi-prod'
-    static_configs:
-      - targets: ['10.2.189.50:8888']
-
-  - job_name: 'haproxy-lumi-uat'
-    static_configs:
-      - targets: ['10.2.189.51:7777']
