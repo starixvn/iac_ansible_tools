@@ -1,0 +1,44 @@
+version: '3'
+
+services:
+  elasticsearch:
+    image: registry.nexdev.net:5050/docker/nexops-tools/elastic:7.9.3 #elasticsearch:7.9.3
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms2g -Xmx2g
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.elastic == yes
+  kibana:
+    image: registry.nexdev.net:5050/docker/nexops-tools/kibana:7.9.3 #kibana:7.9.3
+    depends_on:
+      - elasticsearch
+    ports:
+      - "5601:5601"
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.elastic == yes
+  logstash:
+    image: registry.nexdev.net:5050/docker/nexops-tools/logstash:7.9.3 #logstash:7.9.3
+    ports:
+      - "12201:12201/udp"
+    depends_on:
+      - elasticsearch
+    deploy:
+      mode: global
+    #volumes:
+    #  - logstash-pipeline:/usr/share/logstash/pipeline/
+volumes:
+  esdata:
+    driver: local

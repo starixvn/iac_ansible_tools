@@ -1,0 +1,7 @@
+version: "3.3"
+services:
+  grafana:
+    image: registry.nexdev.net:5050/docker/nexops-tools/logstash:7.9.3
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
