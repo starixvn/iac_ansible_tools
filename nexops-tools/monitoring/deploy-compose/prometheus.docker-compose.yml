@@ -77,7 +77,7 @@ services:
       - '--storage.tsdb.path=/prometheus'
       - '--storage.tsdb.retention=24h'
     volumes:
-      - prometheus_config:/etc/prometheus
+      - /var/www/monitoring-swarm/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus_data:/prometheus
     # configs:
     #   - source: node_rules
