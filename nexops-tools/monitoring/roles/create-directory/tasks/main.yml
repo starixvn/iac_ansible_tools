@@ -6,7 +6,7 @@
     state: directory
   become: yes
 
-- name: Create working directory for data
+- name: Create configs directory for data
   file:
     path: '{{ working_directory }}/{{item}}'
     mode: '0755'

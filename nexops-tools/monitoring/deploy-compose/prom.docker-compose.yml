@@ -7,12 +7,12 @@ networks:
     attachable: true
 
 volumes:
-  prometheus-data: {}
-  prometheus-config:
+  prometheus_data: {}
+  prometheus_config:
     driver_opts:
       o: bind
       type: none
-      device: /var/www/monitoring-swarm/prometheus
+      device: /var/www/monitoring-swarm/prometheus/configs
   alertmanager: {}
 
 configs:
@@ -77,8 +77,8 @@ services:
       - '--storage.tsdb.path=/prometheus'
       - '--storage.tsdb.retention=24h'
     volumes:
-      - prometheus-config:/etc/prometheus
-      - prometheus-data:/prometheus
+      - prometheus_config:/etc/prometheus
+      - prometheus_data:/prometheus
     configs:
       - source: node_rules
         target: /etc/prometheus/swarm_node.rules.yml
