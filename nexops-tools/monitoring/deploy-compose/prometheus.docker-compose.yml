@@ -12,16 +12,16 @@ volumes:
     driver_opts:
       o: bind
       type: none
-      device: /var/www/monitoring-swarm/prometheus/configs
+      device: /var/www/monitoring-swarm/prometheus
   alertmanager: {}
 
 configs:
   caddy_config:
     file: ./caddy/Caddyfile
-  node_rules:
-    file: ./prometheus/rules/swarm_node.rules.yml
-  task_rules:
-    file: ./prometheus/rules/swarm_task.rules.yml
+  # node_rules:
+  #   file: ./prometheus/rules/swarm_node.rules.yml
+  # task_rules:
+  #   file: ./prometheus/rules/swarm_task.rules.yml
 
 services:
   cadvisor:
@@ -79,11 +79,11 @@ services:
     volumes:
       - prometheus_config:/etc/prometheus
       - prometheus_data:/prometheus
-    configs:
-      - source: node_rules
-        target: /etc/prometheus/swarm_node.rules.yml
-      - source: task_rules
-        target: /etc/prometheus/swarm_task.rules.yml
+    # configs:
+    #   - source: node_rules
+    #     target: /etc/prometheus/swarm_node.rules.yml
+    #   - source: task_rules
+    #     target: /etc/prometheus/swarm_task.rules.yml
     deploy:
       mode: replicated
       replicas: 1

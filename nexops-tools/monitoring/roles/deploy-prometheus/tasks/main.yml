@@ -1,7 +1,7 @@
 ---
 - name: Copy docker-compose template
   copy:
-    src: 'deploy-compose/prom.docker-compose.yml'
+    src: 'deploy-compose/prometheus.docker-compose.yml'
     dest: '{{ working_directory }}/docker-compose.yml'
   become: yes
 
@@ -13,6 +13,7 @@
   become: yes
 
 - name: Deploy NexOps monitoring tools
+  when: inventory_hostname == groups['swarm_leader'][0]
   shell: |
     cd {{ working_directory }}
     export ENV={{ENV}}
