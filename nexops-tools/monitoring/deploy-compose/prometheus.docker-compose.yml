@@ -8,16 +8,13 @@ networks:
 
 volumes:
   prometheus_data: {}
-  prometheus_config:
-    driver_opts:
-      o: bind
-      type: none
-      device: /var/www/monitoring-swarm/prometheus
   alertmanager: {}
 
 configs:
   caddy_config:
     file: ./caddy/Caddyfile
+  prometheus_config:
+    file: ./prometheus/prometheus.yml
   # node_rules:
   #   file: ./prometheus/rules/swarm_node.rules.yml
   # task_rules:
@@ -77,8 +74,10 @@ services:
       - '--storage.tsdb.path=/prometheus'
       - '--storage.tsdb.retention=24h'
     volumes:
-      - /var/www/monitoring-swarm/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus_data:/prometheus
+    configs:
+      - source: prometheus_config
+        target: /etc/prometheus/prometheus.yml
     # configs:
     #   - source: node_rules
     #     target: /etc/prometheus/swarm_node.rules.yml
