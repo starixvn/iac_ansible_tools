@@ -1,6 +1,6 @@
 ---
 - name: Windows - update file auto-league-settings.ini
-  win_copy:
+  win_template:
     src: "templates/auto-league-settings.ini.j2"
     dest: "{{ windows_working_path }}/auto-league-settings.ini"
     become: yes
