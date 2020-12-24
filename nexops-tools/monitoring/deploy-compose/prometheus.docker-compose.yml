@@ -70,14 +70,14 @@ services:
     networks:
       - net
     command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--config.file=/etc/prometheus/prometheus_custom.yml'
       - '--storage.tsdb.path=/prometheus'
       - '--storage.tsdb.retention=24h'
     volumes:
       - prometheus_data:/prometheus
     configs:
       - source: prometheus_config
-        target: /etc/prometheus/prometheus.yml
+        target: /etc/prometheus/prometheus_custom.yml
     # configs:
     #   - source: node_rules
     #     target: /etc/prometheus/swarm_node.rules.yml
