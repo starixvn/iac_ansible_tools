@@ -6,7 +6,7 @@
   become: yes
   with_items:
     - grafana
-    - prom
+    - prometheus
 
 - name: Pull latest images
   shell: |
