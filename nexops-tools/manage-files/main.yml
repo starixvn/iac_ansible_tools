@@ -1,0 +1,8 @@
+---
+- hosts: all
+  tasks:
+    - import_tasks: linux-settings-ini.yml
+      when: ansible_distribution == 'Ubuntu'
+
+    - import_tasks: windows-settings-ini.yml
+      when: ansible_os_family == 'Windows'

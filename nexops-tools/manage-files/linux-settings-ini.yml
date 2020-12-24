@@ -1,0 +1,9 @@
+---
+- name: update file auto-league-settings.ini
+  become: yes
+  blockinfile:
+    dest: /etc/filebeat/auto-league-settings.ini
+    #insertafter: "filebeat.prospectors:"
+    block: |
+      ExcludeLeagueIds:{{ExcludeLeagueIds}}
+      IncludeLeagueIds:{{IncludeLeagueIds}}
