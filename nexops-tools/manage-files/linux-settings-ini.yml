@@ -1,5 +1,5 @@
 ---
-- name: update file auto-league-settings.ini
+- name: Linux - update file auto-league-settings.ini
   template:
     src: "templates/auto-league-settings.ini.j2"
     dest: "{{ linux_working_path }}/auto-league-settings.ini"
