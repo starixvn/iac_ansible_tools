@@ -5,22 +5,3 @@
     - name: Create a Gluster Volume
       import_role:
         name: "gluster-volume"
-      when: gluster_cluster_bricks is defined
-      tags:
-        - cluster_volume
-
-    # Add bricks to an existing Gluster Volume
-    - name: Add bricks to a Gluster Volume
-      import_role:
-        name: "gluster-brick"
-      when: gluster_cluster_new_bricks is defined
-      tags:
-        - cluster_add_brick
-
-    # Remove bricks from an existing Gluster Volume
-    - name: Remove bricks from a Gluster Volume
-      import_role:
-        name: "gluster-brick"
-      when: gluster_cluster_remove_bricks is defined
-      tags:
-        - cluster_remove_brick
