@@ -1,3 +1,9 @@
-- name: set full permission folder
-  shell: chmod -R 777 {{folder_path}}
+- name: Create {{ folder_path }} directory
+  file:
+    path: "{{ folder_path }}"
+    state: directory
+    mode: "0755"
   become: yes
+# - name: set full permission folder
+#   shell: chmod -R 755 {{folder_path}}
+#   become: yes

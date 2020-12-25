@@ -1,14 +1,25 @@
 ---
-- hosts: all
-  roles:
-  - role: add-ssh-pubkey
-    tags: add-ssh-pubkey
-
+##Admin user
 - hosts: all
   roles:
     - create-user
     - add-ssh-pubkey
   tags: create-user
+
+##Deployer user
+- hosts: all
+  roles:
+    - install-docker
+    - change-hostname
+    - gnu-setup
+    - docker-registry-login
+    - set-permission-folder
+  tags: setup-new-server
+
+- hosts: all
+  roles:
+    - role: add-ssh-pubkey
+      tags: add-ssh-pubkey
 
 - hosts: all
   roles:
@@ -30,4 +41,3 @@
   roles:
     - set-permission-folder
   tags: set-permission-folder
-
