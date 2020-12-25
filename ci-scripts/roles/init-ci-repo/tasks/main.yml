@@ -1,6 +1,6 @@
 - name: Create CI repo {{repo_group_path}}/{{repo_name}}
   uri:
-    url: https://ansible:yqeW-bpj43G6isyKA3tG@{{gitlab_url | default("git3.nexdev.net")}}/api/v4/projects/
+    url: https://{{gitlab_url | default("git3.nexdev.net")}}/api/v4/projects/
     headers:
       PRIVATE-TOKEN: 'yqeW-bpj43G6isyKA3tG'
       Content-Type: 'application/json'
