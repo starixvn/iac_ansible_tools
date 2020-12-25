@@ -1,0 +1,5 @@
+build_image_{{item.name}}:
+  extends:
+    - .deploy_vars_{{item.name}}
+    - .build:{{item.framework}}:image:noenv
+    - .build:image:{{item.name}}:rules

@@ -1,0 +1,47 @@
+.if-deploy-{{item.name}}-local: &if-deploy-{{item.name}}-local
+  if: '$CI_COMMIT_TAG =~ /^deploy-{{item.name}}-local-*/'
+
+.if-deploy-{{item.name}}-sit: &if-deploy-{{item.name}}-sit
+  if: '$CI_COMMIT_TAG =~ /^deploy-{{item.name}}-sit-*/'
+
+.if-deploy-{{item.name}}-uat: &if-deploy-{{item.name}}-uat
+  if: '$CI_COMMIT_TAG =~ /^deploy-{{item.name}}-uat-*/'
+
+.if-deploy-{{item.name}}-prod: &if-deploy-{{item.name}}-prod
+  if: '$CI_COMMIT_TAG =~ /^deploy-{{item.name}}-prod-*/'
+
+.build:image:{{item.name}}:rules:
+  rules:
+    - <<: *if-deploy-{{item.name}}-local
+      when: always
+    - <<: *if-deploy-{{item.name}}-sit
+      when: always
+    - <<: *if-deploy-{{item.name}}-uat
+      when: always
+    - <<: *if-deploy-{{item.name}}-prod
+      when: always
+
+.deploy:local:{{item.name}}:rules:
+  rules:
+    - <<: *if-deploy-{{item.name}}-local
+      when: on_success
+    - when: never
+
+.deploy:sit:{{item.name}}:rules:
+  rules:
+    - <<: *if-deploy-{{item.name}}-sit
+      when: on_success
+    - when: never
+
+.deploy:uat:{{item.name}}:rules:
+  rules:
+    - <<: *if-deploy-{{item.name}}-uat
+      when: on_success
+    - when: never
+
+.deploy:prod:{{item.name}}:rules:
+  rules:
+    - <<: *if-deploy-{{item.name}}-prod
+      when: on_success
+    - when: never
+

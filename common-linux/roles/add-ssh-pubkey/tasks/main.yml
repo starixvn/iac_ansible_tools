@@ -1,7 +1,7 @@
 ---
-- name: Create .ssh folder 
+- name: Create .ssh folder
   file:
-    path: "/home/{{provision_user}}/.ssh"
+    path: '/home/{{provision_user}}/.ssh'
     state: directory
   become: yes
 
@@ -21,4 +21,11 @@
   template:
     src: 'files/config'
     dest: /home/{{provision_user}}/.ssh/config
+  become: yes
+
+- name: Set ssh add
+  shell: |
+    eval `ssh-agent -s`
+    chmod 400 /home/{{provision_user}}/.ssh/private_key
+    ssh-add /home/{{provision_user}}/.ssh/private_key
   become: yes

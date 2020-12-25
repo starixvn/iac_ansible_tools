@@ -1,3 +1,8 @@
 - hosts: swarm_leader
   roles:
     - role: init-ci-repo
+
+- hosts: swarm_leader
+  roles:
+    - role: create-ci-scripts
+  tags: create-ci-scripts

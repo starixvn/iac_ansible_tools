@@ -4,6 +4,22 @@
     headers:
       PRIVATE-TOKEN: 'yqeW-bpj43G6isyKA3tG'
       Content-Type: 'application/json'
-    body: '{"path": {{repo_name}}-ci", "path_with_namespace": "{{repo_group_path}}/{{repo_name}}-ci", "repository_access_level": "enabled", "visibility": "public"}'
+    body: '{"namespace_id": "118", "path": "{{repo_name}}",  "repository_access_level": "enabled", "visibility": "public"}'
     body_format: json
     method: POST
+    status_code: 201
+  register: result
+  until:
+  ignore_errors: yes
+
+- name: Init commit
+  uri:
+    url: https://{{gitlab_url | default("git3.nexdev.net")}}/api/v4/projects/{{result.json.id}}/repository/commits
+    headers:
+      PRIVATE-TOKEN: 'yqeW-bpj43G6isyKA3tG'
+      Content-Type: 'application/json'
+    body: '{"branch": "master", "commit_message": "initial commit", "actions": [{"action": "create", "file_path": "file", "content": "init"}]}'
+    body_format: json
+    method: POST
+    status_code: 201
+  ignore_errors: yes

@@ -1,0 +1,36 @@
+stages:
+{% if sonarqube_enabled is defined and sonarqube_enabled == true %}
+  - test
+{%endif%}
+  - build
+  - post-build
+  - deploy
+
+include:
+{% if sonarqube_enabled is defined and sonarqube_enabled == true %}
+  - project: 'ci/common-ci'
+    ref: rocketor
+    file: 'sonarqube/sonarqube.gitlab-ci.yml'
+{%endif%}
+{% if rocketor_enabled is defined and rocketor_enabled == true %}
+  - project: 'ci/common-ci'
+    ref: rocketor
+    file: 'rocketor-integration/rules/index.gitlab-ci.yml'
+{%endif%}
+{% if frameworks is defined and "dotnet" in frameworks %}
+  - project: 'ci/common-ci'
+    ref: rocketor
+    file: 'docker/build-docker-image-dotnet.gitlab-ci.yml'
+{%endif%}
+  - project: 'ci/common-ci'
+    ref: rocketor
+    file: 'docker/post-build-docker-image.gitlab-ci.yml'
+  - project: 'ci/nexcel/common-ci'
+    ref: master
+    file: 'deploy-docker-swarm/index.gitlab-ci.yml'
+{% for service in services %}
+  - .gitlab-ci/{{service.name}}/build.gitlab-ci.yml
+  - .gitlab-ci/{{service.name}}/deploy-vars.gitlab-ci.yml
+  - .gitlab-ci/{{service.name}}/rules.gitlab-ci.yml
+  - .gitlab-ci/{{service.name}}/deploy-local.gitlab-ci.yml
+{% endfor %}
