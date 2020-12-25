@@ -1,19 +1,44 @@
 ---
-- name: Configure glusterfs
-  include: configure-glusterfs-server.yml
+- name: Start glusterd on the nodes if not already started
+  service:
+    state: started
+    name: glusterd
+    enabled: yes
+  delegate_to: "{{ item }}"
+  become: yes
+  run_once: true
+  with_items: "{{ gluster_cluster_hosts }}"
 
-- name: Create volume(s)
-  include: create-volumes.yml
-  when: glusterfs_volumes
+- name: Create a volume {{ gluster_cluster_volume }}
+  gluster_volume:
+    state: "{{ gluster_cluster_state | default('present') }}"
+    volume: "{{ gluster_cluster_volume }}"
+    bricks: "{{ gluster_cluster_bricks }}"
+    cluster: "{{ gluster_cluster_hosts }}"
+    transport: "{{ gluster_cluster_transport | default('tcp') }}"
+    replicas: "{{ gluster_cluster_replica_count | default(0) }}"
+    arbiters: "{{ gluster_cluster_arbiter_count | default(0) }}"
+    disperses: "{{ gluster_cluster_disperse_count | default(0) }}"
+    redundancies: "{{ gluster_cluster_redundancy_count | default(0) }}"
+    force: "{{ gluster_cluster_force | default('no') }}"
+    options: "{{ gluster_cluster_options | default({}) }}"
+  run_once: true
+  become: yes
 
-- name: Mount volume(s)
-  include: mount-volumes.yml
-  when: glusterfs_volumes
+- name: Ensure Gluster volume {{ gluster_cluster_volume }} is mounted.
+  mount:
+    src: "localhost:/{{ gluster_cluster_volume }}"
+    path: "{{ gluster_cluster_bricks }}"
+    fstype: glusterfs
+    opts: "defaults,_netdev"
+    state: mounted
 
-- name: Unmount volume(s)
-  include: unmount-volumes.yml
-  when: glusterfs_volumes
-
-- name: Remove volume(s)
-  include: remove-volumes.yml
-  when: glusterfs_volumes
+    #name: "{{ gluster_cluster_bricks }}"
+    #src: "localhost:/{{ gluster_cluster_volume }}"
+    #fstype: glusterfs
+    #opts: "defaults,_netdev,backupvolfile-server=localhost"
+    #state: mounted
+  become: yes
+  #become: true
+  #become_user: root
+  #become_method: sudo
