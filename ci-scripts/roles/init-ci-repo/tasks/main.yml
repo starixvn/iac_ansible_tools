@@ -1,4 +1,4 @@
 - name: Create CI repo {{repo_group_path}}/{{repo_name}}
   uri:
-    url: https://ansible:password@{{gitlab_url | default("git3.nexdev.net")}}/{{repo_group_path}}/{{repo_name}}-ci.git
+    url: https://ansible:yqeW-bpj43G6isyKA3tG@{{gitlab_url | default("git3.nexdev.net")}}/{{repo_group_path}}/{{repo_name}}-ci.git
     method: POST
