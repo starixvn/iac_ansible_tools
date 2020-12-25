@@ -11,6 +11,7 @@
   when: >
     (item.state is defined and item.state == 'absent') and
     item.volume in glusterfs_volume_list.stdout
+  become: true
 - name: Delete removed volume(s) bricks directories (1/2)
   file:
     name: "{{ glusterfs_default_bricks_dir }}/{{ item[0].volume }}"
@@ -24,6 +25,7 @@
     (item[0].state is defined and item[0].state == 'absent') and
     (item[0].nodes is undefined or item[1] in item[0].nodes) and
     item[0].bricks is undefined
+  become: true
 - name: Delete removed volume(s) bricks directories (2/2)
   file:
     name: "{{ item.1 }}"
@@ -35,3 +37,4 @@
   when: >
     glusterfs_delete_bricks_dir_after_removal and
     (item.0.state is defined and item.0.state == 'absent')
+  become: true

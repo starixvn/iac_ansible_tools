@@ -12,6 +12,7 @@
   when: >
     item.mount is defined and
     (item.state is defined and item.state == 'absent')
+  become: true
 - name: Remove mount(s) from fstab
   mount:
     name: "{{ item.mount.path }}"
@@ -23,3 +24,4 @@
   when: >
     item.mount is defined and
     (item.state is defined and item.state == 'absent')
+  become: true
