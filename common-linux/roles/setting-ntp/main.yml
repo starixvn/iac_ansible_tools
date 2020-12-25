@@ -1,0 +1,35 @@
+---
+- name: Remove ntp if existed
+  apt:
+    name:
+      - ntp
+    state: absent
+    autoclean: yes
+  become: yes
+- name: Install ntpdate tzdata packet
+  apt:
+    name:
+      - ntpdate
+      - tzdata
+    state: present
+    autoclean: yes
+  become: yes
+
+- name: Set timezone
+  timezone:
+    name: "{{ ntp_timezone }}"
+  notify: restart cron
+  become: yes
+
+- name: Sync time with {{ntp_server}}
+  shell: |
+    ntpdate {{ntp_server}}
+  become: yes
+
+- name: check time
+  shell: |
+    echo "$(date)"
+  register: logtime
+
+- debug:
+    msg: "{{ logtime.stdout }}"

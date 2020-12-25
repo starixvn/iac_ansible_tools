@@ -11,6 +11,7 @@
   roles:
     - install-docker
     - change-hostname
+    - setting-ntp
     - gnu-setup
     - docker-registry-login
     - set-permission-folder
