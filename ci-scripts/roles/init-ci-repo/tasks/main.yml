@@ -4,6 +4,6 @@
     headers:
       PRIVATE-TOKEN: 'yqeW-bpj43G6isyKA3tG'
       Content-Type: 'application/json'
-    body: '{"path_with_namespace": "{{repo_group_path}}/{{repo_name}}-ci", "repository_access_level": "enabled", "visibility": "public"}'
+    body: '{"path": {{repo_name}}-ci", "path_with_namespace": "{{repo_group_path}}/{{repo_name}}-ci", "repository_access_level": "enabled", "visibility": "public"}'
     body_format: json
     method: POST
