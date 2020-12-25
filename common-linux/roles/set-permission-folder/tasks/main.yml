@@ -1,6 +1,6 @@
-- name: Create {{ folder_path }} directory
+- name: Create {{ folder_path | default('/var/www')}} directory
   file:
-    path: "{{ folder_path }}"
+    path: "{{ folder_path | default('/var/www')}}"
     state: directory
     mode: "0755"
   become: yes

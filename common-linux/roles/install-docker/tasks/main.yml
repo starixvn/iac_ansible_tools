@@ -1,6 +1,13 @@
 ---
 - name: Install Docker Python library
   become: true
+  apt:
+    state: present
+    pkg:
+      - pip3
+      - curl
+- name: Install Docker Python library
+  become: true
   #become_method: sudo
   ignore_errors: true
   pip:
