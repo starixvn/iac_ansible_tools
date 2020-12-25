@@ -1,0 +1,3 @@
+- hosts: swarm_leader
+  roles:
+    - role: init-ci-repo
