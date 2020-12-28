@@ -18,8 +18,8 @@
     eval "$(ssh-agent -s)"
     chmod 400 /home/{{ansible_user}}/.ssh/private_key
     ssh-add /home/{{ansible_user}}/.ssh/private_key
-    git clone git@{{gitlab_url | default("git3.nexdev.net")}}:ci/repos-ci/{{repo_name}}.git ||
-    cd /var/ci-scripts/{{repo_name}} && git pull && git checkout -- .
+    rm -rf {{repo_name}} || true
+    git clone git@{{gitlab_url | default("git3.nexdev.net")}}:ci/repos-ci/{{repo_name}}.git
   become: yes
 
 - name: Build gitlab-ci.yml
