@@ -1,5 +1,5 @@
 build_image_{{item.name | replace('-','_') }}:
   extends:
     - .deploy_vars_{{item.name | replace('-','_') }}
-    - .build:{{item.framework}}:image:noenv
+    - .build:{{item.framework | default('default')}}:image:noenv
     - .build:image:{{item.name | replace('-','_') }}:rules

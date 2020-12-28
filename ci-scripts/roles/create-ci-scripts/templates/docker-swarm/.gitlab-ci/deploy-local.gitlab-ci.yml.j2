@@ -9,12 +9,18 @@ post_build_{{item.name | replace('-','_') }}_local:
 deploy_{{item.name | replace('-','_') }}_local:
   extends:
     - .deploy_vars_{{item.name | replace('-','_') }}
+{% if item.stack_deploy is defined and item.stack_deploy == true %}
+    - .deploy:local:base:swarm:stack
+{% else %}
     - .deploy:local:base:swarm
+{%endif%}
     - .deploy:local:{{item.name | replace('-','_') }}:rules
   needs: ['post_build_{{item.name | replace('-','_') }}_local']
+{% if item.stack_deploy is undefined or item.stack_deploy == false %}
   variables:
-    SWARM_REPLICAS: {{item.number_of_replicas}}
+    SWARM_REPLICAS: {{item.number_of_replicas | default ('1')}}
     NODE_LABEL: {{item.node_label}}
+{%endif%}
 
 post_build_{{item.name | replace('-','_') }}_local1:
   extends:
@@ -27,10 +33,17 @@ post_build_{{item.name | replace('-','_') }}_local1:
 deploy_{{item.name | replace('-','_') }}_local1:
   extends:
     - .deploy_vars_{{item.name | replace('-','_') }}
+{% if item.stack_deploy is defined and item.stack_deploy == true %}
+    - .deploy:local1:base:swarm:stack
+{% else %}
     - .deploy:local1:base:swarm
+{%endif%}
     - .deploy:local1:{{item.name | replace('-','_') }}:rules
   needs: ['post_build_{{item.name | replace('-','_') }}_local1']
+{% if item.stack_deploy is undefined or item.stack_deploy == false %}
   variables:
-    SWARM_REPLICAS: {{item.number_of_replicas}}
+    SWARM_REPLICAS: {{item.number_of_replicas | default ('1')}}
     NODE_LABEL: {{item.node_label}}
+{%endif%}
+  
   

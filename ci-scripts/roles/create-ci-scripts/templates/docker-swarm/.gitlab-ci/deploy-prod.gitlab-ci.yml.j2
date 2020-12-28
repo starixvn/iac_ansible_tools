@@ -12,6 +12,8 @@ deploy_{{item.name | replace('-','_') }}_prod:
     - .deploy:prod:base:swarm
     - .deploy:prod:{{item.name | replace('-','_') }}:rules
   needs: ['post_build_{{item.name | replace('-','_') }}_prod']
+{% if item.stack_deploy is undefined or item.stack_deploy == false %}
   variables:
-    SWARM_REPLICAS: {{item.number_of_replicas}}
+    SWARM_REPLICAS: {{item.number_of_replicas | default ('1')}}
     NODE_LABEL: {{item.node_label}}
+{%endif%}

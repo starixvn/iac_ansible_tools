@@ -17,6 +17,9 @@ include:
     ref: rocketor
     file: 'rocketor-integration/rules/index.gitlab-ci.yml'
 {%endif%}
+  - project: 'ci/common-ci'
+    ref: rocketor
+    file: 'docker/base/build-docker-image.gitlab-ci.yml'
 {% if frameworks is defined and "dotnet" in frameworks %}
   - project: 'ci/common-ci'
     ref: rocketor
@@ -28,6 +31,11 @@ include:
   - project: 'ci/common-ci'
     ref: rocketor
     file: '_teams/{{org_name}}/{{ci_group_name}}/deploy-docker-swarm/index.gitlab-ci.yml'
+{% if stack_deploy is defined and stack_deploy == true %}
+  - project: 'ci/common-ci'
+    ref: rocketor
+    file: '_teams/{{org_name}}/{{ci_group_name}}/deploy-docker-swarm-stack/index.gitlab-ci.yml'
+{%endif%}
 {% for service in services %}
   - .gitlab-ci/{{service.name | replace('-','_') }}/build.gitlab-ci.yml
   - .gitlab-ci/{{service.name | replace('-','_') }}/deploy-vars.gitlab-ci.yml
