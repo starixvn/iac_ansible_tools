@@ -1,0 +1,31 @@
+########################################################################
+# File managed by Ansible - NexOps
+# Your changes will be overwritten.
+#######################################################################
+#=========================== Zabbix Agent ============================= 
+
+# PARAMETERS
+{%if function is defined and function=='web' %}
+UserParameter=site.discovery,powershell -NoProfile -ExecutionPolicy Bypass -File "{{path_install}}\zabbix_agent\get_sites.ps1"
+UserParameter=site.state[*],powershell -NoProfile -ExecutionPolicy Bypass -File {{path_install}}\zabbix_agent\get_sitestate.ps1 "$1"
+UserParameter=apppoolworker.discovery,powershell -NoProfile -ExecutionPolicy Bypass -File "{{path_install}}\zabbix_agent\get_apppool_worker.ps1"
+UserParameter=apppoolworker.state[*],powershell -NoProfile -ExecutionPolicy Bypass -File {{path_install}}\zabbix_agent\get_apppool_worker_state.ps1 "$1"
+#UserParameter=pool.discovery,powershell -NoProfile -ExecutionPolicy Bypass -File "{{path_install}}\zabbix_agent\get_pool.ps1"
+#UserParameter=pool.state[*],powershell -NoProfile -ExecutionPolicy Bypass -File {{path_install}}\zabbix_agent\get_poolstate.ps1 "$1"
+{%endif%}
+#================================ General ===================================== 
+
+# LogFile
+LogFile={{LogFile}}
+# DebugLevel=3
+# AllowKey=system.run[*] or DenyKey=system.run[*]
+AllowKey=system.run[*]
+
+# ServerZabbix
+Server={{zabbix_server}}
+
+# ServerActive
+ServerActive={{ServerActive}}
+
+# Hostname
+Hostname={{ ansible_hostname }}

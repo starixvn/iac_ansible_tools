@@ -1,0 +1,9 @@
+PidFile=/var/run/zabbix/zabbix_agent2.pid
+Server={{ zabbix_server }}
+ServerActive={{ ServerActive }}
+Hostname={{ ansible_hostname }}
+LogFile=/var/log/zabbix/zabbix_agent2.log
+LogFileSize=256
+Include=/etc/zabbix/zabbix_agent2.d/*.conf
+ControlSocket=/tmp/agent.sock
+Timeout=3

@@ -1,0 +1,94 @@
+---
+- name: check status of Zabbix Agent service
+  win_service:
+    name: "Zabbix Agent"
+  register: result
+  #     failed_when: result is not defined
+  ignore_errors: yes
+  #   - debug: msg="{{result}}"
+- debug: msg="running"
+  when: result.state is not defined or result.name is not defined
+  
+- name: Preparing for Step Zabbix Stopped with ignore errors
+  win_service:
+    name: "Zabbix Agent"
+    start_mode: auto
+    state: stopped
+    ignore_errors: true
+  when: result.exists == true
+
+- name: Preparing for Step Remove directory
+  raw: Remove-Item -Path {{path_install}}\zabbix_agent -Force -Recurse -ErrorAction SilentlyContinue
+  ignore_errors: true
+  #when: result.exists == true
+
+- name: Preparing for Step Create working directory 
+  win_file:
+    path: "{{ item }}"
+    state: "directory"
+  with_items: 
+    - '{{ working_directory }}'
+    - '{{ path_install }}'
+    - '{{path_source}}'
+
+- name: Preparing for Step Create Install directory
+  win_file:
+    path: "{{ path_install }}"
+    state: "directory"
+
+- name: Copy deployment files to host
+  win_shell: |
+    $excludes = {{excludes | default("'.git','logs'")}}
+    Get-ChildItem "{{repo_internal}}" | Where-Object{$_.Name -notin $excludes} | Copy-Item -Destination "{{ path_source }}" -Recurse -Force
+  become: yes
+  become_method: runas
+  become_user: "{{user_id}}"
+  vars:
+    ansible_become_password: "{{pass_id}}"
+  ignore_errors: true
+
+- name: Preparing for Step Decompression Zabbix zip file
+  win_unzip:
+    src: "{{ path_source }}/zabbix_agent.zip"
+    dest: "{{ path_source }}/zabbix_agent"
+
+- name: Preparing for Step Move directory
+  raw: Move-Item -Path "{{ path_source }}\zabbix_agent\" -Destination "{{ path_install }}\" 
+
+- name: Preparing for Step Change config of Zabbix
+  win_template:
+    src: templates/zabbix_agentd.conf.j2
+    dest: "{{ path_install }}/zabbix_agent/zabbix_agentd.conf"
+
+- name: copy templates of custom scripts for common servers
+  win_copy:
+    src: templates/zabbix/{{item}}
+    dest: "{{ path_install }}/zabbix_agent/{{item}}"
+  with_items: 
+    - Top_Process_CPU.ps1
+    - Top_Process_Memory.ps1
+
+- name: copy templates of custom scripts for web servers
+  win_copy:
+    src: templates/zabbix/{{item}}
+    dest: "{{ path_install }}/zabbix_agent/{{item}}"
+  with_items: 
+    - get_apppool_worker.ps1
+    - get_apppool_worker_state.ps1
+    - get_sites.ps1
+    - get_sitestate.ps1
+  when: function is defined and function =="web"
+
+- name: Change config of Zabbix bat file
+  win_template:
+    src: templates/zabbix.bat.j2
+    dest: "{{ path_install }}/zabbix_agent/zabbix.bat"
+
+- name: Installing zabbix agent
+  raw: '{{ path_install }}/zabbix_agent/zabbix.bat'
+
+- name: zabbix_agent Starting
+  win_service:
+    name: "Zabbix Agent"
+    start_mode: auto
+    state: started

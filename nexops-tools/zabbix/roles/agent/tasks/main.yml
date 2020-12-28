@@ -1,0 +1,9 @@
+---
+- import_tasks: zabbix-agent-ub16.yml
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'xenial'
+
+- import_tasks: zabbix-agent-ub18.yml
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'bionic'
+
+- import_tasks: zabbix-agent-windows.yml
+  when: ansible_os_family == 'Windows'

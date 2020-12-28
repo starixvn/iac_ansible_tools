@@ -1,0 +1,6 @@
+:=========================== Zabbix installation ============================= 
+@echo off
+: zabbix remove
+{{ path_install }}\zabbix_agent\zabbix_agentd.exe -c {{ path_install }}\zabbix_agent\zabbix_agentd.conf -d
+: zabbix install
+{{ path_install }}\zabbix_agent\zabbix_agentd.exe -c {{ path_install }}\zabbix_agent\zabbix_agentd.conf --install

@@ -1,0 +1,62 @@
+---
+- name: Remove zabbix_agent
+  apt:
+    pkg: "{{ item }}"
+    state: absent
+    purge: yes
+  with_items:
+    - zabbix-agent
+    - zabbix-agent2
+  become: yes
+  ignore_errors: true
+  
+###Ubuntu 16.04
+- name: dowload Zabbix deb file for 16.04
+  get_url:
+    url: "https://repo.zabbix.com/zabbix/5.2/ubuntu/pool/main/z/zabbix-release/zabbix-release_5.2-1+ubuntu16.04_all.deb"
+    dest: "/tmp/zabbix-release_5.2_16.deb"
+  become: yes
+  ignore_errors: true
+  
+- name: install Zabbix deb
+  apt: deb="/tmp/zabbix-release_5.2_16.deb"
+  become: yes
+  ignore_errors: true
+
+- name: Installing the Zabbix Agent 
+  apt:
+    name:
+      - zabbix-agent
+    state: latest
+    update_cache: yes
+    autoclean: yes
+  become: yes
+  
+- name: Copy teamplate zabbix configs
+  template:
+    src: templates/Update_zabbix_agentd.conf.j2
+    dest: /etc/zabbix/zabbix_agentd.conf
+  become: yes
+  
+- name: Starting the Zabbix Agent
+  service: name=zabbix-agent state=started enabled=yes
+  become: yes
+
+- name: Restart the Zabbix Agent 
+  service: name=zabbix-agent state=restarted
+  become: yes
+  
+- name: Find to file
+  find:
+    paths: /tmp/
+    patterns: zabbix*
+  register: files_to_delete
+  ignore_errors: true
+
+- name: Remove Zabbix deb file
+  file:
+    path: "{{ item.path }}"
+    state: absent
+  with_items: "{{ files_to_delete.files }}"
+  become: yes
+  ignore_errors: true
