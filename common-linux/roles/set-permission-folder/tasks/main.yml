@@ -2,7 +2,7 @@
   file:
     path: "{{ folder_path | default('/var/www')}}"
     state: directory
-    mode: "0755"
+    mode: "{{permission | default('0755')}}"
   become: yes
 # - name: set full permission folder
 #   shell: chmod -R 755 {{folder_path}}
