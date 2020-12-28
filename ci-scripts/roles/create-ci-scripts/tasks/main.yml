@@ -1,3 +1,9 @@
+- name: Clean ci directory
+  file:
+    state: absent
+    path: '/var/ci-scripts'
+  become: yes
+
 - name: Create ci directory
   file:
     path: "{{ folder_path | default('/var/ci-scripts')}}"
@@ -12,14 +18,30 @@
     update_cache: yes
   become: yes
 
+- name: Set repo ci name
+  set_fact:
+    repo_name: "{{team_name}}_{{project_name | replace('-','_')}}_{{ services[0].name | replace('-','_') }}"
+  become: yes
+
+- name: Set ci group name
+  set_fact:
+    ci_group_name: 'others'
+  when: team_name == "nexus"
+  become: yes
+
+- name: Set ci group name
+  set_fact:
+    ci_group_name: '{{team_name}}'
+  when: team_name == "nex3" or team_name == "luminet"
+  become: yes
+
 - name: Clone ci repo
   shell: |
     cd /var/ci-scripts
     eval "$(ssh-agent -s)"
     chmod 400 /home/{{ansible_user}}/.ssh/private_key
     ssh-add /home/{{ansible_user}}/.ssh/private_key
-    rm -rf {{repo_name}} || true
-    git clone git@{{gitlab_url | default("git3.nexdev.net")}}:ci/repos-ci/{{repo_name}}.git
+    GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" git clone git@{{gitlab_url | default("git3.nexdev.net")}}:ci/repos-ci/{{repo_name}}.git
   become: yes
 
 - name: Build gitlab-ci.yml
@@ -52,7 +74,7 @@
 
 - name: Build deploy-vars.gitlab-ci.yml for each service
   template:
-    src: templates/docker-swarm/.gitlab-ci/deploy-local.gitlab-ci.yml.j2
+    src: templates/docker-swarm/.gitlab-ci/deploy-vars.gitlab-ci.yml.j2
     dest: /var/ci-scripts/{{repo_name}}/.gitlab-ci/{{item.name}}/deploy-vars.gitlab-ci.yml
   with_items: '{{ services }}'
   become: yes
@@ -73,6 +95,6 @@
     git config --global user.email "ansible@nexdev.net"
     git config --global user.name "ansible"
     git add .
-    git commit -m "Updating"
+    git commit -m "ci: update"
     git push origin master
   become: yes

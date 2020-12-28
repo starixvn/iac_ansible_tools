@@ -1,0 +1,17 @@
+post_build_{{item.name | replace('-','_') }}_prod:
+  extends:
+    - .deploy_vars_{{item.name | replace('-','_') }}
+    - .post_build
+    - .deploy:prod
+    - .deploy:prod:{{item.name | replace('-','_') }}:rules
+  needs: ['build_image_{{item.name | replace('-','_') }}']
+
+deploy_{{item.name | replace('-','_') }}_prod:
+  extends:
+    - .deploy_vars_{{item.name | replace('-','_') }}
+    - .deploy:prod:base:swarm
+    - .deploy:prod:{{item.name | replace('-','_') }}:rules
+  needs: ['post_build_{{item.name | replace('-','_') }}_prod']
+  variables:
+    SWARM_REPLICAS: {{item.number_of_replicas}}
+    NODE_LABEL: {{item.node_label}}

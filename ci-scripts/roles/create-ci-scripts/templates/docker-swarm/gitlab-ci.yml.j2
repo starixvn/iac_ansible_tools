@@ -27,10 +27,10 @@ include:
     file: 'docker/base/post-build-docker-image.gitlab-ci.yml'
   - project: 'ci/common-ci'
     ref: rocketor
-    file: '_teams/{{team_name}}/deploy-docker-swarm/index.gitlab-ci.yml'
+    file: '_teams/{{org_name}}/{{ci_group_name}}/deploy-docker-swarm/index.gitlab-ci.yml'
 {% for service in services %}
-  - .gitlab-ci/{{service.name}}/build.gitlab-ci.yml
-  - .gitlab-ci/{{service.name}}/deploy-vars.gitlab-ci.yml
-  - .gitlab-ci/{{service.name}}/rules.gitlab-ci.yml
-  - .gitlab-ci/{{service.name}}/deploy-local.gitlab-ci.yml
+  - .gitlab-ci/{{service.name | replace('-','_') }}/build.gitlab-ci.yml
+  - .gitlab-ci/{{service.name | replace('-','_') }}/deploy-vars.gitlab-ci.yml
+  - .gitlab-ci/{{service.name | replace('-','_') }}/rules.gitlab-ci.yml
+  - .gitlab-ci/{{service.name | replace('-','_') }}/deploy-local.gitlab-ci.yml
 {% endfor %}

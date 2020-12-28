@@ -1,15 +1,36 @@
-post_build_{{item.name}}_local:
+post_build_{{item.name | replace('-','_') }}_local:
   extends:
-    - .deploy_vars_{{item.name}}
+    - .deploy_vars_{{item.name | replace('-','_') }}
     - .post_build
     - .deploy:local
-    - .deploy:local:{{item.name}}:rules
-  needs: ['build_image_{{item.name}}']
+    - .deploy:local:{{item.name | replace('-','_') }}:rules
+  needs: ['build_image_{{item.name | replace('-','_') }}']
 
-deploy_{{item.name}}_local:
+deploy_{{item.name | replace('-','_') }}_local:
   extends:
-    - .deploy_vars_{{item.name}}
+    - .deploy_vars_{{item.name | replace('-','_') }}
     - .deploy:local:base:swarm
-    - .deploy:local:{{item.name}}:rules
-  needs: ['post_build_{{item.name}}_local']
+    - .deploy:local:{{item.name | replace('-','_') }}:rules
+  needs: ['post_build_{{item.name | replace('-','_') }}_local']
+  variables:
+    SWARM_REPLICAS: {{item.number_of_replicas}}
+    NODE_LABEL: {{item.node_label}}
+
+post_build_{{item.name | replace('-','_') }}_local1:
+  extends:
+    - .deploy_vars_{{item.name | replace('-','_') }}
+    - .post_build
+    - .deploy:local1
+    - .deploy:local1:{{item.name | replace('-','_') }}:rules
+  needs: ['build_image_{{item.name | replace('-','_') }}']
+
+deploy_{{item.name | replace('-','_') }}_local1:
+  extends:
+    - .deploy_vars_{{item.name | replace('-','_') }}
+    - .deploy:local1:base:swarm
+    - .deploy:local1:{{item.name | replace('-','_') }}:rules
+  needs: ['post_build_{{item.name | replace('-','_') }}_local1']
+  variables:
+    SWARM_REPLICAS: {{item.number_of_replicas}}
+    NODE_LABEL: {{item.node_label}}
   
