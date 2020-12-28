@@ -1,0 +1,9 @@
+- hosts: all
+  roles:
+    - role: agent
+  tags: zabbix-agent
+
+- hosts: all
+  roles:
+    - role: server
+  tags: zabbix-server
