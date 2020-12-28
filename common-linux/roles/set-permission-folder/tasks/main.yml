@@ -4,6 +4,7 @@
     state: directory
     mode: "{{permission | default('0755')}}"
   become: yes
-# - name: set full permission folder
-#   shell: chmod -R 755 {{folder_path}}
-#   become: yes
+
+- name: set permission folder
+  shell: chmod -R {{permission | default('0755')}} {{folder_path | default('/var/www')}}
+  become: yes
