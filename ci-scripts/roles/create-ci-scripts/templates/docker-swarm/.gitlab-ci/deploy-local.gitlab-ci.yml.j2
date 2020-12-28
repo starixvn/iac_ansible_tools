@@ -9,7 +9,7 @@ post_build_{{item.name}}_local:
 deploy_{{item.name}}_local:
   extends:
     - .deploy_vars_{{item.name}}
-    - .deploy:local:{{team_name}}:swarm
+    - .deploy:local:base:swarm
     - .deploy:local:{{item.name}}:rules
   needs: ['post_build_{{item.name}}_local']
   

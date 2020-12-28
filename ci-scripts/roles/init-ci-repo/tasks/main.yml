@@ -4,7 +4,7 @@
     headers:
       PRIVATE-TOKEN: 'yqeW-bpj43G6isyKA3tG'
       Content-Type: 'application/json'
-    body: '{"namespace_id": "118", "path": "{{repo_name}}",  "repository_access_level": "enabled", "visibility": "public"}'
+    body: '{"namespace_id": "{{repo_ci_group_id}}", "path": "{{repo_name}}",  "repository_access_level": "enabled", "visibility": "public"}'
     body_format: json
     method: POST
     status_code: 201

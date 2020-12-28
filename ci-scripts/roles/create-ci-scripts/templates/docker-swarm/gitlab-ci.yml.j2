@@ -25,9 +25,9 @@ include:
   - project: 'ci/common-ci'
     ref: rocketor
     file: 'docker/post-build-docker-image.gitlab-ci.yml'
-  - project: 'ci/nexcel/common-ci'
+  - project: 'ci/common-ci'
     ref: master
-    file: 'deploy-docker-swarm/index.gitlab-ci.yml'
+    file: '_team/{{team_name}}/deploy-docker-swarm/index.gitlab-ci.yml'
 {% for service in services %}
   - .gitlab-ci/{{service.name}}/build.gitlab-ci.yml
   - .gitlab-ci/{{service.name}}/deploy-vars.gitlab-ci.yml
