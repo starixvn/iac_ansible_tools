@@ -1,10 +1,10 @@
 ---
 # tasks file for glusterfs-ansible-role
 - name: Install GlusterFS
-    apt: name={{ item }} state=latest update_cache=yes
-    with_items:
-      - glusterfs-server
-      - glusterfs-common
+  apt: name={{ item }} state=latest update_cache=yes
+  with_items:
+    - glusterfs-server
+    - glusterfs-common
 #      - glusterfs-client
 #      - nfs-kernel-server
 
