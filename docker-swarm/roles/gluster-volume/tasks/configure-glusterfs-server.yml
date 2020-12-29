@@ -4,12 +4,12 @@
     apt: name={{ item }} state=latest update_cache=yes
     with_items:
       - glusterfs-server
+      - glusterfs-common
 #      - glusterfs-client
-#      - glusterfs-common
 #      - nfs-kernel-server
 
-  - name: Enable GlusterFS on Boot
-    service: "name=glusterd state=started enabled=yes"
+- name: Enable GlusterFS on Boot
+  service: "name=glusterd state=started enabled=yes"
 
 - name: Configure glusterfs peers
   shell: gluster peer probe {{ item }}
