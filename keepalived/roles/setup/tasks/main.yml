@@ -6,13 +6,13 @@
 
 - name: Install necessary apt package
   apt:
-    name:  libssl-dev
+    name: libssl-dev
   become: yes
 
 - name: Copy keepalived setup file
   copy:
     src: files/keepalived-2.0.20.tar.gz
-    dest: "/tmp/keepalived.tar.gz"
+    dest: '/tmp/keepalived.tar.gz'
   register: keepalived_source
   when:
     - not service_status.stat.exists
@@ -22,16 +22,16 @@
   unarchive:
     copy: no
     dest: /tmp/
-    src: "{{ keepalived_source.dest }}"
+    src: '{{ keepalived_source.dest }}'
   when:
     - not service_status.stat.exists or keepalived_source.changed
   register: keepalived_source_unpack
   become: yes
 
 - name: Configure keepalived
-  command: "./configure"
+  command: './configure'
   args:
-    chdir: "{{ keepalived_install_dir }}"
+    chdir: '{{ keepalived_install_dir }}'
   when:
     - not service_status.stat.exists or keepalived_source_unpack.changed
   register: keepalived_configure
@@ -40,22 +40,22 @@
 - name: Install keepalived
   shell: make && make install
   args:
-    chdir: "{{ keepalived_install_dir }}"
+    chdir: '{{ keepalived_install_dir }}'
   when:
     - not service_status.stat.exists or keepalived_configure.changed
   become: yes
 
 - name: Set keepalived variables for backup servers
   set_fact:
-    keepalive_role: "BACKUP"
-    keepalive_priority: "100"
+    keepalive_role: 'BACKUP'
+    keepalive_priority: '100'
   when: inventory_hostname != groups['swarm_leader'][0]
   become: yes
 
 - name: Set keepalived variables for master server
   set_fact:
-    keepalive_role: "MASTER"
-    keepalive_priority: "110"
+    keepalive_role: 'MASTER'
+    keepalive_priority: '110'
   when: inventory_hostname == groups['swarm_leader'][0]
   become: yes
 
@@ -67,11 +67,11 @@
 
 - name: Create keepalived config file
   template:
-    src: "{{item}}.j2"
-    dest: "{{ keepalived_conf_dir }}/{{item}}"
+    src: '{{item}}.j2'
+    dest: '{{ keepalived_conf_dir }}/{{item}}'
   notify: Restart keepalived
   become: yes
-  with_items: 
+  with_items:
     - keepalived.conf
     - keepalived_notify.sh
 
