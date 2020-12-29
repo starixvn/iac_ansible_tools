@@ -6,6 +6,6 @@ ENV WEAVE_TOKEN=none
 
 COPY conf /etc/prometheus/
 USER root
-# RUN chmod +x /etc/prometheus/docker-entrypoint.sh
-# ENTRYPOINT [ "/etc/prometheus/docker-entrypoint.sh" ]
+RUN chmod +x /etc/prometheus/docker-entrypoint.sh
+ENTRYPOINT [ "/etc/prometheus/docker-entrypoint.sh" ]
 CMD [ "--config.file=/etc/prometheus/prometheus.yml", "--storage.tsdb.path=/prometheus" ]
