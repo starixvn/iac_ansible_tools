@@ -9,7 +9,11 @@ post_build_{{item.name | replace('-','_') }}_prod:
 deploy_{{item.name | replace('-','_') }}_prod:
   extends:
     - .deploy_vars_{{item.name | replace('-','_') }}
+{% if item.stack_deploy is defined and item.stack_deploy == true %}
+    - .deploy:prod:base:swarm:stack
+{% else %}
     - .deploy:prod:base:swarm
+{%endif%}
     - .deploy:prod:{{item.name | replace('-','_') }}:rules
   needs: ['post_build_{{item.name | replace('-','_') }}_prod']
 {% if item.stack_deploy is undefined or item.stack_deploy == false %}

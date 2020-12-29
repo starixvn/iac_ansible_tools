@@ -41,4 +41,7 @@ include:
   - .gitlab-ci/{{service.name | replace('-','_') }}/deploy-vars.gitlab-ci.yml
   - .gitlab-ci/{{service.name | replace('-','_') }}/rules.gitlab-ci.yml
   - .gitlab-ci/{{service.name | replace('-','_') }}/deploy-local.gitlab-ci.yml
+  - .gitlab-ci/{{service.name | replace('-','_') }}/deploy-sit.gitlab-ci.yml
+  - .gitlab-ci/{{service.name | replace('-','_') }}/deploy-uat.gitlab-ci.yml
+  - .gitlab-ci/{{service.name | replace('-','_') }}/deploy-prod.gitlab-ci.yml
 {% endfor %}

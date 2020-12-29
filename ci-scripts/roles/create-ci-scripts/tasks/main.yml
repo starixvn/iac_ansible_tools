@@ -65,13 +65,6 @@
   with_items: '{{ services }}'
   become: yes
 
-- name: Build deploy-local.gitlab-ci.yml for each service
-  template:
-    src: templates/docker-swarm/.gitlab-ci/deploy-local.gitlab-ci.yml.j2
-    dest: /var/ci-scripts/{{repo_name}}/.gitlab-ci/{{item.name}}/deploy-local.gitlab-ci.yml
-  with_items: '{{ services }}'
-  become: yes
-
 - name: Build deploy-vars.gitlab-ci.yml for each service
   template:
     src: templates/docker-swarm/.gitlab-ci/deploy-vars.gitlab-ci.yml.j2
@@ -83,6 +76,34 @@
   template:
     src: templates/docker-swarm/.gitlab-ci/rules.gitlab-ci.yml.j2
     dest: /var/ci-scripts/{{repo_name}}/.gitlab-ci/{{item.name}}/rules.gitlab-ci.yml
+  with_items: '{{ services }}'
+  become: yes
+
+- name: Build deploy-local.gitlab-ci.yml for each service
+  template:
+    src: templates/docker-swarm/.gitlab-ci/deploy-local.gitlab-ci.yml.j2
+    dest: /var/ci-scripts/{{repo_name}}/.gitlab-ci/{{item.name}}/deploy-local.gitlab-ci.yml
+  with_items: '{{ services }}'
+  become: yes
+
+- name: Build deploy-sit.gitlab-ci.yml for each service
+  template:
+    src: templates/docker-swarm/.gitlab-ci/deploy-sit.gitlab-ci.yml.j2
+    dest: /var/ci-scripts/{{repo_name}}/.gitlab-ci/{{item.name}}/deploy-sit.gitlab-ci.yml
+  with_items: '{{ services }}'
+  become: yes
+
+- name: Build deploy-uat.gitlab-ci.yml for each service
+  template:
+    src: templates/docker-swarm/.gitlab-ci/deploy-uat.gitlab-ci.yml.j2
+    dest: /var/ci-scripts/{{repo_name}}/.gitlab-ci/{{item.name}}/deploy-uat.gitlab-ci.yml
+  with_items: '{{ services }}'
+  become: yes
+
+- name: Build deploy-prod.gitlab-ci.yml for each service
+  template:
+    src: templates/docker-swarm/.gitlab-ci/deploy-prod.gitlab-ci.yml.j2
+    dest: /var/ci-scripts/{{repo_name}}/.gitlab-ci/{{item.name}}/deploy-prod.gitlab-ci.yml
   with_items: '{{ services }}'
   become: yes
 

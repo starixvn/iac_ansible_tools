@@ -9,23 +9,25 @@ image_config_path: /usr/local/etc/haproxy
 
 nexcel_ports_local:
   [
-    { "published": 80, "target": 80, "mode": "host" },
-    { "published": 443, "target": 443, "mode": "host" },
-    { "published": 8001, "target": 8001, "mode": "ingress" },
-    { "published": 7270, "target": 7270, "mode": "ingress" },
+    { 'published': 80, 'target': 80, 'mode': 'host' },
+    { 'published': 443, 'target': 443, 'mode': 'host' },
+    { 'published': 8001, 'target': 8001, 'mode': 'ingress' },
+    { 'published': 7270, 'target': 7270, 'mode': 'ingress' },
   ]
 
-nexcel_ports_sit: [{ "published": 7000, "target": 7000, "mode": "ingress" }]
+nexcel_ports_sit: [{ 'published': 6000, 'target': 6000, 'mode': 'ingress' }]
 
-nexcel_ports_prod: [{ "published": 8000, "target": 8000, "mode": "ingress" }]
+nexcel_ports_uat: [{ 'published': 7000, 'target': 7000, 'mode': 'ingress' }]
+
+nexcel_ports_prod: [{ 'published': 8000, 'target': 8000, 'mode': 'ingress' }]
 
 nexcel_ports_prod-nex3:
-  [{ "published": 8000, "target": 8000, "mode": "ingress" }]
+  [{ 'published': 8000, 'target': 8000, 'mode': 'ingress' }]
 
 luminet_ports_local:
   [
-    { "published": 80, "target": 80, "mode": "ingress" },
-    { "published": 7000, "target": 7000, "mode": "ingress" },
-    { "published": 7001, "target": 7001, "mode": "ingress" },
-    { "published": 7002, "target": 7002, "mode": "ingress" },
+    { 'published': 80, 'target': 80, 'mode': 'ingress' },
+    { 'published': 7000, 'target': 7000, 'mode': 'ingress' },
+    { 'published': 7001, 'target': 7001, 'mode': 'ingress' },
+    { 'published': 7002, 'target': 7002, 'mode': 'ingress' },
   ]
