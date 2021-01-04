@@ -1,0 +1,34 @@
+########################################################################
+# File managed by Ansible - NexOps
+# Your changes will be overwritten.
+#######################################################################
+version: '3.3'
+services:
+{% for service in services %}
+{% if service.stack_deploy is defined and service.stack_deploy == true %}
+  {{service.name}}_{{ env | upper }}:
+    image: registry.nexdev.net:5050/{{service.docker_image_registry_path}}
+{% if service.volumes is defined %}
+    volumes:
+{% for volume in service.volumes %}
+    - {{volume.src}}:{{volume.dest}}
+{% endfor %}
+{% endif %}
+    deploy:
+      mode: replicated
+      replicas: {{service.number_of_replicas | default('1') }}
+      endpoint_mode: dnsrr
+      placement:
+        constraints:
+          - node.labels.{{ org_name | upper }} == yes
+    networks:
+      - swarm_{{ org_name | lower }}_{{ env | lower }}
+      - private
+{% endif %}
+{% endfor %}
+
+networks:
+  swarm_{{ org_name | lower }}_{{ env | lower }}:
+    external: true
+  private:
+    external: true

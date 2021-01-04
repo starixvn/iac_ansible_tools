@@ -86,6 +86,14 @@
   with_items: '{{ services }}'
   become: yes
 
+- name: Build docker-compose for local
+  template:
+    src: templates/docker-swarm/.docker-compose/docker-compose.yml.j2
+    dest: /var/ci-scripts/{{repo_name}}/LOCAL.docker-compose.yml
+  vars:
+    env: local
+  become: yes
+
 - name: Build deploy-sit.gitlab-ci.yml for each service
   template:
     src: templates/docker-swarm/.gitlab-ci/deploy-sit.gitlab-ci.yml.j2
