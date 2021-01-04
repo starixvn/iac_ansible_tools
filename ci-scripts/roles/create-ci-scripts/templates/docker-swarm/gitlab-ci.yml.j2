@@ -6,6 +6,9 @@ stages:
   - post-build
   - deploy
 
+variables:
+  DOCKER_COMPOSE_REPO_URL: git@{{gitlab_url | default("git3.nexdev.net")}}:ci/repos-ci/{{repo_name}}.git
+
 include:
 {% if sonarqube_enabled is defined and sonarqube_enabled == true %}
   - project: 'ci/common-ci'

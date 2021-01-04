@@ -4,31 +4,29 @@
 #######################################################################
 version: '3.3'
 services:
-{% for service in services %}
-{% if service.stack_deploy is defined and service.stack_deploy == true %}
-  {{service.name}}_{{ env | upper }}:
-    image: registry.nexdev.net:5050/{{service.docker_image_registry_path}}
-{% if service.volumes is defined %}
+  {{item.name}}_{{ env | upper }}:
+    image: registry.nexdev.net:5050/{{item.docker_image_registry_path}}
+{% if item.volumes is defined %}
     volumes:
-{% for volume in service.volumes %}
+{% for volume in item.volumes %}
     - {{volume.src}}:{{volume.dest}}
 {% endfor %}
 {% endif %}
     deploy:
       mode: replicated
-      replicas: {{service.number_of_replicas | default('1') }}
+      replicas: {{item.number_of_replicas | default('1') }}
       endpoint_mode: dnsrr
       placement:
         constraints:
           - node.labels.{{ org_name | upper }} == yes
+{% if item.node_labels is defined %}
+{% for node_label in item.node_labels %}
+          - node.labels.{{ node_label | upper }} == yes
+{% endfor %}
+{% endif %}
     networks:
       - swarm_{{ org_name | lower }}_{{ env | lower }}
-      - private
-{% endif %}
-{% endfor %}
 
 networks:
   swarm_{{ org_name | lower }}_{{ env | lower }}:
-    external: true
-  private:
     external: true

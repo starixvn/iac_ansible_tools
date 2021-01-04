@@ -58,6 +58,14 @@
   become: yes
   with_items: '{{services}}'
 
+- name: Create .docker-compose directory for each service
+  file:
+    path: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.name}}
+    state: directory
+    mode: '0755'
+  become: yes
+  with_items: '{{services}}'
+
 - name: Build build.gitlab-ci.yml for each service
   template:
     src: templates/docker-swarm/.gitlab-ci/build.gitlab-ci.yml.j2
@@ -86,14 +94,6 @@
   with_items: '{{ services }}'
   become: yes
 
-- name: Build docker-compose for local
-  template:
-    src: templates/docker-swarm/.docker-compose/docker-compose.yml.j2
-    dest: /var/ci-scripts/{{repo_name}}/LOCAL.docker-compose.yml
-  vars:
-    env: local
-  become: yes
-
 - name: Build deploy-sit.gitlab-ci.yml for each service
   template:
     src: templates/docker-swarm/.gitlab-ci/deploy-sit.gitlab-ci.yml.j2
@@ -112,6 +112,46 @@
   template:
     src: templates/docker-swarm/.gitlab-ci/deploy-prod.gitlab-ci.yml.j2
     dest: /var/ci-scripts/{{repo_name}}/.gitlab-ci/{{item.name}}/deploy-prod.gitlab-ci.yml
+  with_items: '{{ services }}'
+  become: yes
+
+- name: Build docker-compose for local
+  when: item.stack_deploy is defined and item.stack_deploy == true
+  template:
+    src: templates/docker-swarm/.docker-compose/docker-compose.yml.j2
+    dest: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.name}}/{{env | upper}}.docker-compose.yml
+  vars:
+    env: local
+  with_items: '{{ services }}'
+  become: yes
+
+- name: Build docker-compose for sit
+  when: item.stack_deploy is defined and item.stack_deploy == true
+  template:
+    src: templates/docker-swarm/.docker-compose/docker-compose.yml.j2
+    dest: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.name}}/{{env | upper}}.docker-compose.yml
+  vars:
+    env: sit
+  with_items: '{{ services }}'
+  become: yes
+
+- name: Build docker-compose for uat
+  when: item.stack_deploy is defined and item.stack_deploy == true
+  template:
+    src: templates/docker-swarm/.docker-compose/docker-compose.yml.j2
+    dest: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.name}}/{{env | upper}}.docker-compose.yml
+  vars:
+    env: uat
+  with_items: '{{ services }}'
+  become: yes
+
+- name: Build docker-compose for prod
+  when: item.stack_deploy is defined and item.stack_deploy == true
+  template:
+    src: templates/docker-swarm/.docker-compose/docker-compose.yml.j2
+    dest: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.name}}/{{env | upper}}.docker-compose.yml
+  vars:
+    env: prod
   with_items: '{{ services }}'
   become: yes
 
