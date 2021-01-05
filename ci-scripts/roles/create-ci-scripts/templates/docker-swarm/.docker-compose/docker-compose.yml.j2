@@ -6,11 +6,16 @@ version: '3.3'
 services:
   {{item.name}}_{{ env | upper }}:
     image: registry.nexdev.net:5050/{{item.docker_image_registry_path}}
-{% if item.volumes is defined %}
+{% if item.volumes is defined or item.config_file_path is defined %}
     volumes:
+{% if item.framework is defined and item.framework == "dotnet" %}
+      - /var/www/gluster/web/{{team_name}}/{{project_name}}/{{item.name | replace('-','_') }}/configs/appsettings.json:/app/appsettings.json
+{% endif %}
+{% if item.volumes is defined %}
 {% for volume in item.volumes %}
-    - {{volume.src}}:{{volume.dest}}
+      - /var/www/gluster/web/{{volume.src}}:{{volume.dest}}
 {% endfor %}
+{% endif %}
 {% endif %}
     deploy:
       mode: replicated
