@@ -167,3 +167,13 @@
     git commit -m "ci: update"
     git push origin master
   become: yes
+
+- name: Create gluster glusterfs_volumes
+  file:
+    path: '{{item.1}}'
+    state: directory
+    mode: '0777'
+  with_subelements:
+    - '{{ services }}'
+    - volumes
+  become: yes
