@@ -170,10 +170,11 @@
 
 - name: Create gluster glusterfs_volumes
   file:
-    path: '{{item.1}}'
+    path: '/var/www/gluster/web/{{item.1.src}}'
     state: directory
     mode: '0777'
   with_subelements:
     - '{{ services }}'
     - volumes
+    - skip_missing: true
   become: yes
