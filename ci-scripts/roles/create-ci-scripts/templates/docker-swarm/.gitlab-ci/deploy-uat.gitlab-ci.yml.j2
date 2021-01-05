@@ -1,23 +1,17 @@
-post_build_{{item.name | replace('-','_') }}_uat:
+{% for version in item.versions|default('0') %}
+post_build_{{item.name | replace('-','_') }}_uat{{ '' if version == 0 else version }}:
   extends:
     - .deploy_vars_{{item.name | replace('-','_') }}
     - .post_build
-    - .deploy:uat
-    - .deploy:uat:{{item.name | replace('-','_') }}:rules
+    - .deploy:uat{{ '' if version == 0 else version }}
+    - .deploy:uat{{ '' if version == 0 else version }}:{{item.name | replace('-','_') }}:rules
   needs: ['build_image_{{item.name | replace('-','_') }}']
 
-deploy_{{item.name | replace('-','_') }}_uat:
+deploy_{{item.name | replace('-','_') }}_uat{{ '' if version == 0 else version }}:
   extends:
     - .deploy_vars_{{item.name | replace('-','_') }}
-{% if item.stack_deploy is defined and item.stack_deploy == true %}
-    - .deploy:uat:base:swarm:stack
-{% else %}
-    - .deploy:uat:base:swarm
-{%endif%}
-    - .deploy:uat:{{item.name | replace('-','_') }}:rules
-  needs: ['post_build_{{item.name | replace('-','_') }}_uat']
-{% if item.stack_deploy is undefined or item.stack_deploy == false %}
-  variables:
-    SWARM_REPLICAS: {{item.number_of_replicas | default ('1')}}
-    NODE_LABEL: {{item.node_label}}
-{%endif%}
+    - .deploy:uat{{ '' if version == 0 else version }}:base:swarm:stack
+    - .deploy:uat{{ '' if version == 0 else version }}:{{item.name | replace('-','_') }}:rules
+  needs: ['post_build_{{item.name | replace('-','_') }}_uat{{ '' if version == 0 else version }}']
+
+{% endfor %}

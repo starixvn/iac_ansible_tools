@@ -33,9 +33,6 @@ include:
     file: 'docker/base/post-build-docker-image.gitlab-ci.yml'
   - project: 'ci/common-ci'
     ref: rocketor
-    file: '_teams/{{org_name}}/{{ci_group_name}}/deploy-docker-swarm/index.gitlab-ci.yml'
-  - project: 'ci/common-ci'
-    ref: rocketor
     file: '_teams/{{org_name}}/{{ci_group_name}}/deploy-docker-swarm-stack/index.gitlab-ci.yml'
 {% for service in services %}
   - .gitlab-ci/{{service.name | replace('-','_') }}/build.gitlab-ci.yml

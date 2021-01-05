@@ -4,28 +4,28 @@
 #######################################################################
 version: '3.3'
 services:
-  {{item.name}}_{{ env | upper }}:
-    image: registry.nexdev.net:5050/{{item.docker_image_registry_path}}
-{% if item.volumes is defined or item.config_file_path is defined %}
+  {{item.0.name}}_{{ env | upper }}:
+    image: registry.nexdev.net:5050/{{item.0.docker_image_registry_path}}
+{% if item.0.volumes is defined or item.0.config_file_path is defined %}
     volumes:
-{% if item.framework is defined and item.framework == "dotnet" %}
-      - /var/www/gluster/web/{{team_name}}/{{project_name}}/{{item.name | replace('-','_') }}/configs/appsettings.json:/app/appsettings.json
+{% if item.0.framework is defined and item.0.framework == "dotnet" %}
+      - /var/www/gluster/web/{{team_name}}/{{project_name}}/{{item.0.name | replace('-','_') }}/{{env | upper}}{{ '' if item.1 == 0  else '_' }}{{'' if item.1 == 0  else item.1 }}/configs/appsettings.json:/app/appsettings.json
 {% endif %}
-{% if item.volumes is defined %}
-{% for volume in item.volumes %}
-      - /var/www/gluster/web/{{volume.src}}:{{volume.dest}}
+{% if item.0.volumes is defined %}
+{% for volume in item.0.volumes %}
+      - /var/www/gluster/web/{{volume.src}}/{{env | upper}}{{ '' if item.1 == 0  else '_' }}{{'' if item.1 == 0  else item.1 }}:{{volume.dest}}
 {% endfor %}
 {% endif %}
 {% endif %}
     deploy:
       mode: replicated
-      replicas: {{item.number_of_replicas | default('1') }}
+      replicas: {{item.0.number_of_replicas | default('1') }}
       endpoint_mode: dnsrr
       placement:
         constraints:
           - node.labels.{{ org_name | upper }} == yes
-{% if item.node_labels is defined %}
-{% for node_label in item.node_labels %}
+{% if item.0.node_labels is defined %}
+{% for node_label in item.0.node_labels %}
           - node.labels.{{ node_label | upper }} == yes
 {% endfor %}
 {% endif %}
