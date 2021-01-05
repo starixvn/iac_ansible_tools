@@ -1,6 +1,6 @@
 ---
 - name: Configure glusterfs
-  include: configure-glusterfs-server.yml
+  include: configure-glusterfs-cluster.yml
   become: true
 
 - name: Create volume(s)

@@ -4,50 +4,53 @@
 - name: Remove old mount point from fstab in case of change
   lineinfile:
     dest: /etc/fstab
-    regexp: "^{% if item.nodes is defined %}{{ item.nodes[0] + ':/' + item.volume }}{% else %}{{ glusterfs_nodes[0] + ':/' + item.volume }}{% endif %} (?!.*{{ item.mount.path }} ).*"
+    regexp: "^{% if item.nodes is defined %}{{ item.nodes[0] + ':/' + item.volume }}{% else %}{{ play_hosts[0] + ':/' + item.volume }}{% endif %} (?!.*{{ item.mount.path }} ).*"
     state: absent
   register: regex_fstab
-  with_items: "{{ glusterfs_volumes }}"
+  with_items: '{{ glusterfs_volumes }}'
   when: >
     glusterfs_auto_remount and
     item.mount is defined
+
 - name: Unmount old mount point in case of change
-  command: umount "{% if item.0.nodes is defined %}{{ item.0.nodes[0] + ':/' + item.0.volume }}{% else %}{{ glusterfs_nodes[0] + ':/' + item.0.volume }}{% endif %}"
+  command: umount "{% if item.0.nodes is defined %}{{ item.0.nodes[0] + ':/' + item.0.volume }}{% else %}{{ play_hosts[0] + ':/' + item.0.volume }}{% endif %}"
   when: >
     item.1.msg is defined and
     'line(s) removed' in item.1.msg and 
     glusterfs_auto_remount
   with_together:
-    - "{{ glusterfs_volumes }}"
-    - "{{ regex_fstab.results }}"
+    - '{{ glusterfs_volumes }}'
+    - '{{ regex_fstab.results }}'
 
 - name: Ensure mount paths presence
   file:
-    path: "{{ item.mount.path }}"
+    path: '{{ item.mount.path }}'
     state: directory
-  with_items: "{{ glusterfs_volumes }}"
+  with_items: '{{ glusterfs_volumes }}'
   when: >
     item.mount is defined and
     (item.state is not defined or item.state == 'present')
+
 - name: Mount volume(s)
   mount:
-    name: "{{ item.mount.path }}"
-    src: "{% if item.nodes is defined %}{{ item.nodes[0] + ':/' + item.volume }}{% else %}{{ glusterfs_nodes[0] + ':/' + item.volume }}{% endif %}"
+    name: '{{ item.mount.path }}'
+    src: "{% if item.nodes is defined %}{{ item.nodes[0] + ':/' + item.volume }}{% else %}{{ play_hosts[0] + ':/' + item.volume }}{% endif %}"
     fstype: glusterfs
-    opts: "{%- if item.mount.options is defined -%}{{ item.mount.options }}{%- else -%}{%- if item.nodes is defined and item.nodes | length > 1 -%}{{ 'defaults,_netdev,backupvolfile-server=' + item.nodes[1] }}{%- elif item.nodes is undefined and glusterfs_nodes | length > 1 -%}{{ 'defaults,_netdev,backupvolfile-server=' + glusterfs_nodes[1] }}{%- else -%}defaults,_netdev{%- endif -%}{%- endif -%}"
+    opts: "{%- if item.mount.options is defined -%}{{ item.mount.options }}{%- else -%}{%- if item.nodes is defined and item.nodes | length > 1 -%}{{ 'defaults,_netdev,backupvolfile-server=' + item.nodes[1] }}{%- elif item.nodes is undefined and play_hosts | length > 1 -%}{{ 'defaults,_netdev,backupvolfile-server=' + play_hosts[1] }}{%- else -%}defaults,_netdev{%- endif -%}{%- endif -%}"
     state: mounted
-  with_items: "{{ glusterfs_volumes }}"
+  with_items: '{{ glusterfs_volumes }}'
   when: >
     item.mount is defined and
     (item.state is not defined or item.state == 'present')
+
 - name: Ensure mount paths permissions
   file:
-    path: "{{ item.mount.path }}"
+    path: '{{ item.mount.path }}'
     state: directory
     owner: "{{ item.mount.owner | default ('root') }}"
     group: "{{ item.mount.group | default ('root') }}"
     mode: "{{ item.mount.mode | default ('0755') }}"
-  with_items: "{{ glusterfs_volumes }}"
+  with_items: '{{ glusterfs_volumes }}'
   when: >
     item.mount is defined and
     (item.state is not defined or item.state == 'present')

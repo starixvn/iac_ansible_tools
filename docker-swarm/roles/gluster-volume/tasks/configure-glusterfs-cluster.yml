@@ -1,0 +1,21 @@
+---
+- name: Install GlusterFS
+  apt: name={{ item }} state=latest update_cache=yes
+  with_items:
+    - glusterfs-server
+    - glusterfs-common
+
+- name: Enable GlusterFS on boot
+  service: 'name=glusterd state=started enabled=yes'
+
+- name: Configure glusterfs peers
+  gluster_peer:
+    state: present
+    nodes: '{{ play_hosts }}'
+  delegate_to: '{{ play_hosts | first }}'
+
+- name: Get existing volumes list
+  shell: 'gluster volume list'
+  changed_when: false
+  register: glusterfs_volume_list
+  delegate_to: '{{ play_hosts | first }}'

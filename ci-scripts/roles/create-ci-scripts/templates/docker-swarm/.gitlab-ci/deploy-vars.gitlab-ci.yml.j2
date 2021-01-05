@@ -1,8 +1,8 @@
 
 .deploy_vars_{{item.name}}:
   variables:
-    WORKING_PATH: /var/www/{{team_name}}/{{project_name}}/{{item.name | replace('-','_') }}
     PROJECT_ROOT_PATH: {{item.root_path | default(".")}}
+    SERVICE_WORKING_PATH: {{team_name}}/{{project_name}}/{{item.name | replace('-','_') }}
     SERVICE_NAME: {{team_name}}_{{project_name}}_{{item.name | replace('-','_') }}
     DOCKER_IMAGE_PATH: {{item.docker_image_registry_path}}
     DOCKER_FILE_PATH: {{item.docker_file_path | default(".")}}
