@@ -31,7 +31,6 @@ services:
 {% endif %}
     networks:
       - swarm_{{ org_name | lower }}_{{ env | lower }}
-
 networks:
   swarm_{{ org_name | lower }}_{{ env | lower }}:
     external: true
