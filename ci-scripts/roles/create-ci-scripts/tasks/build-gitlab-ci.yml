@@ -19,13 +19,6 @@
   with_items: '{{ services }}'
   become: yes
 
-- name: Build pre-deploy.gitlab-ci.yml for each service
-  template:
-    src: templates/docker-swarm/.gitlab-ci/pre-deploy.gitlab-ci.yml.j2
-    dest: /var/ci-scripts/{{repo_name}}/.gitlab-ci/{{item.name}}/pre-deploy.gitlab-ci.yml
-  with_items: '{{ services }}'
-  become: yes
-
 - name: Build deploy-vars.gitlab-ci.yml for each service
   template:
     src: templates/docker-swarm/.gitlab-ci/deploy-vars.gitlab-ci.yml.j2
