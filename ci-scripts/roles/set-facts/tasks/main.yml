@@ -1,0 +1,32 @@
+- name: Set facts
+  set_fact:
+    ci_group_name: 'others'
+    repo_ci_group_id: 416
+    gitlab_url: gitlab.nexdev.net
+  when: team_name != "nex3" and team_name != "luminet"
+  become: yes
+
+- name: Set facts
+  set_fact:
+    ci_group_name: '{{team_name}}'
+    repo_ci_group_id: 119
+    gitlab_url: git3.nexdev.net
+  when: team_name == "nex3" or team_name == "luminet"
+  become: yes
+
+- name: Set repo ci name
+  set_fact:
+    repo_name: "{{team_name}}_{{project_name | replace('-','_')}}_{{services[0].name | replace('-','_') }}"
+  become: yes
+
+- name: Set gitlab token
+  set_fact:
+    gitlab_token: 'zpsbdxdyfXrUfxyFpVq3'
+  when: gitlab_url == "gitlab.nexdev.net"
+  become: yes
+
+- name: Set gitlab token
+  set_fact:
+    gitlab_token: 'yqeW-bpj43G6isyKA3tG'
+  when: gitlab_url is undefined or gitlab_url == "git3.nexdev.net"
+  become: yes

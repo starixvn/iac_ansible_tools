@@ -12,9 +12,9 @@
     dest: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.0.name}}/{{env | upper}}{{ '' if item.1 == 0  else '_' }}{{ '' if item.1 == 0  else item.1 }}.docker-compose.yml
   vars:
     env: local
-  with_subelements:
+  with_nested:
     - '{{ services }}'
-    - versions
+    - '{{ versions }}'
   become: yes
 
 - name: Build docker-compose for {{env}}
@@ -23,9 +23,9 @@
     dest: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.0.name}}/{{env | upper}}{{ '' if item.1 == 0  else '_' }}{{ '' if item.1 == 0  else item.1 }}.docker-compose.yml
   vars:
     env: sit
-  with_subelements:
+  with_nested:
     - '{{ services }}'
-    - versions
+    - '{{ versions }}'
   become: yes
 
 - name: Build docker-compose for {{env}}
@@ -34,9 +34,9 @@
     dest: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.0.name}}/{{env | upper}}{{ '' if item.1 == 0  else '_' }}{{ '' if item.1 == 0  else item.1 }}.docker-compose.yml
   vars:
     env: uat
-  with_subelements:
+  with_nested:
     - '{{ services }}'
-    - versions
+    - '{{ versions }}'
   become: yes
 
 - name: Build docker-compose for {{env}}
@@ -45,7 +45,7 @@
     dest: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.0.name}}/{{env | upper}}{{ '' if item.1 == 0  else '_' }}{{ '' if item.1 == 0  else item.1 }}.docker-compose.yml
   vars:
     env: prod
-  with_subelements:
+  with_nested:
     - '{{ services }}'
-    - versions
+    - '{{ versions }}'
   become: yes

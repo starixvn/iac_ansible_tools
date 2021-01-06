@@ -1,20 +1,3 @@
-- name: Set repo ci name
-  set_fact:
-    repo_name: "{{team_name}}_{{project_name | replace('-','_')}}_{{services[0].name | replace('-','_') }}"
-  become: yes
-
-- name: Set gitlab token
-  set_fact:
-    gitlab_token: 'zpsbdxdyfXrUfxyFpVq3'
-  when: gitlab_url == "gitlab.nexdev.net"
-  become: yes
-
-- name: Set gitlab token
-  set_fact:
-    gitlab_token: 'yqeW-bpj43G6isyKA3tG'
-  when: gitlab_url is undefined or gitlab_url == "git3.nexdev.net"
-  become: yes
-
 - name: Create CI repo {{repo_group_path}}/{{repo_name}}
   uri:
     url: https://{{gitlab_url | default("git3.nexdev.net")}}/api/v4/projects/

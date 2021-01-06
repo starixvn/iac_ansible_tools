@@ -1,4 +1,4 @@
-{% for version in item.versions|default('0') %}
+{% for version in versions %}
 post_build_{{item.name | replace('-','_') }}_prod{{ '' if version == 0 else version }}:
   extends:
     - .deploy_vars_{{item.name | replace('-','_') }}
