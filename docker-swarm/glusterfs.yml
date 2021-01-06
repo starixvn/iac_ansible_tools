@@ -1,7 +1,0 @@
----
-- hosts: all
-  tasks:
-    # Create a Gluster cluster
-    - name: Create a Gluster Volume
-      import_role:
-        name: "gluster-volume"
