@@ -1,5 +1,10 @@
 ---
 # tasks file for glusterfs-ansible-role
+- name: Get existing volumes list
+  shell: 'gluster volume list'
+  changed_when: false
+  register: glusterfs_volume_list
+  delegate_to: '{{ play_hosts | first }}'
 
 - name: Remove volume(s)
   gluster_volume:

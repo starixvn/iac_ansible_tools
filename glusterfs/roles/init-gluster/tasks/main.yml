@@ -4,18 +4,22 @@
   with_items:
     - glusterfs-server
     - glusterfs-common
+  become: true
 
 - name: Enable GlusterFS on boot
   service: 'name=glusterd state=started enabled=yes'
+  become: true
 
 - name: Configure glusterfs peers
   gluster_peer:
     state: present
     nodes: '{{ play_hosts }}'
   delegate_to: '{{ play_hosts | first }}'
+  become: true
 
 - name: Get existing volumes list
   shell: 'gluster volume list'
   changed_when: false
   register: glusterfs_volume_list
   delegate_to: '{{ play_hosts | first }}'
+  become: true

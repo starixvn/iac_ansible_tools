@@ -1,5 +1,11 @@
 ---
 - hosts: all
   roles:
-    - role: create-gluster
-  tags: create-gluster
+    - role: init-gluster
+  tags: init-gluster
+
+- hosts: all
+  roles:
+    - role: init-gluster
+    - role: create-volumes
+  tags: create-volumes

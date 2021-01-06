@@ -1,0 +1,28 @@
+---
+# tasks file for glusterfs-ansible-role
+
+- name: Unmount volume(s)
+  mount:
+    name: '{{ item.mount.path }}'
+    src: "{% if cluster is defined %}{{ cluster[0] + ':/' + item.volume }}{% else %}{{ play_hosts[0] + ':/' + item.volume }}{% endif %}"
+    fstype: glusterfs
+    opts: "{%- if item.mount.options is defined -%}{{ item.mount.options }}{%- else -%}{%- if cluster is defined and cluster | length > 1 -%}{{ 'defaults,_netdev,backupvolfile-server=' + cluster[1] }}{%- elif play_hosts | length > 1 -%}{{ 'defaults,_netdev,backupvolfile-server=' + play_hosts[1] }}{%- else -%}'defaults,_netdev'{%- endif -%}{%- endif -%}"
+    state: unmounted
+  with_items: '{{ glusterfs_volumes }}'
+  when: >
+    item.mount is defined and
+    (item.state is defined and item.state == 'absent')
+  become: true
+
+- name: Remove mount(s) from fstab
+  mount:
+    name: '{{ item.mount.path }}'
+    src: "{% if cluster is defined %}{{ cluster[0] + ':/' + item.volume }}{% else %}{{ play_hosts[0] + ':/' + item.volume }}{% endif %}"
+    fstype: glusterfs
+    opts: "{%- if item.mount.options is defined -%}{{ item.mount.options }}{%- else -%}{%- if cluster is defined and cluster | length > 1 -%}{{ 'defaults,_netdev,backupvolfile-server=' + cluster[1] }}{%- elif play_hosts | length > 1 -%}{{ 'defaults,_netdev,backupvolfile-server=' + play_hosts[1] }}{%- else -%}'defaults,_netdev'{%- endif -%}{%- endif -%}"
+    state: absent
+  with_items: '{{ glusterfs_volumes }}'
+  when: >
+    item.mount is defined and
+    (item.state is defined and item.state == 'absent')
+  become: true

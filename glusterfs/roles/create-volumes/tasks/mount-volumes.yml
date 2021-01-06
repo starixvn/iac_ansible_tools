@@ -4,7 +4,7 @@
 - name: Remove old mount point from fstab in case of change
   lineinfile:
     dest: /etc/fstab
-    regexp: "^{% if item.nodes is defined %}{{ item.nodes[0] + ':/' + item.volume }}{% else %}{{ play_hosts[0] + ':/' + item.volume }}{% endif %} (?!.*{{ item.mount.path }} ).*"
+    regexp: "^{% if cluster is defined %}{{ cluster[0] + ':/' + item.volume }}{% else %}{{ play_hosts[0] + ':/' + item.volume }}{% endif %} (?!.*{{ item.mount.path }} ).*"
     state: absent
   register: regex_fstab
   with_items: '{{ glusterfs_volumes }}'
@@ -34,9 +34,9 @@
 - name: Mount volume(s)
   mount:
     name: '{{ item.mount.path }}'
-    src: "{% if item.nodes is defined %}{{ item.nodes[0] + ':/' + item.volume }}{% else %}{{ play_hosts[0] + ':/' + item.volume }}{% endif %}"
+    src: "{% if cluster is defined %}{{ cluster[0] + ':/' + item.volume }}{% else %}{{ play_hosts[0] + ':/' + item.volume }}{% endif %}"
     fstype: glusterfs
-    opts: "{%- if item.mount.options is defined -%}{{ item.mount.options }}{%- else -%}{%- if item.nodes is defined and item.nodes | length > 1 -%}{{ 'defaults,_netdev,backupvolfile-server=' + item.nodes[1] }}{%- elif item.nodes is undefined and play_hosts | length > 1 -%}{{ 'defaults,_netdev,backupvolfile-server=' + play_hosts[1] }}{%- else -%}defaults,_netdev{%- endif -%}{%- endif -%}"
+    opts: "{%- if item.mount.options is defined -%}{{ item.mount.options }}{%- else -%}{%- if cluster is defined and cluster | length > 1 -%}{{ 'defaults,_netdev,backupvolfile-server=' + cluster[1] }}{%- elif cluster is undefined and play_hosts | length > 1 -%}{{ 'defaults,_netdev,backupvolfile-server=' + play_hosts[1] }}{%- else -%}defaults,_netdev{%- endif -%}{%- endif -%}"
     state: mounted
   with_items: '{{ glusterfs_volumes }}'
   when: >

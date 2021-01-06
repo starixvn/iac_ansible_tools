@@ -6,7 +6,7 @@
   delegate_to: '{{ item[1] }}'
   with_nested:
     - '{{ glusterfs_volumes }}'
-    - '{{ play_hosts }}'
+    - '{{ cluster | default(play_hosts) }}'
   when: >
     (item[0].state is not defined or item[0].state == 'present') and
     (item[0].nodes is undefined or item[1] in item[0].nodes) and
@@ -25,22 +25,20 @@
 - name: Create and configure volumes
   gluster_volume:
     name: '{{ item.volume }}'
-    cluster: '{{ play_hosts }}'
+    cluster: '{{ cluster | default(play_hosts) }}'
     force: "{{ item.force | default('yes') }}"
     transport: "{{ item.transport | default('tcp') }}"
     state: present
-    replicas: '{{ play_hosts | length }}'
+    replicas: '{{ replica | default(play_hosts | length) }}'
     stripes: '{{ item.stripe | default(omit) }}'
     disperses: '{{ item.disperse | default(omit) }}'
     redundancies: '{{ item.redundancy | default(omit) }}'
     options: '{{ item.options | default(omit) }}'
     brick: "{% if item.bricks is defined %}{{ item.bricks | join(',') }}{% else %}{{ glusterfs_default_bricks_dir }}/{{ item.volume }}{% endif %}"
-  delegate_to: '{{ play_hosts | first }}'
+  delegate_to: '{{ cluster | default(play_hosts) | first }}'
   run_once: True
   with_items: '{{ glusterfs_volumes }}'
-  when: >
-    (item.state is not defined or item.state == 'present') and 
-    (item.arbiter is undefined or item.arbiter == 0)
+  when: (item.state is not defined or item.state == 'present')
 
 - name: Start volume(s)
   gluster_volume:
