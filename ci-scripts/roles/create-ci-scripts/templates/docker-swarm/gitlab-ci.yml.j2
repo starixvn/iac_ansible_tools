@@ -2,6 +2,9 @@ stages:
 {% if sonarqube_enabled is defined and sonarqube_enabled == true %}
   - test
 {%endif%}
+{% if frameworks is defined and "cocos" in frameworks %}
+  - build-cocos-web
+{%endif%}
   - build
   - post-build
   - deploy
@@ -28,6 +31,11 @@ include:
     ref: rocketor
     file: 'docker/base/build-docker-image-dotnet.gitlab-ci.yml'
 {%endif%}
+{% if frameworks is defined and "cocos" in frameworks %}
+  - project: 'ci/common-ci'
+    ref: rocketor
+    file: 'docker/base/build-docker-image-cocos.gitlab-ci.yml'
+{%endif%}
   - project: 'ci/common-ci'
     ref: rocketor
     file: 'docker/base/post-build-docker-image.gitlab-ci.yml'
@@ -36,6 +44,9 @@ include:
     file: '_teams/{{org_name}}/{{ci_group_name}}/deploy-docker-swarm-stack/index.gitlab-ci.yml'
 {% for service in services %}
   - .gitlab-ci/{{service.name | replace('-','_') }}/build.gitlab-ci.yml
+{% if service.framework is defined and service.framework == "cocos" %}
+  - .gitlab-ci/{{service.name | replace('-','_') }}/build-cocos-web.gitlab-ci.yml
+{%endif%}
   - .gitlab-ci/{{service.name | replace('-','_') }}/deploy-vars.gitlab-ci.yml
   - .gitlab-ci/{{service.name | replace('-','_') }}/rules.gitlab-ci.yml
   - .gitlab-ci/{{service.name | replace('-','_') }}/deploy-local.gitlab-ci.yml

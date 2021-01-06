@@ -23,13 +23,13 @@
     repo_name: "{{team_name}}_{{project_name | replace('-','_')}}_{{ services[0].name | replace('-','_') }}"
   become: yes
 
-- name: Set ci group name
+- name: Set facts
   set_fact:
     ci_group_name: 'others'
   when: team_name == "nexus"
   become: yes
 
-- name: Set ci group name
+- name: Set facts
   set_fact:
     ci_group_name: '{{team_name}}'
   when: team_name == "nex3" or team_name == "luminet"

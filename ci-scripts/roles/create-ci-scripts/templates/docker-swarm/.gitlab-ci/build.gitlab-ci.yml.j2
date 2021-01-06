@@ -3,3 +3,8 @@ build_image_{{item.name | replace('-','_') }}:
     - .deploy_vars_{{item.name | replace('-','_') }}
     - .build:{{item.framework | default('default')}}:image:noenv
     - .build:image:{{item.name | replace('-','_') }}:rules
+{% if item.framework is defined and item.framework == "cocos" and item.multiple_image_env is undefined %}  
+  needs: ['build_cocos_web']
+  dependencies:
+    - build_cocos_web
+{% endif %}

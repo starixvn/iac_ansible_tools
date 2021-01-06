@@ -19,6 +19,14 @@
   with_items: '{{ services }}'
   become: yes
 
+- name: Build build-cocos-web.gitlab-ci.yml for each service
+  template:
+    src: templates/docker-swarm/.gitlab-ci/build-cocos-web.gitlab-ci.yml.j2
+    dest: /var/ci-scripts/{{repo_name}}/.gitlab-ci/{{item.name}}/build-cocos-web.gitlab-ci.yml
+  with_items: '{{ services }}'
+  when: frameworks is defined and "cocos" in frameworks
+  become: yes
+
 - name: Build deploy-vars.gitlab-ci.yml for each service
   template:
     src: templates/docker-swarm/.gitlab-ci/deploy-vars.gitlab-ci.yml.j2
