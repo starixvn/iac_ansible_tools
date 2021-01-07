@@ -1,9 +1,10 @@
+{% set service_name = item.name | replace('-','_') %}
 
-.deploy_vars_{{item.name}}:
+.deploy_vars_{{service_name}}:
   variables:
     PROJECT_ROOT_PATH: {{item.root_path | default(".")}}
-    WORKING_PATH: /var/www/gluster/web/{{team_name}}/{{project_name}}/{{item.name | replace('-','_') }}
-    SERVICE_NAME: {{project_name}}_{{item.name | replace('-','_') }}
+    WORKING_PATH: /var/www/gluster/web/{{team_name}}/{{project_name}}/{{service_name}}
+    SERVICE_NAME: {{project_name}}_{{service_name}}
     DOCKER_IMAGE_PATH: {{item.docker_image_registry_path}}
     DOCKER_FILE_PATH: {{item.docker_file_path | default(".")}}
     DOCKER_FILE_NAME: {{item.docker_file_name | default("Dockerfile")}}

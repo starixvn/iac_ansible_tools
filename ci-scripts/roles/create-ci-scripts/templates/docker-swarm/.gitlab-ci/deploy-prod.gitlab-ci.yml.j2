@@ -1,17 +1,19 @@
+{% set service_name = item.name | replace('-','_') %}
+
 {% for version in versions %}
-post_build_{{item.name | replace('-','_') }}_prod{{ '' if version == 0 else version }}:
+post_build_{{service_name}}_prod{{ '' if version == 0 else version }}:
   extends:
-    - .deploy_vars_{{item.name | replace('-','_') }}
+    - .deploy_vars_{{service_name}}
     - .post_build
     - .deploy:prod{{ '' if version == 0 else version }}
-    - .deploy:prod{{ '' if version == 0 else version }}:{{item.name | replace('-','_') }}:rules
-  needs: ['build_image_{{item.name | replace('-','_') }}']
+    - .deploy:prod{{ '' if version == 0 else version }}:{{service_name}}:rules
+  needs: ['build_image_{{service_name}}']
 
-deploy_{{item.name | replace('-','_') }}_prod{{ '' if version == 0 else version }}:
+deploy_{{service_name}}_prod{{ '' if version == 0 else version }}:
   extends:
-    - .deploy_vars_{{item.name | replace('-','_') }}
+    - .deploy_vars_{{service_name}}
     - .deploy:prod{{ '' if version == 0 else version }}:base:swarm:stack
-    - .deploy:prod{{ '' if version == 0 else version }}:{{item.name | replace('-','_') }}:rules
-  needs: ['post_build_{{item.name | replace('-','_') }}_prod{{ '' if version == 0 else version }}']
+    - .deploy:prod{{ '' if version == 0 else version }}:{{service_name}}:rules
+  needs: ['post_build_{{service_name}}_prod{{ '' if version == 0 else version }}']
 
 {% endfor %}
