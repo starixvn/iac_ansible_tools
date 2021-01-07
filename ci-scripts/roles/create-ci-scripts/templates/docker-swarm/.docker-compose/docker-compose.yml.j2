@@ -2,27 +2,29 @@
 # File managed by Ansible - NexOps
 # Your changes will be overwritten.
 #######################################################################
+{% set environment = '{{ env | upper }}{{ '' if item.1 == 0  else '_' }}{{'' if item.1 == 0  else item.1 }}' %}
+{% set working_path = '/var/www/gluster/web/{{team_name}}/{{project_name}}/{{item.0.name | replace('-','_')}}'%}
 version: '3.3'
 services:
-  {{item.0.name}}_{{ env | upper }}{{ '' if item.1 == 0  else '_' }}{{'' if item.1 == 0  else item.1 }}:
+  {{item.0.name}}_{{environment}}:
 {% if gitlab_url == "git3.nexdev.net" %}
-    image: git3.nexdev.net:5050/{{item.0.docker_image_registry_path}}:{{ env | upper }}{{ '' if item.1 == 0  else '_' }}{{'' if item.1 == 0  else item.1 }}-latest
+    image: git3.nexdev.net:5050/{{item.0.docker_image_registry_path}}:{{environment}}-latest
 {% else %}
-    image: registry.nexdev.net:5050/{{item.0.docker_image_registry_path}}:{{ env | upper }}{{ '' if item.1 == 0  else '_' }}{{'' if item.1 == 0  else item.1 }}-latest
+    image: registry.nexdev.net:5050/{{item.0.docker_image_registry_path}}:{{environment}}-latest
 {% endif %}
 {% if item.0.volumes is defined or item.0.config_file_path is defined %}
     volumes:
 {% if item.0.framework is defined and item.0.framework == "dotnet" %}
-      - /var/www/gluster/web/{{team_name}}/{{project_name}}/{{item.0.name | replace('-','_') }}/{{env | upper}}{{ '' if item.1 == 0  else '_' }}{{'' if item.1 == 0  else item.1 }}/configs/{{item.config_file_name | default("appsettings")}}.{{item.config_file_ext | default("json")}}:{{ item.config_container_path | default ('/app')}}/{{item.config_file_name | default("appsettings")}}.{{item.config_file_ext | default("json")}}
+      - {{working_path}}/{{environment}}/configs/{{item.0.config_file_name | default("appsettings")}}.{{item.0.config_file_ext | default("json")}}:{{ item.0.config_container_path | default ('/app')}}/{{item.0.config_file_name | default("appsettings")}}.{{item.0.config_file_ext | default("json")}}
 {% if  item.0.sp_mapper is defined and item.0.sp_mapper == true %}
-      - /var/www/gluster/web/{{team_name}}/{{project_name}}/{{item.0.name | replace('-','_') }}/{{env | upper}}{{ '' if item.1 == 0  else '_' }}{{'' if item.1 == 0  else item.1 }}/configs/{{item.sp_file_name | default("SpNames")}}.{{item.sp_file_extension | default("xml")}}:/app/App_Data/{{item.sp_file_name | default("SpNames")}}.{{item.sp_file_extension | default("xml")}}
+      - {{working_path}}/{{environment}}/configs/{{item.0.sp_file_name | default("SpNames")}}.{{item.0.sp_file_extension | default("xml")}}:{{ item.0.sp_container_path | default ('/app')}}/App_Data/{{item.0.sp_file_name | default("SpNames")}}.{{item.0.sp_file_extension | default("xml")}}
 {% endif %}
-{% elif item.config_file_name is defined %}
-    - /var/www/gluster/web/{{team_name}}/{{project_name}}/{{item.0.name | replace('-','_') }}/{{env | upper}}{{ '' if item.1 == 0  else '_' }}{{'' if item.1 == 0  else item.1 }}/{{item.config_file_name}}.{{item.config_file_ext}}:{{item.config_container_path }}/{{item.config_file_name}}.{{item.config_file_ext}}
+{% elif item.0.config_file_name is defined %}
+    - {{working_path}}/{{environment}}/{{item.0.config_file_name}}.{{item.0.config_file_ext}}:{{item.0.config_container_path }}/{{item.0.config_file_name}}.{{item.0.config_file_ext}}
 {% endif %}
 {% if item.0.volumes is defined %}
 {% for volume in item.0.volumes %}
-      - /var/www/gluster/web/{{volume.src}}/{{env | upper}}{{ '' if item.1 == 0  else '_' }}{{'' if item.1 == 0  else item.1 }}:{{volume.dest}}
+      - /var/www/gluster/web/{{volume.src}}/{{environment}}:{{volume.dest}}
 {% endfor %}
 {% endif %}
 {% endif %}
