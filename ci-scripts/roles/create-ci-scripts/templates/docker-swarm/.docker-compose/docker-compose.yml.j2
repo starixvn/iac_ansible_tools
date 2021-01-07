@@ -13,10 +13,12 @@ services:
 {% if item.0.volumes is defined or item.0.config_file_path is defined %}
     volumes:
 {% if item.0.framework is defined and item.0.framework == "dotnet" %}
-      - /var/www/gluster/web/{{team_name}}/{{project_name}}/{{item.0.name | replace('-','_') }}/{{env | upper}}{{ '' if item.1 == 0  else '_' }}{{'' if item.1 == 0  else item.1 }}/configs/appsettings.json:/app/appsettings.json
+      - /var/www/gluster/web/{{team_name}}/{{project_name}}/{{item.0.name | replace('-','_') }}/{{env | upper}}{{ '' if item.1 == 0  else '_' }}{{'' if item.1 == 0  else item.1 }}/configs/{{item.config_file_name | default("appsettings")}}.{{item.config_file_ext | default("json")}}:{{ item.config_container_path | default ('/app')}}/{{item.config_file_name | default("appsettings")}}.{{item.config_file_ext | default("json")}}
 {% if  item.0.sp_mapper is defined and item.0.sp_mapper == true %}
       - /var/www/gluster/web/{{team_name}}/{{project_name}}/{{item.0.name | replace('-','_') }}/{{env | upper}}{{ '' if item.1 == 0  else '_' }}{{'' if item.1 == 0  else item.1 }}/configs/{{item.sp_file_name | default("SpNames")}}.{{item.sp_file_extension | default("xml")}}:/app/App_Data/{{item.sp_file_name | default("SpNames")}}.{{item.sp_file_extension | default("xml")}}
 {% endif %}
+{% elif item.config_file_name is defined %}
+    - /var/www/gluster/web/{{team_name}}/{{project_name}}/{{item.0.name | replace('-','_') }}/{{env | upper}}{{ '' if item.1 == 0  else '_' }}{{'' if item.1 == 0  else item.1 }}/{{item.config_file_name}}.{{item.config_file_ext}}:{{item.config_container_path }}/{{item.config_file_name}}.{{item.config_file_ext}}
 {% endif %}
 {% if item.0.volumes is defined %}
 {% for volume in item.0.volumes %}
