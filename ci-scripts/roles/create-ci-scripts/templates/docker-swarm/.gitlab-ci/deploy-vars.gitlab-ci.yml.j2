@@ -1,5 +1,5 @@
 {% set service_name = item.name | replace('-','_') %}
-
+{% set config_file = item.config_file_name ~ '.' ~ item.config_file_ext %}
 .deploy_vars_{{service_name}}:
   variables:
     PROJECT_ROOT_PATH: {{item.root_path | default(".")}}
@@ -9,19 +9,14 @@
     DOCKER_FILE_PATH: {{item.docker_file_path | default(".")}}
     DOCKER_FILE_NAME: {{item.docker_file_name | default("Dockerfile")}}
     CONFIG_FILE_PATH: {{item.config_file_path | default(".")}}
-{% if  item.framework is defined and item.framework == "dotnet" %}
-{% if  item.sp_mapper is defined and item.sp_mapper == true %}
+{% if item.sp_mapper is defined and item.sp_mapper == true %}
     SP_FILE_PATH: {{item.sp_file_path | default(".")}}/App_Data
     SP_FILE_NAME: {{item.sp_file_name | default("SpNames")}}
     SP_FILE_EXTENSION: {{item.sp_file_extension | default("xml")}}
 {%endif%}
-    CONFIG_FILE_NAME: {{item.config_file_name | default("appsettings")}}
-    CONFIG_FILE_EXTENSION: {{item.config_file_ext | default("json")}}
-    CONFIG_CONTAINER_PATH: {{ item.config_container_path | default ('/app')}}/{{item.config_file_name | default("appsettings")}}.{{item.config_file_ext | default("json")}}
-{% elif item.config_file_name is defined %}
+{% if item.config_file_name is defined %}
     CONFIG_FILE_NAME: {{ item.config_file_name }}
     CONFIG_FILE_EXTENSION: {{ item.config_file_ext }}
-    CONFIG_CONTAINER_PATH:  {{ item.config_container_path }}/{{item.config_file_name}}.{{item.config_file_ext}}
 {%endif%}
     STACK_NAME: {{project_name}}
     DOCKER_COMPOSE_FILE_PATH: {{item.docker_compose_file_path | default(".")}}

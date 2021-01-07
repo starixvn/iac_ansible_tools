@@ -7,8 +7,9 @@
 {% set environment_version = '' if item.1 == 0  else item.1 %}
 {% set environment = env | upper ~ underscore ~ environment_version %}
 {% set working_path = gluster_path ~ team_name ~ '/' ~ project_name ~ '/' ~ item.0.name | replace('-','_') %}
-{% set config_file = item.0.config_file_name | default("appsettings") ~ '.' ~ item.0.config_file_ext | default("json") %}
-{% set config_in_container_path = item.0.config_container_path | default ('/app') %}
+{% set config_file_path = item.0.config_file_path | default(".") %}
+{% set config_file = item.0.config_file_name ~ '.' ~ item.0.config_file_ext %}
+{% set container_root_path = item.0.container_root_path | default ('/app') %}
 {% set sp_file = item.0.sp_file_name | default("SpNames") ~ '.' ~ item.0.sp_file_extension | default("xml") %}
 {% set network = org_name | lower ~ '_' ~ env | lower %}
 version: '3.3'
@@ -19,18 +20,16 @@ services:
 {% else %}
     image: registry.nexdev.net:5050/{{item.0.docker_image_registry_path}}:{{environment}}-latest
 {% endif %}
-{% if item.0.volumes is defined or item.0.config_file_path is defined %}
+{% if item.0.volumes is defined or item.0.config_file_name is defined %}
     volumes:
 {% if item.0.framework is defined and item.0.framework == "dotnet" %}
-      - {{working_path}}/{{environment}}/configs/{{config_file}}:{{config_in_container_path}}/{{config_file}}
+      - {{working_path}}/{{environment}}/configs/{{config_file}}:{{container_root_path}}/{{config_file_path}}/{{config_file}}
 {% if  item.0.sp_mapper is defined and item.0.sp_mapper == true %}
       - {{working_path}}/{{environment}}/configs/{{sp_file}}:/app/App_Data/{{sp_file}}
 {% endif %}
 {% endif %}
 {% if item.0.framework is undefined or item.0.framework != "dotnet" %}
-{% if item.0.config_file_name is defined %}
-      - {{working_path}}/{{environment}}/configs/{{config_file}}:{{config_in_container_path}}/{{config_file}}
-{% endif %}
+      - {{working_path}}/{{environment}}/configs/{{config_file}}:{{container_root_path}}/{{config_file_path}}/{{config_file}}
 {% endif %}
 {% if item.0.volumes is defined %}
 {% for volume in item.0.volumes %}
