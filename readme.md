@@ -9,6 +9,7 @@ cat /etc/keepalived/keepalived_status
 ###docker-swarm
 docker swarm join-token --quiet manager
 docker swarm join-token --quiet worker
+docker swarm join --token ip:2377
 
 docker swarm leave -f
 docker node demote <node name>
