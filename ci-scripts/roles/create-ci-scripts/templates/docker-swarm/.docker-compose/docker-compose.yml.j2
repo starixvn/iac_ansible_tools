@@ -8,7 +8,9 @@
 {% set environment = env | upper ~ underscore ~ environment_version %}
 {% set working_path = gluster_path ~ team_name ~ '/' ~ project_name ~ '/' ~ item.0.name | replace('-','_') %}
 {% set config_file_path = item.0.config_file_path | default(".") %}
+{% if item.0.config_file_name is defined %}
 {% set config_file = item.0.config_file_name ~ '.' ~ item.0.config_file_ext %}
+{% endif %}
 {% set config_container_path = item.0.config_container_path | default ('.') %}
 {% set container_root_path = item.0.container_root_path | default ('/app') %}
 {% set sp_file = item.0.sp_file_name | default("SpNames") ~ '.' ~ item.0.sp_file_extension | default("xml") %}
@@ -21,7 +23,7 @@ services:
 {% else %}
     image: registry.nexdev.net:5050/{{item.0.docker_image_registry_path}}:{{environment}}-latest
 {% endif %}
-{% if item.0.volumes is defined or item.0.config_file_name is defined %}
+{% if item.0.volumes is defined or config_file is defined %}
     volumes:
 {% if item.0.framework is defined and item.0.framework == "dotnet" %}
       - {{working_path}}/{{environment}}/configs/{{config_file}}:{{container_root_path}}/{{config_container_path}}/{{config_file}}
@@ -30,7 +32,9 @@ services:
 {% endif %}
 {% endif %}
 {% if item.0.framework is undefined or item.0.framework != "dotnet" %}
+{% if config_file is defined %}
       - {{working_path}}/{{environment}}/configs/{{config_file}}:{{container_root_path}}/{{config_container_path}}/{{config_file}}
+{% endif %}
 {% endif %}
 {% if item.0.volumes is defined %}
 {% for volume in item.0.volumes %}
