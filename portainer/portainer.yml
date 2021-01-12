@@ -1,10 +1,10 @@
 ---
-- hosts: swarm_leader
+- hosts: nexops
   roles:
-  - role: portainer-server-swarm
-    tags: portainer-server-swarm
+    - role: portainer-server-swarm
+      tags: portainer-server-swarm
 
 - hosts: all
   roles:
-  - role: portainer-agent-swarm
-    tags: portainer-agent-swarm
+    - role: portainer-agent-swarm
+      tags: portainer-agent-swarm

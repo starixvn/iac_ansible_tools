@@ -1,4 +1,4 @@
 ---
-- hosts: swarm_managers
+- hosts: haproxy
   roles:
     - role: setup

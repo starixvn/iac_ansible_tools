@@ -1,16 +1,16 @@
 ---
-- hosts: swarm_leader
+- hosts: nexops
   roles:
     - role: build-full-monitoring-tools
   tags: build-monitoring-tools
 
-- hosts: swarm_managers
+- hosts: nexops
   roles:
     - role: create-directory-deploy
     - role: deploy-full-monitoring-tools
   tags: deploy-monitoring-tools
 
-- hosts: swarm_managers
+- hosts: nexops
   roles:
     - role: create-directory-deploy
     - role: deploy-prometheus
