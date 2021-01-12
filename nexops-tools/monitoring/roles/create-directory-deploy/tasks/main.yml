@@ -14,6 +14,7 @@
   become: yes
   with_items:
     - mysql
+    - grafana
 
 - name: Copy tools' configs files
   copy:

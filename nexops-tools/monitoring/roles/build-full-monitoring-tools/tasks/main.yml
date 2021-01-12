@@ -1,5 +1,6 @@
 ---
 - name: Create working directory {{ working_directory }}
+  run_once: true
   file:
     path: '{{ working_directory }}'
     mode: '0755'
@@ -7,6 +8,7 @@
   become: yes
 
 - name: Copy template files for build
+  run_once: true
   copy:
     src: 'files/{{item}}'
     dest: '{{ working_directory }}'
@@ -18,6 +20,7 @@
   ignore_errors: yes
 
 - name: Executing script to build and push images
+  run_once: true
   shell: |
     export ENV={{ENV}}
     cd {{ working_directory }}

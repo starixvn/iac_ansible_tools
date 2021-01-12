@@ -1,8 +1,8 @@
 ---
-- name: Copy docker-compose template
+- name: Copy docker-compose template for pull
   copy:
     src: 'deploy-compose/{{item}}.docker-compose.yml'
-    dest: '{{ working_directory }}/{{item}}.docker-compose.yml'
+    dest: '{{ working_directory }}/{{item}}/docker-compose.yml'
   become: yes
   with_items:
     - grafana
@@ -11,15 +11,26 @@
 - name: Pull latest images
   shell: |
     export ENV={{ENV}}
-    cd {{ working_directory }}
+    cd {{ working_directory }}/{{item}}
     docker-compose pull
   become: yes
+  with_items:
+    - grafana
+    - prometheus
+
+- name: Copy docker-compose template for deploy
+  copy:
+    src: 'deploy-compose/{{item}}.docker-compose.yml'
+    dest: '{{ working_directory }}/{{item}}.docker-compose.yml'
+  become: yes
+  with_items:
+    - grafana
+    - prometheus
 
 - name: Deploy NexOps monitoring tools
-  when: inventory_hostname == groups['swarm_leader'][0]
+  when: inventory_hostname in groups['swarm_managers']
   shell: |
     cd {{ working_directory }}
     export ENV={{ENV}}
-    docker-compose -f grafana.docker-compose.yml -f prom.docker-compose.yml bundle -o monitoring.dab
-    docker stack deploy --bundle-file monitoring.dab mon
+    docker stack deploy --compose-file grafana.docker-compose.yml -c prometheus.docker-compose.yml monitoring
   become: yes

@@ -15,10 +15,6 @@ configs:
     file: ./caddy/Caddyfile
   prometheus_config:
     file: ./prometheus/prometheus.yml
-  # node_rules:
-  #   file: ./prometheus/rules/swarm_node.rules.yml
-  # task_rules:
-  #   file: ./prometheus/rules/swarm_task.rules.yml
 
 services:
   cadvisor:
