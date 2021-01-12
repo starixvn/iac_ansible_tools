@@ -6,6 +6,7 @@
     state: absent
     autoclean: yes
   become: yes
+
 - name: Install ntpdate tzdata packet
   apt:
     name:
@@ -17,8 +18,8 @@
 
 - name: Set timezone
   timezone:
-    name: "{{ ntp_timezone }}"
-  notify: restart cron
+    name: '{{ ntp_timezone }}'
+  #notify: restart cron
   become: yes
 
 - name: Sync time with {{ntp_server}}
@@ -32,4 +33,4 @@
   register: logtime
 
 - debug:
-    msg: "{{ logtime.stdout }}"
+    msg: '{{ logtime.stdout }}'
