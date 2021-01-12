@@ -23,3 +23,13 @@
   register: glusterfs_volume_list
   delegate_to: '{{ play_hosts | first }}'
   become: true
+
+- name: Install Docker Python library
+  become: true
+  apt:
+    state: present
+    update_cache: yes
+    #upgrade: yes
+    pkg:
+      - python3-pip
+      - curl
