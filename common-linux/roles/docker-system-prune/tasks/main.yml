@@ -28,3 +28,4 @@
     volumes: yes
     builder_cache: yes
   become: yes
+  ignore_errors: yes
