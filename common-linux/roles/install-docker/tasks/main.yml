@@ -8,9 +8,9 @@
     pkg:
       - python3-pip
       - curl
+
 - name: Install Docker Python library
   become: true
-  #become_method: sudo
   ignore_errors: true
   pip:
     name: docker
@@ -31,7 +31,7 @@
 - name: Install Docker GPG key
   become: yes
   #become_method: sudo
-  shell: "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -"
+  shell: 'curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -'
 
 - name: Add Docker repository
   become: yes
@@ -53,7 +53,7 @@
 - name: Add "{{ansible_user}}" user to "docker" group
   become: yes
   #become_method: sudo
-  shell: "adduser {{ansible_user}} docker"
+  shell: 'adduser {{ansible_user}} docker'
 
 - name: Waiting for Docker service to become available
   wait_for:
@@ -63,7 +63,7 @@
   get_url:
     url: https://github.com/docker/compose/releases/download/{{docker_compose_version | default ('1.24.0')}}/docker-compose-{{ ansible_system }}-{{ ansible_userspace_architecture }}
     dest: /usr/local/bin/docker-compose
-    mode: "u+x,g+x"
+    mode: 'u+x,g+x'
   become: yes
 - name: chmod docker-compose
   command: chmod +x /usr/local/bin/docker-compose

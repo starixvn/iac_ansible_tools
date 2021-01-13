@@ -1,6 +1,19 @@
+- name: Install Docker Python library
+  become: true
+  apt:
+    state: present
+    update_cache: yes
+    pkg:
+      - python3-pip
+      - python-pip
+
+- name: Install pip docker
+  shell: pip install --upgrade docker || pip install docker
+  become: yes
+
 - name: Prune system docker
   docker_prune:
-    containers: yes
+    containers: no
     images: yes
     networks: yes
     volumes: yes
