@@ -1,3 +1,10 @@
+- name: Install Software common
+  become: true
+  shell: |
+    apt-get install software-properties-common
+    apt-add-repository universe
+    apt-get update
+
 - name: Install Docker Python library
   become: true
   apt:
@@ -5,11 +12,13 @@
     update_cache: yes
     pkg:
       - python3-pip
-      - python-pip
 
-- name: Install pip docker
-  shell: pip install --upgrade docker || pip install docker
-  become: yes
+- name: Install Docker Python library
+  become: true
+  ignore_errors: true
+  pip:
+    name: docker
+    state: latest
 
 - name: Prune system docker
   docker_prune:
