@@ -42,3 +42,8 @@
   roles:
     - set-permission-folder
   tags: set-permission-folder
+
+- hosts: all
+  roles:
+    - docker-system-prune
+  tags: docker-system-prune-all
