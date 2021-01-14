@@ -9,12 +9,6 @@
 - name: Enable GlusterFS on boot
   service: 'name=glusterd state=started enabled=yes'
   become: true
-  when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'bionic'
-
-- name: Enable GlusterFS on boot
-  service: 'name=glusterfs-server state=started enabled=yes'
-  become: true
-  when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'xenial'
 
 - name: Configure glusterfs peers
   gluster_peer:
