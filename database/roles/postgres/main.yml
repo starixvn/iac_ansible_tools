@@ -1,0 +1,12 @@
+---
+- name: build-postgres
+  import_tasks: build-postgres.yml
+  when: postgres_version is defined
+  tags:
+    - build-postgres
+
+- name: deploy-postgres
+  import_tasks: deploy-postgres.yml
+  when: postgres_version is defined
+  tags:
+    - deploy-postgres
