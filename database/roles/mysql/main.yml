@@ -1,12 +1,12 @@
 ---
 - name: build-mysql
   import_tasks: build-mysql.yml
-  when: mysql_version is defined
+  when: version is defined
   tags:
     - build-mysql
 
 - name: deploy-mysql
   import_tasks: deploy-mysql.yml
-  when: mysql_version is defined
+  when: version is defined
   tags:
     - deploy-mysql
