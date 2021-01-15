@@ -1,5 +1,7 @@
-postgres:
-  image: registry.nexdev.net:5050/docker/database/mysql:{{version}}
-  build:
-    context: .
-    dockerfile: Dockerfile
+version: '3.5'
+services:
+  mysql:
+    image: registry.nexdev.net:5050/docker/database/mysql:{{version}}
+    build:
+      context: .
+      dockerfile: Dockerfile
