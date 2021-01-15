@@ -1,0 +1,20 @@
+---
+- hosts: all
+  roles:
+    - role: build/mysql
+  tags: build-mysql
+
+- hosts: all
+  roles:
+    - role: deploy-mysql
+  tags: deploy-mysql
+
+- hosts: all
+  roles:
+    - role: build/postgres
+  tags: build-postgres
+
+- hosts: all
+  roles:
+    - role: deploy-postgres
+  tags: deploy-postgres
