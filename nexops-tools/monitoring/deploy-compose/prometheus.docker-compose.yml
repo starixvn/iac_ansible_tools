@@ -79,7 +79,7 @@ services:
       replicas: 1
       placement:
         constraints:
-          - node.labels.NEXOPS == yes
+          - node.labels.NEXOPS_LOW_STORAGE == yes
       resources:
         limits:
           memory: 2048M
@@ -106,7 +106,7 @@ services:
       replicas: 1
       placement:
         constraints:
-          - node.labels.NEXOPS == yes
+          - node.labels.NEXOPS_LOW_STORAGE == yes
       resources:
         limits:
           memory: 128M

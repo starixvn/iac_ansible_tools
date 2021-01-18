@@ -40,7 +40,7 @@ services:
       replicas: 1
       placement:
         constraints:
-          - node.labels.NEXOPS == yes
+          - node.labels.NEXOPS_LOW_STORAGE == yes
       resources:
         limits:
           memory: 128M
@@ -48,7 +48,7 @@ services:
           memory: 64M
 
   mysql:
-    image: registry.nexdev.net:5050/docker/mysql:8.0
+    image: registry.nexdev.net:5050/docker/database/mysql:8.0
     networks:
       - net
     command: --default-authentication-plugin=mysql_native_password
@@ -64,4 +64,4 @@ services:
       replicas: 1
       placement:
         constraints:
-          - node.labels.NEXOPS == yes
+          - node.labels.NEXOPS_HIGH_STORAGE == yes
