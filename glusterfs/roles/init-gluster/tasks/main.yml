@@ -1,4 +1,33 @@
 ---
+- name: Create gluster directory
+  file:
+    path: '/var/libs/gluster'
+    state: directory
+    mode: '0777'
+  become: yes
+
+- name: Copy Gluster RSA public key
+  copy:
+    src: 'files/rsa.pub'
+    dest: '/var/libs/gluster/rsa.pub'
+  become: yes
+
+- name: Add a key from a file on the Ansible server
+  apt_key:
+    file: /var/libs/gluster/rsa.pub
+    state: present
+  become: yes
+
+- name: Add apt repository gluster (1/2)
+  apt_repository:
+    repo: ppa:gluster/glusterfs-7
+    state: present
+  become: yes
+
+- name: Add apt repository gluster (2/2)
+  shell: dpkg --force-all -P glusterfs-server
+  become: yes
+
 - name: Install GlusterFS
   apt: name={{ item }} state=latest update_cache=yes
   with_items:
