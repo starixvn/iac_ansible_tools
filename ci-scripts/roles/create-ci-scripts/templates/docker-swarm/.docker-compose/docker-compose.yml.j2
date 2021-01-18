@@ -14,6 +14,8 @@
 {% set config_container_path = item.0.config_container_path | default ('.') %}
 {% set container_root_path = item.0.container_root_path | default ('/app') %}
 {% set sp_file = item.0.sp_file_name | default("SpNames") ~ '.' ~ item.0.sp_file_extension | default("xml") %}
+{% set storage_label = '_LOW_STORAGE' if high_storage is undefined or high_storage == false else '_HIGH_STORAGE'%}
+{% set org_node_label = org_name ~ storage_label %}
 {% set network = org_name | lower ~ '_' ~ env | lower %}
 version: '3.3'
 services:
@@ -48,7 +50,7 @@ services:
       endpoint_mode: dnsrr
       placement:
         constraints:
-          - node.labels.{{ org_name | upper }} == yes
+          - node.labels.{{ org_node_label | upper }} == yes
 {% if item.0.node_labels is defined %}
 {% for node_label in item.0.node_labels %}
           - node.labels.{{ node_label | upper }} == yes
