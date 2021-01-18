@@ -6,15 +6,9 @@
     mode: '0777'
   become: yes
 
-- name: Copy Gluster RSA public key
-  copy:
-    src: 'files/rsa.pub'
-    dest: '/var/libs/gluster/rsa.pub'
-  become: yes
-
 - name: Add a key from a file on the Ansible server
   apt_key:
-    file: /var/libs/gluster/rsa.pub
+    url: https://download.gluster.org/pub/gluster/glusterfs/7/rsa.pub
     state: present
   become: yes
 
