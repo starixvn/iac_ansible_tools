@@ -29,3 +29,10 @@
     chmod 400 /home/{{provision_user}}/.ssh/private_key
     ssh-add /home/{{provision_user}}/.ssh/private_key
   become: yes
+
+- name: Add provision user to the sudoers
+  copy:
+    dest: '/etc/sudoers.d/{{ provision_user }}'
+    content: '{{ provision_user }}  ALL=(ALL)  NOPASSWD: ALL'
+  become: yes
+  notify: restart ssh
