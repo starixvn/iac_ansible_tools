@@ -16,3 +16,19 @@
     src: web/
     dest: "{{web_folder}}"
     mode: 0777
+
+- name: Copy postgres data from 109
+    synchronize:
+      src: '/var/lib/docker/volumes/sonar_postgres_postgresql_data/_data/'
+      dest: '{{postgres_folder}}'
+      checksum: yes
+      delete: yes
+      recursive: yes
+      delegate_to: "10.18.200.109:222"
+
+- name: Set permission for postgres folder
+  file:
+    path: '{{postgres_folder}}'
+    state: directory
+    mode: '777'
+    recurse: true
