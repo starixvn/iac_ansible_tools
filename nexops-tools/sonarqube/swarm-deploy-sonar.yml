@@ -1,6 +1,6 @@
 ---
 - name: Deploy sonarqube to docker swarm
-  hosts: all
+  hosts: nexops_high_storage
   vars:
     working_directory: "/var/www/gluster/nexops/sonarqube"
     web_folder: "{{working_directory}}/web"
