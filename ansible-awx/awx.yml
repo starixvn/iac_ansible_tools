@@ -1,0 +1,4 @@
+- hosts: nexops
+  roles:
+    - role: init
+  tags: init

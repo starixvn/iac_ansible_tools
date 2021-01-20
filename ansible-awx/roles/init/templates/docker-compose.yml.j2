@@ -1,0 +1,130 @@
+version: '3.5'
+services:
+  web:
+    image: registry.nexdev.net:5050/docker/awx/web:11.2.0 #ansible/awx_web:11.0.0
+    ports:
+      - '8089:8052'
+    user: root
+    networks:
+      - {{swarm_network_name}}
+    volumes:
+      - supervisor-socket:/var/run/supervisor
+      - rsyslog-socket:/var/run/awx-rsyslog/
+      - rsyslog-config:/var/lib/awx/rsyslog/
+      - '{{gluster_path}}/SECRET_KEY:/etc/tower/SECRET_KEY'
+      - '{{gluster_path}}/environment.sh:/etc/tower/conf.d/environment.sh'
+      - '{{gluster_path}}/credentials.py:/etc/tower/conf.d/credentials.py'
+      - '{{gluster_path}}/nginx.conf:/etc/nginx/nginx.conf:ro'
+      - '{{gluster_path}}/redis_socket:/var/run/redis/:rw'
+      - '{{gluster_path}}/memcached_socket:/var/run/memcached/:rw'
+      - '{{gluster_path}}/projects:/var/lib/awx/projects:rw'
+      - '/etc/localtime:/etc/localtime:ro'
+    deploy:
+      mode: replicated
+      replicas: 2
+      placement:
+        constraints:
+          - node.labels.NEXOPS_LOW_STORAGE == yes
+    environment:
+      http_proxy:
+      https_proxy:
+      no_proxy:
+
+  task:
+    image: registry.nexdev.net:5050/docker/awx/task:11.2.0 #ansible/awx_task:11.0.0
+    hostname: awx
+    user: root
+    networks:
+      - {{swarm_network_name}}
+    volumes:
+      - supervisor-socket:/var/run/supervisor
+      - rsyslog-socket:/var/run/awx-rsyslog/
+      - '{{gluster_path}}/.netrc:/home/awx/.netrc'
+      - '{{gluster_path}}/krb5.conf:/etc/krb5.conf'
+      - '{{gluster_path}}/SECRET_KEY:/etc/tower/SECRET_KEY'
+      - '{{gluster_path}}/.ssh:/root/.ssh'
+      - '{{gluster_path}}/environment.sh:/etc/tower/conf.d/environment.sh'
+      - '{{gluster_path}}/credentials.py:/etc/tower/conf.d/credentials.py'
+      - '{{gluster_path}}/redis_socket:/var/run/redis/:rw'
+      - '{{gluster_path}}/memcached_socket:/var/run/memcached/:rw'
+      - '{{gluster_path}}/projects:/var/lib/awx/projects:rw'
+      - '/etc/localtime:/etc/localtime:ro'
+    environment:
+      http_proxy:
+      https_proxy:
+      no_proxy:
+      SUPERVISOR_WEB_CONFIG_PATH: '/supervisor.conf'
+    deploy:
+      mode: replicated
+      replicas: 4
+      placement:
+        constraints:
+          - node.labels.NEXOPS_LOW_STORAGE == yes
+
+  redis:
+    image: redis
+    environment:
+      http_proxy:
+      https_proxy:
+      no_proxy:
+    command: ['/usr/local/etc/redis/redis.conf']
+    volumes:
+      - '{{gluster_path}}/redis.conf:/usr/local/etc/redis/redis.conf:ro'
+      - '{{gluster_path}}/redis_socket:/var/run/redis/:rw'
+      - '{{gluster_path}}/memcached_socket:/var/run/memcached/:rw'
+    networks:
+      - {{swarm_network_name}}
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.NEXOPS_LOW_STORAGE == yes
+
+  memcached:
+    image: 'memcached:alpine'
+    command: ['-s', '/var/run/memcached/memcached.sock', '-a', '0666']
+    environment:
+      http_proxy:
+      https_proxy:
+      no_proxy:
+    volumes:
+      - '{{gluster_path}}/memcached_socket:/var/run/memcached/:rw'
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.NEXOPS_LOW_STORAGE == yes
+
+  postgres:
+    image: registry.nexdev.net:5050/docker/database/postgres:10
+    ports:
+      - 5439:5432
+    volumes:
+      - '{{gluster_path}}/pgdocker/10/data/:/var/lib/postgresql/data/pgdata:Z'
+    networks:
+      - {{swarm_network_name}}
+    environment:
+      POSTGRES_USER: awx
+      POSTGRES_PASSWORD: 1234aa
+      POSTGRES_DB: ansibledb
+      PGDATA: /var/lib/postgresql/data/pgdata
+      http_proxy:
+      https_proxy:
+      no_proxy:
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.NEXOPS_LOW_STORAGE == yes
+
+networks:
+  {{swarm_network_name}}:
+     external: true
+
+volumes:
+  supervisor-socket:
+  rsyslog-socket:
+  rsyslog-config:
