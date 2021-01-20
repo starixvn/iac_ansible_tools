@@ -14,5 +14,5 @@
 - name: Copy web volumes
   copy:
     src: web/
-    dest: {{web_folder}}
+    dest: "{{web_folder}}"
     mode: 0777
