@@ -1,0 +1,7 @@
+csharp,false,sonar-csharp-plugin-8.9.0.19135.jar|6ebdd4eff15b59aea92591df59d6d3dd
+cssfamily,false,sonar-css-plugin-1.3.1.1642.jar|e1b986867e947ce5b59892fc64219a75
+web,true,sonar-html-plugin-3.3.0.2534.jar|c630590cde18543c5e3ccea8c61cde26
+scmgit,false,sonar-scm-git-plugin-1.12.1.2064.jar|8cb0ce3aa259e6d3b55e9e8d65920f5d
+buildbreaker,false,sonar-build-breaker-plugin-2.3.1.347.jar|7e63d042b87426eb4623b4e172f5f812
+javascript,true,sonar-javascript-plugin-6.7.0.14237.jar|53e69bbbd36c8bc63baec34cb85bdf04
+sql,false,sonar-sql-plugin-1.1.0.jar|68eca5e83acf54046318bf4aae03a75c

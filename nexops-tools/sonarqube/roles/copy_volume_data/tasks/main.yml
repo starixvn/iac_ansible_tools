@@ -1,0 +1,4 @@
+---
+- name: Prepare volumes
+  include_tasks: prepare_volume.yml
+  when: prepare_volume == true

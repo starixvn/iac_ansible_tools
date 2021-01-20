@@ -1,0 +1,11 @@
+---
+- name: Deploy sonarqube to docker swarm
+  hosts: all
+  vars:
+    working_directory: "/var/www/gluster/nexops/sonarqube"
+    web_folder: "{{working_directory}}/web"
+    postgres_folder: "{{working_directory}}/postgres"
+    prepare_volume: false            # false: not prepare volume data - true: prepare volume data for first time
+  roles:
+    - role: copy_volume_data
+      run_once: true
