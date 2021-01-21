@@ -31,11 +31,11 @@ services:
     image: postgres:9.6
     networks:
       - swarm_nexcel_local
-    #healthcheck:
-    #  test: ["CMD", "pg_isready -U postgres"]
-    #  interval: 5s
-    #  timeout: 5s
-    #  retries: 30
+    healthcheck:
+      test: ["CMD", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
     deploy:
       mode: replicated
       replicas: 1
