@@ -33,9 +33,9 @@ services:
     networks:
       - swarm_nexcel_local
     healthcheck:
-      test: ["CMD", "pg_isready"]
-      interval: 1s
-      timeout: 3s
+      test: ["CMD", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
       retries: 30
     deploy:
       mode: replicated
