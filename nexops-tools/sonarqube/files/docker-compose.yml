@@ -26,6 +26,8 @@ services:
       - data:/opt/sonarqube/data
       - extensions:/opt/sonarqube/extensions
       - logs:/opt/sonarqube/logs
+      - /var/www/gluster/nexops/sonarqube/web/sonar-sysctl.conf:/etc/sysctl.conf
+      - /var/www/gluster/nexops/sonarqube/web/sonar-limits.conf:/etc/security/limits.conf
 
   postgres:
     image: postgres:9.6
