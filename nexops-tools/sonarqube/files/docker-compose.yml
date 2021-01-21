@@ -7,10 +7,12 @@ services:
       - postgres
     networks:
       - swarm_nexcel_local
+    ports: 
+      - 9009:9000
     deploy:
       mode: replicated
       replicas: 1
-      endpoint_mode: dnsrr
+      #endpoint_mode: dnsrr
       placement:
         constraints:
           - "node.labels.NEXOPS_HIGH_STORAGE==yes"
