@@ -19,6 +19,8 @@ services:
     image: registry.nexdev.net:5050/docker/nexops-tools/grafana:${ENV}
     networks:
       - net
+    depends_on:
+      - mysql
     environment:
       - GF_SECURITY_ADMIN_USER=${ADMIN_USER:-admin}
       - GF_SECURITY_ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin}
@@ -35,6 +37,11 @@ services:
       #- GF_SMTP_PASSWORD=${GF_SMTP_PASSWORD}
     volumes:
       - grafana:/var/lib/grafana
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:3000']
+      interval: 10s
+      timeout: 5s
+      retries: 60
     deploy:
       mode: replicated
       replicas: 1
@@ -59,9 +66,14 @@ services:
       - MYSQL_PASSWORD=grafana
     volumes:
       - mysql:/var/lib/mysql
+    healthcheck:
+      test: out=$$(mysqladmin ping -h localhost -P 3306 -u root --password=Ilu@n3xc3l 2>&1); echo $$out | grep 'mysqld is alive' || { echo $$out; exit 1; }
+      interval: 5s
+      timeout: 20s
+      retries: 30
     deploy:
       mode: replicated
       replicas: 1
       placement:
         constraints:
-          - node.labels.NEXOPS_HIGH_STORAGE == yes
+          - node.labels.NEXOPS_LOW_STORAGE == yes

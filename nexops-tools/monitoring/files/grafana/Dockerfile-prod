@@ -1,7 +1,10 @@
 FROM grafana/grafana
 #:5.3.4
 # https://hub.docker.com/r/grafana/grafana/tags/
+USER root
+RUN apk --no-cache add curl
 
+USER grafana
 COPY datasources /etc/grafana/provisioning/datasources/
 COPY swarmprom_dashboards.yml /etc/grafana/provisioning/dashboards/
 COPY dashboards /etc/grafana/dashboards/

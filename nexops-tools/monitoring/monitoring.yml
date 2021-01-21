@@ -1,16 +1,16 @@
 ---
-- hosts: nexops
+- hosts: all
   roles:
     - role: build-full-monitoring-tools
   tags: build-monitoring-tools
 
-- hosts: nexops
+- hosts: all
   roles:
     - role: create-directory-deploy
     - role: deploy-full-monitoring-tools
   tags: deploy-monitoring-tools
 
-- hosts: nexops
+- hosts: all
   roles:
     - role: create-directory-deploy
     - role: deploy-prometheus
