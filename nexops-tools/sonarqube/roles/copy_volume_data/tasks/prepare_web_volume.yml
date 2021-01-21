@@ -1,0 +1,12 @@
+---
+- name: Create web folder if not exist
+  file:
+    path: '{{web_folder}}'
+    state: directory
+    mode: '777'
+
+- name: Copy web volumes
+  copy:
+    src: web/
+    dest: "{{web_folder}}"
+    mode: 0777
