@@ -2,6 +2,7 @@
 - name: Deploy SonarQube to docker swarm
   hosts: nexops_high_storage
   vars:
+    ansible_ssh_port: 222
     working_directory: "/var/www/gluster/nexops/sonarqube"
     web_folder: "{{working_directory}}/web"
     postgres_folder: "{{working_directory}}/postgres/db_data"
