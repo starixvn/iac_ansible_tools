@@ -3,9 +3,9 @@ version: "3.8"
 services:
   web:
     image: sonarqube:8.4.2-community
-    restart: always
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     networks:
       - swarm_nexcel_local
     deploy:
@@ -16,7 +16,7 @@ services:
         constraints:
           - "node.labels.NEXOPS_HIGH_STORAGE==yes"
         max_replicas_per_node: 1
-    stop_grace_period: 2m
+    stop_grace_period: 1m
     environment:
       SONAR_HOME: /opt/sonarqube
       SONAR_JDBC_USERNAME: sonar
@@ -30,9 +30,13 @@ services:
 
   postgres:
     image: postgres:9.6
-    restart: always
     networks:
       - swarm_nexcel_local
+    healthcheck:
+      test: ["CMD", "pg_isready"]
+      interval: 1s
+      timeout: 3s
+      retries: 30
     deploy:
       mode: replicated
       replicas: 1
