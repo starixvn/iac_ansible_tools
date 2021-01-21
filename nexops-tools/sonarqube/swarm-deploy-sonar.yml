@@ -18,3 +18,13 @@
         dest: "{{working_directory}}"
         mode: 0777
       run_once: true
+
+    - name: Deploy SonarQube
+      when: inventory_hostname in groups['swarm_managers']
+      docker_stack:
+        name: "sonar"
+        state: present
+        compose: 
+          - "{{working_directory}}/docker-compose.yml"
+      run_once: true
+

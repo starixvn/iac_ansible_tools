@@ -13,7 +13,6 @@
     delete: yes
     recursive: yes
   delegate_to: 10.18.200.109
-  port: 222
 
 - name: Set permission for postgres folder
   file:
