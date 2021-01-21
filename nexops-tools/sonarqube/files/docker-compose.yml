@@ -4,8 +4,7 @@ services:
   web:
     image: sonarqube:8.4.2-community
     depends_on:
-      - postgres:
-          condition: service_healthy
+      - postgres
     networks:
       - swarm_nexcel_local
     deploy:
