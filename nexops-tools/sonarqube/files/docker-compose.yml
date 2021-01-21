@@ -14,7 +14,7 @@ services:
       placement:
         constraints:
           - "node.labels.NEXOPS_HIGH_STORAGE==yes"
-        max_replicas_per_node: 1
+        #max_replicas_per_node: 1
     stop_grace_period: 1m
     environment:
       SONAR_HOME: /opt/sonarqube
@@ -31,11 +31,11 @@ services:
     image: postgres:9.6
     networks:
       - swarm_nexcel_local
-    healthcheck:
-      test: ["CMD", "pg_isready -U postgres"]
-      interval: 5s
-      timeout: 5s
-      retries: 30
+    #healthcheck:
+    #  test: ["CMD", "pg_isready -U postgres"]
+    #  interval: 5s
+    #  timeout: 5s
+    #  retries: 30
     deploy:
       mode: replicated
       replicas: 1
@@ -43,7 +43,7 @@ services:
       placement:
         constraints:
           - "node.labels.NEXOPS_HIGH_STORAGE==yes"
-        max_replicas_per_node: 1
+    #    max_replicas_per_node: 1
     environment:
       POSTGRES_USER: sonar
       POSTGRES_PASSWORD: SQL@Root1105
