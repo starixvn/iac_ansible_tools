@@ -10,6 +10,7 @@ COPY swarmprom_dashboards.yml /etc/grafana/provisioning/dashboards/
 COPY dashboards /etc/grafana/dashboards/
 COPY configs/grafana-prod.ini /etc/grafana/grafana.ini
 COPY configs/ldap-prod.toml /etc/grafana/ldap.toml
+RUN grafana-cli plugins install alexanderzobnin-zabbix-app
 
 ENV GF_SECURITY_ADMIN_PASSWORD=admin \
     GF_SECURITY_ADMIN_USER=admin \
