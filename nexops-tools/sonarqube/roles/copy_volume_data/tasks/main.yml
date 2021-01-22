@@ -1,10 +1,8 @@
 ---
 - name: Prepare web volume
   include_tasks: prepare_web_volume.yml
-  tags:
-    - web_volume
+  when: prepare_web_volume == true
 
 - name: Prepare postgres volume
   include_tasks: prepare_postgres_volume.yml
-  tags:
-    - postgres_volume
+  when: prepare_postgres_volume == true

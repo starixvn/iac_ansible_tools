@@ -6,6 +6,8 @@
     node_label: "NEXOPS_HIGH_STORAGE"
     web_folder: "{{working_directory}}/web"
     postgres_folder: "{{working_directory}}/postgres/db_data"
+    prepare_web_volume: false            # false: not prepare volume data - true: prepare volume data for first time
+    prepare_postgres_volume: false
   roles:
     - role: copy_volume_data
       run_once: true
