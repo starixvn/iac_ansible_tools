@@ -60,7 +60,7 @@ services:
       - swarm_{{ network }}
 {% if item.0.framework is defined and item.0.framework == "dotnet" %}
     healthcheck:
-      test: ['CMD', 'curl', '-f', "http://localhost:{{item.0.port | default('5000')}}/{{item.0.healthcheck_path | default('')}}"]
+      test: ['CMD', 'curl', '-f', "http://localhost:{{item.0.port | default('5000')}}{{item.0.healthcheck_path | default('')}}"]
       interval: 5s
       timeout: 5s
       retries: 5
