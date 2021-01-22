@@ -84,11 +84,13 @@
   rules:
     - <<: *if-deploy-{{rule_name}}-prod{{ version_number }}
       when: on_success
-{% endfor %}
 {% if org_name == 'luminet'%}
     - <<: *if-deploy-prod
       when: on_success
 {% endif %}
+    - when: never
+{% endfor %}
+
 
 
 
