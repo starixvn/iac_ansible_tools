@@ -1,5 +1,11 @@
 ---
-- name: Create postgres folder if not exist
+- name: Add 10.18.200.109
+  add_host:
+    hostname: '10.18.200.109'
+    ansible_host: '10.18.200.109'
+    ansible_port: '222'
+
+- name: Create postgres folder
   file:
     path: '{{postgres_folder}}'
     state: directory
@@ -12,8 +18,9 @@
     checksum: yes
     delete: yes
     recursive: yes
-  delegate_to: server109
-
+    dest_port: 22
+  delegate_to: 10.18.200.109
+    
 - name: Set permission for postgres folder
   file:
     path: '{{postgres_folder}}'
