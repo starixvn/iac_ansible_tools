@@ -11,16 +11,18 @@
     prepare_postgres_volume: false
   roles:
     - role: copy_volume_data
-      run_once: true
+      when: inventory_hostname in groups['gluster_leader']
+
   tasks:
     - name: Copy docker_compose.yml
+      when: inventory_hostname in groups['gluster_leader']
       ansible.builtin.template:
         src: templates/docker-compose.yml.j2
         dest: "{{working_directory}}/docker-compose.yml"
         mode: 0777
-      run_once: true
 
     - name: Install jsondiff python package
+      when: inventory_hostname in groups['gluster_leader']
       pip:
         name: jsondiff
 

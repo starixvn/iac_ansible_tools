@@ -18,7 +18,6 @@
     checksum: yes
     delete: yes
     recursive: yes
-    dest_port: 22
   delegate_to: 10.18.200.109
     
 - name: Set permission for postgres folder
