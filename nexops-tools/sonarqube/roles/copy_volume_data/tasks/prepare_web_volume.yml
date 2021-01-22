@@ -1,5 +1,5 @@
 ---
-- name: Create web folder if not exist
+- name: Create web folder
   file:
     path: '{{web_folder}}'
     state: directory
@@ -10,3 +10,8 @@
     src: web/
     dest: "{{web_folder}}"
     mode: 0777
+
+- name: Delete es6 folder
+  file:
+    path: '{{web_folder}}/data/es6'
+    state: absent
