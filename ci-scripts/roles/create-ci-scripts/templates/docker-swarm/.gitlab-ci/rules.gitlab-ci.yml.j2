@@ -3,23 +3,48 @@
 {% for version in versions %}
 {% set version_number = '' if version == 0 else version %}
 
+.if-deploy-local{{ version_number }}: &if-deploy-local{{ version_number }}
+  if: '$CI_COMMIT_TAG =~ /^deploy-local{{ version_number }}- */'
+
 .if-deploy-{{rule_name}}-local{{ version_number }}: &if-deploy-{{rule_name}}-local{{ version_number }}
   if: '$CI_COMMIT_TAG =~ /^deploy-{{rule_name}}-local{{ version_number }}- */'
 
-.if-deploy-{{rule_name}}-sit{{ version_number }}: &if-deploy-{{rule_name}}-sit{{ version_number }}
+.if-deploy-sit{{ version_number }}: &if-deploy-sit{{ version_number }}
   if: '$CI_COMMIT_TAG =~ /^deploy-{{rule_name}}-sit{{ version_number }}- */'
+
+.if-deploy-{{rule_name}}-sit{{ version_number }}: &if-deploy-{{rule_name}}-sit{{ version_number }}
+  if: '$CI_COMMIT_TAG =~ /^deploy-sit{{ version_number }}- */'
+
+.if-deploy-uat{{ version_number }}: &if-deploy-uat{{ version_number }}
+  if: '$CI_COMMIT_TAG =~ /^deploy-uat{{ version_number }}- */'
 
 .if-deploy-{{rule_name}}-uat{{ version_number }}: &if-deploy-{{rule_name}}-uat{{ version_number }}
   if: '$CI_COMMIT_TAG =~ /^deploy-{{rule_name}}-uat{{ version_number }}- */'
 
 .if-deploy-{{rule_name}}-prod{{ version_number }}: &if-deploy-{{rule_name}}-prod{{ version_number }}
   if: '$CI_COMMIT_TAG =~ /^deploy-{{rule_name}}-prod{{ version_number }}- */'
+
+{% if org_name == 'luminet'%}
+.if-deploy-prod: &if-deploy-prod
+    if: '$CI_COMMIT_BRANCH == "master"'
+{% endif %}
+
 {% endfor %}
 
 .build:image:{{service_name}}:rules:
   rules:
 {% for version in versions %}
 {% set version_number = '' if version == 0 else version %}
+    - <<: *if-deploy-local{{ version_number }}
+      when: always
+    - <<: *if-deploy-sit{{ version_number }}
+      when: always
+    - <<: *if-deploy-uat{{ version_number }}
+      when: always
+{% if org_name == 'luminet'%}
+    - <<: *if-deploy-prod
+      when: always
+{% endif %}
     - <<: *if-deploy-{{rule_name}}-local{{ version_number }}
       when: always
     - <<: *if-deploy-{{rule_name}}-sit{{ version_number }}
@@ -34,12 +59,16 @@
 {% set version_number = '' if version == 0 else version %}
 .deploy:local{{ version_number }}:{{service_name}}:rules:
   rules:
+    - <<: *if-deploy-local{{ version_number }}
+      when: always
     - <<: *if-deploy-{{rule_name}}-local{{ version_number }}
       when: on_success
     - when: never
 
 .deploy:sit{{ version_number }}:{{service_name}}:rules:
   rules:
+    - <<: *if-deploy-sit{{ version_number }}
+      when: always
     - <<: *if-deploy-{{rule_name}}-sit{{ version_number }}
       when: on_success
     - when: never
@@ -47,11 +76,17 @@
 .deploy:uat{{ version_number }}:{{service_name}}:rules:
   rules:
     - <<: *if-deploy-{{rule_name}}-uat{{ version_number }}
+      when: always
+    - <<: *if-deploy-{{rule_name}}-uat{{ version_number }}
       when: on_success
     - when: never
 
 .deploy:prod{{ version_number }}:{{service_name}}:rules:
   rules:
+{% if org_name == 'luminet'%}
+    - <<: *if-deploy-prod
+      when: always
+{% endif %}
     - <<: *if-deploy-{{rule_name}}-prod{{ version_number }}
       when: on_success
     - when: never
