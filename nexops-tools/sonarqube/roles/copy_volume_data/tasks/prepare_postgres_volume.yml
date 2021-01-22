@@ -12,9 +12,7 @@
     checksum: yes
     delete: yes
     recursive: yes
-  delegate_to: 10.18.200.109
-  vars:
-    ansible_port: 222
+  delegate_to: server109
 
 - name: Set permission for postgres folder
   file:
