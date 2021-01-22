@@ -13,6 +13,8 @@
     delete: yes
     recursive: yes
   delegate_to: 10.18.200.109
+  connection:
+    ansible_port: 222
 
 - name: Set permission for postgres folder
   file:
