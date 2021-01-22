@@ -25,10 +25,9 @@
         name: jsondiff
 
     - name: Deploy SonarQube
-      when: inventory_hostname in groups['swarm_managers']
+      when: inventory_hostname in groups['gluster_leader']
       docker_stack:
         name: "sonar"
         state: present
         compose: 
           - "{{working_directory}}/docker-compose.yml"
-      run_once: true
