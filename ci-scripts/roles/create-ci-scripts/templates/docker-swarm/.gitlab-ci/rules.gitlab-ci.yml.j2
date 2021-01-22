@@ -28,7 +28,6 @@
 .if-deploy-prod: &if-deploy-prod
     if: '$CI_COMMIT_BRANCH == "master"'
 {% endif %}
-
 {% endfor %}
 
 .build:image:{{service_name}}:rules:
