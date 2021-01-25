@@ -16,20 +16,22 @@ services:
       - 127.0.0.11
     networks:
       - {{swarm_network_name}}
+{% for version in range(1,3) %}
+      - {{swarm_network_name}}_{{version}}:
+{% endfor %}
     deploy:
         mode: global
         placement:
           constraints: 
-            #- node.platform.os == linux
-            #- node.role == manager
             - node.labels.HAPROXY == yes
 
 networks:
   {{swarm_network_name}}:
      external: true
-#    driver: overlay
-#    attachable: true
-#    name: {{swarm_network_name}}
+{% for version in 1..3 %}
+  {{swarm_network_name}}_{{version}}:
+     external: true
+{% endfor %}
 
 volumes:
   data:
