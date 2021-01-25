@@ -23,8 +23,8 @@
 version: '3.3'
 {% if config_file is defined %}
 configs:
-  {{service_name}}_{{ environment | lower }}_config_$CONFIG_VERSION:
-    file: {{working_path}}/{{environment}}/configs/{{config_file}}
+  {{service_name}}_{{ environment | lower }}_config:
+    file: {{working_path}}/{{environment}}/configs/{{config_file}}_${CONFIG_VERSION}
 {% endif %}
 
 services:
@@ -36,7 +36,7 @@ services:
 {% endif %}
 {% if config_file is defined %}
     configs:
-      - source: {{service_name}}_{{ environment | lower }}_config_$CONFIG_VERSION
+      - source: {{service_name}}_{{ environment | lower }}_config
         target: {{container_root_path}}/{{config_container_path}}/{{config_file}}
 {% endif %}
 {% if item.0.volumes is defined %}
