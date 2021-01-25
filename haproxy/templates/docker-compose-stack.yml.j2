@@ -16,8 +16,8 @@ services:
       - 127.0.0.11
     networks:
       - {{swarm_network_name}}
-{% for version in range(1,3) %}
-      - {{swarm_network_name}}_{{version}}:
+{% for version in range(1,4) %}
+      - {{swarm_network_name}}_{{version}}
 {% endfor %}
     deploy:
         mode: global
@@ -28,7 +28,7 @@ services:
 networks:
   {{swarm_network_name}}:
      external: true
-{% for version in 1..3 %}
+{% for version in range(1,4) %}
   {{swarm_network_name}}_{{version}}:
      external: true
 {% endfor %}

@@ -19,7 +19,14 @@
 {% set storage_label = '_LOW_STORAGE' if high_storage is undefined or high_storage == false else '_HIGH_STORAGE'%}
 {% set org_node_label = org_name ~ storage_label %}
 {% set network = org_name | lower ~ '_' ~ environment | lower %}
+
 version: '3.3'
+{% if config_file is defined %}
+configs:
+  {{service_name}}_{{ environment }}_config:
+    file: {{working_path}}/{{environment}}/configs/{{config_file}}
+{% endif %}
+
 services:
   {{service_name}}_{{environment}}:
 {% if gitlab_url == "git3.nexdev.net" %}
@@ -27,11 +34,13 @@ services:
 {% else %}
     image: registry.nexdev.net:5050/{{item.0.docker_image_registry_path}}:{{environment}}-latest
 {% endif %}
-{% if item.0.volumes is defined or config_file is defined %}
-    volumes:
 {% if config_file is defined %}
-      - {{working_path}}/{{environment}}/configs/{{config_file}}:{{container_root_path}}/{{config_container_path}}/{{config_file}}
+    configs:
+      - source: {{service_name}}_{{ environment }}_config
+        target: {{container_root_path}}/{{config_container_path}}/{{config_file}}
 {% endif %}
+{% if item.0.volumes is defined %}
+    volumes:
 {% if sp_file is defined %}
       - {{working_path}}/{{environment}}/configs/{{sp_file}}:/app/App_Data/{{sp_file}}
 {% endif %}
