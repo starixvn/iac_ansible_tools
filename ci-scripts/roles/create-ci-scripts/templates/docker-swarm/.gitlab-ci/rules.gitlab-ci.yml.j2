@@ -10,10 +10,10 @@
   if: '$CI_COMMIT_TAG =~ /^deploy-{{rule_name}}-local{{ version_number }}- */'
 
 .if-deploy-sit{{ version_number }}: &if-deploy-sit{{ version_number }}
-  if: '$CI_COMMIT_TAG =~ /^deploy-{{rule_name}}-sit{{ version_number }}- */'
+  if: '$CI_COMMIT_TAG =~ /^deploy-sit{{ version_number }}- */'
 
 .if-deploy-{{rule_name}}-sit{{ version_number }}: &if-deploy-{{rule_name}}-sit{{ version_number }}
-  if: '$CI_COMMIT_TAG =~ /^deploy-sit{{ version_number }}- */'
+  if: '$CI_COMMIT_TAG =~ /^deploy-{{rule_name}}-sit{{ version_number }}- */'
 
 .if-deploy-uat{{ version_number }}: &if-deploy-uat{{ version_number }}
   if: '$CI_COMMIT_TAG =~ /^deploy-uat{{ version_number }}- */'
