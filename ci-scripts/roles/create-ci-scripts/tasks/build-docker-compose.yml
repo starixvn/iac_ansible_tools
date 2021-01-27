@@ -1,6 +1,6 @@
 - name: Create .docker-compose directory for each service
   file:
-    path: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.name}}
+    path: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.name | replace('-','_')}}
     state: directory
     mode: '0755'
   become: yes
@@ -9,7 +9,7 @@
 - name: Build docker-compose for {{env}}
   template:
     src: templates/docker-swarm/.docker-compose/docker-compose.yml.j2
-    dest: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.0.name}}/{{env | upper}}{{ '' if item.1 == 0  else '_' }}{{ '' if item.1 == 0  else item.1 }}.docker-compose.yml
+    dest: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.0.name | replace('-','_')}}/{{env | upper}}{{ '' if item.1 == 0  else '_' }}{{ '' if item.1 == 0  else item.1 }}.docker-compose.yml
   vars:
     env: local
   with_nested:
@@ -20,7 +20,7 @@
 - name: Build docker-compose for {{env}}
   template:
     src: templates/docker-swarm/.docker-compose/docker-compose.yml.j2
-    dest: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.0.name}}/{{env | upper}}{{ '' if item.1 == 0  else '_' }}{{ '' if item.1 == 0  else item.1 }}.docker-compose.yml
+    dest: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.0.name | replace('-','_')}}/{{env | upper}}{{ '' if item.1 == 0  else '_' }}{{ '' if item.1 == 0  else item.1 }}.docker-compose.yml
   vars:
     env: sit
   with_nested:
@@ -31,7 +31,7 @@
 - name: Build docker-compose for {{env}}
   template:
     src: templates/docker-swarm/.docker-compose/docker-compose.yml.j2
-    dest: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.0.name}}/{{env | upper}}{{ '' if item.1 == 0  else '_' }}{{ '' if item.1 == 0  else item.1 }}.docker-compose.yml
+    dest: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.0.name | replace('-','_')}}/{{env | upper}}{{ '' if item.1 == 0  else '_' }}{{ '' if item.1 == 0  else item.1 }}.docker-compose.yml
   vars:
     env: uat
   with_nested:
@@ -42,7 +42,7 @@
 - name: Build docker-compose for {{env}}
   template:
     src: templates/docker-swarm/.docker-compose/docker-compose.yml.j2
-    dest: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.0.name}}/{{env | upper}}{{ '' if item.1 == 0  else '_' }}{{ '' if item.1 == 0  else item.1 }}.docker-compose.yml
+    dest: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.0.name | replace('-','_')}}/{{env | upper}}{{ '' if item.1 == 0  else '_' }}{{ '' if item.1 == 0  else item.1 }}.docker-compose.yml
   vars:
     env: prod
   with_nested:

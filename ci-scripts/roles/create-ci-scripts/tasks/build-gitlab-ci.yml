@@ -6,7 +6,7 @@
 
 - name: Create .gitlab-ci directory for each service
   file:
-    path: /var/ci-scripts/{{repo_name}}/.gitlab-ci/{{item.name}}
+    path: /var/ci-scripts/{{repo_name}}/.gitlab-ci/{{item.name | replace('-','_')}}
     state: directory
     mode: '0755'
   become: yes
@@ -15,14 +15,14 @@
 - name: Build build.gitlab-ci.yml for each service
   template:
     src: templates/docker-swarm/.gitlab-ci/build.gitlab-ci.yml.j2
-    dest: /var/ci-scripts/{{repo_name}}/.gitlab-ci/{{item.name}}/build.gitlab-ci.yml
+    dest: /var/ci-scripts/{{repo_name}}/.gitlab-ci/{{item.name | replace('-','_')}}/build.gitlab-ci.yml
   with_items: '{{ services }}'
   become: yes
 
 - name: Build build-cocos-web.gitlab-ci.yml for each service
   template:
     src: templates/docker-swarm/.gitlab-ci/build-cocos-web.gitlab-ci.yml.j2
-    dest: /var/ci-scripts/{{repo_name}}/.gitlab-ci/{{item.name}}/build-cocos-web.gitlab-ci.yml
+    dest: /var/ci-scripts/{{repo_name}}/.gitlab-ci/{{item.name | replace('-','_')}}/build-cocos-web.gitlab-ci.yml
   with_items: '{{ services }}'
   when: frameworks is defined and "cocos" in frameworks
   become: yes
@@ -30,41 +30,41 @@
 - name: Build deploy-vars.gitlab-ci.yml for each service
   template:
     src: templates/docker-swarm/.gitlab-ci/deploy-vars.gitlab-ci.yml.j2
-    dest: /var/ci-scripts/{{repo_name}}/.gitlab-ci/{{item.name}}/deploy-vars.gitlab-ci.yml
+    dest: /var/ci-scripts/{{repo_name}}/.gitlab-ci/{{item.name | replace('-','_')}}/deploy-vars.gitlab-ci.yml
   with_items: '{{ services }}'
   become: yes
 
 - name: Build rules.gitlab-ci.yml for each service
   template:
     src: templates/docker-swarm/.gitlab-ci/rules.gitlab-ci.yml.j2
-    dest: /var/ci-scripts/{{repo_name}}/.gitlab-ci/{{item.name}}/rules.gitlab-ci.yml
+    dest: /var/ci-scripts/{{repo_name}}/.gitlab-ci/{{item.name | replace('-','_')}}/rules.gitlab-ci.yml
   with_items: '{{ services }}'
   become: yes
 
 - name: Build deploy-local.gitlab-ci.yml for each service
   template:
     src: templates/docker-swarm/.gitlab-ci/deploy-local.gitlab-ci.yml.j2
-    dest: /var/ci-scripts/{{repo_name}}/.gitlab-ci/{{item.name}}/deploy-local.gitlab-ci.yml
+    dest: /var/ci-scripts/{{repo_name}}/.gitlab-ci/{{item.name | replace('-','_')}}/deploy-local.gitlab-ci.yml
   with_items: '{{ services }}'
   become: yes
 
 - name: Build deploy-sit.gitlab-ci.yml for each service
   template:
     src: templates/docker-swarm/.gitlab-ci/deploy-sit.gitlab-ci.yml.j2
-    dest: /var/ci-scripts/{{repo_name}}/.gitlab-ci/{{item.name}}/deploy-sit.gitlab-ci.yml
+    dest: /var/ci-scripts/{{repo_name}}/.gitlab-ci/{{item.name | replace('-','_')}}/deploy-sit.gitlab-ci.yml
   with_items: '{{ services }}'
   become: yes
 
 - name: Build deploy-uat.gitlab-ci.yml for each service
   template:
     src: templates/docker-swarm/.gitlab-ci/deploy-uat.gitlab-ci.yml.j2
-    dest: /var/ci-scripts/{{repo_name}}/.gitlab-ci/{{item.name}}/deploy-uat.gitlab-ci.yml
+    dest: /var/ci-scripts/{{repo_name}}/.gitlab-ci/{{item.name | replace('-','_')}}/deploy-uat.gitlab-ci.yml
   with_items: '{{ services }}'
   become: yes
 
 - name: Build deploy-prod.gitlab-ci.yml for each service
   template:
     src: templates/docker-swarm/.gitlab-ci/deploy-prod.gitlab-ci.yml.j2
-    dest: /var/ci-scripts/{{repo_name}}/.gitlab-ci/{{item.name}}/deploy-prod.gitlab-ci.yml
+    dest: /var/ci-scripts/{{repo_name}}/.gitlab-ci/{{item.name | replace('-','_')}}/deploy-prod.gitlab-ci.yml
   with_items: '{{ services }}'
   become: yes
