@@ -27,3 +27,6 @@ Environment="NO_PROXY="localhost,127.0.0.1,::1"
 
 systemctl daemon-reload
 service docker restart
+
+#######Docker After an upgrade I got the permission denied
+sudo chmod 666 /var/run/docker.sock
