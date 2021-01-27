@@ -1,0 +1,14 @@
+---
+- name: Deploy RabbitMQ to Docker Swarm
+  hosts: nexops_high_storage
+
+  vars:
+    working_directory: "/var/www/gluster/nexops/rabbitmq"
+    node_label: "NEXOPS_HIGH_STORAGE"
+    environment: "Local" # Local, UAT, SIT, PRO
+    swarm_network: "swarm_nexcel_local"
+    config_folder: "{{working_directory}}/config"
+    nodes_folder: "{{working_directory}}/nodes"
+  roles:
+    - role: deploy-rabbit
+      when: inventory_hostname in groups['gluster_leader']

@@ -1,0 +1,41 @@
+---
+- name: Create config folder
+  file:
+    path: '{{config_folder}}'
+    state: directory
+    mode: '777'
+
+- name: Copy rabbitmq.conf
+  copy:
+    src: config/rabbitmq.conf
+    dest: "{{config_folder}}/rabbitmq.conf"
+    mode: 0777
+
+- name: Copy definitions.json
+  copy:
+    src: "config/definitions.{{environment}}.json"
+    dest: "{{config_folder}}/definitions.json"
+    mode: 0777
+
+- name: Copy nodes folder
+  copy:
+    src: nodes/
+    dest: "{{nodes_folder}}"
+    mode: 0777
+
+- name: Copy docker_compose.yml
+  ansible.builtin.template:
+    src: templates/docker-compose.yml.j2
+    dest: "{{working_directory}}/docker-compose.yml"
+    mode: 0777
+
+- name: Install jsondiff python package
+  pip:
+    name: jsondiff
+
+- name: Deploy RabbitMQ
+  docker_stack:
+    name: "rabbitmq"
+    state: present
+    compose: 
+      - "{{working_directory}}/docker-compose.yml"

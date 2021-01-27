@@ -1,0 +1,476 @@
+{
+  "rabbit_version": "3.7.4",
+  "users": [
+    {
+      "name": "activity_tracking",
+      "password_hash": "1sdzfV8zBb7ZlqHq2HJGggf7ZIY=",
+      "hashing_algorithm": "rabbit_password_hashing_md5",
+      "tags": "monitoring"
+    },
+    {
+      "name": "la",
+      "password_hash": "pF3RPe+yMAMxodH2FTjV1Rat9oGzF/LQGOe77EgPuSECfeKE",
+      "hashing_algorithm": "rabbit_password_hashing_sha256",
+      "tags": "monitoring"
+    },
+    {
+      "name": "score247",
+      "password_hash": "qJ/i3XLBV2ZbpS8jwYsw0vhLbB7NuyMB44QX5UUNuP8ZScg6",
+      "hashing_algorithm": "rabbit_password_hashing_sha256",
+      "tags": "monitoring"
+    },
+    {
+      "name": "zbx_monitor",
+      "password_hash": "wEX61rjfi1K4O5QXcMN4Fx6cYPWOJAdBIDhJurY42SQZYlug",
+      "hashing_algorithm": "rabbit_password_hashing_sha256",
+      "tags": "monitoring"
+    },
+    {
+      "name": "fps",
+      "password_hash": "1QrsEkFzzAA9D1SvYy5VtsfJxHippcQ9RMLhU5M8Yj2XxKGx",
+      "hashing_algorithm": "rabbit_password_hashing_sha256",
+      "tags": "monitoring"
+    },
+    {
+      "name": "fanexlogging",
+      "password_hash": "EfNHxL/jVshU+4e6wksVsA2C59mhF/oUlOWhdfSQr/EaYd4R",
+      "hashing_algorithm": "rabbit_password_hashing_sha256",
+      "tags": "management"
+    },
+    {
+      "name": "ng2.api",
+      "password_hash": "fZQYvfxs7elf+J5NfWimHiybqPE=",
+      "hashing_algorithm": "rabbit_password_hashing_md5",
+      "tags": "monitoring"
+    },
+    {
+      "name": "kaden",
+      "password_hash": "zrc37HoLEBermbi+Rs7FmXHky2E=",
+      "hashing_algorithm": "rabbit_password_hashing_md5",
+      "tags": "monitoring"
+    },
+    {
+      "name": "admin",
+      "password_hash": "yYqLdKMKRidHdMIkAU0jPixe/ok=",
+      "hashing_algorithm": "rabbit_password_hashing_md5",
+      "tags": "administrator"
+    },
+    {
+      "name": "guest",
+      "password_hash": "77aMU8gTLk0cJD5N+lIwLE97d5I=",
+      "hashing_algorithm": "rabbit_password_hashing_md5",
+      "tags": "administrator"
+    },
+    {
+      "name": "rabbitclient",
+      "password_hash": "Xa/W88Qp/VbB+rd1E6VXDkOsBvk=",
+      "hashing_algorithm": "rabbit_password_hashing_md5",
+      "tags": "monitoring"
+    },
+    {
+      "name": "zabbix",
+      "password_hash": "wId49Tp6WYeNBdG+XYqNk+LpLI5pQtbzjxzRO6I0wL9ZWLsi",
+      "hashing_algorithm": "rabbit_password_hashing_sha256",
+      "tags": "monitoring"
+    },
+    {
+      "name": "nexops",
+      "password_hash": "wN/9uFQqnJcmA/ZVlF3yK7AZPtE=",
+      "hashing_algorithm": "rabbit_password_hashing_md5",
+      "tags": ""
+    }
+  ],
+  "vhosts": [
+    { "name": "/MetricGaming" },
+    { "name": "/Fanex_Logging" },
+    { "name": "/QCLocalTest" },
+    { "name": "/Alpha_Chatbot" },
+    { "name": "/NexOps_Queue_Checking" },
+    { "name": "ONEbook.NG2.API" },
+    { "name": "/ActivityTracking" },
+    { "name": "/" },
+    { "name": "/FPS_Oneye_Service" },
+    { "name": "/UpHost" },
+    { "name": "/score_247_local_main" },
+    { "name": "/ActivityTracking_Ricky" },
+    { "name": "/MailStationHost" },
+    { "name": "/LA" }
+  ],
+  "permissions": [
+    {
+      "user": "admin",
+      "vhost": "/ActivityTracking_Ricky",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "zabbix",
+      "vhost": "/",
+      "configure": "'aliveness-test$'",
+      "write": "'amq\\.default$'",
+      "read": "'aliveness-test$'"
+    },
+    {
+      "user": "kaden",
+      "vhost": "/MetricGaming",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "rabbitclient",
+      "vhost": "ONEbook.NG2.API",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "ng2.api",
+      "vhost": "ONEbook.NG2.API",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "guest",
+      "vhost": "/",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "nexops",
+      "vhost": "/NexOps_Queue_Checking",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "activity_tracking",
+      "vhost": "/ActivityTracking",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "activity_tracking",
+      "vhost": "/ActivityTracking_Ricky",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "score247",
+      "vhost": "/score_247_local_main",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "admin",
+      "vhost": "/Alpha_Chatbot",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "admin",
+      "vhost": "/MetricGaming",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "admin",
+      "vhost": "/LA",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "rabbitclient",
+      "vhost": "/MailStationHost",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "admin",
+      "vhost": "/FPS_Oneye_Service",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "rabbitclient",
+      "vhost": "/Fanex_Logging",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "fps",
+      "vhost": "/FPS_Oneye_Service",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "admin",
+      "vhost": "/ActivityTracking",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "nexops",
+      "vhost": "/",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "la",
+      "vhost": "/LA",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "admin",
+      "vhost": "/UpHost",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "rabbitclient",
+      "vhost": "/QCLocalTest",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "admin",
+      "vhost": "/score_247_local_main",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "admin",
+      "vhost": "/",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "admin",
+      "vhost": "ONEbook.NG2.API",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "admin",
+      "vhost": "/MailStationHost",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "admin",
+      "vhost": "/Fanex_Logging",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "guest",
+      "vhost": "/QCLocalTest",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "zbx_monitor",
+      "vhost": "/",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "admin",
+      "vhost": "/NexOps_Queue_Checking",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "admin",
+      "vhost": "/QCLocalTest",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "fanexlogging",
+      "vhost": "/Fanex_Logging",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    }
+  ],
+  "topic_permissions": [],
+  "parameters": [],
+  "global_parameters": [  ],
+  "policies": [
+    {
+      "vhost": "ONEbook.NG2.API",
+      "name": "ha-all",
+      "pattern": ".*",
+      "apply-to": "all",
+      "definition": {
+        "ha-mode": "all",
+        "ha-sync-mode": "automatic"
+      },
+      "priority": 0
+    },
+    {
+      "vhost": "/ActivityTracking_Ricky",
+      "name": "ha-all",
+      "pattern": "",
+      "apply-to": "all",
+      "definition": {
+        "ha-mode": "all",
+        "ha-sync-mode": "automatic"
+      },
+      "priority": 0
+    },
+    {
+      "vhost": "/score_247_local_main",
+      "name": "ha-all",
+      "pattern": ".*",
+      "apply-to": "all",
+      "definition": {
+        "ha-mode": "all",
+        "ha-sync-mode": "automatic"
+      },
+      "priority": 0
+    },
+    {
+      "vhost": "/FPS_Oneye_Service",
+      "name": "ha-all",
+      "pattern": ".*",
+      "apply-to": "all",
+      "definition": {
+        "ha-mode": "all",
+        "ha-sync-mode": "automatic"
+      },
+      "priority": 0
+    },
+    {
+      "vhost": "/MetricGaming",
+      "name": "ha-all",
+      "pattern": ".*",
+      "apply-to": "all",
+      "definition": {
+        "ha-mode": "all",
+        "ha-sync-mode": "automatic"
+      },
+      "priority": 0
+    },
+    {
+      "vhost": "/ActivityTracking",
+      "name": "ha-all",
+      "pattern": "",
+      "apply-to": "all",
+      "definition": {
+        "ha-mode": "all",
+        "ha-sync-mode": "automatic"
+      },
+      "priority": 0
+    },
+    {
+      "vhost": "/QCLocalTest",
+      "name": "ha-all",
+      "pattern": ".*",
+      "apply-to": "all",
+      "definition": {
+        "ha-mode": "all",
+        "ha-sync-mode": "automatic"
+      },
+      "priority": 0
+    },
+    {
+      "vhost": "/NexOps_Queue_Checking",
+      "name": "ha-all",
+      "pattern": ".*",
+      "apply-to": "all",
+      "definition": {
+        "ha-mode": "all",
+        "ha-sync-mode": "automatic"
+      },
+      "priority": 0
+    },
+    {
+      "vhost": "/LA",
+      "name": "ha-all",
+      "pattern": ".*",
+      "apply-to": "all",
+      "definition": {
+        "ha-mode": "all",
+        "ha-sync-mode": "automatic"
+      },
+      "priority": 0
+    },
+    {
+      "vhost": "/Fanex_Logging",
+      "name": "ha-all",
+      "pattern": ".*",
+      "apply-to": "all",
+      "definition": {
+        "ha-mode": "all",
+        "ha-sync-mode": "automatic"
+      },
+      "priority": 0
+    },
+    {
+      "vhost": "/MailStationHost",
+      "name": "ha-all",
+      "pattern": ".*",
+      "apply-to": "all",
+      "definition": {
+        "ha-mode": "all",
+        "ha-sync-mode": "automatic"
+      },
+      "priority": 0
+    },
+    {
+      "vhost": "/",
+      "name": "ha-all",
+      "pattern": "",
+      "apply-to": "all",
+      "definition": {
+        "ha-mode": "all",
+        "ha-sync-mode": "automatic"
+      },
+      "priority": 0
+    },
+    {
+      "vhost": "/UpHost",
+      "name": "ha",
+      "pattern": ".*",
+      "apply-to": "all",
+      "definition": {
+        "ha-mode": "all",
+        "ha-sync-mode": "automatic"
+      },
+      "priority": 0
+    }
+  ],
+  "queues": [],
+  "exchanges": [],
+  "bindings": []
+}

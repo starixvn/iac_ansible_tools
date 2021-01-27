@@ -1,0 +1,60 @@
+version: "3.8"
+
+services:
+  rabbit:
+    image: registry.nexdev.net:5050/docker/nexops-tools/rabbitmq:3.8.11-management-alpine
+    hostname: "rabbit{{.Task.Slot}}"
+    healthcheck:
+      test: > 
+        rabbitmqctl eval \' { true, rabbit_app_booted_and_running } = { rabbit:is_booted(node()), rabbit_app_booted_and_running },
+        { [], no_alarms } = { rabbit:alarms(), no_alarms },
+        [] /= rabbit_networking:active_listeners(),
+        rabbitmq_node_is_healthy. \' || exit 1
+      interval: 30s
+      timeout: 5s
+      retries: 10
+    ports:
+      - 15672:15672
+      - 5672:5672
+    networks:
+      - {{swarm_network}}
+    deploy:
+      mode: replicated
+      replicas: 1
+      #endpoint_mode: dnsrr
+      placement:
+        constraints:
+          - "node.labels.{{node_label}}==yes"
+    environment:
+      RABBITMQ_DEFAULT_VHOST: "/"
+      RABBITMQ_VM_MEMORY_HIGH_WATERMARK: "3072MiB"
+    volumes:
+      - config:/etc/rabbitmq/
+      - data:/var/lib/rabbitmq/
+      - logs:/var/log/rabbitmq/
+
+networks:
+  {{swarm_network}}:
+    external: true
+
+volumes:
+  config:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: "{{config_folder}}"
+  data:
+    name: "rabbitmq_data{{.Task.Slot}}"
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: "{{nodes_folder}}/rabbit{{.Task.Slot}}/data"
+  logs:
+    name: "rabbitmq_logs{{.Task.Slot}}"
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: "{{nodes_folder}}/rabbit{{.Task.Slot}}/logs"
