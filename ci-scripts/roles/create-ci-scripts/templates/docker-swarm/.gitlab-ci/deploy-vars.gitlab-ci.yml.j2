@@ -22,4 +22,4 @@
 {%endif%}
     STACK_NAME: {{project_name}}
     DOCKER_COMPOSE_FILE_PATH: {{item.docker_compose_file_path | default(".")}}
-    DOCKER_COMPOSE_REPO_PATH: .docker-compose/{{ item.name }}
+    DOCKER_COMPOSE_REPO_PATH: .docker-compose/{{ item.name | replace('-','_') }}
