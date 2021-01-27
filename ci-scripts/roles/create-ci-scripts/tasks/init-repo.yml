@@ -1,7 +1,7 @@
 - name: Clean ci directory
   file:
     state: absent
-    path: '/var/ci-scripts'
+    path: '/var/ci-scripts/{{repo_name}}'
   become: yes
 
 - name: Create ci directory
