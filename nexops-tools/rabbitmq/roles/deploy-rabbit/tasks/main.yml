@@ -51,6 +51,11 @@
   pip:
     name: jsondiff
 
+- name: Sleep for 10 seconds for gluster synchronize data
+  wait_for:
+    timeout: 10
+  delegate_to: localhost
+
 - name: Deploy RabbitMQ
   docker_stack:
     name: "rabbitmq"
