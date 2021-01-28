@@ -1,9 +1,10 @@
+{% set service_name = item.name | replace('-','_') %}
 {% if item.multiple_image_env is undefined or item.multiple_image_env == false %}  
-build_image_{{item.name | replace('-','_') }}:
+build_image_{{ service_name }}:
   extends:
-    - .deploy_vars_{{item.name | replace('-','_') }}
+    - .deploy_vars_{{ service_name }}
     - .build:{{item.framework | default('default')}}:image:noenv
-    - .build:image:{{item.name | replace('-','_') }}:rules
+    - .build:image:{{ service_name }}:rules
 {% if item.framework is defined and item.framework == "cocos" %}  
   needs: ['build_cocos_web']
   dependencies:
@@ -12,42 +13,42 @@ build_image_{{item.name | replace('-','_') }}:
 {% else %}
 {% for version in versions %}
 {% set version_number = '' if version == 0 else version %}
-build_image_{{item.name | replace('-','_') }}_local{{ version_number }}:
+build_image_{{ service_name }}_local{{ version_number }}:
   extends:
-    - .deploy_vars_{{item.name | replace('-','_') }}
+    - .deploy_vars_{{ service_name }}
     - .build:{{item.framework | default('default')}}:image
-    - .build:image:{{item.name | replace('-','_') }}:rules
+    - .deploy:local{{ version_number }}:{{service_name}}:rules
 {% if item.framework is defined and item.framework == "cocos" %}  
   needs: ['build_cocos_web_local{{ version_number }}']
   dependencies:
     - build_cocos_web_local{{ version_number }}
 {% endif %}
-build_image_{{item.name | replace('-','_') }}_sit{{ version_number }}:
+build_image_{{ service_name }}_sit{{ version_number }}:
   extends:
-    - .deploy_vars_{{item.name | replace('-','_') }}
+    - .deploy_vars_{{ service_name }}
     - .build:{{item.framework | default('default')}}:image
-    - .build:image:{{item.name | replace('-','_') }}:rules
+    - .deploy:sit{{ version_number }}:{{service_name}}:rules
 {% if item.framework is defined and item.framework == "cocos" %}  
   needs: ['build_cocos_web_sit{{ version_number }}']
   dependencies:
     - build_cocos_web_sit{{ version_number }}
 {% endif %}
 
-build_image_{{item.name | replace('-','_') }}_uat{{ version_number }}:
+build_image_{{ service_name }}_uat{{ version_number }}:
   extends:
-    - .deploy_vars_{{item.name | replace('-','_') }}
+    - .deploy_vars_{{ service_name }}
     - .build:{{item.framework | default('default')}}:image
-    - .build:image:{{item.name | replace('-','_') }}:rules
+    - .deploy:uat{{ version_number }}:{{service_name}}:rules
 {% if item.framework is defined and item.framework == "cocos" %}  
   needs: ['build_cocos_web_uat{{ version_number }}']
   dependencies:
     - build_cocos_web_uat{{ version_number }}
 {% endif %}
-build_image_{{item.name | replace('-','_') }}_prod{{ version_number }}:
+build_image_{{ service_name }}_prod{{ version_number }}:
   extends:
-    - .deploy_vars_{{item.name | replace('-','_') }}
+    - .deploy_vars_{{ service_name }}
     - .build:{{item.framework | default('default')}}:image
-    - .build:image:{{item.name | replace('-','_') }}:rules
+    - .deploy:prod{{ version_number }}:{{service_name}}:rules
 {% if item.framework is defined and item.framework == "cocos" %}  
   needs: ['build_cocos_web_prod{{ version_number }}']
   dependencies:
