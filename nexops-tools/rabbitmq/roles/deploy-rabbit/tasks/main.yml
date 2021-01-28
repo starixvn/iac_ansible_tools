@@ -13,7 +13,7 @@
 
 - name: Copy definitions.json
   copy:
-    src: "config/definitions.{{environment}}.json"
+    src: "config/definitions.{{environment_name}}.json"
     dest: "{{config_folder}}/definitions.json"
     mode: 0777
 
