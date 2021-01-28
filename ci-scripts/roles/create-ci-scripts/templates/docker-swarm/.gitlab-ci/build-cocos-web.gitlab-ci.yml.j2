@@ -12,6 +12,7 @@ build_cocos_web:
 {% if config_file is defined %}
     - cp {{config_file_path}}/{{item.config_file_name}}.${DEPLOY_ENV}.{{item.config_file_ext}} {{config_file_path}}/{{config_file}}
 {%endif%}
+    - npm i
 {% if item.cocos_version == "2.2.2" %}
     - /Applications/CocosCreator.app/Contents/MacOS/CocosCreator --path ./ --build "platform=web-mobile;inlineSpriteFrames=true;webOrientation=landscape;md5Cache=true"
 {% else %}
