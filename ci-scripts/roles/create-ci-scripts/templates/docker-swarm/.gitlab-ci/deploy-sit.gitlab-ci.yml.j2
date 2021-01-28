@@ -1,19 +1,24 @@
 {% set service_name = item.name | replace('-','_') %}
 
 {% for version in versions %}
-post_build_{{service_name}}_sit{{ '' if version == 0 else version }}:
+{% set version_number = '' if version == 0 else version %}
+post_build_{{service_name}}_sit{{ version_number }}:
   extends:
     - .deploy_vars_{{service_name}}
     - .post_build
-    - .deploy:sit{{ '' if version == 0 else version }}
-    - .deploy:sit{{ '' if version == 0 else version }}:{{service_name}}:rules
+    - .deploy:sit{{ version_number }}
+    - .deploy:sit{{ version_number }}:{{service_name}}:rules
+{% if item.multiple_image_env is undefined or item.multiple_image_env == false %}  
   needs: ['build_image_{{service_name}}']
+{% else %}
+  needs: ['build_image_{{service_name}}_sit{{ version_number }}']
+{% endif %}
 
-deploy_{{service_name}}_sit{{ '' if version == 0 else version }}:
+deploy_{{service_name}}_sit{{ version_number }}:
   extends:
     - .deploy_vars_{{service_name}}
-    - .deploy:sit{{ '' if version == 0 else version }}:base:swarm:stack
-    - .deploy:sit{{ '' if version == 0 else version }}:{{service_name}}:rules
-  needs: ['post_build_{{service_name}}_sit{{ '' if version == 0 else version }}']
+    - .deploy:sit{{ version_number }}:base:swarm:stack
+    - .deploy:sit{{ version_number }}:{{service_name}}:rules
+  needs: ['post_build_{{service_name}}_sit{{ version_number }}']
 
 {% endfor %}

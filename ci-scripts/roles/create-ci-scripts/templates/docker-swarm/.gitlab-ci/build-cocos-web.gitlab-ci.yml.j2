@@ -3,17 +3,17 @@
 {% endif %}
 {% set config_file_path = item.config_file_path | default(".") %}
 
-build_cocos_web:
+.base_build_cocos_web:
   stage: build-cocos-web
   extends:
     - .build:image:{{item.name | replace('-','_') }}:rules
   script:
     - echo "====== Build Cocos Web Mobile ======"
     - echo $DEPLOY_ENV
+    - npm i
 {% if config_file is defined %}
     - cp {{config_file_path}}/{{item.config_file_name}}.$DEPLOY_ENV.{{item.config_file_ext}} {{config_file_path}}/{{config_file}}
 {%endif%}
-    - npm i
 {% if item.cocos_version == "2.2.2" %}
     - /Applications/CocosCreator.app/Contents/MacOS/CocosCreator --path ./ --build "platform=web-mobile;inlineSpriteFrames=true;webOrientation=landscape;md5Cache=true"
 {% else %}
@@ -25,3 +25,24 @@ build_cocos_web:
     paths:
       - ./build/web-mobile
     expire_in: 1 day
+
+{% if config_file is defined %}
+build_cocos_web:
+  extends: .base_build_cocos_web
+{% else %}
+{% for version in versions %}
+{% set version_number = '' if version == 0 else version %}
+build_cocos_web_local{{ version_number }}:
+  extends: .base_build_cocos_web
+
+build_cocos_web_sit{{ version_number }}:
+  extends: .base_build_cocos_web
+
+build_cocos_web_uat{{ version_number }}:
+  extends: .base_build_cocos_web
+
+build_cocos_web_prod{{ version_number }}:
+  extends: .base_build_cocos_web
+{% endfor %}
+{%endif%}
+
