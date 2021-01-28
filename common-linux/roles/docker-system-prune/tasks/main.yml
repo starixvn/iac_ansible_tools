@@ -5,7 +5,7 @@
     apt-add-repository universe
     apt-get update
 
-- name: Install Docker Python library
+- name: Install Docker Python library (1/2)
   become: true
   apt:
     state: present
@@ -13,14 +13,16 @@
     pkg:
       - python3-pip
 
-- name: Install Docker Python library
+- name: Install Docker Python library (2/2)
   become: true
   ignore_errors: true
   pip:
     name: docker
     state: latest
 
-- name: Prune system docker
-  shell: docker system prune --all -f
+- name: Prune images
+  shell: |
+    docker image prune --all -f
+    docker builder prune --all -f
   become: yes
   ignore_errors: yes
