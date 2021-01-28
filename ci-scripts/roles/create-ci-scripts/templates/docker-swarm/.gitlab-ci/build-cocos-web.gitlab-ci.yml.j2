@@ -36,21 +36,25 @@ build_cocos_web:
 build_cocos_web_local{{ version_number }}:
   extends: 
     - .base_build_cocos_web
+    - .deploy:local{{ version_number }}
     - .deploy:local{{ version_number }}:{{service_name}}:rules
 
 build_cocos_web_sit{{ version_number }}:
   extends: 
     - .base_build_cocos_web
+    - .deploy:sit{{ version_number }}
     - .deploy:sit{{ version_number }}:{{service_name}}:rules
 
 build_cocos_web_uat{{ version_number }}:
   extends: 
     - .base_build_cocos_web
+    - .deploy:uat{{ version_number }}
     - .deploy:uat{{ version_number }}:{{service_name}}:rules
 
 build_cocos_web_prod{{ version_number }}:
   extends: 
     - .base_build_cocos_web
+    - .deploy:prod{{ version_number }}
     - .deploy:prod{{ version_number }}:{{service_name}}:rules
 {% endfor %}
 {%endif%}
