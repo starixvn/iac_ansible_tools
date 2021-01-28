@@ -23,12 +23,17 @@
     dest: "{{nodes_folder}}"
     mode: 0777
 
-- name: Set permission for nodes folder
+- name: Set .erlang.cookie permission
   file:
-    path: '{{nodes_folder}}'
-    state: directory
-    mode: 0777
-    recurse: true
+    path: '{{nodes_folder}}/{{item}}/data/.erlang.cookie'
+    state: file
+    mode: 0600
+    owner: 'root'
+    group: 'root'
+  with_items:
+    - rabbit1
+    - rabbit2
+    - rabbit3
 
 - name: Copy docker_compose.yml
   ansible.builtin.template:
