@@ -27,14 +27,14 @@ nexcel_ports_uat:
 
 nexcel_ports_prod:
   [
+    { 'published': 80, 'target': 80, 'mode': 'ingress' },
     { 'published': 8000, 'target': 8000, 'mode': 'ingress' },
     { 'published': 7516, 'target': 7516, 'mode': 'ingress' },
     { 'published': 7515, 'target': 7515, 'mode': 'ingress' },
     { 'published': 7519, 'target': 7519, 'mode': 'ingress' },
   ]
 
-nexcel_ports_prod-nex3:
-  [{ 'published': 8000, 'target': 8000, 'mode': 'ingress' }]
+nexcel_ports_prod-nex3: [{ 'published': 80, 'target': 80, 'mode': 'ingress' }, { 'published': 8000, 'target': 8000, 'mode': 'ingress' }]
 
 luminet_ports_local:
   [
@@ -42,4 +42,5 @@ luminet_ports_local:
     { 'published': 7000, 'target': 7000, 'mode': 'ingress' },
     { 'published': 7001, 'target': 7001, 'mode': 'ingress' },
     { 'published': 7002, 'target': 7002, 'mode': 'ingress' },
+    { 'published': 7101, 'target': 7101, 'mode': 'ingress' },
   ]
