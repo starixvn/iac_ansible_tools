@@ -12,7 +12,7 @@ services:
         protocol: tcp
         mode: host
     networks:
-      - {{portainer_network_name}}
+      - {{swarm_network_name}}
     environment:
       AGENT_SECRET: {{portainer_agent_secret}}
     deploy:
@@ -21,7 +21,5 @@ services:
         constraints: [node.platform.os == linux]
 
 networks:
-  {{portainer_network_name}}:
-    driver: overlay
-    attachable: true
-    name: {{portainer_network_name}}
+  {{swarm_network_name}}:
+     external: true
