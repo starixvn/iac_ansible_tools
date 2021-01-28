@@ -3,7 +3,7 @@ version: "3.8"
 services:
   rabbit:
     image: registry.nexdev.net:5050/docker/nexops-tools/rabbitmq:3.8.11-management-alpine
-    hostname: "rabbit{{.Task.Slot}}"
+    hostname: "rabbit{{'{{'}}.Task.Slot{{'}}'}}"
     healthcheck:
       test: > 
         rabbitmqctl eval \' { true, rabbit_app_booted_and_running } = { rabbit:is_booted(node()), rabbit_app_booted_and_running },
@@ -45,16 +45,16 @@ volumes:
       type: none
       device: "{{config_folder}}"
   data:
-    name: "rabbitmq_data{{.Task.Slot}}"
+    name: "rabbitmq_data{{'{{'}}.Task.Slot{{'}}'}}"
     driver: local
     driver_opts:
       o: bind
       type: none
-      device: "{{nodes_folder}}/rabbit{{.Task.Slot}}/data"
+      device: "{{nodes_folder}}/rabbit{{'{{'}}.Task.Slot{{'}}'}}/data"
   logs:
-    name: "rabbitmq_logs{{.Task.Slot}}"
+    name: "rabbitmq_logs{{'{{'}}.Task.Slot{{'}}'}}"
     driver: local
     driver_opts:
       o: bind
       type: none
-      device: "{{nodes_folder}}/rabbit{{.Task.Slot}}/logs"
+      device: "{{nodes_folder}}/rabbit{{'{{'}}.Task.Slot{{'}}'}}/logs"
