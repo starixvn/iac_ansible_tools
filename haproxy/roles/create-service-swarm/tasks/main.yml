@@ -1,8 +1,9 @@
 - name: Create network
   docker_network:
-    name: "{{swarm_network_name}}"
+    name: "{{item}}"
     driver: "overlay"
     attachable: true
+  with_items: '{{swarm_network_names}}'
   ignore_errors: yes
   become: yes
 

@@ -11,13 +11,11 @@ services:
         target: {{port.target}}
         mode: {{port.mode}}
 {% endfor %}
-
     dns:
       - 127.0.0.11
     networks:
+{% for swarm_network_name in swarm_network_names %}
       - {{swarm_network_name}}
-{% for version in range(1,4) %}
-      - {{swarm_network_name}}_{{version}}
 {% endfor %}
     deploy:
         mode: global
@@ -26,10 +24,8 @@ services:
             - node.labels.HAPROXY == yes
 
 networks:
+{% for swarm_network_name in swarm_network_names %}
   {{swarm_network_name}}:
-     external: true
-{% for version in range(1,4) %}
-  {{swarm_network_name}}_{{version}}:
      external: true
 {% endfor %}
 
