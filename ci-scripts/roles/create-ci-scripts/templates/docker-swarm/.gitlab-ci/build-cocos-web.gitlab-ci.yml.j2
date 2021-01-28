@@ -1,11 +1,16 @@
+{% if item.config_file_name is defined %}
+{% set config_file = item.config_file_name ~ '.' ~ item.config_file_ext %}
+{% endif %}
+{% set config_file_path = item.config_file_path | default(".") %}
+
 build_cocos_web:
   stage: build-cocos-web
   extends:
     - .build:image:{{item.name | replace('-','_') }}:rules
   script:
     - echo "====== Build Cocos Web Mobile ======"
-{% if  item.config_file_name is defined %}
-    - cp ./assets/_new-assets/Configs.${DEPLOY_ENV}.js ./assets/_new-assets/Configs.js
+{% if config_file is defined %}
+    - cp {{config_file_path}}/{{item.config_file_name}}.${DEPLOY_ENV}.{{item.config_file_ext}} {{config_file_path}}/{{config_file}}
 {%endif%}
 {% if item.cocos_version == "2.2.2" %}
     - /Applications/CocosCreator.app/Contents/MacOS/CocosCreator --path ./ --build "platform=web-mobile;inlineSpriteFrames=true;webOrientation=landscape;md5Cache=true"
