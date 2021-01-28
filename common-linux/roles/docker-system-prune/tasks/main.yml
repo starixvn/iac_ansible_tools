@@ -21,11 +21,6 @@
     state: latest
 
 - name: Prune system docker
-  docker_prune:
-    containers: no
-    images: yes
-    networks: yes
-    volumes: yes
-    builder_cache: yes
+  shell: docker system prune --all -f
   become: yes
   ignore_errors: yes
