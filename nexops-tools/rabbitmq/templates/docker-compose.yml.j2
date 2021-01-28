@@ -12,9 +12,9 @@ services:
         [] /= rabbit_networking:active_listeners(),
         rabbitmq_node_is_healthy.
         ' || exit 1
-      interval: 30s
+      interval: 15s
       timeout: 5s
-      retries: 10
+      retries: 20
     ports:
       - 15672:15672
       - 5672:5672
@@ -22,7 +22,7 @@ services:
       - {{swarm_network}}
     deploy:
       mode: replicated
-      replicas: 1
+      replicas: 3
       #endpoint_mode: dnsrr
       placement:
         constraints:
