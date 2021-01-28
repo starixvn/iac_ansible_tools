@@ -25,6 +25,10 @@ version: '3.3'
 configs:
   {{service_name}}_{{ environment }}_config:
     file: {{working_path}}/{{environment}}/configs/{{config_file}}
+{% if sp_file is defined %}
+  {{service_name}}_{{ environment }}_sp_config:
+    file: {{working_path}}/{{environment}}/configs/{{sp_file}}
+{% endif %}
 {% endif %}
 
 services:
@@ -38,17 +42,16 @@ services:
     configs:
       - source: {{service_name}}_{{ environment }}_config
         target: {{container_root_path}}/{{config_container_path}}/{{config_file}}
+{% if sp_file is defined %}
+      - source: {{service_name}}_{{ environment }}_sp_config
+        target: {{container_root_path}}/App_Data/{{sp_file}}
+{% endif %}
 {% endif %}
 {% if item.0.volumes is defined %}
     volumes:
-{% if sp_file is defined %}
-      - {{working_path}}/{{environment}}/configs/{{sp_file}}:/app/App_Data/{{sp_file}}
-{% endif %}
-{% if item.0.volumes is defined %}
 {% for volume in item.0.volumes %}
       - {{gluster_path}}{{volume.src}}/{{environment}}:{{volume.dest}}
 {% endfor %}
-{% endif %}
 {% endif %}
     deploy:
       mode: replicated
