@@ -17,6 +17,12 @@
     dest: "{{config_folder}}/definitions.json"
     mode: 0777
 
+- name: Copy enabled_plugins
+  copy:
+    src: config/enabled_plugins
+    dest: "{{config_folder}}/enabled_plugins"
+    mode: 0777
+
 - name: Copy nodes folder
   copy:
     src: nodes/
