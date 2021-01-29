@@ -33,7 +33,6 @@ services:
     volumes:
       - config:/etc/rabbitmq/
       - data:/var/lib/rabbitmq/
-      - logs:/var/log/rabbitmq/
 
 networks:
   {{swarm_network}}:
@@ -52,11 +51,4 @@ volumes:
     driver_opts:
       o: bind
       type: none
-      device: "{{nodes_folder}}/rabbit{{'{{'}}.Task.Slot{{'}}'}}/data"
-  logs:
-    name: "rabbitmq_logs{{'{{'}}.Task.Slot{{'}}'}}"
-    driver: local
-    driver_opts:
-      o: bind
-      type: none
-      device: "{{nodes_folder}}/rabbit{{'{{'}}.Task.Slot{{'}}'}}/logs"
+      device: "{{nodes_folder}}/rabbit{{'{{'}}.Task.Slot{{'}}'}}"
