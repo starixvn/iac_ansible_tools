@@ -41,11 +41,12 @@ networks:
 
 volumes:
   config:
+    name: "rabbit_config{{'{{'}}.Task.Slot{{'}}'}}"
     driver: local
     driver_opts:
       o: bind
       type: none
-      device: "{{config_folder}}"
+      device: "{{config_folder}}/rabbit{{'{{'}}.Task.Slot{{'}}'}}"
   data:
     driver: local
     driver_opts:

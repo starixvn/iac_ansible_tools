@@ -1,27 +1,19 @@
 ---
-- name: Create config folder
-  file:
-    path: '{{config_folder}}'
-    state: directory
-    mode: '777'
-
-- name: Copy rabbitmq.conf
+- name: Copy config folder
   copy:
-    src: config/rabbitmq.conf
-    dest: "{{config_folder}}/rabbitmq.conf"
+    src: config/
+    dest: "{{config_folder}}"
     mode: 0777
 
 - name: Copy definitions.json
   copy:
-    src: "config/definitions.{{environment_name}}.json"
-    dest: "{{config_folder}}/definitions.json"
+    src: "definitions.{{environment_name}}.json"
+    dest: "{{config_folder}}/{{item}}/definitions.json"
     mode: 0777
-
-- name: Copy enabled_plugins
-  copy:
-    src: config/enabled_plugins
-    dest: "{{config_folder}}/enabled_plugins"
-    mode: 0777
+  with_items:
+    - rabbit1
+    - rabbit2
+    - rabbit3
 
 - name: Create data folder
   file:
