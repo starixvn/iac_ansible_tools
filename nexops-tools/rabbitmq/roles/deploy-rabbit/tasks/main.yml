@@ -5,6 +5,13 @@
     dest: "{{config_folder}}"
     mode: 0777
 
+- name: Set permission for config
+  file:
+    path: '{{config_folder}}'
+    state: directory
+    mode: '777'
+    recurse: true
+
 - name: Copy definitions.json
   copy:
     src: "definitions.{{environment_name}}.json"
