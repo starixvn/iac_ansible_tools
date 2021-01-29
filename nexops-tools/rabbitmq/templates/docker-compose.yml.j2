@@ -22,11 +22,12 @@ services:
       - {{swarm_network}}
     deploy:
       mode: replicated
-      replicas: 3
+      replicas: 2
       #endpoint_mode: dnsrr
       placement:
         constraints:
           - "node.labels.{{node_label}}==yes"
+        max_replicas_per_node: 1
     environment:
       RABBITMQ_DEFAULT_VHOST: "/"
       RABBITMQ_VM_MEMORY_HIGH_WATERMARK: "3072MiB"
