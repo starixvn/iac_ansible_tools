@@ -8,7 +8,7 @@
     environment_name: "Local" # Local, UAT, SIT, PRO
     swarm_network: "swarm_nexcel_local"
     config_folder: "{{working_directory}}/config"
-    nodes_folder: "{{working_directory}}/nodes"
+    data_folder: "{{working_directory}}/data"
   roles:
     - role: deploy-rabbit
       when: inventory_hostname in groups['gluster_leader']

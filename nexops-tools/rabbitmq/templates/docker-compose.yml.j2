@@ -47,9 +47,8 @@ volumes:
       type: none
       device: "{{config_folder}}"
   data:
-    name: "rabbitmq_data{{'{{'}}.Task.Slot{{'}}'}}"
     driver: local
     driver_opts:
       o: bind
       type: none
-      device: "{{nodes_folder}}/rabbit{{'{{'}}.Task.Slot{{'}}'}}"
+      device: "{{data_folder}}"
