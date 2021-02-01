@@ -14,7 +14,7 @@ x-defaults: &defaults
   links:
     - sentry_redis
   env_file:
-    - .conf/sentry.env
+    - conf/sentry.env
   networks:
     - {{swarm_network_name}}
   deploy:
@@ -77,7 +77,7 @@ services:
     links:
       - redis_{{org}}
     env_file:
-      - .conf/sentry.env
+      - conf/sentry.env
     networks:
       - {{swarm_network_name}}
     deploy:
@@ -101,7 +101,7 @@ services:
     links:
       - redis_{{org}}
     env_file:
-      - .conf/sentry.env
+      - conf/sentry.env
     networks:
       - {{swarm_network_name}}
     deploy:
@@ -125,7 +125,7 @@ services:
     links:
       - sentry_redis_{{org}}
     env_file:
-      - .conf/sentry.env
+      - conf/sentry.env
     networks:
       - {{swarm_network_name}}
     deploy:
