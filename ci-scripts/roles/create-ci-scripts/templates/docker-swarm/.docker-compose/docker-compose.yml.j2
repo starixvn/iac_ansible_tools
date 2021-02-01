@@ -74,6 +74,9 @@ services:
       timeout: 5s
       retries: 5
 {% endif %}
+    labels:
+      # - "io.portainer.accesscontrol.public"
+      - "io.portainer.accesscontrol.teams={{team_name}}"
 networks:
   swarm_{{ network }}:
     external: true
