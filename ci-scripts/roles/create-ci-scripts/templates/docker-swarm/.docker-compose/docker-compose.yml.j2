@@ -25,9 +25,13 @@ version: '3.3'
 configs:
   {{service_name}}_{{ environment }}_config:
     file: {{working_path}}/{{environment}}/configs/{{config_file}}
+    labels:
+      - "io.portainer.accesscontrol.teams={{team_name | upper}}"
 {% if sp_file is defined %}
   {{service_name}}_{{ environment }}_sp_config:
     file: {{working_path}}/{{environment}}/configs/{{sp_file}}
+    labels:
+      - "io.portainer.accesscontrol.teams={{team_name | upper}}"
 {% endif %}
 {% endif %}
 
