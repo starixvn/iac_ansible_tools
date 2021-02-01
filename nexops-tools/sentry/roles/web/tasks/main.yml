@@ -1,7 +1,8 @@
 ---
 - name: Create working directory
   file:
-    path: "{{ working_directory }}" #/var/www/gluster/nexops/sentry_{{org}}
+    path: "{{ working_directory }}"
+    #/var/www/gluster/nexops/sentry_{{org}}
     state: directory
     mode: "0777"
   become: yes
