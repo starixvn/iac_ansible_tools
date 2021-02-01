@@ -1,0 +1,149 @@
+#================================ Docker Compose =====================================
+
+# compose script
+# BEGIN -- setting docker compose script by Ansible
+version: "3.4"
+
+x-defaults: &defaults
+  restart: unless-stopped
+  image: "registry.nexdev.net:5050/docker/nexops-tools/sentry:9.1.1"
+  build:
+    context: ./
+  depends_on:
+    - sentry_redis
+  links:
+    - sentry_redis
+  env_file:
+    - sentry.env
+  networks:
+    - { { swarm_network_name } }
+  deploy:
+    mode: replicated
+    replicas: 1
+    placement:
+      constraints:
+        - node.labels.SENTRY == yes
+  volumes:
+    - /var/www/gluster/nexops/sentry_{{org}}/settings/sentry.conf.py:/etc/sentry/sentry.conf.py
+    - /var/www/gluster/nexops/sentry_{{org}}/settings/event_manager.py:/usr/local/lib/python2.7/site-packages/sentry/event_manager.py
+
+services:
+  db:
+    image: registry.nexdev.net:5050/docker/database/postgres:9.6.10 #latest
+    #ports:
+    #  - published: 5434
+    #    target: 5432
+    #    mode: host
+    volumes:
+      - ./data:/var/lib/postgresql/data:rw
+    environment:
+      POSTGRES_PASSWORD: postgres1234aa
+    stop_grace_period: 1m
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.SENTRY == yes
+    restart: always
+    networks:
+      - { { swarm_network_name } }
+  ##Redis
+  redis:
+    image: registry.nexdev.net:5050/docker/nexops-tools/redis:5 #redis:3.2-alpine
+    networks:
+      - { { swarm_network_name } }
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.SENTRY == yes
+    sysctls:
+      - net.core.somaxconn=65536
+    command: redis-server /etc/redis/redis.conf
+    volumes:
+      - /var/www/gluster/nexops/sentry_{{org}}/redis.conf:/etc/redis/redis.conf
+      - /var/www/gluster/nexops/sentry_{{org}}/redis/data:/data
+      - /var/www/gluster/nexops/sentry_{{org}}/redis/log:/var/tmp/
+
+  #sentry web base
+  web:
+    image: "registry.nexdev.net:5050/docker/nexops-tools/sentry:9.1.1"
+    build:
+      context: ./
+    depends_on:
+      - redis
+    links:
+      - redis
+    env_file:
+      - sentry.env
+    networks:
+      - { { swarm_network_name } }
+    deploy:
+      mode: replicated
+      replicas: 2
+      placement:
+        constraints:
+          - node.labels.SENTRY == yes
+    volumes:
+      - /var/www/gluster/nexops/sentry_{{org}}/files:/var/lib/sentry/files
+      - /var/www/gluster/nexops/sentry_{{org}}/settings/sentry.conf.py:/etc/sentry/sentry.conf.py
+      - /var/www/gluster/nexops/sentry_{{org}}/settings/event_manager.py:/usr/local/lib/python2.7/site-packages/sentry/event_manager.py
+    #ports:
+    #  - 8820:9000
+
+  cron:
+    image: "registry.nexdev.net:5050/docker/nexops-tools/sentry:9.1.1"
+    build:
+      context: ./
+    depends_on:
+      - redis
+    links:
+      - redis
+    env_file:
+      - sentry.env
+    networks:
+      - { { swarm_network_name } }
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.SENTRY == yes
+    volumes:
+      - "/var/www/gluster/nexops/sentry_{{org}}/files":/var/lib/sentry/files
+      - /var/www/gluster/nexops/sentry_{{org}}/settings/sentry.conf.py:/etc/sentry/sentry.conf.py
+      - /var/www/gluster/nexops/sentry_{{org}}/settings/event_manager.py:/usr/local/lib/python2.7/site-packages/sentry/event_manager.py
+    command: "sentry run cron"
+
+  ##Worker1
+  worker:
+    image: "registry.nexdev.net:5050/docker/nexops-tools/sentry:9.1.1"
+    build:
+      context: ./
+    depends_on:
+      - sentry_redis
+    links:
+      - sentry_redis
+    env_file:
+      - sentry.env
+    networks:
+      - { { swarm_network_name } }
+    deploy:
+      mode: replicated
+      replicas: 2
+      placement:
+        constraints:
+          - node.labels.SENTRY == yes
+    volumes:
+      - /var/www/gluster/nexops/sentry/files:/var/lib/sentry/files
+      - /var/www/gluster/nexops/sentry/settings/sentry.conf.py:/etc/sentry/sentry.conf.py
+      - /var/www/gluster/nexops/sentry/settings/event_manager.py:/usr/local/lib/python2.7/site-packages/sentry/event_manager.py
+    command: "sentry run worker -c 4"
+
+networks:
+  { { swarm_network_name } }:
+    external: true
+  private:
+    external: true
