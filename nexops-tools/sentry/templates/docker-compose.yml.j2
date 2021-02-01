@@ -82,7 +82,7 @@ services:
       - {{swarm_network_name}}
     deploy:
       mode: replicated
-      replicas: 2
+      replicas: 1
       placement:
         constraints:
           - node.labels.SENTRY == yes
