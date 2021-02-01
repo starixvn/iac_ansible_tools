@@ -324,7 +324,7 @@
   ],
   "topic_permissions": [],
   "parameters": [],
-  "global_parameters": [  ],
+  "global_parameters": [],
   "policies": [
     {
       "vhost": "ONEbook.NG2.API",
