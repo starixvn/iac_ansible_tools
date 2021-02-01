@@ -29,3 +29,17 @@
     state: present
     compose:
       - "{{working_directory}}/docker-compose.yml"
+
+- name: Generating database for {{ container_name }}-web ...
+  shell: |
+    export sentry_web=$(docker ps -aqf "name=^sentry_web_{{org}}")
+    export sentry_db=$(docker ps -aqf "name=^sentry_db_{{org}}")
+    docker exec -it $sentry_db psql -U postgres -c "ALTER USER sentry WITH SUPERUSER;"
+    docker exec -it $sentry_web sentry upgrade --noinput
+  become: yes
+  #Create Admin Sentry User
+- name: Create Admin Sentry User
+  shell: |
+    export sentry_web=$(docker ps -aqf "name=^sentry_web_{{org}}")
+    docker exec -it $sentry_web sentry createuser --email troy.vo@starixvn.com --password 1234aa --superuser --no-input
+  become: yes
