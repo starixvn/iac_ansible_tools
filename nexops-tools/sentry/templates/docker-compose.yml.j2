@@ -137,9 +137,9 @@ services:
         constraints:
           - node.labels.SENTRY == yes
     volumes:
-      - /var/www/gluster/nexops/sentry/files:/var/lib/sentry/files
-      - /var/www/gluster/nexops/sentry/settings/sentry.conf.py:/etc/sentry/sentry.conf.py
-      - /var/www/gluster/nexops/sentry/settings/event_manager.py:/usr/local/lib/python2.7/site-packages/sentry/event_manager.py
+      - /var/www/gluster/nexops/sentry_{{org}}/files:/var/lib/sentry/files
+      - /var/www/gluster/nexops/sentry_{{org}}/settings/sentry.conf.py:/etc/sentry/sentry.conf.py
+      - /var/www/gluster/nexops/sentry_{{org}}/settings/event_manager.py:/usr/local/lib/python2.7/site-packages/sentry/event_manager.py
     command: "sentry run worker -c 4"
 
 networks:
