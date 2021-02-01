@@ -24,8 +24,8 @@ x-defaults: &defaults
       constraints:
         - node.labels.SENTRY == yes
   volumes:
-    - /var/www/gluster/nexops/sentry_{{org}}/settings/sentry.conf.py:/etc/sentry/sentry.conf.py
-    - /var/www/gluster/nexops/sentry_{{org}}/settings/event_manager.py:/usr/local/lib/python2.7/site-packages/sentry/event_manager.py
+    - /var/www/gluster/nexops/sentry_{{org}}/conf/settings/sentry.conf.py:/etc/sentry/sentry.conf.py
+    - /var/www/gluster/nexops/sentry_{{org}}/conf/settings/event_manager.py:/usr/local/lib/python2.7/site-packages/sentry/event_manager.py
 
 services:
   db_{{org}}:
@@ -87,9 +87,8 @@ services:
         constraints:
           - node.labels.SENTRY == yes
     volumes:
-      - /var/www/gluster/nexops/sentry_{{org}}/files:/var/lib/sentry/files
-      - /var/www/gluster/nexops/sentry_{{org}}/settings/sentry.conf.py:/etc/sentry/sentry.conf.py
-      - /var/www/gluster/nexops/sentry_{{org}}/settings/event_manager.py:/usr/local/lib/python2.7/site-packages/sentry/event_manager.py
+      - /var/www/gluster/nexops/sentry_{{org}}/conf/settings/sentry.conf.py:/etc/sentry/sentry.conf.py
+      - /var/www/gluster/nexops/sentry_{{org}}/conf/settings/event_manager.py:/usr/local/lib/python2.7/site-packages/sentry/event_manager.py
     #ports:
     #  - 8820:9000
 
@@ -112,9 +111,8 @@ services:
         constraints:
           - node.labels.SENTRY == yes
     volumes:
-      - "/var/www/gluster/nexops/sentry_{{org}}/files":/var/lib/sentry/files
-      - /var/www/gluster/nexops/sentry_{{org}}/settings/sentry.conf.py:/etc/sentry/sentry.conf.py
-      - /var/www/gluster/nexops/sentry_{{org}}/settings/event_manager.py:/usr/local/lib/python2.7/site-packages/sentry/event_manager.py
+      - /var/www/gluster/nexops/sentry_{{org}}/conf/settings/sentry.conf.py:/etc/sentry/sentry.conf.py
+      - /var/www/gluster/nexops/sentry_{{org}}/conf/settings/event_manager.py:/usr/local/lib/python2.7/site-packages/sentry/event_manager.py
     command: "sentry run cron"
 
   ##Worker1
@@ -138,8 +136,8 @@ services:
           - node.labels.SENTRY == yes
     volumes:
       - /var/www/gluster/nexops/sentry_{{org}}/files:/var/lib/sentry/files
-      - /var/www/gluster/nexops/sentry_{{org}}/settings/sentry.conf.py:/etc/sentry/sentry.conf.py
-      - /var/www/gluster/nexops/sentry_{{org}}/settings/event_manager.py:/usr/local/lib/python2.7/site-packages/sentry/event_manager.py
+      - /var/www/gluster/nexops/sentry_{{org}}/conf/settings/sentry.conf.py:/etc/sentry/sentry.conf.py
+      - /var/www/gluster/nexops/sentry_{{org}}/conf/settings/event_manager.py:/usr/local/lib/python2.7/site-packages/sentry/event_manager.py
     command: "sentry run worker -c 4"
 
 networks:
