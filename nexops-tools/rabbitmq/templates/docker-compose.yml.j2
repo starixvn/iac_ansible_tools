@@ -26,7 +26,7 @@ services:
           - "node.labels.{{node_label}}==yes"
     environment:
       RABBITMQ_DEFAULT_VHOST: "/"
-      RABBITMQ_VM_MEMORY_HIGH_WATERMARK: "3072MiB"
+      RABBITMQ_VM_MEMORY_HIGH_WATERMARK: "2048MiB"
     volumes:
       - config:/etc/rabbitmq/
       - data:/var/lib/rabbitmq/
