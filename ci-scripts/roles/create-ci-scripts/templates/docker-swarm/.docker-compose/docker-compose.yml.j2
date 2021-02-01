@@ -76,7 +76,7 @@ services:
 {% endif %}
     labels:
       # - "io.portainer.accesscontrol.public"
-      - "io.portainer.accesscontrol.teams={{team_name}}"
+      - "io.portainer.accesscontrol.teams={{team_name | upper}}"
 networks:
   swarm_{{ network }}:
     external: true
