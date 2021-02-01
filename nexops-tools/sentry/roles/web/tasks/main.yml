@@ -7,16 +7,16 @@
     mode: "0777"
   become: yes
 
-- name: Copy Docker compose file
-  templates:
-    src: "templates/docker-compose.yml.j2"
-    dest: "{{ working_directory }}/docker-compose.yml"
-  become: yes
-
 - name: Copy Sentry configuration
   copy:
     src: "templates/conf"
     dest: "{{ working_directory }}"
+  become: yes
+
+- name: Copy Docker compose file
+  template:
+    src: "templates/docker-compose.yml.j2"
+    dest: "{{ working_directory }}/docker-compose.yml"
   become: yes
 
 - name: Install jsondiff python package
