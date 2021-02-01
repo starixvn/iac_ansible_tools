@@ -26,12 +26,20 @@ configs:
   {{service_name}}_{{ environment }}_config:
     file: {{working_path}}/{{environment}}/configs/{{config_file}}
     labels:
+{% if env == "prod" %}
+      - "io.portainer.accesscontrol.teams={{team_name | upper}}_LEADERS"
+{% else %}
       - "io.portainer.accesscontrol.teams={{team_name | upper}}"
+{% endif %}
 {% if sp_file is defined %}
   {{service_name}}_{{ environment }}_sp_config:
     file: {{working_path}}/{{environment}}/configs/{{sp_file}}
     labels:
+{% if env == "prod" %}
+      - "io.portainer.accesscontrol.teams={{team_name | upper}}_LEADERS"
+{% else %}
       - "io.portainer.accesscontrol.teams={{team_name | upper}}"
+{% endif %}
 {% endif %}
 {% endif %}
 
@@ -79,8 +87,11 @@ services:
       retries: 5
 {% endif %}
     labels:
-      # - "io.portainer.accesscontrol.public"
+{% if env == "prod" %}
+      - "io.portainer.accesscontrol.teams={{team_name | upper}}_LEADERS"
+{% else %}
       - "io.portainer.accesscontrol.teams={{team_name | upper}}"
+{% endif %}
 networks:
   swarm_{{ network }}:
     external: true
