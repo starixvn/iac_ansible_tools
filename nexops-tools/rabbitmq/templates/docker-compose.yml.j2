@@ -5,16 +5,10 @@ services:
     image: registry.nexdev.net:5050/docker/nexops-tools/rabbitmq:3.8.11-management-alpine
     hostname: "rabbit{{'{{'}}.Task.Slot{{'}}'}}"
     healthcheck:
-      test: > 
-        rabbitmqctl eval '
-        { true, rabbit_app_booted_and_running } = { rabbit:is_booted(node()), rabbit_app_booted_and_running },
-        { [], no_alarms } = { rabbit:alarms(), no_alarms },
-        [] /= rabbit_networking:active_listeners(),
-        rabbitmq_node_is_healthy.
-        ' || exit 1
-      interval: 15s
+      test: rabbitmq-diagnostics ping
+      interval: 3s
       timeout: 5s
-      retries: 20
+      retries: 200
     ports:
       - 15672:15672
       - 5672:5672
@@ -24,6 +18,9 @@ services:
       mode: replicated
       replicas: 2
       #endpoint_mode: dnsrr
+      update_config:
+        parallelism: 2
+        delay: 10s
       placement:
         constraints:
           - "node.labels.{{node_label}}==yes"
@@ -41,12 +38,11 @@ networks:
 
 volumes:
   config:
-    name: "rabbit_config{{'{{'}}.Task.Slot{{'}}'}}"
     driver: local
     driver_opts:
       o: bind
       type: none
-      device: "{{config_folder}}/rabbit{{'{{'}}.Task.Slot{{'}}'}}"
+      device: "{{config_folder}}"
   data:
     driver: local
     driver_opts:

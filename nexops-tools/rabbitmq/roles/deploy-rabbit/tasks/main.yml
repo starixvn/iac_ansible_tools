@@ -15,12 +15,8 @@
 - name: Copy definitions.json
   copy:
     src: "definitions.{{environment_name}}.json"
-    dest: "{{config_folder}}/{{item}}/definitions.json"
+    dest: "{{config_folder}}/definitions.json"
     mode: 0777
-  with_items:
-    - rabbit1
-    - rabbit2
-    - rabbit3
 
 - name: Create data folder
   file:
