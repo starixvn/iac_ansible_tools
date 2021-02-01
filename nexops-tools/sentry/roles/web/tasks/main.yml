@@ -7,6 +7,14 @@
     mode: "0777"
   become: yes
 
+- name: Create DB folder
+  file:
+    path: "{{ working_directory }}/data"
+    #/var/www/gluster/nexops/sentry_{{org}}#s11
+    state: directory
+    mode: "0777"
+  become: yes
+
 - name: Copy Sentry configuration
   copy:
     src: "templates/conf"

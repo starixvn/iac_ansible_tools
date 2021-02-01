@@ -63,9 +63,9 @@ services:
       - net.core.somaxconn=65536
     command: redis-server /etc/redis/redis.conf
     volumes:
-      - /var/www/gluster/nexops/sentry_{{org}}/redis.conf:/etc/redis/redis.conf
-      - /var/www/gluster/nexops/sentry_{{org}}/redis/data:/data
-      - /var/www/gluster/nexops/sentry_{{org}}/redis/log:/var/tmp/
+      - /var/www/gluster/nexops/sentry_{{org}}/conf/redis.conf:/etc/redis/redis.conf
+      - /var/www/gluster/nexops/sentry_{{org}}/conf/redis/data:/data
+      - /var/www/gluster/nexops/sentry_{{org}}/conf/redis/log:/var/tmp/
 
   #sentry web base
   web_{{org}}:
