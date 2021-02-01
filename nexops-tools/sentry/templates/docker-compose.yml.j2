@@ -10,7 +10,7 @@ x-defaults: &defaults
   build:
     context: ./
   depends_on:
-    - sentry_redis
+    - sentry_redis_{{org}}
   links:
     - sentry_redis
   env_file:
@@ -28,7 +28,7 @@ x-defaults: &defaults
     - /var/www/gluster/nexops/sentry_{{org}}/settings/event_manager.py:/usr/local/lib/python2.7/site-packages/sentry/event_manager.py
 
 services:
-  db:
+  db_{{org}}:
     image: registry.nexdev.net:5050/docker/database/postgres:9.6.10 #latest
     #ports:
     #  - published: 5434
@@ -49,7 +49,7 @@ services:
     networks:
       - { { swarm_network_name } }
   ##Redis
-  redis:
+  redis_{{org}}:
     image: registry.nexdev.net:5050/docker/nexops-tools/redis:5 #redis:3.2-alpine
     networks:
       - { { swarm_network_name } }
@@ -68,14 +68,14 @@ services:
       - /var/www/gluster/nexops/sentry_{{org}}/redis/log:/var/tmp/
 
   #sentry web base
-  web:
+  web_{{org}}:
     image: "registry.nexdev.net:5050/docker/nexops-tools/sentry:9.1.1"
     build:
       context: ./
     depends_on:
-      - redis
+      - redis_{{org}}
     links:
-      - redis
+      - redis_{{org}}
     env_file:
       - sentry.env
     networks:
@@ -93,14 +93,14 @@ services:
     #ports:
     #  - 8820:9000
 
-  cron:
+  cron_{{org}}:
     image: "registry.nexdev.net:5050/docker/nexops-tools/sentry:9.1.1"
     build:
       context: ./
     depends_on:
-      - redis
+      - redis_{{org}}
     links:
-      - redis
+      - redis_{{org}}
     env_file:
       - sentry.env
     networks:
@@ -118,14 +118,14 @@ services:
     command: "sentry run cron"
 
   ##Worker1
-  worker:
+  worker_{{org}}:
     image: "registry.nexdev.net:5050/docker/nexops-tools/sentry:9.1.1"
     build:
       context: ./
     depends_on:
-      - sentry_redis
+      - sentry_redis_{{org}}
     links:
-      - sentry_redis
+      - sentry_redis_{{org}}
     env_file:
       - sentry.env
     networks:
@@ -144,6 +144,4 @@ services:
 
 networks:
   { { swarm_network_name } }:
-    external: true
-  private:
     external: true
