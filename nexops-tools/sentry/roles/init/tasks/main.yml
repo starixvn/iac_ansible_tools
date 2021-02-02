@@ -43,16 +43,26 @@
   pip:
     name: jsondiff
 
-#- name: Deploy Sentry
-#  docker_stack:
-#    name: "sentry"
-#    state: present
-#    compose:
-#      - "{{working_directory}}/docker-compose.yml"
+- name: Deploy Sentry
+  docker_stack:
+    name: "sentry"
+    state: present
+    compose:
+      - "{{working_directory}}/docker-compose.yml"
 
-- name: Generating database for {{ container_name }}-web ...
+- name: Init database for sentry {{org}} ...
   shell: |
     cd {{ working_directory }}
     chmod 777 first-deployment.sh postgres-container-id.sh sentry-container-id.sh
     sh first-deployment.sh
+  become: yes
+
+- name: Upgrade sentry and craete Admin user sentry {{org}} ...
+  shell: |
+    cd {{ working_directory }}
+    docker exec -it $(./sentry-container-id.sh) sentry upgrade --noinput
+    docker exec -it $(./sentry-container-id.sh) sentry createuser \
+    --email {{admin_email}} \
+    --password {{password_admin_email}} \
+    --superuser --no-input > /dev/null
   become: yes
