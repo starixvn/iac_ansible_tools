@@ -17,7 +17,7 @@ services:
         constraints:
           - node.labels.SENTRY == yes
     networks:
-      - { { swarm_network_name } }
+      - {{swarm_network_name}}
     configs:
       - source: sentry_config
         target: /etc/sentry/config.yml
@@ -31,7 +31,7 @@ services:
         constraints:
           - node.labels.SENTRY == yes
     networks:
-      - { { swarm_network_name } }
+      - {{swarm_network_name}}
     environment: *sentry-environment
     command: run worker
 
@@ -42,7 +42,7 @@ services:
         constraints:
           - node.labels.SENTRY == yes
     networks:
-      - { { swarm_network_name } }
+      - {{swarm_network_name}}
     environment: *sentry-environment
     command: run cron
 
@@ -53,7 +53,7 @@ services:
         constraints:
           - node.labels.SENTRY == yes
     networks:
-      - { { swarm_network_name } }
+      - {{swarm_network_name}}
 
   postgres_{{org}}:
     image: registry.nexdev.net:5050/docker/database/postgres:10.4-alpine
@@ -62,7 +62,7 @@ services:
         constraints:
           - node.labels.SENTRY == yes
     networks:
-      - { { swarm_network_name } }
+      - {{swarm_network_name}}
     environment:
       - POSTGRES_PASSWORD=postgres1234AA
       - POSTGRES_USER=sentry
@@ -77,5 +77,5 @@ volumes:
   sentry_postgres_{{org}}:
 
 networks:
-  { { swarm_network_name } }:
+  {{swarm_network_name}}:
     external: true
