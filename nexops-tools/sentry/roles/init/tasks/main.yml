@@ -43,6 +43,18 @@
   pip:
     name: jsondiff
 
+- name: replace org {{org}} in postgres-container-id.sh
+  replace:
+    path: "{{working_directory}}/postgres-container-id.sh"
+    regexp: "org"
+    replace: "{{org}}"
+
+- name: replace org {{org}} in sentry-container-id.sh
+  replace:
+    path: "{{working_directory}}/sentry-container-id.sh"
+    regexp: "org"
+    replace: "{{org}}"
+
 - name: Deploy Sentry
   docker_stack:
     name: "sentry"
