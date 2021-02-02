@@ -19,7 +19,7 @@ services:
     networks:
       - {{swarm_network_name}}
     configs:
-      - source: sentry_config
+      - source: sentry_config_{{org}}
         target: /etc/sentry/config.yml
     environment: *sentry-environment
     # command:  bash -c "pip uninstall sentry-plugins -y; sentry upgrade --noinput; sentry run web"
