@@ -8,7 +8,7 @@ services:
       test: rabbitmq-diagnostics ping
       interval: 1s
       timeout: 2s
-      retries: 300
+      retries: 120
     ports:
       - 15672:15672
       - 5672:5672
@@ -20,7 +20,7 @@ services:
       #endpoint_mode: dnsrr
       update_config:
         parallelism: 1
-        delay: 15s
+        delay: 20s
       placement:
         constraints:
           - "node.labels.{{node_label}}==yes"
