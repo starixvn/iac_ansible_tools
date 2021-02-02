@@ -16,7 +16,7 @@
   become: yes
 
 - name: cp script files
-  template:
+  copy:
     src: "templates/{{ item }}"
     dest: "{{ working_directory }}/{{ item }}"
   with_items:
