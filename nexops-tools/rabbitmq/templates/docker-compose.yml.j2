@@ -5,7 +5,7 @@ services:
     image: registry.nexdev.net:5050/docker/nexops-tools/rabbitmq:3.8.11-management-alpine
     hostname: "rabbit{{'{{'}}.Task.Slot{{'}}'}}"
     healthcheck:
-      test: rabbitmq-diagnostics check_running
+      test: rabbitmq-diagnostics ping
       interval: 1s
       timeout: 2s
       retries: 300
