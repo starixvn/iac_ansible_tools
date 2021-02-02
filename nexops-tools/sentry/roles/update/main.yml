@@ -1,1 +1,25 @@
 ---
+- name: cp docker-compose file
+  template:
+    src: "templates/{{ item }}.j2"
+    dest: "{{ working_directory }}/{{ item }}"
+  with_items:
+    - docker-compose.yml
+    - sentry-config.yml
+
+- name: Install jsondiff python package
+  pip:
+    name: jsondiff
+
+- name: Remove Sentry web and configs
+  shell: |
+    docker service rm sentry_web_{{org}}
+    docker config rm sentry_sentry_config_{{org}}
+  become: yes
+
+- name: Deploy Sentry
+  docker_stack:
+    name: "sentry"
+    state: present
+    compose:
+      - "{{working_directory}}/docker-compose.yml"
