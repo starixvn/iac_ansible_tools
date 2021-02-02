@@ -47,7 +47,7 @@ services:
     command: run cron
 
   redis_{{org}}:
-    image: redis:4.0-alpine registry.nexdev.net:5050/docker/nexops-tools/redis:4.0-alpine
+    image: registry.nexdev.net:5050/docker/nexops-tools/redis:4.0-alpine
     deploy:
       placement:
         constraints:
