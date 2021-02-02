@@ -1,144 +1,81 @@
-#================================ Docker Compose =====================================
-
-# compose script
-# BEGIN -- setting docker compose script by Ansible
-version: "3.4"
-
-x-defaults: &defaults
-  restart: unless-stopped
-  image: "registry.nexdev.net:5050/docker/nexops-tools/sentry:9.1.1"
-  build:
-    context: ./
-  depends_on:
-    - sentry_redis_{{org}}
-  links:
-    - sentry_redis
-  env_file:
-    - conf/sentry.env
-  networks:
-    - {{swarm_network_name}}
-  deploy:
-    mode: replicated
-    replicas: 1
-    placement:
-      constraints:
-        - node.labels.SENTRY == yes
-  volumes:
-    - /var/www/gluster/nexops/sentry_{{org}}/conf/settings/sentry.conf.py:/etc/sentry/sentry.conf.py
-    - /var/www/gluster/nexops/sentry_{{org}}/conf/settings/event_manager.py:/usr/local/lib/python2.7/site-packages/sentry/event_manager.py
+version: "3.7"
+x-sentry-environment: &sentry-environment
+  SENTRY_REDIS_HOST: redis_{{org}}
+  SENTRY_POSTGRES_HOST: postgres_{{org}}
+  SENTRY_DB_USER: sentry
+  SENTRY_DB_NAME: sentry
+  SENTRY_DB_PASSWORD: postgres1234AA
+  # Generate this secret with "docker run --rm sentry:9.0.0 sentry config generate-secret-key"
+  SENTRY_SECRET_KEY: "ZDFvdmcjZnZob2lzbC01cWQpd2ZnM2owcjErLW44Kz1AbmNpaz10YzFkQF5AOHpmazMK"
+  SENTRY_SERVER_EMAIL: "{{sender_email}}"
 
 services:
-  db_{{org}}:
-    image: registry.nexdev.net:5050/docker/database/postgres:9.6.10 #latest
-    #ports:
-    #  - published: 5434
-    #    target: 5432
-    #    mode: host
-    volumes:
-      - ./data:/var/lib/postgresql/data:rw
-    environment:
-      POSTGRES_PASSWORD: postgres1234aa
-    stop_grace_period: 1m
-    deploy:
-      mode: replicated
-      replicas: 1
-      placement:
-        constraints:
-          - node.labels.SENTRY == yes
-    restart: always
-    networks:
-      - {{swarm_network_name}}
-  ##Redis
-  redis_{{org}}:
-    image: registry.nexdev.net:5050/docker/nexops-tools/redis:5 #redis:3.2-alpine
-    networks:
-      - {{swarm_network_name}}
-    deploy:
-      mode: replicated
-      replicas: 1
-      placement:
-        constraints:
-          - node.labels.SENTRY == yes
-    sysctls:
-      - net.core.somaxconn=65536
-    command: redis-server /etc/redis/redis.conf
-    volumes:
-      - /var/www/gluster/nexops/sentry_{{org}}/conf/redis.conf:/etc/redis/redis.conf
-      #- /var/www/gluster/nexops/sentry_{{org}}/conf/redis/data:/data
-      #- /var/www/gluster/nexops/sentry_{{org}}/conf/redis/log:/var/tmp/
-
-  #sentry web base
   web_{{org}}:
-    image: "registry.nexdev.net:5050/docker/nexops-tools/sentry:9.1.1"
-    build:
-      context: ./
-    depends_on:
-      - redis_{{org}}
-    links:
-      - redis_{{org}}
-    env_file:
-      - conf/sentry.env
-    networks:
-      - {{swarm_network_name}}
+    image: registry.nexdev.net:5050/docker/nexops-tools/sentry:9.1.1
     deploy:
-      mode: replicated
-      replicas: 1
       placement:
         constraints:
           - node.labels.SENTRY == yes
-    volumes:
-      - /var/www/gluster/nexops/sentry_{{org}}/conf/settings/sentry.conf.py:/etc/sentry/sentry.conf.py
-      - /var/www/gluster/nexops/sentry_{{org}}/conf/settings/event_manager.py:/usr/local/lib/python2.7/site-packages/sentry/event_manager.py
-    #ports:
-    #  - 8820:9000
+    networks:
+      - { { swarm_network_name } }
+    configs:
+      - source: sentry_config
+        target: /etc/sentry/config.yml
+    environment: *sentry-environment
+    # command:  bash -c "pip uninstall sentry-plugins -y; sentry upgrade --noinput; sentry run web"
+
+  worker_{{org}}:
+    image: registry.nexdev.net:5050/docker/nexops-tools/sentry:9.1.1
+    deploy:
+      placement:
+        constraints:
+          - node.labels.SENTRY == yes
+    networks:
+      - { { swarm_network_name } }
+    environment: *sentry-environment
+    command: run worker
 
   cron_{{org}}:
-    image: "registry.nexdev.net:5050/docker/nexops-tools/sentry:9.1.1"
-    build:
-      context: ./
-    depends_on:
-      - redis_{{org}}
-    links:
-      - redis_{{org}}
-    env_file:
-      - conf/sentry.env
-    networks:
-      - {{swarm_network_name}}
+    image: registry.nexdev.net:5050/docker/nexops-tools/sentry:9.1.1
     deploy:
-      mode: replicated
-      replicas: 1
       placement:
         constraints:
           - node.labels.SENTRY == yes
-    volumes:
-      - /var/www/gluster/nexops/sentry_{{org}}/conf/settings/sentry.conf.py:/etc/sentry/sentry.conf.py
-      - /var/www/gluster/nexops/sentry_{{org}}/conf/settings/event_manager.py:/usr/local/lib/python2.7/site-packages/sentry/event_manager.py
-    command: "sentry run cron"
+    networks:
+      - { { swarm_network_name } }
+    environment: *sentry-environment
+    command: run cron
 
-  ##Worker1
-  worker_{{org}}:
-    image: "registry.nexdev.net:5050/docker/nexops-tools/sentry:9.1.1"
-    build:
-      context: ./
-    depends_on:
-      - sentry_redis_{{org}}
-    links:
-      - sentry_redis_{{org}}
-    env_file:
-      - conf/sentry.env
-    networks:
-      - {{swarm_network_name}}
+  redis_{{org}}:
+    image: redis:4.0-alpine registry.nexdev.net:5050/docker/nexops-tools/redis:4.0-alpine
     deploy:
-      mode: replicated
-      replicas: 2
       placement:
         constraints:
           - node.labels.SENTRY == yes
+    networks:
+      - { { swarm_network_name } }
+
+  postgres_{{org}}:
+    image: registry.nexdev.net:5050/docker/database/postgres:10.4-alpine
+    deploy:
+      placement:
+        constraints:
+          - node.labels.SENTRY == yes
+    networks:
+      - { { swarm_network_name } }
+    environment:
+      - POSTGRES_PASSWORD=postgres1234AA
+      - POSTGRES_USER=sentry
     volumes:
-      - /var/www/gluster/nexops/sentry_{{org}}/conf/settings/sentry.conf.py:/etc/sentry/sentry.conf.py
-      - /var/www/gluster/nexops/sentry_{{org}}/conf/settings/event_manager.py:/usr/local/lib/python2.7/site-packages/sentry/event_manager.py
-    command: "sentry run worker -c 4"
+      - sentry_postgres_{{org}}:/var/lib/postgresql/data
+
+configs:
+  sentry_config_{{org}}:
+    file: ./sentry-config.yml
+
+volumes:
+  sentry_postgres_{{org}}:
 
 networks:
-  {{swarm_network_name}}:
-    external: true
+  sentry:
+    name: sentry

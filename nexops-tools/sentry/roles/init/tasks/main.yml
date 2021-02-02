@@ -15,16 +15,21 @@
     mode: "0777"
   become: yes
 
+- name: cp docker-compose file
+  template:
+    src: "templates/{{ item }}.j2"
+    dest: "{{ working_directory }}/{{ item }}"
+  with_items:
+    - docker-compose.yml
+    - first-deployment.sh
+    - postgres-container-id.sh
+    - sentry-config.yml
+    - sentry-container-id.sh
+
 - name: Copy Sentry configuration
   copy:
-    src: "templates/conf"
+    src: "files/init.sql"
     dest: "{{ working_directory }}"
-  become: yes
-
-- name: Copy Docker compose file
-  template:
-    src: "templates/docker-compose.yml.j2"
-    dest: "{{ working_directory }}/docker-compose.yml"
   become: yes
 
 - name: Install jsondiff python package
@@ -40,12 +45,7 @@
 
 - name: Generating database for {{ container_name }}-web ...
   shell: |
-    export sentry_web=$(docker ps -aqf "name=^sentry_web_{{org}}")
-    docker exec -it $sentry_web sentry upgrade --noinput
-  become: yes
-  #Create Admin Sentry User
-- name: Create Admin Sentry User
-  shell: |
-    export sentry_web=$(docker ps -aqf "name=^sentry_web_{{org}}")
-    docker exec -it $sentry_web sentry createuser --email troy.vo@starixvn.com --password 1234aa --superuser --no-input
+    cd {{ working_directory }}
+    chmod 777 first-deployment.sh postgres-container-id.sh sentry-container-id.sh
+    sh first-deployment.sh
   become: yes

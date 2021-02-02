@@ -1,0 +1,10 @@
+---
+- hosts: all
+  roles:
+    - role: init-sentry
+  tags: init-sentry
+
+- hosts: all
+  roles:
+    - role: update-sentry
+  tags: update-sentry
