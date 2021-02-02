@@ -1,5 +1,5 @@
 {% set service_name = item.name | replace('-','_') %}
-{% set rule_name = project_name ~ '-' ~ item.name | replace('_','-') %}
+{% set rule_name = project_name | replace('_','-') ~ '-' ~ item.name | replace('_','-') %}
 {% for version in versions %}
 {% set version_number = '' if version == 0 else version %}
 
