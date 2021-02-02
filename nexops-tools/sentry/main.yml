@@ -1,5 +1,10 @@
 ---
 - hosts: all
   roles:
-    - role: web
-  #tags: zabbix-agent
+    - role: init
+  tags: init-sentry
+
+- hosts: all
+  roles:
+    - role: update
+  tags: update-sentry
