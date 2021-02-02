@@ -5,10 +5,10 @@ services:
     image: registry.nexdev.net:5050/docker/nexops-tools/rabbitmq:3.8.11-management-alpine
     hostname: "rabbit{{'{{'}}.Task.Slot{{'}}'}}"
     healthcheck:
-      test: rabbitmq-diagnostics ping
-      interval: 3s
-      timeout: 5s
-      retries: 200
+      test: rabbitmq-diagnostics check_running
+      interval: 1s
+      timeout: 2s
+      retries: 300
     ports:
       - 15672:15672
       - 5672:5672
@@ -19,8 +19,8 @@ services:
       replicas: 2
       #endpoint_mode: dnsrr
       update_config:
-        parallelism: 2
-        delay: 10s
+        parallelism: 1
+        delay: 15s
       placement:
         constraints:
           - "node.labels.{{node_label}}==yes"
