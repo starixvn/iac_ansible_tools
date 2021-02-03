@@ -16,6 +16,7 @@
     docker service rm sentry_web_{{org}}
     docker config rm sentry_sentry_config_{{org}}
   become: yes
+  ignore_errors: true
 
 - name: Deploy Sentry
   docker_stack:
