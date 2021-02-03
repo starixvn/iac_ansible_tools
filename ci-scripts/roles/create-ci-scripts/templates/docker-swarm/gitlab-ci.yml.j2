@@ -19,7 +19,11 @@ include:
 {% if sonarqube_enabled is defined and sonarqube_enabled == true %}
   - project: 'ci/common-ci'
     ref: rocketor
+{% if frameworks is defined and "dotnet" in frameworks %}
+    file: 'sonarqube/sonarqube-dotnet.gitlab-ci.yml'
+{% else %}
     file: 'sonarqube/sonarqube.gitlab-ci.yml'
+{%endif%}
 {%endif%}
   - project: 'ci/common-ci'
     ref: rocketor
