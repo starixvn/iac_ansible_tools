@@ -13,7 +13,7 @@ x-sentry-environment: &sentry-environment
   SENTRY_EMAIL_PORT: "{{smtp_port}}"
   SENTRY_EMAIL_PASSWORD: "{{smtp_pass}}" 
   SENTRY_EMAIL_USER: "{{sender_email}}" 
-  SENTRY_EMAIL_USE_TLS=true
+  SENTRY_EMAIL_USE_TLS: "true"
 
 services:
   web_{{org}}:
