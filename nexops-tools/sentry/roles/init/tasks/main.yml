@@ -65,6 +65,7 @@
 - name: Init database for sentry {{org}} ...
   shell: |
     cd {{ working_directory }}
+    docker-compose pull
     chmod 777 first-deployment.sh postgres-container-id.sh sentry-container-id.sh
     sh first-deployment.sh
   become: yes
