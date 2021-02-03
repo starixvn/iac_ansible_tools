@@ -1,0 +1,85 @@
+version: "3.7"
+x-sentry-environment: &sentry-environment
+  SENTRY_REDIS_HOST: redis_{{org}}
+  SENTRY_POSTGRES_HOST: postgres_{{org}}
+  SENTRY_DB_USER: sentry
+  SENTRY_DB_NAME: sentry
+  SENTRY_DB_PASSWORD: postgres1234AA
+  # Generate this secret with "docker run --rm sentry:9.0.0 sentry config generate-secret-key"
+  SENTRY_SECRET_KEY: "ZDFvdmcjZnZob2lzbC01cWQpd2ZnM2owcjErLW44Kz1AbmNpaz10YzFkQF5AOHpmazMK"
+  ################################################################
+  SENTRY_SERVER_EMAIL: "{{sender_email}}"
+  SENTRY_EMAIL_HOST: "{{smtp_server}}"
+  SENTRY_EMAIL_PORT: "{{smtp_port}}"
+  SENTRY_EMAIL_PASSWORD: "{{smtp_pass}}" 
+  SENTRY_EMAIL_USER: "{{sender_email}}" 
+  SENTRY_EMAIL_USE_TLS=true
+
+services:
+  web_{{org}}:
+    image: registry.nexdev.net:5050/docker/nexops-tools/sentry:9.1.1
+    deploy:
+      placement:
+        constraints:
+          - node.labels.SENTRY == yes
+    networks:
+      - {{swarm_network_name}}
+    configs:
+      - source: sentry_config_{{org}}
+        target: /etc/sentry/config.yml
+    environment: *sentry-environment
+    # command:  bash -c "pip uninstall sentry-plugins -y; sentry upgrade --noinput; sentry run web"
+
+  worker_{{org}}:
+    image: registry.nexdev.net:5050/docker/nexops-tools/sentry:9.1.1
+    deploy:
+      placement:
+        constraints:
+          - node.labels.SENTRY == yes
+    networks:
+      - {{swarm_network_name}}
+    environment: *sentry-environment
+    command: run worker
+
+  cron_{{org}}:
+    image: registry.nexdev.net:5050/docker/nexops-tools/sentry:9.1.1
+    deploy:
+      placement:
+        constraints:
+          - node.labels.SENTRY == yes
+    networks:
+      - {{swarm_network_name}}
+    environment: *sentry-environment
+    command: run cron
+
+  redis_{{org}}:
+    image: registry.nexdev.net:5050/docker/nexops-tools/redis:4.0-alpine
+    deploy:
+      placement:
+        constraints:
+          - node.labels.SENTRY == yes
+    networks:
+      - {{swarm_network_name}}
+
+  postgres_{{org}}:
+    image: registry.nexdev.net:5050/docker/database/postgres:10.4-alpine
+    deploy:
+      placement:
+        constraints:
+          - node.labels.SENTRY == yes
+    networks:
+      - {{swarm_network_name}}
+    environment:
+      - POSTGRES_PASSWORD=postgres1234AA
+      - POSTGRES_USER=sentry
+    volumes:
+      #- sentry_postgres_{{org}}:/var/lib/postgresql/data
+      - ./data:/var/lib/postgresql/data:rw
+
+configs:
+  sentry_config_{{org}}:
+    file: ./sentry-config.yml
+
+networks:
+  {{swarm_network_name}}:
+    external: true
