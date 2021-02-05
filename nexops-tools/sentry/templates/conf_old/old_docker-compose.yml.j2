@@ -16,7 +16,7 @@ x-defaults: &defaults
   env_file:
     - conf/sentry.env
   networks:
-    - {{swarm_network_name}}
+    - {{swarm_nexops_network}}
   deploy:
     mode: replicated
     replicas: 1
@@ -47,12 +47,12 @@ services:
           - node.labels.SENTRY == yes
     restart: always
     networks:
-      - {{swarm_network_name}}
+      - {{swarm_nexops_network}}
   ##Redis
   redis_{{org}}:
     image: registry.nexdev.net:5050/docker/nexops-tools/redis:5 #redis:3.2-alpine
     networks:
-      - {{swarm_network_name}}
+      - {{swarm_nexops_network}}
     deploy:
       mode: replicated
       replicas: 1
@@ -79,7 +79,7 @@ services:
     env_file:
       - conf/sentry.env
     networks:
-      - {{swarm_network_name}}
+      - {{swarm_nexops_network}}
     deploy:
       mode: replicated
       replicas: 1
@@ -103,7 +103,7 @@ services:
     env_file:
       - conf/sentry.env
     networks:
-      - {{swarm_network_name}}
+      - {{swarm_nexops_network}}
     deploy:
       mode: replicated
       replicas: 1
@@ -127,7 +127,7 @@ services:
     env_file:
       - conf/sentry.env
     networks:
-      - {{swarm_network_name}}
+      - {{swarm_nexops_network}}
     deploy:
       mode: replicated
       replicas: 2
@@ -140,5 +140,5 @@ services:
     command: "sentry run worker -c 4"
 
 networks:
-  {{swarm_network_name}}:
+  {{swarm_nexops_network}}:
     external: true

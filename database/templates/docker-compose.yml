@@ -1,0 +1,53 @@
+  mysql:
+    image: registry.nexdev.net:5050/docker/database/mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - published: 33062
+        target: 3306
+        mode: ingress
+    environment:
+      - MYSQL_DATABASE=database
+      - MYSQL_ROOT_PASSWORD=1qaz@WSX
+      - MYSQL_USER=mysql_user
+      - MYSQL_PASSWORD=Pass1234AA
+    volumes:
+      - db:/var/lib/mysql
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.NEXOPS_LOW_STORAGE == yes
+    networks:
+      - swarm_nexops
+
+  # phpmyadmin:
+  #   image: registry.nexdev.net:5050/docker/phpmyadmin:latest
+  #   volumes:
+  #     - /var/www/gluster/web/nexus/saba_sports/phpadmin/uploads.ini:/usr/local/etc/php/conf.d/php-phpmyadmin.ini
+  #   restart: always
+  #   ports:
+  #     - 8032:80
+  #   environment:
+  #     MYSQL_USERNAME: mysql_user
+  #     MYSQL_ROOT_PASSWORD: Pass1234AA
+  #     PMA_HOSTS: saba_sports_mysql
+  #   deploy:
+  #     mode: replicated
+  #     replicas: 1
+  #     placement:
+  #       constraints:
+  #         - node.labels.NEXCEL_HIGH_STORAGE == yes
+    # networks:
+    #   - swarm_nexcel_local
+
+networks:
+  swarm_nexops:
+    external: true
+
+volumes:
+  db:
+    driver_opts:
+      o: bind
+      type: none
+      device: /var/www/gluster/nexops/mysql/test/data

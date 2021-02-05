@@ -3,7 +3,7 @@
     name: "{{item}}"
     driver: "overlay"
     attachable: true
-  with_items: '{{swarm_network_names}}'
+  with_items: '{{swarm_nexops_network}}'
   ignore_errors: yes
   become: yes
 

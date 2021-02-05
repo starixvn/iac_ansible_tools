@@ -10,7 +10,7 @@ services:
     volumes:
       - data:/verdaccio/storage
     networks:
-      - { { swarm_network_name } }
+      - { { swarm_nexops_network } }
     deploy:
       mode: replicated
       replicas: 1
@@ -26,5 +26,5 @@ volumes:
       device: /var/www/gluster/nexops/verdaccio/storage
 
 networks:
-  { { swarm_network_name } }:
+  { { swarm_nexops_network } }:
     external: true
