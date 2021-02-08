@@ -14,9 +14,10 @@ services:
     dns:
       - 127.0.0.11
     networks:
-{% for swarm_network_name in swarm_network_names %}
+{% for swarm_network in swarm_networks %}
       - {{swarm_network_name}}
 {% endfor %}
+      - {{swarm_network_nexops}}
     deploy:
         mode: global
         placement:
@@ -24,10 +25,12 @@ services:
             - node.labels.HAPROXY == yes
 
 networks:
-{% for swarm_network_name in swarm_network_names %}
+{% for swarm_network in swarm_networks %}
   {{swarm_network_name}}:
-     external: true
+    external: true
 {% endfor %}
+  {{swarm_network_nexops}}
+    external: true
 
 volumes:
   data:

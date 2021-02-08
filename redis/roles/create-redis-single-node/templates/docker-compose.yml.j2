@@ -13,10 +13,10 @@ services:
           - node.labels.NEXOPS_LOW_STORAGE == yes
     command: redis-server --appendonly yes
     networks:
-      - {{swarm_nexops_network}}
+      - {{swarm_network_nexops}}
 
 networks:
-  {{swarm_nexops_network}}:
+  {{swarm_network_nexops}}:
      external: true
 
 volumes:

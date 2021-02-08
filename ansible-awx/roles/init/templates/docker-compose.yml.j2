@@ -6,7 +6,7 @@ services:
       - '8089:8052'
     user: root
     networks:
-      - {{swarm_nexops_network}}
+      - {{swarm_network_nexops}}
     volumes:
       - supervisor-socket:/var/run/supervisor
       - rsyslog-socket:/var/run/awx-rsyslog/
@@ -35,7 +35,7 @@ services:
     hostname: awx
     user: root
     networks:
-      - {{swarm_nexops_network}}
+      - {{swarm_network_nexops}}
     volumes:
       - supervisor-socket:/var/run/supervisor
       - rsyslog-socket:/var/run/awx-rsyslog/
@@ -73,7 +73,7 @@ services:
       - '{{gluster_path}}/redis_socket:/var/run/redis/:rw'
       - '{{gluster_path}}/memcached_socket:/var/run/memcached/:rw'
     networks:
-      - {{swarm_nexops_network}}
+      - {{swarm_network_nexops}}
     deploy:
       mode: replicated
       replicas: 1
@@ -104,7 +104,7 @@ services:
     volumes:
       - '{{gluster_path}}/pgdocker/10/data/:/var/lib/postgresql/data/pgdata:Z'
     networks:
-      - {{swarm_nexops_network}}
+      - {{swarm_network_nexops}}
     environment:
       POSTGRES_USER: awx
       POSTGRES_PASSWORD: 1234aa
@@ -121,7 +121,7 @@ services:
           - node.labels.NEXOPS_LOW_STORAGE == yes
 
 networks:
-  {{swarm_nexops_network}}:
+  {{swarm_network_nexops}}:
      external: true
 
 volumes:

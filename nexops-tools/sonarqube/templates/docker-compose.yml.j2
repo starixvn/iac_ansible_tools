@@ -6,7 +6,7 @@ services:
     depends_on:
       - postgres
     networks:
-      - {{swarm_nexops_network}}
+      - {{swarm_network_nexops}}
     healthcheck:
       test: wget -qO- http://localhost:9000/api/system/status || exit 1
       interval: 30s
@@ -37,7 +37,7 @@ services:
   postgres:
     image: postgres:9.6
     networks:
-      - {{swarm_nexops_network}}
+      - {{swarm_network_nexops}}
     healthcheck:
       test: ["CMD", "pg_isready"]
       interval: 15s
@@ -59,7 +59,7 @@ services:
       - db_data:/var/lib/postgresql/data
 
 networks:
-  {{swarm_nexops_network}}:
+  {{swarm_network_nexops}}:
     external: true
 
 volumes:

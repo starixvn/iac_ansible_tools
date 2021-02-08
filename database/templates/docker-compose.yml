@@ -1,3 +1,9 @@
+  ########################################################################
+# File managed by Ansible - NexOps
+# Your changes will be overwritten.
+#######################################################################
+version: '3.3'
+services:
   mysql:
     image: registry.nexdev.net:5050/docker/database/mysql:8.0
     command: --default-authentication-plugin=mysql_native_password
@@ -19,7 +25,7 @@
         constraints:
           - node.labels.NEXOPS_LOW_STORAGE == yes
     networks:
-      - swarm_nexops
+      - {{swarm_network_nexops}}
 
   # phpmyadmin:
   #   image: registry.nexdev.net:5050/docker/phpmyadmin:latest
@@ -42,7 +48,7 @@
     #   - swarm_nexcel_local
 
 networks:
-  swarm_nexops:
+  {{swarm_network_nexops}}:
     external: true
 
 volumes:
