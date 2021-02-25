@@ -3,7 +3,11 @@
 build_image_{{ service_name }}:
   extends:
     - .deploy_vars_{{ service_name }}
-    - .build:{{item.framework | default('default')}}:image:noenv
+{% if item.multi_stage is undefined or item.multi_stage == false %}  
+    - .build:default:image:noenv
+{% else %}
+    - .build:default:image:noenv:multistage
+{% endif %}
     - .build:image:{{ service_name }}:rules
 {% if item.framework is defined and item.framework == "cocos" %}  
   needs: ['build_cocos_web']
