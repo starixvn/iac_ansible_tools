@@ -15,7 +15,7 @@ services:
       - 127.0.0.11
     networks:
 {% for swarm_network in swarm_networks %}
-      - {{swarm_network_name}}
+      - {{swarm_network}}
 {% endfor %}
       - {{swarm_network_nexops}}
     deploy:
@@ -26,10 +26,10 @@ services:
 
 networks:
 {% for swarm_network in swarm_networks %}
-  {{swarm_network_name}}:
+  {{swarm_network}}:
     external: true
 {% endfor %}
-  {{swarm_network_nexops}}
+  {{swarm_network_nexops}}:
     external: true
 
 volumes:
