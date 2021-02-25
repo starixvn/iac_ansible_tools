@@ -1,4 +1,5 @@
 {% set service_name = item.name | replace('-','_') %}
+
 {% if item.multiple_image_env is undefined or item.multiple_image_env == false %}  
 build_image_{{ service_name }}:
   extends:
@@ -15,12 +16,17 @@ build_image_{{ service_name }}:
     - build_cocos_web
 {% endif %}
 {% else %}
+
 {% for version in versions %}
 {% set version_number = '' if version == 0 else version %}
 build_image_{{ service_name }}_local{{ version_number }}:
   extends:
     - .deploy_vars_{{ service_name }}
-    - .build:{{item.framework | default('default')}}:image
+{% if item.multi_stage is undefined or item.multi_stage == false %}
+    - .build:default:image
+{% else %}
+    - .build:default:image:multistage
+{% endif %}
     - .deploy:local{{ version_number }}
     - .deploy:local{{ version_number }}:{{service_name}}:rules
 {% if item.framework is defined and item.framework == "cocos" %}  
@@ -31,10 +37,14 @@ build_image_{{ service_name }}_local{{ version_number }}:
 build_image_{{ service_name }}_sit{{ version_number }}:
   extends:
     - .deploy_vars_{{ service_name }}
-    - .build:{{item.framework | default('default')}}:image
+{% if item.multi_stage is undefined or item.multi_stage == false %}
+    - .build:default:image
+{% else %}
+    - .build:default:image:multistage
+{% endif %}
     - .deploy:sit{{ version_number }}
     - .deploy:sit{{ version_number }}:{{service_name}}:rules
-{% if item.framework is defined and item.framework == "cocos" %}  
+{% if item.framework is defined and item.framework == "cocos" %}
   needs: ['build_cocos_web_sit{{ version_number }}']
   dependencies:
     - build_cocos_web_sit{{ version_number }}
@@ -43,10 +53,14 @@ build_image_{{ service_name }}_sit{{ version_number }}:
 build_image_{{ service_name }}_uat{{ version_number }}:
   extends:
     - .deploy_vars_{{ service_name }}
-    - .build:{{item.framework | default('default')}}:image
+{% if item.multi_stage is undefined or item.multi_stage == false %}
+    - .build:default:image
+{% else %}
+    - .build:default:image:multistage
+{% endif %}
     - .deploy:uat{{ version_number }}
     - .deploy:uat{{ version_number }}:{{service_name}}:rules
-{% if item.framework is defined and item.framework == "cocos" %}  
+{% if item.framework is defined and item.framework == "cocos" %}
   needs: ['build_cocos_web_uat{{ version_number }}']
   dependencies:
     - build_cocos_web_uat{{ version_number }}
@@ -54,10 +68,14 @@ build_image_{{ service_name }}_uat{{ version_number }}:
 build_image_{{ service_name }}_prod{{ version_number }}:
   extends:
     - .deploy_vars_{{ service_name }}
-    - .build:{{item.framework | default('default')}}:image
+{% if item.multi_stage is undefined or item.multi_stage == false %}
+    - .build:default:image
+{% else %}
+    - .build:default:image:multistage
+{% endif %}
     - .deploy:prod{{ version_number }}
     - .deploy:prod{{ version_number }}:{{service_name}}:rules
-{% if item.framework is defined and item.framework == "cocos" %}  
+{% if item.framework is defined and item.framework == "cocos" %}
   needs: ['build_cocos_web_prod{{ version_number }}']
   dependencies:
     - build_cocos_web_prod{{ version_number }}
