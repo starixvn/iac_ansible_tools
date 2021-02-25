@@ -3,7 +3,7 @@
 haproxy_version: 2.2
 haproxy_image_name: haproxytech/haproxy-debian
 stack_name: haproxy
-volume_path: /var/www/haproxy
+volume_path: /var/www/gluster/haproxy
 config_filename: haproxy.cfg
 image_config_path: /usr/local/etc/haproxy
 
@@ -83,4 +83,22 @@ luminet_ports_sit:
     { 'published': 7311, 'target': 7311, 'mode': 'host' },
     { 'published': 7410, 'target': 7410, 'mode': 'ingress' },
     { 'published': 7411, 'target': 7411, 'mode': 'ingress' },
+  ]
+
+luminet_ports_prod:
+  [
+    { 'published': 80, 'target': 80, 'mode': 'ingress' },
+    { 'published': 8888, 'target': 8888, 'mode': 'ingress' },
+    { 'published': 8889, 'target': 8889, 'mode': 'ingress' },
+    { 'published': 8300, 'target': 8300, 'mode': 'ingress' },
+    { 'published': 8301, 'target': 8301, 'mode': 'host' },
+    { 'published': 8303, 'target': 8303, 'mode': 'ingress' },
+    { 'published': 8304, 'target': 8304, 'mode': 'ingress' },
+    { 'published': 8305, 'target': 8305, 'mode': 'ingress' },
+    { 'published': 8310, 'target': 8310, 'mode': 'ingress' },
+    { 'published': 8311, 'target': 8311, 'mode': 'host' },
+    { 'published': 8313, 'target': 8313, 'mode': 'ingress' },
+    { 'published': 8314, 'target': 8314, 'mode': 'ingress' },
+    { 'published': 8315, 'target': 8315, 'mode': 'ingress' },
+    { 'published': 8316, 'target': 8316, 'mode': 'ingress' },
   ]
