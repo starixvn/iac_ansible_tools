@@ -3,7 +3,7 @@
 haproxy_version: 2.2
 haproxy_image_name: haproxytech/haproxy-debian
 stack_name: haproxy
-volume_path: /var/www/gluster/haproxy
+volume_path: /var/www/gluster/nexops/haproxy
 config_filename: haproxy.cfg
 image_config_path: /usr/local/etc/haproxy
 
