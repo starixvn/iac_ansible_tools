@@ -16,6 +16,7 @@
     src: 'files/{{team}}/configs/{{ env }}'
     dest: '{{ volume_path }}/configs'
   become: yes
+  ignore_errors: yes
 
 - name: Build HAProxy configurations
   assemble:
@@ -28,7 +29,7 @@
     src: 'files/{{team}}/whitelisted.ips'
     dest: '{{ volume_path }}/whitelisted.ips'
   become: yes
-
+  ignore_errors: yes
 
 - name: Copy SSL Certs configuration.
   template:
