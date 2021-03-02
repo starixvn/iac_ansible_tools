@@ -23,6 +23,7 @@
     src: '{{ volume_path }}/configs/{{ env }}'
     dest: '{{ volume_path }}/{{ config_filename }}'
   become: yes
+  ignore_errors: yes
 
 - name: Copy whitelist configuration.
   template:
