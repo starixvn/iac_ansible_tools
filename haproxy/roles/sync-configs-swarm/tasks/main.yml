@@ -11,29 +11,13 @@
     path: '{{ volume_path }}/configs'
   become: yes
 
-- name: Copy HAProxy configuration for non-gluster.
-  when: haproxy_gluster is undefined or haproxy_gluster == "false"
+- name: Copy HAProxy configuration
   copy:
     src: 'files/{{team}}/configs/{{ env }}'
     dest: '{{ volume_path }}/configs'
   become: yes
 
-- name: Copy HAProxy configuration for gluster.
-  when: inventory_hostname == groups['swarm_managers'][0] and haproxy_gluster is defined and haproxy_gluster == true
-  copy:
-    src: 'files/{{team}}/configs/{{ env }}'
-    dest: '{{ volume_path }}/configs'
-  become: yes
-
-- name: Build HAProxy configurations for non-gluster
-  when: haproxy_gluster is undefined or haproxy_gluster == "false"
-  assemble:
-    src: '{{ volume_path }}/configs/{{ env }}'
-    dest: '{{ volume_path }}/{{ config_filename }}'
-  become: yes
-
-- name: Build HAProxy configurations for gluster
-  when: inventory_hostname == groups['swarm_managers'][0] and haproxy_gluster is defined and haproxy_gluster == true
+- name: Build HAProxy configurations
   assemble:
     src: '{{ volume_path }}/configs/{{ env }}'
     dest: '{{ volume_path }}/{{ config_filename }}'
