@@ -18,7 +18,9 @@
 {%endif%}
 {% if item.config_file_name is defined %}
     CONFIG_FILE_NAME: {{ item.config_file_name }}
+{% if item.config_file_ext != '' %}
     CONFIG_FILE_EXTENSION: {{ item.config_file_ext }}
+{%endif%}
 {%endif%}
     STACK_NAME: {{project_name}}
     DOCKER_COMPOSE_FILE_PATH: {{item.docker_compose_file_path | default(".")}}
