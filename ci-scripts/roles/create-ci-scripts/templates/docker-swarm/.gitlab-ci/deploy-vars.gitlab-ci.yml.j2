@@ -1,7 +1,11 @@
 {% set service_name = item.name | replace('-','_') %}
 {% if item.config_file_name is defined %}
+{% if item.config_file_ext | length > 0 %}
 {% set config_file = item.config_file_name ~ '.' ~ item.config_file_ext %}
-{%endif%}
+{% else %}
+{% set config_file = item.config_file_name %}
+{% endif %}
+{% endif %}
 .deploy_vars_{{service_name}}:
   variables:
     PROJECT_ROOT_PATH: {{item.root_path | default(".")}}

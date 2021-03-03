@@ -9,7 +9,11 @@
 {% set working_path = gluster_path ~ team_name ~ '/' ~ project_name ~ '/' ~ item.0.name | replace('-','_') %}
 {% set config_file_path = item.0.config_file_path | default(".") %}
 {% if item.0.config_file_name is defined %}
+{% if item.0.config_file_ext | length > 0 %}
 {% set config_file = item.0.config_file_name ~ '.' ~ item.0.config_file_ext %}
+{% else %}
+{% set config_file = item.0.config_file_name %}
+{% endif %}
 {% endif %}
 {% set config_container_path = item.0.config_container_path | default ('.') %}
 {% set container_root_path = item.0.container_root_path | default ('/app') %}
