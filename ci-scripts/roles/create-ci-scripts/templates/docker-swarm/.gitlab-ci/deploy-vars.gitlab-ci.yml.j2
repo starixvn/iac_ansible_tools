@@ -18,7 +18,7 @@
 {%endif%}
 {% if item.config_file_name is defined %}
     CONFIG_FILE_NAME: {{ item.config_file_name }}
-{% if item.config_file_ext != '' %}
+{% if item.config_file_ext | length > 0 %}
     CONFIG_FILE_EXTENSION: {{ item.config_file_ext }}
 {%endif%}
 {%endif%}
