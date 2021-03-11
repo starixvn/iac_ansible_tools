@@ -7,6 +7,9 @@ cat /etc/keepalived/keepalived_status
 /var/www/gluster/nexops
 
 ###docker-swarm
+show labels
+docker node ls -q | xargs docker node inspect -f '{{ .ID }} [{{ .Description.Hostname }}]: {{ .Spec.Labels }}'
+
 docker swarm join-token --quiet manager
 docker swarm join-token --quiet worker
 docker swarm join --token ip:2377
@@ -15,6 +18,7 @@ docker swarm leave -f
 docker node demote <node name>
 docker node promote <node name>
 docker node rm <node name> (id)
+docker node update --label-add SENTRY=yes ip-10-2-27-27
 
 ######### Proxy setting
 ########
@@ -30,3 +34,5 @@ service docker restart
 
 #######Docker After an upgrade I got the permission denied
 sudo chmod 666 /var/run/docker.sock
+
+############
