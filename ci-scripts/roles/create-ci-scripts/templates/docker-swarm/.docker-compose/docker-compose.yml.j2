@@ -83,12 +83,14 @@ services:
 {% endif %}
     networks:
       - swarm_{{ network }}
+{% if item.0.disable_health_check is undefined or item.0.disable_health_check == "false" %}
 {% if item.0.framework is defined and item.0.framework == "dotnet" %}
     healthcheck:
       test: ['CMD', 'curl', '-f', "http://localhost:{{item.0.port | default('5000')}}{{item.0.healthcheck_path | default('')}}"]
       interval: 5s
       timeout: 5s
       retries: 5
+{% endif %}
 {% endif %}
     labels:
 {% if env == "prod" %}
