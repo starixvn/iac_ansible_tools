@@ -66,7 +66,7 @@ build_image_{{ service_name }}_uat{{ version_number }}:
     - build_cocos_web_uat{{ version_number }}
 {% endif %}
 
-{% if org_name != 'luminet' or version_number == '' %}
+{% if (org_name == 'luminet' and version_number == '') or org_name != 'luminet' %}
 build_image_{{ service_name }}_prod{{ version_number }}:
   extends:
     - .deploy_vars_{{ service_name }}
