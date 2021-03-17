@@ -52,13 +52,7 @@ build_cocos_web_uat{{ version_number }}:
     - .deploy:uat{{ version_number }}
     - .deploy:uat{{ version_number }}:{{service_name}}:rules
 
-{% if org_name == 'luminet' and version == 0 %}
-build_cocos_web_prod{{ version_number }}:
-  extends: 
-    - .base_build_cocos_web
-    - .deploy:prod{{ version_number }}
-    - .deploy:prod{{ version_number }}:{{service_name}}:rules
-{% else %}}
+{% if org_name != 'luminet' %}
 build_cocos_web_prod{{ version_number }}:
   extends: 
     - .base_build_cocos_web
@@ -68,3 +62,10 @@ build_cocos_web_prod{{ version_number }}:
 {% endfor %}
 {%endif%}
 
+{% if org_name == 'luminet' %}
+build_cocos_web_prod:
+  extends: 
+    - .base_build_cocos_web
+    - .deploy:prod
+    - .deploy:prod:{{service_name}}:rules
+{%endif%}

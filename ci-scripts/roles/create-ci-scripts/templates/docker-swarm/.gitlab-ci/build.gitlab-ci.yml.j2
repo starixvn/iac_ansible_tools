@@ -1,6 +1,7 @@
 {% set service_name = item.name | replace('-','_') %}
 
 {% if item.multiple_image_env is undefined or item.multiple_image_env == false %}  
+
 build_image_{{ service_name }}:
   extends:
     - .deploy_vars_{{ service_name }}
@@ -15,6 +16,7 @@ build_image_{{ service_name }}:
   dependencies:
     - build_cocos_web
 {% endif %}
+
 {% else %}
 
 {% for version in versions %}
@@ -66,7 +68,7 @@ build_image_{{ service_name }}_uat{{ version_number }}:
     - build_cocos_web_uat{{ version_number }}
 {% endif %}
 
-{% if org_name == 'luminet' and version == 0 %}
+{% if org_name != 'luminet' %}
 build_image_{{ service_name }}_prod{{ version_number }}:
   extends:
     - .deploy_vars_{{ service_name }}
@@ -81,23 +83,26 @@ build_image_{{ service_name }}_prod{{ version_number }}:
   needs: ['build_cocos_web_prod{{ version_number }}']
   dependencies:
     - build_cocos_web_prod{{ version_number }}
-{% endif %}
-{% else %}
-build_image_{{ service_name }}_prod{{ version_number }}:
-  extends:
-    - .deploy_vars_{{ service_name }}
-{% if item.multi_stage is undefined or item.multi_stage == false %}
-    - .build:default:image
-{% else %}
-    - .build:default:image:multistage
-{% endif %}
-    - .deploy:prod{{ version_number }}
-    - .deploy:prod{{ version_number }}:{{service_name}}:rules
-{% if item.framework is defined and item.framework == "cocos" %}
-  needs: ['build_cocos_web_prod{{ version_number }}']
-  dependencies:
-    - build_cocos_web_prod{{ version_number }}
-{% endif %}
 {% endif %}
 {% endfor %}
+
+{% if org_name == 'luminet' %}
+build_image_{{ service_name }}_prod:
+  extends:
+    - .deploy_vars_{{ service_name }}
+{% if item.multi_stage is undefined or item.multi_stage == false %}
+    - .build:default:image
+{% else %}
+    - .build:default:image:multistage
 {% endif %}
+    - .deploy:prod
+    - .deploy:prod:{{service_name}}:rules
+{% if item.framework is defined and item.framework == "cocos" %}
+  needs: ['build_cocos_web_prod']
+  dependencies:
+    - build_cocos_web_prod
+{% endif %}
+{% endif %}
+
+{% endif %}
+
