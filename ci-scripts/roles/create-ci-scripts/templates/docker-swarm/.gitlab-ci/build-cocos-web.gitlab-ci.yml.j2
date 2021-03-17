@@ -58,9 +58,8 @@ build_cocos_web_prod{{ version_number }}:
     - .base_build_cocos_web
     - .deploy:prod{{ version_number }}
     - .deploy:prod{{ version_number }}:{{service_name}}:rules
-{%endif%}
+{% endif %}
 {% endfor %}
-{%endif%}
 
 {% if org_name == 'luminet' %}
 build_cocos_web_prod:
@@ -69,3 +68,6 @@ build_cocos_web_prod:
     - .deploy:prod
     - .deploy:prod:{{service_name}}:rules
 {%endif%}
+
+{%endif%}
+

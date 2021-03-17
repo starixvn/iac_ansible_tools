@@ -84,6 +84,7 @@ build_image_{{ service_name }}_prod{{ version_number }}:
   dependencies:
     - build_cocos_web_prod{{ version_number }}
 {% endif %}
+{% endif %}
 {% endfor %}
 
 {% if org_name == 'luminet' %}
@@ -105,4 +106,3 @@ build_image_{{ service_name }}_prod:
 {% endif %}
 
 {% endif %}
-
