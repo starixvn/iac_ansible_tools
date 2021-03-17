@@ -66,7 +66,23 @@ build_image_{{ service_name }}_uat{{ version_number }}:
     - build_cocos_web_uat{{ version_number }}
 {% endif %}
 
-{% if org_name == 'luminet' or version == 0 %}
+{% if org_name == 'luminet' and version == 0 %}
+build_image_{{ service_name }}_prod{{ version_number }}:
+  extends:
+    - .deploy_vars_{{ service_name }}
+{% if item.multi_stage is undefined or item.multi_stage == false %}
+    - .build:default:image
+{% else %}
+    - .build:default:image:multistage
+{% endif %}
+    - .deploy:prod{{ version_number }}
+    - .deploy:prod{{ version_number }}:{{service_name}}:rules
+{% if item.framework is defined and item.framework == "cocos" %}
+  needs: ['build_cocos_web_prod{{ version_number }}']
+  dependencies:
+    - build_cocos_web_prod{{ version_number }}
+{% endif %}
+{% else %}
 build_image_{{ service_name }}_prod{{ version_number }}:
   extends:
     - .deploy_vars_{{ service_name }}
