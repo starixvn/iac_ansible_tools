@@ -89,8 +89,17 @@
       when: on_success
 {% endif %}
     - when: never
-{% endfor %}
 
+.deploy:prod{{ version_number }}:{{service_name}}:manual:rules:
+  rules:
+    - <<: *if-deploy-{{rule_name}}-prod{{ version_number }}
+      when: manual
+{% if org_name == 'luminet'%}
+    - <<: *if-deploy-prod
+      when: manual
+{% endif %}
+    - when: never
+{% endfor %}
 
 
 

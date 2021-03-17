@@ -41,6 +41,6 @@ deploy_{{service_name}}_prod:
   extends:
     - .deploy_vars_{{service_name}}
     - .deploy:prod:base:swarm:stack
-    - .deploy:prod:{{service_name}}:rules
+    - .deploy:prod:{{service_name}}:manual:rules
   needs: ['post_build_{{service_name}}_prod']
 {% endif %}
