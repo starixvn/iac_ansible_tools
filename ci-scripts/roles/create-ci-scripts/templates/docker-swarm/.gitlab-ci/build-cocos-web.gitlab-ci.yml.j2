@@ -52,11 +52,13 @@ build_cocos_web_uat{{ version_number }}:
     - .deploy:uat{{ version_number }}
     - .deploy:uat{{ version_number }}:{{service_name}}:rules
 
+{% if org_name != 'luminet' or version_number == '' %}
 build_cocos_web_prod{{ version_number }}:
   extends: 
     - .base_build_cocos_web
     - .deploy:prod{{ version_number }}
     - .deploy:prod{{ version_number }}:{{service_name}}:rules
+{%endif%}
 {% endfor %}
 {%endif%}
 

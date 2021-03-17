@@ -2,6 +2,7 @@
 
 {% for version in versions %}
 {% set version_number = '' if version == 0 else version %}
+{% if org_name != 'luminet' or version_number == '' %}
 post_build_{{service_name}}_prod{{ version_number }}:
   extends:
     - .deploy_vars_{{service_name}}
@@ -13,12 +14,14 @@ post_build_{{service_name}}_prod{{ version_number }}:
 {% else %}
   needs: ['build_image_{{service_name}}_prod{{ version_number }}']
 {% endif %}
+{% endif %}
 
+{% if org_name != 'luminet' or version_number == '' %}
 deploy_{{service_name}}_prod{{ version_number }}:
   extends:
     - .deploy_vars_{{service_name}}
     - .deploy:prod{{ version_number }}:base:swarm:stack
     - .deploy:prod{{ version_number }}:{{service_name}}:rules
   needs: ['post_build_{{service_name}}_prod{{ version_number }}']
-
+{% endif %}
 {% endfor %}
