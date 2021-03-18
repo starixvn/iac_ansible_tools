@@ -58,6 +58,12 @@ build_cocos_web_prod{{ version_number }}:
     - .base_build_cocos_web
     - .deploy:prod{{ version_number }}
     - .deploy:prod{{ version_number }}:{{service_name}}:rules
+
+build_cocos_web_aws{{ version_number }}:
+  extends: 
+    - .base_build_cocos_web
+    - .deploy:aws{{ version_number }}
+    - .deploy:aws{{ version_number }}:{{service_name}}:rules
 {% endif %}
 {% endfor %}
 
@@ -67,7 +73,12 @@ build_cocos_web_prod:
     - .base_build_cocos_web
     - .deploy:prod
     - .deploy:prod:{{service_name}}:rules
-{%endif%}
 
+build_cocos_web_aws:
+  extends: 
+    - .base_build_cocos_web
+    - .deploy:aws
+    - .deploy:aws:{{service_name}}:rules
+{%endif%}
 {%endif%}
 

@@ -68,3 +68,10 @@
     dest: /var/ci-scripts/{{repo_name}}/.gitlab-ci/{{item.name | replace('-','_')}}/deploy-prod.gitlab-ci.yml
   with_items: '{{ services }}'
   become: yes
+
+- name: Build deploy-aws.gitlab-ci.yml for each service
+  template:
+    src: templates/docker-swarm/.gitlab-ci/deploy-aws.gitlab-ci.yml.j2
+    dest: /var/ci-scripts/{{repo_name}}/.gitlab-ci/{{item.name | replace('-','_')}}/deploy-aws.gitlab-ci.yml
+  with_items: '{{ services }}'
+  become: yes
