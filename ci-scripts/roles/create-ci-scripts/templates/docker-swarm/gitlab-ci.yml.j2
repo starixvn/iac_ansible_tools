@@ -48,4 +48,5 @@ include:
   - .gitlab-ci/{{service.name | replace('-','_') }}/deploy-sit.gitlab-ci.yml
   - .gitlab-ci/{{service.name | replace('-','_') }}/deploy-uat.gitlab-ci.yml
   - .gitlab-ci/{{service.name | replace('-','_') }}/deploy-prod.gitlab-ci.yml
+  - .gitlab-ci/{{service.name | replace('-','_') }}/deploy-aws.gitlab-ci.yml
 {% endfor %}

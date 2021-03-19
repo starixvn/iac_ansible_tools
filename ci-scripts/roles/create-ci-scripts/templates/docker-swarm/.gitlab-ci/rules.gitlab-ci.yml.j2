@@ -54,6 +54,8 @@
       when: always
     - <<: *if-deploy-{{rule_name}}-prod{{ version_number }}
       when: always
+    - <<: *if-deploy-{{rule_name}}-aws{{ version_number }}
+      when: always
 {% endfor %}
 {% if org_name == 'luminet'%}
     - <<: *if-deploy-prod
