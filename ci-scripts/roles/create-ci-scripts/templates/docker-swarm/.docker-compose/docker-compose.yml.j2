@@ -66,7 +66,7 @@ services:
 {% if item.0.volumes is defined %}
     volumes:
 {% for volume in item.0.volumes %}
-      - {{volume.name}}:{{volume.dest}}
+      - {{volume.name}}_{{environment}}:{{volume.dest}}
 {% endfor %}
 {% endif %}
     deploy:
@@ -105,7 +105,7 @@ networks:
 {% if item.0.volumes is defined %}
 volumes:
 {% for volume in item.0.volumes %}
-  {{volume.name}}:
+  {{volume.name}}_{{environment}}:
     driver: local
     driver_opts:
        o: bind
