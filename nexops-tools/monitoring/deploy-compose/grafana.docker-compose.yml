@@ -2,10 +2,9 @@
 version: '3.3'
 
 networks:
-  net:
-    driver: overlay
-    attachable: true
-
+  swarm_nexops:
+     external: true
+     
 volumes:
   grafana: {}
   mysql:
@@ -18,7 +17,7 @@ services:
   grafana:
     image: registry.nexdev.net:5050/docker/nexops-tools/grafana:${ENV}
     networks:
-      - net
+      - swarm_nexops
     depends_on:
       - mysql
     environment:
@@ -57,7 +56,7 @@ services:
   mysql:
     image: registry.nexdev.net:5050/docker/database/mysql:8.0
     networks:
-      - net
+      - swarm_nexops
     command: --default-authentication-plugin=mysql_native_password
     environment:
       - MYSQL_DATABASE=grafana

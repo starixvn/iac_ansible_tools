@@ -104,7 +104,7 @@ luminet_ports_prod:
 
 luminet_ports_aws:
   [
-    { 'published': 80, 'target': 80, 'mode': 'host' },
-    { 'published': 9002, 'target': 9002, 'mode': 'host' },
-    { 'published': 8080, 'target': 8080, 'mode': 'host' }
+    { 'published': 80, 'target': 80, 'mode': 'ingress' },
+    { 'published': 9002, 'target': 9002, 'mode': 'ingress' },
+    { 'published': 8080, 'target': 8080, 'mode': 'ingress' }
   ]

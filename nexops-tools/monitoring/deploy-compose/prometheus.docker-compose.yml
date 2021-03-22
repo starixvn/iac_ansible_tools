@@ -2,9 +2,8 @@
 version: '3.3'
 
 networks:
-  net:
-    driver: overlay
-    attachable: true
+  swarm_nexops:
+     external: true
 
 volumes:
   prometheus_data: {}
@@ -20,7 +19,7 @@ services:
   cadvisor:
     image: registry.nexdev.net:5050/docker/nexops-tools/cadvisor
     networks:
-      - net
+      - swarm_nexops
     command: -logtostderr -docker_only
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
@@ -39,7 +38,7 @@ services:
   node-exporter:
     image: registry.nexdev.net:5050/docker/nexops-tools/node-exporter #stefanprodan/swarmprom-node-exporter:v0.16.0
     networks:
-      - net
+      - swarm_nexops
     environment:
       - NODE_ID={{.Node.ID}}
     volumes:
@@ -64,7 +63,7 @@ services:
   prometheus:
     image: registry.nexdev.net:5050/docker/nexops-tools/prometheus
     networks:
-      - net
+      - swarm_nexops
     command:
       - '--config.file=/etc/prometheus/prometheus_custom.yml'
       - '--storage.tsdb.path=/prometheus'
@@ -94,7 +93,7 @@ services:
       - '9093:9093'
       - '9094:9094'
     networks:
-      - net
+      - swarm_nexops
     environment:
       - ADMIN_USER=admin
       - ADMIN_PASSWORD=admin
@@ -102,8 +101,7 @@ services:
       - source: caddy_config
         target: /etc/caddy/Caddyfile
     deploy:
-      mode: replicated
-      replicas: 1
+      mode: global
       placement:
         constraints:
           - node.labels.NEXOPS_LOW_STORAGE == yes
