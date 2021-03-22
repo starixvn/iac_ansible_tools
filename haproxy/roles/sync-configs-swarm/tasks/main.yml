@@ -10,12 +10,14 @@
     state: absent
     path: '{{ volume_path }}/configs'
   become: yes
+  ignore_errors: yes
 
 - name: Copy HAProxy configuration
   copy:
     src: 'files/{{team}}/configs/{{ env }}'
     dest: '{{ volume_path }}/configs'
   become: yes
+  ignore_errors: yes
 
 - name: Build HAProxy configurations
   assemble:
