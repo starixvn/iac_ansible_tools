@@ -40,6 +40,12 @@ nexcel_ports_aws:
 
 nexcel_ports_prod-nex3: [{ 'published': 80, 'target': 80, 'mode': 'ingress' }, { 'published': 8000, 'target': 8000, 'mode': 'ingress' }]
 
+nexcel_ports_aws-nex3:
+  [
+    { 'published': 80, 'target': 80, 'mode': 'host' },
+  ]
+
+
 luminet_ports_local:
   [
     { 'published': 80, 'target': 80, 'mode': 'ingress' },
