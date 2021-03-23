@@ -1,0 +1,36 @@
+---
+- hosts: all
+  roles:
+    - role: iis-binding
+  tags:
+    - iis-binding
+
+- hosts: all
+  roles:
+    - role: iis-sites
+  tags:
+    - iis-sites
+
+- hosts: all
+  roles:
+    - role: iis-subsites
+  tags:
+    - iis-subsites
+
+- hosts: all
+  roles:
+    - role: install-iis
+  tags:
+    - install-iis
+
+- hosts: all
+  roles:
+    - role: install-aspstate
+  tags:
+    - install-aspstate
+
+- hosts: all
+  roles:
+    - role: install-netcore
+  tags:
+    - install-netcore
