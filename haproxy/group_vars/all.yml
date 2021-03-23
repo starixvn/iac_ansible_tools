@@ -31,6 +31,13 @@ nexcel_ports_prod:
     { 'published': 7519, 'target': 7519, 'mode': 'ingress' },
   ]
 
+nexcel_ports_aws:
+  [
+    { 'published': 80, 'target': 80, 'mode': 'ingress' },
+    { 'published': 42424, 'target': 42424, 'mode': 'ingress' },
+    { 'published': 43434, 'target': 43434, 'mode': 'ingress' },
+  ]
+
 nexcel_ports_prod-nex3: [{ 'published': 80, 'target': 80, 'mode': 'ingress' }, { 'published': 8000, 'target': 8000, 'mode': 'ingress' }]
 
 luminet_ports_local:
