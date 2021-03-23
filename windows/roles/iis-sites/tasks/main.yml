@@ -1,0 +1,50 @@
+---
+- name: Create Website directory
+  win_file:
+    path: "{{ item.path }}"
+    state: directory
+  with_items: "{{ website }}"
+
+- name: Creates application pools, sets attributes and starts it
+  win_iis_webapppool:
+    name: "{{item.name}}"
+    state: started
+    attributes:
+      managedRuntimeVersion: "{{item.managedRuntimeVersion | default('v4.0')}}"
+      autoStart: no
+      #processModel.idleTimeout: 300
+      enable32BitAppOnWin64: "{{item.enable32BitAppOnWin64 | default('true')}}"
+  with_items: "{{ website }}"
+
+- name: Create Website - {{website_name}}
+  win_iis_website:
+    name: "{{ item.name }}"
+    state: started
+    port: "{{ item.port }}"
+    physical_path: "{{ item.path }}"
+    application_pool: "{{item.name}}"
+    parameters: 'logfile.directory:{{website_path_log}}\{{item.name}}'
+  #notify: restart iis service
+  with_items: "{{ website }}"
+  ignore_errors: true
+
+- name: Copy template whoami.aspx to websites path
+  win_template:
+    src: "whoami.aspx.j2"
+    dest: '{{ item.path }}\whoami.aspx'
+  with_items: "{{ website }}"
+  ignore_errors: true
+
+- name: Check website {{site_name}} returns a status 200 and page contents
+  win_uri:
+    url: "http://{{inventory_hostname}}:{{ item.port }}/{{health_check | default('whoami.aspx')}}"
+    status_code: 200
+    return_content: yes
+  register: website_healthcheck
+  ignore_errors: true
+  with_items: "{{ website }}"
+
+- name: Debug website_healthcheck
+  debug:
+    msg: "{{website_healthcheck}}"
+  ignore_errors: true

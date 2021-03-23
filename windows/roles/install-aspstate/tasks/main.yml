@@ -1,0 +1,36 @@
+---
+- name: Install Web-App-Dev
+  win_feature:
+    name:
+      - Web-App-Dev
+      - Telnet-Client
+      - NET-WCF-Services45
+    state: present
+    include_sub_features: yes
+    include_management_tools: yes
+  register: win_feature
+
+#reboot if installing Install ASP State feature requires it
+- name: reboot if installing Install ASP State feature requires it
+  win_reboot:
+  when: win_feature.reboot_required
+
+- name: Start ASP State
+  win_service:
+    name: aspnet_state
+    state: started
+    start_mode: auto
+
+#Add or update registry for TCP port
+- name: Add or update registry for AllowRemoteConnection
+  win_regedit:
+    path: 'HKLM:\SYSTEM\CurrentControlSet\Services\aspnet_state\Parameters'
+    name: AllowRemoteConnection
+    data: 1
+    type: dword
+  #notify: restart ASP State
+
+- name: restart ASP State
+  win_service:
+    name: aspnet_state
+    state: restarted

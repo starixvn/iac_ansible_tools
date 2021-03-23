@@ -1,0 +1,36 @@
+---
+- name: Preparing for Step Create working directory
+  win_file:
+    path: "{{ item }}"
+    state: "directory"
+  with_items:
+    - "{{ working_directory }}"
+    - "{{ path_source }}"
+
+- name: Check that the {{ win_stat_netcore}} exists
+  win_stat:
+    path: "{{ win_stat_netcore}}"
+  register: stat_file_netcore
+  #ignore_errors: true
+
+- name: Copy Netcore {{ netcore_version }}
+  win_shell: |
+    $excludes = {{excludes | default("'.git','logs'")}}
+    Get-ChildItem "{{netcore_repo_internal}}" | Where-Object{$_.Name -notin $excludes} | Copy-Item -Destination "{{ path_source }}" -Recurse -Force
+  become: yes
+  become_method: runas
+  become_user: "{{user_id}}"
+  vars:
+    ansible_become_password: "{{pass_id}}"
+  #ignore_errors: true
+  when: stat_file_netcore.stat.exists == false
+
+# .NET Core Hosting Bundle installation
+- name: Stop IIS
+  win_shell: iisreset /STOP
+
+- name: Run Microsoft {{netcore_version}} hosting bundle installer
+  raw: "{{ path_source }}/{{netcore_version}} /passive /AcceptEULA" #/log {{ netcorehost_log }}
+
+- name: Start IIS
+  win_shell: iisreset /START

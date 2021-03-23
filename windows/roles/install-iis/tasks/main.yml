@@ -1,0 +1,112 @@
+---
+- name: Install IIS (Web-Server)
+  win_feature:
+    name:
+      - Web-Server
+      - Web-App-Dev
+      - Web-Mgmt-Tools
+      - web-Default-Doc
+      - Web-Dir-Browsing
+      - Web-Http-Errors
+      - Web-Static-Content
+      - web-CGI
+      - web-ISAPI-Ext
+      - web-ISAPI-Filter
+      - Web-Mgmt-Service
+      - Web-Mgmt-Console
+      - NET-WCF-Services45
+      - Web-Http-Logging
+      - web-Stat-Compression
+      - Web-Dyn-Compression
+      - web-Filtering
+      - Web-Scripting-Tools
+      - MSMQ
+      - Telnet-Client
+    include_management_tools: yes
+    include_sub_features: yes
+    state: present
+  register: win_feature
+  ignore_errors: true
+
+- name: reboot if installing Web-Server feature requires it
+  win_reboot:
+  when: win_feature.reboot_required
+  ignore_errors: true
+
+- name: Set logfile for default IIS
+  win_shell: |
+    $xml = [xml](Get-Content C:\Windows\System32\inetsrv\config\applicationHost.config)
+    $xml.configuration."system.applicationHost".sites.siteDefaults.logfile.directory = "{{dir}}\Logs\IISLogs"
+    $xml.configuration."system.applicationHost".sites.siteDefaults.tracefailedrequestslogging.directory = "{{dir}}\Logs\IISLogs"
+    $xml.configuration."system.applicationHost".log.centralW3CLogFile.directory = "{{dir}}\Logs\IISLogs"
+    $xml.configuration."system.applicationHost".log.centralBinaryLogFile.directory = "{{dir}}\Logs\IISLogs"
+    $xml.save('C:\Windows\System32\inetsrv\config\applicationHost.config')
+  #become: yes
+  #become_method: runas
+  #become_user: "{{user_id}}"
+  #vars:
+  #  ansible_become_password: "{{pass_id}}"
+
+- name: Remove Default IIS website and site binding
+  win_iis_website:
+    name: "Default Web Site"
+    state: absent
+  ignore_errors: true
+
+- name: Preparing for Step Create working directory
+  win_file:
+    path: "{{ item }}"
+    state: "directory"
+  with_items:
+    - "{{ working_directory }}"
+    - "{{ path_source }}"
+
+- name: Check that the {{ win_stat_dotnet}} exists
+  win_stat:
+    path: "{{ win_stat_dotnet}}"
+  register: stat_file_dotnet
+  #ignore_errors: true
+
+- name: Copy Zip Microsoft .NET Framework {{ dotnet_version_zip }}
+  win_shell: |
+    $excludes = {{excludes | default("'.git','logs'")}}
+    Get-ChildItem "{{dotnet_repo_internal}}" | Where-Object{$_.Name -notin $excludes} | Copy-Item -Destination "{{ path_source }}" -Recurse -Force
+  become: yes
+  become_method: runas
+  become_user: "{{user_id}}"
+  vars:
+    ansible_become_password: "{{pass_id}}"
+  #ignore_errors: true
+  when: stat_file_dotnet.stat.exists == false
+
+- name: Unzip Microsoft .NET Framework {{ dotnet_version_zip }} installer
+  win_unzip:
+    src: "{{ path_source }}/{{ dotnet_version_zip }}"
+    dest: '{{ path_source }}\tmp'
+  register:
+    dotnet_version_zip_reg
+    #rm: true
+  #ignore_errors: true
+
+- name: Run Microsoft .NET Framework {{ dotnet_version }} installer
+  raw: "{{ path_source }}/tmp/{{ dotnet_version }}/Setup.exe /q /norestart /log {{ path_source }}/tmp/{{ dotnet_version }}/log.txt /x86 /x64 /redist"
+  register: dotnet_install
+  when: dotnet_version_zip_reg.changed
+
+- name: Clean up folder {{ path_source }}/tmp/{{ dotnet_version }}
+  win_file:
+    path: "{{ path_source }}/tmp/{{ dotnet_version }}"
+    state: absent
+  when: dotnet_version_zip_reg.changed
+
+- name: Debug win_feature
+  debug:
+    var: "{{win_feature}}"
+  ignore_errors: true
+
+- name: running aspnet_regiis v4
+  win_shell: 'c:\Windows\Microsoft.NET\Framework\v4.0.30319\aspnet_regiis.exe -i'
+##
+- name: Reboot as required by Microsoft .NET Framework 4.7.2 installer
+  win_reboot:
+  when: dotnet_install.changed

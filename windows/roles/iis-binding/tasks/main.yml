@@ -1,0 +1,17 @@
+---
+- name: Add a HTTP binding ports
+  win_iis_webbinding:
+    name: "{{item.name}}"
+    port: "{{item.port}}"
+    state: present
+  with_items: "{{ binding_port }}"
+  ignore_errors: true
+
+- name: Add a HTTP binding headers and ports
+  win_iis_webbinding:
+    name: "{{item.name}}"
+    port: "{{item.port}}"
+    host_header: "{{item.domain}}"
+    state: present
+  with_items: "{{ binding_domain }}"
+  ignore_errors: true

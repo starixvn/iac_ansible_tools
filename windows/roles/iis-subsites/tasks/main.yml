@@ -1,0 +1,117 @@
+---
+- name: Create Website directory
+  win_file:
+    path: "{{ website_path }}"
+    state: directory
+
+- name: Creates application pool - {{website_name}}, {{managedRuntimeVersion | default('v4.0')}} {{enable32BitAppOnWin64 | default('true')}}
+  win_iis_webapppool:
+    name: "{{website_name}}"
+    state: started
+    attributes:
+      managedRuntimeVersion: "{{managedRuntimeVersion | default('v4.0')}}"
+      autoStart: no
+      #processModel.idleTimeout: 300
+      enable32BitAppOnWin64: "{{enable32BitAppOnWin64 | default('true')}}"
+  when: subpool is not defined
+  ignore_errors: true
+
+- name: Creates Sub Application pools, sets attributes and starts it
+  win_iis_webapppool:
+    name: "{{item.pool}}"
+    state: started
+    attributes:
+      managedRuntimeVersion: "{{item.managedRuntimeVersion | default('v4.0')}}"
+      autoStart: no
+      #processModel.idleTimeout: 300
+      enable32BitAppOnWin64: "{{item.enable32BitAppOnWin64 | default('true')}}"
+  with_items: "{{ subsite }}"
+  when: subpool is defined and subpool == "yes"
+  ignore_errors: true
+
+- name: Create Website - {{website_name}}
+  win_iis_website:
+    name: "{{website_name}}"
+    state: started
+    port: "{{website_port}}"
+    application_pool: "{{website_name}}"
+    physical_path: "{{website_path}}"
+    parameters: "logfile.directory:{{website_path_log}}"
+  #notify: restart iis service
+
+- name: Add a HTTP binding on port {{binding_port}}
+  win_iis_webbinding:
+    name: "{{website_name}}"
+    port: "{{binding_port}}"
+    state: present
+  when: binding_port is defined
+  ignore_errors: true
+
+- name: Create WebApps directory
+  win_file:
+    path: "{{ item.path }}"
+    state: directory
+  with_items: "{{ subsite }}"
+
+- name: Add Web Application for {{website_name}}.
+  win_iis_webapplication:
+    name: "{{ item.name }}"
+    site: "{{ item.site }}"
+    application_pool: "{{item.pool}}"
+    state: present
+    physical_path: "{{ item.path }}"
+  with_items: "{{ subsite }}"
+
+- name: Create virtual directory path
+  win_file:
+    path: "{{ item.path }}"
+    state: directory
+  with_items: "{{ virtual_directory }}"
+  when: virtual_directory is defined
+
+- name: Create IIS virtual directory
+  win_iis_virtualdirectory:
+    name: "{{ item.name }}"
+    site: "{{ item.site }}"
+    state: present
+    physical_path: "{{ item.path }}"
+  with_items: "{{ virtual_directory }}"
+  when: virtual_directory is defined
+
+- name: Copy template whoami.aspx to path {{website_path}}
+  win_template:
+    src: "whoami.aspx.j2"
+    dest: '{{ website_path }}\whoami.aspx'
+
+- name: Copy template whoami.aspx to Web Application Path
+  win_template:
+    src: "whoami.aspx.j2"
+    dest: '{{ item.path }}\whoami.aspx'
+  with_items: "{{ subsite }}"
+
+- name: Check website {{site_name}} returns a status 200 and page contents
+  win_uri:
+    url: "http://{{inventory_hostname}}:{{ website_port }}/{{health_check | default('whoami.aspx')}}"
+    status_code: 200
+    return_content: yes
+  register: website_healthcheck
+  ignore_errors: true
+
+- name: Debug website_healthcheck
+  debug:
+    msg: "{{website_healthcheck}}"
+  ignore_errors: true
+
+- name: Check WebApps of {{site_name}} returns a status 200 and page contents
+  win_uri:
+    url: "http://{{inventory_hostname}}:{{ website_port }}/{{ item.name }}/{{health_check | default('whoami.aspx')}}"
+    status_code: 200
+    return_content: yes
+  register: subsite_healthcheck
+  with_items: "{{ subsite }}"
+  ignore_errors: true
+
+- name: Debug website_healthcheck
+  debug:
+    msg: "{{subsite_healthcheck}}"
+  ignore_errors: true
