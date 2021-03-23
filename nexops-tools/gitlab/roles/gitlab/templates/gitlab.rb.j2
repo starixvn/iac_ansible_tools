@@ -1,0 +1,87 @@
+{%if gitlab_domain is defined %}
+external_url '{{gitlab_domain}}'
+{%endif%}
+{%if org=='nexdev' %}
+gitlab_rails['gitlab_email_enabled'] = true
+gitlab_rails['gitlab_email_from'] = 'no-reply@nexdev.net'
+gitlab_rails['gitlab_email_display_name'] = 'Gitlab Nexdev'
+gitlab_rails['ldap_enabled'] = true
+gitlab_rails['ldap_servers'] = {
+'main' => {
+'label' => 'LDAP',
+ 'host' => '10.18.200.101',
+ 'port' => '389',
+ 'uid' => 'sAMAccountName',
+ 'method' => 'plain',
+ 'bind_dn' => 'CN=ldapnex,OU=ServicesAccounts,OU=UsersGroups,OU=IT,OU=ServersLabs,OU=NEXSOL,DC=spvn,DC=local',
+ 'password' => 'D5TcVuqk%L',
+ 'active_directory' => true,
+ 'allow_username_or_email_login' => false,
+ 'block_auto_created_users' => false,
+ 'base' => 'OU=NEXSOL,DC=spvn,DC=local',
+ 'user_filter' => '',
+  'attributes' => {
+    'username' => ['uid', 'userid', 'sAMAccountName'],
+    'email' => ['mail', 'email', 'userPrincipalName'],
+    'name' => 'cn',
+    'first_name' => 'givenName',
+    'last_name' => 'sn'
+      }
+   }
+}
+###! **remember to close this block with 'EOS' below**
+##
+prometheus_monitoring['enable'] = false
+gitlab_rails['backup_keep_time'] = 432000
+#gitlab_rails['trusted_proxies'] = ['10.18.200.125','10.18.200.124']
+##SMTP
+gitlab_rails['smtp_enable'] = true
+gitlab_rails['smtp_address'] = "smtp.nexdev.net"
+gitlab_rails['smtp_port'] = 25
+gitlab_rails['smtp_tls'] = false
+gitlab_rails['smtp_openssl_verify_mode'] = 'none'
+nginx['listen_port'] = 80
+nginx['listen_https'] = false
+{%endif%}
+{%if org=='lumi' %}
+gitlab_rails['gitlab_email_enabled'] = true
+gitlab_rails['gitlab_email_from'] = 'no-reply@nexdev.net'
+gitlab_rails['gitlab_email_display_name'] = 'Gitlab Luminet'
+gitlab_rails['ldap_enabled'] = true
+gitlab_rails['ldap_servers'] = {
+'main' => {
+ 'label' => 'LDAP',
+ 'host' => '10.10.50.102',
+ 'port' => '389',
+ 'uid' => 'sAMAccountName',
+ 'method' => 'plain',
+ 'bind_dn' => 'CN=LDAP Reader,OU=ServicesAccounts,OU=UsersGroups,OU=IT,OU=ServersLabs,OU=LUMI,DC=luminet,DC=vn',
+ 'password' => 'J5IvWV1+',
+ 'active_directory' => true,
+ 'allow_username_or_email_login' => false,
+ 'block_auto_created_users' => false,
+ 'base' => 'OU=LUMI,DC=luminet,DC=vn',
+ 'user_filter' => '',
+  'attributes' => {
+    'username' => ['uid', 'userid', 'sAMAccountName'],
+    'email' => ['mail', 'email', 'userPrincipalName'],
+    'name' => 'cn',
+    'first_name' => 'givenName',
+    'last_name' => 'sn'
+      }
+   }
+}
+###! **remember to close this block with 'EOS' below**
+##
+gitlab_rails['backup_keep_time'] = 432000
+#gitlab_rails['trusted_proxies'] = ['10.18.200.125','10.18.200.124']
+prometheus_monitoring['enable'] = false
+##SMTP
+gitlab_rails['smtp_enable'] = true
+gitlab_rails['smtp_address'] = "smtp.nexdev.net"
+gitlab_rails['smtp_port'] = 25
+gitlab_rails['smtp_tls'] = false
+gitlab_rails['smtp_openssl_verify_mode'] = 'none'
+nginx['listen_port'] = 80
+nginx['listen_https'] = false
+{%endif%}

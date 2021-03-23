@@ -1,0 +1,4 @@
+---
+- name: Remove old_file_backup
+  shell: rm -f $(find {{ backup_server_path }} -type f -printf '%T+ %p\n' | sort | head -n -1)
+  become: yes

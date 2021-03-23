@@ -1,0 +1,11 @@
+---
+- name: Backup database Git3
+  shell: |
+    docker exec -i {{ container_name }} gitlab-rake gitlab:backup:create SKIP=registry RAILS_ENV=production
+  become: yes
+
+- name: Copy Git3 latest backup file to restore_server
+  shell: |
+    latest_file=$(ls -t {{ backup_server_path }}| head -n 1)
+    scp -P{{ restore_server_sshport }} {{ backup_server_path }}/$latest_file root@{{ restore_server }}:{{ restore_server_path }}
+  become: yes
