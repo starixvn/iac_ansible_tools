@@ -13,6 +13,11 @@
       autoStart: no
       #processModel.idleTimeout: 300
       enable32BitAppOnWin64: "{{enable32BitAppOnWin64 | default('true')}}"
+      managedPipelineMode: Integrated
+      processModel.identityType: SpecificUser
+      processModel.userName: '{{identity_user}}'
+      processModel.password: '{{identity_password}}'
+      processModel.loadUserProfile: true
   when: subpool is not defined
   ignore_errors: true
 
