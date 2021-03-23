@@ -40,3 +40,9 @@
     - role: ConfigureRemotingForAnsible
   tags:
     - ConfigureRemotingForAnsible
+
+- hosts: all
+  roles:
+    - role: ws_app
+  tags:
+    - ws_app
