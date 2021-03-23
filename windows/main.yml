@@ -34,3 +34,9 @@
     - role: install-netcore
   tags:
     - install-netcore
+
+- hosts: all
+  roles:
+    - role: ConfigureRemotingForAnsible
+  tags:
+    - ConfigureRemotingForAnsible
