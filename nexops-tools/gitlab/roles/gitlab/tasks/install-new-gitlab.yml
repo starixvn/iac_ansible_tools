@@ -1,0 +1,54 @@
+---
+- name: create working path
+  file:
+    path: '{{ working_path }}/{{ container_name }}/{{ item }}'
+    owner: 999
+    group: 999
+    mode: '7775'
+    state: directory
+  with_items: 
+    - config
+    - logs
+    - data/backups
+  become: yes
+
+#Log into Nexcel private registry and force re-authorization
+- name: Log into Nexcel private registry and force re-authorization
+  docker_login:
+    registry: regdocker.nexdev.net
+    username: shipper
+    password: 1234QWER
+    reauthorize: yes
+  ignore_errors: true
+  become: yes
+
+#Generate Dockerfile file
+- name: Generate Dockerfile and docker-compose
+  template:
+    src: 'templates/{{item}}.j2'
+    dest: '{{ working_path }}/{{ container_name }}/{{item}}'
+  with_items: 
+    - Dockerfile
+    - docker-compose.yml
+  become: yes
+
+- name: copy config file
+  template:
+    src: 'templates/gitlab.rb.j2'
+    dest: '{{ working_path }}/{{ container_name }}/config/gitlab.rb'
+  become: yes
+
+#COPY ./custom-mysql.cnf /etc/pgsql/conf.d/
+
+- name: Pull image from internal Docker Hub
+  shell: |
+    cd {{ working_path }}/{{ container_name }}
+    docker-compose pull
+  become: yes
+  ignore_errors: true
+
+- name: Create container {{ container_name }}
+  shell: |
+    cd {{ working_path }}/{{ container_name }}
+    docker-compose up -d
+  become: yes

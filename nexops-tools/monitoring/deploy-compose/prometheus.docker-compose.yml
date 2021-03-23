@@ -105,8 +105,7 @@ services:
       - source: caddy_config
         target: /etc/caddy/Caddyfile
     deploy:
-      mode: replicated
-      replicas: 1
+      mode: global
       placement:
         constraints:
           - node.labels.NEXOPS_LOW_STORAGE == yes

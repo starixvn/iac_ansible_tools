@@ -1,0 +1,18 @@
+version: '3.4'
+
+services:
+  gitlab:
+    image: regdocker.nexdev.net/nexops/gitlab:{{ img_version }}
+    build:
+     context: ./
+    container_name: {{ container_name }}
+    hostname: {{ container_name }}
+    restart: always
+    network_mode: bridge
+    ports:
+      - "{{ssh_port | default('2221')}}:22"
+      - "{{http_port | default('8010')}}:80"
+    volumes:
+      - {{ working_path }}/{{ container_name }}/config:/etc/gitlab
+      - {{ working_path }}/{{ container_name }}/logs:/var/log/gitlab
+      - {{ working_path }}/{{ container_name }}/data:/var/opt/gitlab
