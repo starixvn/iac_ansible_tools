@@ -1,4 +1,4 @@
-----
+---
 - name: Create working directory
   win_file:
     path: "{{script_location}}"
