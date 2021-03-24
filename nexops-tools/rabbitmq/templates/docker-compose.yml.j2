@@ -16,7 +16,7 @@ services:
       - {{swarm_network}}
     deploy:
       mode: replicated
-      replicas: 2
+      replicas: 1
       #endpoint_mode: dnsrr
       update_config:
         parallelism: 1

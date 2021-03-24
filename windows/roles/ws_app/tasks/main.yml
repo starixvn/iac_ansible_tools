@@ -4,7 +4,7 @@
     path: "{{ working_directory }}"
     state: directory
         
-- name: Copy Zabbix agent, Notepad, 7-zip
+- name: Copy Notepad, 7-zip
   win_shell: |
     Get-ChildItem "{{item.path}}" | Copy-Item -Destination "{{ working_directory }}" -Recurse -Force
   become: yes
@@ -15,8 +15,14 @@
   ignore_errors: true
   with_items: "{{ windows_app }}"
 
-- name: Ensure Zabbix agent, Notepad, 7-zip is installed via win_package
+- name: Ensure 7-zip is installed via win_package
   win_package:
-    path: '{{ working_directory }}\{{ item.name }}'
+    path: '{{ working_directory }}\{{ z_version }}'
     state: present
-  with_items: "{{ windows_app }}"
+
+- name: Ensure Notepad is installed via win_package
+  win_package:
+    path: '{{ working_directory }}\{{ notepad_version }}'
+    product_id: '{{ product_id }}'
+    arguments: /S
+    state: present

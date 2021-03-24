@@ -1,4 +1,10 @@
 ---
+- name: Create rabbitmq folder
+  file:
+    path: '{{working_directory}}'
+    state: directory
+    mode: '777'
+
 - name: Copy config folder
   copy:
     src: config/
@@ -21,6 +27,13 @@
 - name: Create data folder
   file:
     path: '{{data_folder}}'
+    state: directory
+    mode: '777'
+    recurse: true
+
+- name: Create mnesia folder
+  file:
+    path: '{{data_folder}}/mnesia'
     state: directory
     mode: '777'
     recurse: true
