@@ -31,6 +31,13 @@
     mode: '777'
     recurse: true
 
+- name: Create mnesia folder
+  file:
+    path: '{{data_folder}}/mnesia'
+    state: directory
+    mode: '777'
+    recurse: true
+
 - name: Copy .erlang.cookie
   copy:
     src: data/.erlang.cookie
