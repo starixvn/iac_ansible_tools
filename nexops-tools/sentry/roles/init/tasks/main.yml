@@ -59,6 +59,7 @@
   docker_stack:
     name: "sentry"
     state: present
+    with_registry_auth: "yes"
     compose:
       - "{{working_directory}}/docker-compose.yml"
 
