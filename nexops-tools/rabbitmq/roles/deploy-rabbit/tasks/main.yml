@@ -1,4 +1,10 @@
 ---
+- name: Create rabbitmq folder
+  file:
+    path: '{{working_directory}}'
+    state: directory
+    mode: '777'
+
 - name: Copy config folder
   copy:
     src: config/
