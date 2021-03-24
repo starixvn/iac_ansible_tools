@@ -5,7 +5,7 @@
   vars:
     working_directory: "/var/www/gluster/nexops/rabbitmq"
     node_label: "NEXOPS_HIGH_STORAGE"
-    environment_name: "Local" # Local, UAT, SIT, PRO
+    environment_name: "Local" # Local, UAT, SIT, PRO, AWS
     swarm_network: "swarm_nexcel_local"
     config_folder: "{{working_directory}}/config"
     data_folder: "{{working_directory}}/data"
