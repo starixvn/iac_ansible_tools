@@ -1,6 +1,6 @@
 ---
 - name: Deploy RabbitMQ to Docker Swarm
-  hosts: nexops_high_storage
+  hosts: nexops
 
   vars:
     working_directory: "/var/www/gluster/nexops/rabbitmq"
