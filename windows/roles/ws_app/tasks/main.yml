@@ -1,0 +1,25 @@
+- name: Execute task for installing Zabbix Agent, Notepad, 7-zip,...
+  hosts: all
+
+  tasks:
+    - name: Create Website directory
+      win_file:
+        path: "{{ working_directory }}"
+        state: directory
+        
+    - name: Copy Zabbix agent, Notepad, 7-zip
+      win_shell: |
+        Get-ChildItem "{{item.path}}" | Copy-Item -Destination "{{ working_directory }}" -Recurse -Force
+      become: yes
+      become_method: runas
+      become_user: "{{user_id}}"
+      vars:
+        ansible_become_password: "{{pass_id}}"
+      ignore_errors: true
+      with_items: "{{ windows_app }}"
+
+    - name: Ensure Zabbix agent, Notepad, 7-zip is installed via win_package
+      win_package:
+        path: '{{ working_directory }}\{{ item.name }}'
+        state: present
+      with_items: "{{ windows_app }}"
