@@ -1,22 +1,30 @@
----
-- name: Create Website directory
-  win_file:
-    path: "{{ working_directory }}"
-    state: directory
-        
-- name: Copy Zabbix agent, Notepad, 7-zip
-  win_shell: |
-    Get-ChildItem "{{item.path}}" | Copy-Item -Destination "{{ working_directory }}" -Recurse -Force
-  become: yes
-  become_method: runas
-  become_user: "{{user_id}}"
-  vars:
-    ansible_become_password: "{{pass_id}}"
-  ignore_errors: true
-  with_items: "{{ windows_app }}"
+- name: Execute task for installing Notepad, 7-zip,...
+  hosts: all
 
-- name: Ensure Zabbix agent, Notepad, 7-zip is installed via win_package
-  win_package:
-    path: '{{ working_directory }}\{{ item.name }}'
-    state: present
-  with_items: "{{ windows_app }}"
+  tasks:
+    - name: Create Website directory
+      win_file:
+        path: "{{ working_directory }}"
+        state: directory
+        
+    - name: Copy Notepad, 7-zip
+      win_shell: |
+        Get-ChildItem "{{item.path}}" | Copy-Item -Destination "{{ working_directory }}" -Recurse -Force
+      become: yes
+      become_method: runas
+      become_user: "{{user_id}}"
+      vars:
+        ansible_become_password: "{{pass_id}}"
+      ignore_errors: true
+      with_items: "{{ windows_app }}"
+
+    - name: Ensure 7-zip is installed via win_package
+      win_package:
+        path: '{{ working_directory }}\{{ z_version }}'
+        state: present
+
+    - name: Ensure Notepad is installed via win_package
+      win_package:
+        path: '{{ working_directory }}\{{ notepad_version }}'
+        product_id: '{{ product_id }}'
+        state: present
