@@ -24,4 +24,5 @@
   win_package:
     path: '{{ working_directory }}\{{ notepad_version }}'
     product_id: '{{ product_id }}'
+    arguments: /S
     state: present
