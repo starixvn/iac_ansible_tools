@@ -1,0 +1,25 @@
+---
+- name: Create working directory {{ working_directory }}
+  run_once: true
+  file:
+    path: "{{ working_directory }}"
+    mode: "0755"
+    state: directory
+  become: yes
+
+- name: Copy template files for build
+  template:
+    src: "templates/influshdb-{{item}}.j2"
+    dest: "{{ working_directory }}/{{item}}"
+  with_items:
+    - docker-compose.yml
+    - Dockerfile
+  become: yes
+
+- name: Executing script to build and push images
+  run_once: true
+  shell: |
+    cd {{ working_directory }}
+    docker-compose build
+    docker-compose push
+  become: yes

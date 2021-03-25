@@ -1,0 +1,47 @@
+version: '3.5'
+networks:
+  {{swarm_network_nexops}}:
+    external: true
+
+volumes:
+    influxdb-data:
+      driver: pxd
+      driver_opts:
+        repl: 2
+        size: 40
+
+# https://docs.influxdata.com/influxdb/v1.7/administration/config
+services:
+  influxdb:
+    image: registry.nexdev.net:5050/docker/database/influshdb:{{version}}
+    environment:
+      INFLUXDB_DB: "FanexRemotingRef"
+      INFLUXDB_HTTP_AUTH_ENABLED: 'true'
+      INFLUXDB_USER: influx
+      INFLUXDB_USER_PASSWORD: influxdb@Pass
+      INFLUXDB_ADMIN_USER: influxadmin
+      INFLUXDB_ADMIN_PASSWORD: AdmiN1234
+    deploy:
+      mode: replicated
+      replicas: 1
+      labels:
+        prometheus.enable: "true"
+        prometheus.port: "8086"
+        prometheus.path: "/metrics"
+      placement:
+        constraints:
+          - node.Labels.storagegroup==RED
+      resources:
+        limits:
+          memory: 2048M
+        reservations:
+          memory: 1024M
+    networks:
+    - {{swarm_network_nexops}}
+    healthcheck:
+      test: "ln -sf /bin/busybox /bin/wget && /bin/wget -q -Y off http://localhost:8086/metrics -O /dev/null > /dev/null 2>&1"
+      interval: 25s
+      timeout: 3s
+      start_period: 30s
+    volumes:
+      - influxdb-data:/var/lib/influxdb

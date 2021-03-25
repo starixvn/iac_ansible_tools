@@ -12,3 +12,10 @@
   tags:
     - build-postgres
     - deploy-postgres
+
+  - hosts: all
+  roles:
+    - role: influshdb
+  tags:
+    - build-inf
+    - deploy-inf
