@@ -14,6 +14,7 @@
       autoStart: no
       #processModel.idleTimeout: 300
       enable32BitAppOnWin64: "{{item.enable32BitAppOnWin64 | default('true')}}"
+      startMode: "AlwaysRunning"
   with_items: "{{ website }}"
 
 - name: Create Website - {{website_name}}

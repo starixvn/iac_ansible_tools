@@ -20,6 +20,8 @@ nexcel_ports_uat:
   [
     { "published": 7000, "target": 7000, "mode": "ingress" },
     { "published": 80, "target": 80, "mode": "ingress" },
+    { "published": 6012, "target": 6012, "mode": "ingress" },
+    { "published": 7012, "target": 7012, "mode": "ingress" },
   ]
 
 nexcel_ports_prod:
@@ -50,6 +52,7 @@ nexcel_ports_prod-nex3:
   [
     { "published": 80, "target": 80, "mode": "ingress" },
     { "published": 8000, "target": 8000, "mode": "ingress" },
+    { "published": 8012, "target": 8012, "mode": "ingress" },
   ]
 
 nexcel_ports_aws-nex3: [{ "published": 80, "target": 80, "mode": "host" }]
