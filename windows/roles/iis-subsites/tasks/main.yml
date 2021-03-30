@@ -21,15 +21,15 @@
   ignore_errors: true
 
 - name: Creates application pool DefaultUser - {{website_name}}, {{managedRuntimeVersion | default('v4.0')}} {{enable32BitAppOnWin64 | default('true')}}
-      win_iis_webapppool:
-        name: "{{website_name}}"
-        state: started
-        attributes:
-          managedRuntimeVersion: "{{managedRuntimeVersion | default('v4.0')}}"
-          autoStart: no
-          enable32BitAppOnWin64: "{{enable32BitAppOnWin64 | default('true')}}"     
-      when: subpool is not defined
-      ignore_errors: true
+  win_iis_webapppool:
+    name: "{{website_name}}"
+    state: started
+    attributes:
+      managedRuntimeVersion: "{{managedRuntimeVersion | default('v4.0')}}"
+      autoStart: no
+      enable32BitAppOnWin64: "{{enable32BitAppOnWin64 | default('true')}}"     
+  when: subpool is not defined
+  ignore_errors: true
 
 - name: Creates Sub Application pools, sets attributes and starts it
   win_iis_webapppool:
