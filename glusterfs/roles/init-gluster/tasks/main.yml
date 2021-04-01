@@ -11,16 +11,19 @@
     url: https://download.gluster.org/pub/gluster/glusterfs/7/rsa.pub
     state: present
   become: yes
+  ignore_errors: yes
 
 - name: Add apt repository gluster (1/2)
   apt_repository:
     repo: ppa:gluster/glusterfs-7
     state: present
   become: yes
+  ignore_errors: yes
 
 - name: Add apt repository gluster (2/2)
   shell: dpkg --force-all -P glusterfs-server
   become: yes
+  ignore_errors: yes
 
 - name: Install GlusterFS
   apt: name={{ item }} state=latest update_cache=yes
@@ -28,6 +31,7 @@
     - glusterfs-server
     - glusterfs-common
   become: true
+  ignore_errors: yes
 
 - name: Enable GlusterFS on boot
   service: 'name=glusterd state=started enabled=yes'
