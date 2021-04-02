@@ -1,4 +1,11 @@
 ---
+- name: Create stack directory
+  file:
+    path: "/home/{{ansible_user}}/stacks"
+    mode: "0755"
+    state: directory
+  become: yes
+
 - name: Create directory
   file:
     path: "{{gluster_path}}/{{team_path}}/data"
