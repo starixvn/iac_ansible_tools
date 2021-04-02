@@ -8,9 +8,9 @@ services:
         image: registry.nexdev.net:5050/docker/database/mysql:{{version}}
         command: --default-authentication-plugin=mysql_native_password
         ports:
-        - published: {{mysql_port}}
-            target: 3306
-            mode: ingress
+            - published: {{mysql_port}}
+              target: 3306
+              mode: ingress
         environment:
             - MYSQL_DATABASE=database
             - MYSQL_ROOT_PASSWORD=1qaz@WSX
@@ -19,16 +19,16 @@ services:
         volumes:
             - {{db_volume}}:/var/lib/mysql
         healthcheck:
-        test: out=$$(mysqladmin ping -h localhost -P 3306 -u root --password=1qaz@WSX 2>&1); echo $$out | grep 'mysqld is alive' || { echo $$out; exit 1; }
-        interval: 5s
-        timeout: 20s
-        retries: 30
+            test: out=$$(mysqladmin ping -h localhost -P 3306 -u root --password=1qaz@WSX 2>&1); echo $$out | grep 'mysqld is alive' || { echo $$out; exit 1; }
+            interval: 5s
+            timeout: 20s
+            retries: 30
         deploy:
-        mode: replicated
-        replicas: 1
-        placement:
-            constraints:
-            - node.labels.NEXCEL_HIGH_STORAGE == yes
+            mode: replicated
+            replicas: 1
+            placement:
+                constraints:
+                - node.labels.NEXCEL_HIGH_STORAGE == yes
         networks:
             - {{swarm_network_nexops}}
 
