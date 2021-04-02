@@ -1,0 +1,44 @@
+########################################################################
+# File managed by Ansible - NexOps
+# Your changes will be overwritten.
+#######################################################################
+version: '3.3'
+services:
+  {{mysql_name}}:
+    image: registry.nexdev.net:5050/docker/database/mysql:{{version}}
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - published: {{mysql_port}}
+        target: 3306
+        mode: ingress
+    environment:
+      - MYSQL_DATABASE=database
+      - MYSQL_ROOT_PASSWORD=1qaz@WSX
+      - MYSQL_USER=mysql_user
+      - MYSQL_PASSWORD=Pass1234AA
+    volumes:
+      - {{db_volume}}:/var/lib/mysql
+    healthcheck:
+      test: out=$$(mysqladmin ping -h localhost -P 3306 -u root --password=Ilu@n3xc3l 2>&1); echo $$out | grep 'mysqld is alive' || { echo $$out; exit 1; }
+      interval: 5s
+      timeout: 20s
+      retries: 30
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.NEXOPS_LOW_STORAGE == yes
+    networks:
+      - {{swarm_network_nexops}}
+
+networks:
+  {{swarm_network_nexops}}:
+    external: true
+
+volumes:
+  {{db_volume}}:
+    driver_opts:
+      o: bind
+      type: none
+      device: /var/www/gluster/{{team_path}}/data
