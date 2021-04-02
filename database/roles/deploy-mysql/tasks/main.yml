@@ -30,5 +30,5 @@
 - name: Build up and run container
   shell: |
     cd /home/{{ansible_user}}/stacks
-    docker stack deploy --compose-file=mysql-stack.yml {{mysql_name}}
+    docker stack deploy --compose-file=mysql-stack.yml {{stack_name}}
   become: yes

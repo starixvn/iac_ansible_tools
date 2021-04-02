@@ -4,34 +4,53 @@
 #######################################################################
 version: '3.3'
 services:
-  {{mysql_name}}:
-    image: registry.nexdev.net:5050/docker/database/mysql:{{version}}
-    command: --default-authentication-plugin=mysql_native_password
-    ports:
-      - published: {{mysql_port}}
-        target: 3306
-        mode: ingress
-    environment:
-      - MYSQL_DATABASE=database
-      - MYSQL_ROOT_PASSWORD=1qaz@WSX
-      - MYSQL_USER=mysql_user
-      - MYSQL_PASSWORD=Pass1234AA
-    volumes:
-      - {{db_volume}}:/var/lib/mysql
-    healthcheck:
-      test: out=$$(mysqladmin ping -h localhost -P 3306 -u root --password=1qaz@WSX 2>&1); echo $$out | grep 'mysqld is alive' || { echo $$out; exit 1; }
-      interval: 5s
-      timeout: 20s
-      retries: 30
-    deploy:
-      mode: replicated
-      replicas: 1
-      placement:
-        constraints:
-          - node.labels.NEXCEL_HIGH_STORAGE == yes
-    networks:
-      - {{swarm_network_nexops}}
+    {{mysql_name}}:
+        image: registry.nexdev.net:5050/docker/database/mysql:{{version}}
+        command: --default-authentication-plugin=mysql_native_password
+        ports:
+        - published: {{mysql_port}}
+            target: 3306
+            mode: ingress
+        environment:
+            - MYSQL_DATABASE=database
+            - MYSQL_ROOT_PASSWORD=1qaz@WSX
+            - MYSQL_USER=mysql_user
+            - MYSQL_PASSWORD=Pass1234AA
+        volumes:
+            - {{db_volume}}:/var/lib/mysql
+        healthcheck:
+        test: out=$$(mysqladmin ping -h localhost -P 3306 -u root --password=1qaz@WSX 2>&1); echo $$out | grep 'mysqld is alive' || { echo $$out; exit 1; }
+        interval: 5s
+        timeout: 20s
+        retries: 30
+        deploy:
+        mode: replicated
+        replicas: 1
+        placement:
+            constraints:
+            - node.labels.NEXCEL_HIGH_STORAGE == yes
+        networks:
+            - {{swarm_network_nexops}}
 
+    phpmyadmin:
+        image: registry.nexdev.net:5050/docker/phpmyadmin:latest
+        volumes:
+            - /var/www/gluster/web/nexus/saba_sports/phpadmin/uploads.ini:/usr/local/etc/php/conf.d/php-phpmyadmin.ini
+        restart: always
+        ports:
+            - 8032:80
+        environment:
+            MYSQL_USERNAME: mysql_user
+            MYSQL_ROOT_PASSWORD: Pass1234AA
+            PMA_HOSTS: saba_sports_mysql
+        deploy:
+            mode: replicated
+            replicas: 1
+            placement:
+                constraints:
+                - node.labels.NEXCEL_HIGH_STORAGE == yes
+        networks:
+            - swarm_nexcel_local
 networks:
   {{swarm_network_nexops}}:
     external: true
