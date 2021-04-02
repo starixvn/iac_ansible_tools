@@ -28,7 +28,7 @@ services:
       replicas: 1
       placement:
         constraints:
-          - node.labels.NEXOPS_LOW_STORAGE == yes
+          - node.labels.NEXCEL_HIGH_STORAGE == yes
     networks:
       - {{swarm_network_nexops}}
 
