@@ -42,7 +42,7 @@ services:
         environment:
             MYSQL_USERNAME: mysql_user
             MYSQL_ROOT_PASSWORD: Pass1234AA
-            PMA_HOSTS: saba_sports_mysql
+            PMA_HOSTS: {{mysql_name}}
         deploy:
             mode: replicated
             replicas: 1
