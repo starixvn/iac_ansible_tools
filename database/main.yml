@@ -13,7 +13,7 @@
     - build-postgres
     - deploy-postgres
 
-  - hosts: all
+- hosts: all
   roles:
     - role: influshdb
   tags:
