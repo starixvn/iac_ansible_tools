@@ -32,25 +32,6 @@ services:
         networks:
             - {{swarm_network_nexops}}
 
-    phpmyadmin:
-        image: registry.nexdev.net:5050/docker/phpmyadmin:latest
-        volumes:
-            - {{gluster_path}}/{{team_path}}/phpadmin/uploads.ini:/usr/local/etc/php/conf.d/php-phpmyadmin.ini
-        restart: always
-        ports:
-            - {{phpadmin_port}}:80
-        environment:
-            MYSQL_USERNAME: mysql_user
-            MYSQL_ROOT_PASSWORD: Pass1234AA
-            PMA_HOSTS: {{mysql_name}}
-        deploy:
-            mode: replicated
-            replicas: 1
-            placement:
-                constraints:
-                - node.labels.NEXCEL_HIGH_STORAGE == yes
-        networks:
-            - swarm_nexcel_local
 networks:
   {{swarm_network_nexops}}:
     external: true
