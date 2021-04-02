@@ -35,10 +35,10 @@ services:
     phpmyadmin:
         image: registry.nexdev.net:5050/docker/phpmyadmin:latest
         volumes:
-            - /var/www/gluster/web/nexus/saba_sports/phpadmin/uploads.ini:/usr/local/etc/php/conf.d/php-phpmyadmin.ini
+            - {{gluster_path}}/{{team_path}}/phpadmin/uploads.ini:/usr/local/etc/php/conf.d/php-phpmyadmin.ini
         restart: always
         ports:
-            - 8032:80
+            - {{phpadmin_port}}:80
         environment:
             MYSQL_USERNAME: mysql_user
             MYSQL_ROOT_PASSWORD: Pass1234AA
