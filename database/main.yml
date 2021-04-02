@@ -1,9 +1,14 @@
 ---
 - hosts: all
   roles:
-    - role: mysql
+    - role: build-mysql
   tags:
     - build-mysql
+
+- hosts: all
+  roles:
+    - role: deploy-mysql
+  tags:
     - deploy-mysql
 
 - hosts: all
