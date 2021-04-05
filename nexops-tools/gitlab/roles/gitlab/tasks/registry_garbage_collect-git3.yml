@@ -1,0 +1,4 @@
+---
+- name: Removing untagged manifests and unreferenced layers 
+  shell: docker exec -it {{ container_name }} gitlab-ctl registry-garbage-collect -m
+  become: yes
