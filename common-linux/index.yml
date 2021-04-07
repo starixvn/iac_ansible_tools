@@ -50,5 +50,5 @@
 
 - hosts: all
   roles:
-    - docker-system-prune-uat
-  tags: docker-system-prune-uat
+    - docker-system-prune-uat-prod
+  tags: docker-system-prune-uat-prod
