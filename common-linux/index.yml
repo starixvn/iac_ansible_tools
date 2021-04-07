@@ -45,5 +45,10 @@
 
 - hosts: all
   roles:
-    - docker-system-prune
-  tags: docker-system-prune-all
+    - docker-system-prune-local
+  tags: docker-system-prune-local
+
+- hosts: all
+  roles:
+    - docker-system-prune-uat
+  tags: docker-system-prune-uat
