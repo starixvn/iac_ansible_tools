@@ -1,4 +1,5 @@
 ---
 - name: Remove old_backup_file
-  shell: rm -f $(find {{ backup_server_path }} -type f -printf '%T+ %p\n' | sort | head -n -1)
+  #shell: rm -f $(find {{ backup_server_path }} -type f -printf '%T+ %p\n' | sort | head -n -1)
+  shell: rm -f {{ backup_server_path }} *
   become: yes
