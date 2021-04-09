@@ -4,7 +4,7 @@
 #######################################################################
 version: '3.3'
 services:
-    {{mysql_name}}:
+    {{mysql_name}}_db:
         image: registry.nexdev.net:5050/docker/database/mysql:{{version}}
         command: --default-authentication-plugin=mysql_native_password
         ports:
@@ -43,7 +43,7 @@ services:
         environment:
             MYSQL_USERNAME: mysql_user
             MYSQL_ROOT_PASSWORD: Pass1234AA
-            PMA_HOSTS: {{mysql_name}}
+            PMA_HOSTS: {{mysql_name}}_db
         deploy:
             mode: replicated
             replicas: 1
