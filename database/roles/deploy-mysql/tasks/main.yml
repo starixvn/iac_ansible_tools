@@ -24,11 +24,11 @@
 - name: Copy docker-compose file
   template:
     src: "templates/deploy-mysql.yml.j2"
-    dest: /home/{{ansible_user}}/stacks/mysql-stack.yml
+    dest: /home/{{ansible_user}}/stacks/{{stack_name}}_db.yml
   become: yes
 
 - name: Build up and run container
   shell: |
     cd /home/{{ansible_user}}/stacks
-    docker stack deploy --compose-file=mysql-stack.yml {{stack_name}}
+    docker stack deploy --compose-file={{stack_name}}_db.yml {{stack_name}}
   become: yes
