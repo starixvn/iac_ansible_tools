@@ -4,7 +4,7 @@
 #######################################################################
 version: '3.3'
 services:
-    db:
+    {{mysql_name}}:
         image: registry.nexdev.net:5050/docker/database/mysql:{{version}}
         command: --default-authentication-plugin=mysql_native_password
         ports:
