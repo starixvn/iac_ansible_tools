@@ -1,51 +1,52 @@
 - name: Create HAProxy directory
   file:
-    path: '{{ volume_path }}'
+    path: "{{ volume_path }}"
     state: directory
-    mode: '0777'
+    mode: "0777"
   become: yes
 
 - name: Clean HAProxy config directory
   file:
     state: absent
-    path: '{{ volume_path }}/configs'
+    path: "{{ volume_path }}/configs"
   become: yes
   ignore_errors: yes
 
 - name: Copy HAProxy configuration
   copy:
-    src: 'files/{{team}}/configs/{{ env }}'
-    dest: '{{ volume_path }}/configs'
+    src: "files/{{team}}/configs/{{ env }}"
+    dest: "{{ volume_path }}/configs"
   become: yes
   ignore_errors: yes
 
 - name: Build HAProxy configurations
   assemble:
-    src: '{{ volume_path }}/configs/{{ env }}'
-    dest: '{{ volume_path }}/{{ config_filename }}'
+    src: "{{ volume_path }}/configs/{{ env }}"
+    dest: "{{ volume_path }}/{{ config_filename }}"
   become: yes
 
 - name: Copy whitelist configuration.
   template:
-    src: 'files/{{team}}/whitelisted.ips'
-    dest: '{{ volume_path }}/whitelisted.ips'
+    src: "files/{{team}}/whitelisted.ips"
+    dest: "{{ volume_path }}/whitelisted.ips"
   become: yes
   ignore_errors: yes
 
 - name: Copy SSL Certs configuration.
   template:
-    src: 'files/{{team}}/certs/{{item}}'
-    dest: '{{ volume_path }}/{{item}}'
+    src: "files/{{team}}/certs/{{item}}"
+    dest: "{{ volume_path }}/{{item}}"
   become: yes
-  with_items: 
+  with_items:
     - nexdev.net.pem
     - lumigame.com.pem
+    - nexcel.vn.pem
   ignore_errors: yes
 
 - name: Copy HAProxy Dockerfile.
   template:
-    src: 'templates/{{team}}/check-config.Dockerfile.j2'
-    dest: '{{ volume_path }}/Dockerfile'
+    src: "templates/{{team}}/check-config.Dockerfile.j2"
+    dest: "{{ volume_path }}/Dockerfile"
   become: yes
 
 - name: Install Python docker
@@ -64,7 +65,7 @@
   docker_image:
     name: haproxy-check-config
     build:
-      path: '{{ volume_path }}'
+      path: "{{ volume_path }}"
     state: present
   become: yes
   ignore_errors: yes
