@@ -39,7 +39,7 @@
   become: yes
   with_items:
     - nexdev.net.pem
-    - lumigame.com.pem
+    #- lumigame.com.pem
     - nexcel.vn.pem
   ignore_errors: yes
 
