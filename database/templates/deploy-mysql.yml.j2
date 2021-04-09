@@ -28,7 +28,7 @@ services:
             replicas: 1
             placement:
                 constraints:
-                - node.labels.NEXCEL_HIGH_STORAGE == yes
+                - node.labels.{{node_lable | default ('NEXCEL_HIGH_STORAGE')}} == yes
         networks:
             - {{swarm_network_nexops}}
 
@@ -49,7 +49,7 @@ services:
             replicas: 1
             placement:
                 constraints:
-                - node.labels.NEXCEL_HIGH_STORAGE == yes
+                - node.labels.{{node_lable | default ('NEXCEL_HIGH_STORAGE')}} == yes
         networks:
             - swarm_nexcel_local
 
