@@ -42,6 +42,7 @@
 - name: Install jsondiff python package
   pip:
     name: jsondiff
+  ignore_errors: true
 
 - name: replace org {{org}} in postgres-container-id.sh
   replace:
