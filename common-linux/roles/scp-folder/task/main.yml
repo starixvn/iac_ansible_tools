@@ -1,4 +1,0 @@
-- name: scp backup folder
-  shell: |
-    scp -r -P{{ server_sshport }} {{ backup_server_path }} root@{{ restore_server }}:{{ restore_server_path }}
-  become: yes
