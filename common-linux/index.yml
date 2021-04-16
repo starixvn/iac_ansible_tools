@@ -57,3 +57,8 @@
   roles:
     - docker-system-prune-prod
   tags: docker-system-prune-prod
+
+- hosts: all
+  roles:
+    - scp-folder
+  tags: scp-folder
