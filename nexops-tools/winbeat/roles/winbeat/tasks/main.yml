@@ -1,0 +1,70 @@
+---
+- name: check status of winlogbeat service
+  win_service:
+    name: "winlogbeat"
+  register: result
+#     failed_when: result is not defined
+  ignore_errors: yes
+- name: Preparing for Step Winlogbeat Stopped with ignore errors
+  win_service:
+   name: winlogbeat
+   start_mode: auto
+   state: stopped
+   ignore_errors: true
+  when: result.exists == true
+
+- name: Preparing for Step Remove directory
+  raw: Remove-Item -Path {{ path_install }}\winlogbeat -Force -Recurse -ErrorAction SilentlyContinue
+  ignore_errors: true
+ #when: reinstall==true
+- name: Preparing for Step Create work directory
+  win_file:
+   path: "{{ path_source }}"
+   state: "directory"
+
+- name: Preparing for Step Create Install directory
+  win_file:
+   path: "{{ path_install }}"
+   state: "directory"
+
+- name: Copy deployment files to host
+  win_shell: |
+   $excludes = {{excludes | default("'.git','logs'")}}
+   Get-ChildItem "{{repo_internal}}" | Where-Object{$_.Name -notin $excludes} | Copy-Item -Destination "{{ path_source }}" -Recurse -Force
+  become: yes
+  become_method: runas
+  become_user: "{{user_id}}"
+  vars:
+   ansible_become_password: "{{pass_id}}"
+  ignore_errors: true
+
+- name: Preparing for Step Decompression zip file
+  win_unzip:
+   src: "{{ path_source }}/winlogbeat.zip"
+   dest: "{{ path_source }}/winlogbeat"
+
+- name: Preparing for Step Move directory
+  raw: Move-Item -Path "{{ path_source }}\winlogbeat\" -Destination "{{ path_install }}\" -Force
+  ignore_errors: true
+
+- name: manual get Local IP
+  raw: ((Test-Connection -ComputerName (hostname) -Count 1).IPV4Address).IPAddressToString
+  register: ipadd
+
+- name: Preparing for Step Change config of Winlogbeat
+  win_template:
+   src: templates/winlogbeat.yml.j2
+   dest: "{{ path_install }}/winlogbeat/winlogbeat.yml"
+
+- name: Winlogbeat Installing Winlogbeat
+  raw: PowerShell.exe -ExecutionPolicy UnRestricted -File "{{ path_install }}\winlogbeat\install-service-winlogbeat.ps1"
+
+#- name: Winlogbeat Step2 Configuring Winlogbeat
+ #raw: {{path_install}} -c {{path_install}}\winlogbeat\winlogbeat.yml -configtest -e
+
+#  Skip Winlogbeat Step3 Configuring Winlogbeat to Use Logstash
+- name: Winlogbeat Starting Winlogbeat
+  win_service:
+   name: winlogbeat
+   start_mode: auto
+   state: started

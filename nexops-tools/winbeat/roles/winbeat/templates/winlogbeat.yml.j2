@@ -1,0 +1,45 @@
+########################################################################
+# File managed by Ansible - NexOps
+# Your changes will be overwritten.
+#######################################################################
+#=========================== Filebeat prospectors ============================= 
+
+winlogbeat.event_logs:
+- name: Application
+  level: critical, error, warning
+  ignore_older: 72h
+#IIS
+- name: Microsoft-IIS-Configuration/Operational
+  ignore_older: 72h
+#RDP
+- name: Microsoft-Windows-TerminalServices-LocalSessionManager/Operational
+  ignore_older: 72h
+#SYSTEM 
+- name: System
+  event_id: 5079, 6005, 6006, 104, 4719, 7031, 7034, 1074, 15000, -1004, -1058
+  ignore_older: 72h
+- name: System
+  level: critical, error, warning
+  ignore_older: 72h
+#Security 4624, 4634, 
+- name: Security
+  event_id: 102, 4647, 4625, 4700-4800
+  ignore_older: 72h
+
+
+#================================ General ===================================== 
+
+# Shipper Name 
+name: {{ ipadd.stdout }}
+
+tags: [{{ winlog_type | default('web')}}]
+
+
+#================================ Outputs ===================================== 
+
+# Logstash output 
+output.logstash:
+  hosts: ["{{ logstash_server }}"]
+
+
+#================================ Logging ===================================== 
