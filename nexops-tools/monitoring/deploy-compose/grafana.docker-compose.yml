@@ -28,7 +28,7 @@ services:
       - GF_SECURITY_ADMIN_USER=${ADMIN_USER:-admin}
       - GF_SECURITY_ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin}
       - GF_USERS_ALLOW_SIGN_UP=false
-      - GF_INSTALL_PLUGINS=redis-datasource,alexanderzobnin-zabbix-app
+      #- GF_INSTALL_PLUGINS=redis-datasource,alexanderzobnin-zabbix-app
       #- GF_INSTALL_PLUGINS=alexanderzobnin-zabbix-app
       #- GF_AUTH_LDAP_ENABLED=false
       #- GF_AUTH_LDAP_CONFIG_FILE=/opt/pf-grafana/ldap.toml
