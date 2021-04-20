@@ -1,5 +1,5 @@
 #stefanprodan/swarmprom-prometheus:v2.5.0
-version: '3.3'
+version: "3.3"
 
 networks:
   net:
@@ -28,6 +28,8 @@ services:
       - GF_SECURITY_ADMIN_USER=${ADMIN_USER:-admin}
       - GF_SECURITY_ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin}
       - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_INSTALL_PLUGINS=redis-datasource
+      - GF_INSTALL_PLUGINS=alexanderzobnin-zabbix-app
       #- GF_INSTALL_PLUGINS=alexanderzobnin-zabbix-app
       #- GF_AUTH_LDAP_ENABLED=false
       #- GF_AUTH_LDAP_CONFIG_FILE=/opt/pf-grafana/ldap.toml
@@ -41,7 +43,7 @@ services:
     volumes:
       - grafana:/var/lib/grafana
     healthcheck:
-      test: ['CMD', 'curl', '-f', 'http://localhost:3000']
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
       interval: 10s
       timeout: 5s
       retries: 60
