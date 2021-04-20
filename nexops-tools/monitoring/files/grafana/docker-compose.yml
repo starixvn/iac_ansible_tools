@@ -5,3 +5,5 @@ services:
     build:
       context: ./
       dockerfile: ./Dockerfile-${ENV}
+    environment:
+      - GF_INSTALL_PLUGINS=redis-datasource,alexanderzobnin-zabbix-app
