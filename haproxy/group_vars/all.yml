@@ -22,6 +22,8 @@ nexcel_ports_uat:
     { "published": 80, "target": 80, "mode": "ingress" },
     { "published": 6012, "target": 6012, "mode": "ingress" },
     { "published": 7012, "target": 7012, "mode": "ingress" },
+    { "published": 5321, "target": 5321, "mode": "host" },
+    { "published": 7321, "target": 7321, "mode": "host" },
   ]
 
 nexcel_ports_prod:
@@ -64,6 +66,7 @@ luminet_ports_local:
     { "published": 7000, "target": 7000, "mode": "ingress" },
     { "published": 7001, "target": 7001, "mode": "ingress" },
     { "published": 7002, "target": 7002, "mode": "ingress" },
+    { "published": 7100, "target": 7100, "mode": "ingress" },
     { "published": 7101, "target": 7101, "mode": "ingress" },
     { "published": 5673, "target": 5672, "mode": "ingress" },
   ]
