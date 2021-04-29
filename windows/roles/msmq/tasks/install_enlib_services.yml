@@ -1,0 +1,33 @@
+---
+- name: Copy windows services
+  win_shell: |
+    Get-ChildItem "{{item.path}}" | Copy-Item -Destination "{{ working_directory }}" -Recurse -Force
+  become: yes
+  become_method: runas
+  become_user: "{{user_id}}"
+  vars:
+    ansible_become_password: "{{pass_id}}"
+  ignore_errors: true
+  with_items: "{{ windows_service_folder }}"
+
+- name: ensure Enterprise_Library_5 is installed via win_package
+  win_package:
+    path: '{{ enlib_source }}'
+    state: present
+
+- name: Preparing for Step Decompression cfg Enlib zip file
+  win_unzip:
+   src: "{{ working_directory }}/enlib_cfg.zip"
+   dest: "{{ working_directory }}/enlib_cfg"
+
+#- name: Preparing for Step Move directory
+#  raw: Move-Item -Path "{{ working_directory }}\enlib_cfg\" -Destination "C:\Program Files (x86)\Microsoft Enterprise Library 5.0\Bin\" 
+
+- name: Creating windows services
+  win_service:
+    name: '{{item.name}}'
+    path: '{{item.path}}'
+    state: started
+    start_mode: auto
+  with_items: "{{ windows_service }}"
+  ignore_errors: true

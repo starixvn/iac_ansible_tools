@@ -1,0 +1,25 @@
+---
+- name: Create working directory
+  win_file:
+    path: "{{script_location}}"
+    state: "directory"
+
+- name: cp template files
+  win_template:
+    src: 'templates/{{ item }}.j2'
+    dest: "{{script_location}}/{{ item }}"
+  with_items: 
+    - create_queue.ps1
+    - msqueue.txt
+
+- name: Run create_queue.ps1 script
+  win_shell: '{{script_location}}\create_queue.ps1 >> {{script_location}}\create_queue.log chdir={{script_location}}'
+  register: result1
+  become: yes
+  become_method: runas
+  become_user: "{{user_id}}"
+  vars:
+    ansible_become_password: "{{pass_id}}"
+
+- debug:
+    msg: "{{ result1.stdout.split('\n')}}"

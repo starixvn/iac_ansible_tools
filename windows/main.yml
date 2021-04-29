@@ -46,3 +46,9 @@
     - role: ws_app
   tags:
     - ws_app
+
+- hosts: all
+  roles:
+    - role: msmq
+  tags:
+    - ws_msmq
