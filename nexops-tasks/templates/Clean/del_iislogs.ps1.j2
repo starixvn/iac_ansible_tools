@@ -1,0 +1,78 @@
+<# 
+Description: Deletes IIS LogFiles older than X days from all of the W3SVC Logfiles folder on remote systems 
+Version: 1.2 (30-oct-2020 Troy)
+#> 
+ set-executionpolicy unrestricted
+#Sets the number of days files to keep 
+[int] $DaysOfHistoryToKeep = 3
+$ComputerList = Get-Content "$pwd\listip_web.txt"
+$outputPath = "$pwd\Cleanup_Old_logs.log" 
+ 
+Function Ping($computername) 
+{ 
+    $query = "select * from win32_pingstatus where address = '" + $computername + "'" 
+    $wmi = get-wmiobject -query $query 
+    if ($($wmi.statuscode) -eq $null) 
+        { 
+        $rtnvalue = $($wmi.PrimaryAddressResolutionStatus) 
+        } 
+    else {$rtnvalue = $($wmi.statuscode)} 
+    if ( $rtnvalue -eq 0 ) {$true} 
+    else {$false} 
+     
+} 
+ 
+Function WMIConnectionTest($computername) 
+{ 
+    $wmiClass = "Win32_OperatingSystem" 
+    if ((Get-WmiObject -ComputerName $computerName win32_operatingsystem -ErrorAction silentlycontinue))  
+        { return $true }  
+    else { return $false }     
+} 
+ 
+Function GetWebLogFilesLocation($ComputerName) 
+{ 
+    $Location = [adsi]"IIS://$ComputerName/w3svc" | select LogFileDirectory | %{$_.LogFileDirectory} 
+    $LogFileFolder = $Location -replace ":", "$" 
+    return "\\$Computername\$LogFileFolder" 
+} 
+ 
+Foreach ($Computername in $ComputerList) 
+{ 
+if (Ping($ComputerName) -eq $true -and if (WMIConnectionTest($ComputerName) -eq $true)) 
+	{
+	#####
+	$info = "Cleanup of log files older than $($(Get-Date).AddDays((-1 * $DaysOfHistoryToKeep))) on $ComputerName"
+	Write-Output "$info"
+	Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+	#####
+	    $WebLogFilesLocation = GetWebLogFilesLocation($computername) 
+	    $W3SVCList = gci $WebLogFilesLocation | where {$_.mode -match "d"} 
+		$W3SVCList
+		Foreach ($W3SVC1 in $W3SVCList) 
+		{ 
+			$itemsToDelete=""
+			write-host "Dir $WebLogFilesLocation\$W3SVC1 -Include *.log -Recurse | Where-Object { $_.LastWriteTime -lt $(Get-Date).AddDays((-1 * $DaysOfHistoryToKeep)) } " -ForegroundColor yellow
+			$itemsToDelete = Dir "$WebLogFilesLocation\$W3SVC1" -Include *.log -Recurse | Where-Object { $_.LastWriteTime -lt (Get-Date).AddDays((-1 * $DaysOfHistoryToKeep)) }
+			$itemsToDelete
+			$itemsToDelete.count
+			if ($itemsToDelete.Count -gt 0)
+			{ 
+				 ForEach ($item in $itemsToDelete)
+				 { 
+					"$WebLogFilesLocation\$W3SVC1\$($item.BaseName).log is older than $($(Get-Date).AddDays((-1 * $DaysOfHistoryToKeep))) and will be deleted" | Add-Content $outputPath 
+					Get-item $item | Remove-Item -Verbose 
+				} 
+			}
+			ELSE{ 
+					"No items in $WebLogFilesLocation\$W3SVC1 to be deleted today $($(Get-Date).DateTime)"  | Add-Content $outputPath 
+				} 
+	 
+		}
+		#####
+		$info = "-->Done cleaning older IIS Logs on $ComputerName"
+		Write-Output "$info"
+		Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+		#####
+	} 
+}

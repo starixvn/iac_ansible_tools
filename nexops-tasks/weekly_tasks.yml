@@ -1,0 +1,38 @@
+- name: NexOps UM Tasks
+  hosts: all
+  gather_facts: true
+
+  tasks:
+##UM Task..
+    - name: Copy UM scripts to target servers
+      win_copy:
+        src: "files/UM"
+        dest: "{{ script_location }}"
+        force: yes
+      tags:
+        - check-connection
+
+    - name: Run UM script
+      win_shell: '{{ script_location }}\UM\status_connection_2servers.ps1 >> {{ script_location }}\UM\status_connection_2servers.ps1.txt chdir={{ script_location }}\UM'
+      register: result1
+      tags:
+        - check-connection
+
+    - debug:
+        msg: "{{ result1.stdout.split('\n')}}"
+      tags:
+        - check-connection
+
+    - name: Executing UM Tasks to Restart State service, IIS, Flush Couchbase...
+      #win_command: powershell.exe -ExecutionPolicy ByPass -File {{um_iis_script}}
+      win_shell: |
+        echo "Rebooting IIS..."
+      tags:
+        - restart-iis
+
+    - name: Executing UM Tasks to Reboot Servers, Flush Couchbase...
+      #win_shell: "{{um_reboot_script}}"
+      win_shell: |
+        echo "Rebooting Server..."
+      tags:
+        - restart-server

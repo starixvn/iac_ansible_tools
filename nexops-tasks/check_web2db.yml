@@ -1,0 +1,59 @@
+- name: Tasks for checking connection from Web/Service servers to DB servers
+  hosts: all
+  gather_facts: false
+
+  tasks:
+    - name: Create working directory
+      win_file:
+        path: "{{script_location}}/{{item}}"
+        state: "directory"
+      with_items: 
+        - Tasks
+        - Tasks/ping_web_2db
+      tags:
+        - ping_web_2db
+        - website_status
+
+    - name: cp listip_db.txt template
+      win_template:
+        src: 'templates/ping_web_2db/listip_db.txt.j2'
+        dest: "{{script_location}}/Tasks/ping_web_2db/listip_db.txt"
+      tags:
+        - ping_web_2db
+
+    - name: cp status_connection_2servers.ps1 template
+      win_template:
+        src: 'templates/ping_web_2db/status_connection_2servers.ps1.j2'
+        dest: "{{script_location}}/Tasks/ping_web_2db/status_connection_2servers.ps1"
+      tags:
+        - ping_web_2db
+
+    - name: Executing status_connection_2servers.ps1
+      win_shell: '{{ script_location }}\Tasks\ping_web_2db\status_connection_2servers.ps1 >> {{ script_location }}\Tasks\ping_web_2db\status_connection_2servers.log chdir={{ script_location }}\Tasks\ping_web_2db'
+      register: connection_web2db
+      tags:
+        - ping_web_2db
+
+    - debug:
+        msg: "{{ connection_web2db.stdout.split('\n')}}"
+      tags:
+        - ping_web_2db
+
+    - name: cp website_status.ps1 template
+      win_template:
+        src: 'templates/UM/website_status.ps1.j2'
+        dest: "{{script_location}}/Tasks/website_status.ps1"
+      tags:
+        - website_status
+
+
+    - name: Executing website_status.ps1 script to check status of websites
+      win_shell: '{{ script_location }}\Tasks\website_status.ps1 >> {{ script_location }}\Tasks\website_status.log chdir={{ script_location }}\Tasks'
+      register: web_status
+      tags:
+        - website_status
+
+    - debug:
+        msg: "{{ web_status.stdout.split('\n')}}"
+      tags:
+        - website_status

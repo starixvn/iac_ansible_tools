@@ -1,0 +1,63 @@
+#############	Restart Services
+$ipadd = ((Test-Connection -ComputerName (hostname) -Count 1).IPV4Address).IPAddressToString
+Clear-Content temp_services_restarted.txt
+$services_need_check = @{'IIS Service' = 'W3Svc'; 'ASP State' = 'aspnet_state'}
+foreach($service_alias in $services_need_check.keys)
+{
+	$service_n = $services_need_check.$service_alias
+	write-host "$service_alias -> $service_n"
+	$checks_service = (Get-Service "$service_n").starttype
+	if($checks_service -eq "Automatic")
+	{
+	  $info = "Restarting $service_alias on $ipadd ..."
+	  write-host $info;
+	  Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+	  Restart-Service -Name $service_n
+	}
+}
+
+#############	Check Service status
+start-sleep -seconds 15
+$isServiceUp = $true
+do{
+    $isUp = 0;
+    ##
+    $except_list = get-content temp_services_restarted.txt
+    foreach($service_alias in $services_need_check.keys)
+	{
+		$service_n = "";
+		$checks_service="";
+		$service_n = $services_need_check.$service_alias
+		write-host "$service_alias -> $service_n"
+		$checks_service_starttype = (Get-Service "$service_n").starttype
+		$except_list = get-content temp_services_restarted.txt
+	    if ($service_n -notin $except_list -and $checks_service_starttype -eq "Automatic")
+	    {
+			$checks_service = (Get-Service "$service_n").status
+			if($checks_service -eq "Running")
+			{
+				$isUp = 1;
+				"$service_n" | Add-Content 'temp_services_restarted.txt'
+				$info = "--> $service_alias on $ipadd is UP"
+			}
+			else
+			{
+				$info = "--> <b>$service_alias</b> on $ipadd is <b>Down</b>"
+				$isUp = 0;
+			}
+			write-host $info;
+			Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+		}
+	}
+	if($isUp -eq 0 )
+    {
+        $isServiceUp = $false
+        start-sleep 5
+    }
+    else
+    {
+        $isServiceUp = $true
+    }
+}while(!$isServiceUp)
+$info = "Done restart services and checked on $ipadd !!"
+write-host $info;

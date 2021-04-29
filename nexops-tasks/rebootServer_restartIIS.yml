@@ -1,0 +1,79 @@
+- name: Task for Rebooting Server or Restarting IIS, ASP State
+  hosts: all
+  gather_facts: false
+
+  tasks:
+    ####### Restart IIS Task
+    - name: Create working directory
+      win_file:
+        path: "{{script_location}}/Tasks/UM"
+        state: "directory"
+      tags:
+        - um_reboot_server
+        - um_restart_iis
+
+    - name: Remove *.log file
+      win_shell: |
+        $logpath = "{{script_location}}/Tasks"
+        Get-ChildItem $logpath -recurse *.log -force | Remove-Item -force
+      tags:
+        - um_reboot_server
+        - um_restart_iis
+      ignore_errors: true
+    - name: cp IIS.ps1 template
+      win_template:
+        src: 'templates/UM/IIS.ps1.j2'
+        dest: "{{script_location}}/Tasks/UM/IIS.ps1"
+      tags:
+        - um_restart_iis
+
+    - name: Executing script to restart IIS Site, ASP State
+      win_shell: '{{ script_location }}\Tasks\UM\IIS.ps1 >> {{ script_location }}\Tasks\UM\IIS.log chdir={{ script_location }}\Tasks\UM'
+      register: debug_iis
+      tags:
+        - um_restart_iis
+
+    - debug:
+        msg: "{{ debug_iis.stdout.split('\n')}}"
+      tags:
+        - um_restart_iis
+
+        ####### Reboot Server Task
+    - name: message "reboot server" {{env}}
+      win_shell: |
+        $ipadd = ((Test-Connection -ComputerName (hostname) -Count 1).IPV4Address).IPAddressToString
+        $info = "Rebooting server $ipadd ..."
+        Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+      tags:
+        - um_reboot_server
+
+    - name: Validate that the netlogon service has started, before reboot server
+      win_reboot:
+        test_command: 'exit (Get-Service -Name Netlogon).Status -ne "Running"'
+        #msg: 'Reboot for UM by NexOps - Ansible'
+      tags:
+        - um_reboot_server
+
+    - name: Wait 300 seconds for port 5986 to become open
+      wait_for:
+        port: 5986 
+        host: '{{ (ansible_ssh_host|default(ansible_host))|default(inventory_hostname) }}'
+        delay: 10
+      vars:
+        ansible_connection: local
+
+    - name: message "after rebooted server" {{env}}
+      win_shell: |
+        $ipadd = ((Test-Connection -ComputerName (hostname) -Count 1).IPV4Address).IPAddressToString
+        $info = "server $ipadd -> UP"
+        Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+      tags:
+        - um_reboot_server
+    #- name: restart IIS service
+    #  win_service:
+    #    name: W3Svc
+    #    state: restarted
+    #    start_mode: auto
+    #  when: iis_service.exists
+    #  tags:
+    #    - um_restart_iis

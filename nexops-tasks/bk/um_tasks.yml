@@ -1,0 +1,181 @@
+- name: NexOps UM Tasks
+  hosts: all
+  become_method: runas
+  vars:
+    ansible_become_password: 'h4YhFe7&ffVG!Qq^'
+
+  tasks:
+    - name: Create working directory
+      win_file:
+        path: "{{script_location}}/Tasks/UM"
+        state: "directory"
+      tags:
+        - um_reboot_server
+        - um_restart_iis
+
+    - name: Remove *.log file
+      win_shell: |
+        $logpath = "{{script_location}}/Tasks"
+        Get-ChildItem $logpath -recurse *.log -force | Remove-Item -force
+      tags:
+        - um_reboot_server
+        - um_restart_iis
+        - check_connection_2umservers
+        - check_web_2db
+      ignore_errors: true
+
+
+    - name: cp template files
+      win_template:
+        src: 'templates/UM/{{ item }}.txt.j2'
+        dest: "{{script_location}}/Tasks/UM/{{ item }}.txt"
+      with_items: 
+        - no_umpage
+        - um_page
+        - stateservers
+        - content
+      tags:
+        - um_reboot_server
+        - um_restart_iis
+        - check_connection_2umservers
+
+    - name: cp check_connection_2umservers.ps1 template {{env}}
+      win_template:
+        src: 'templates/UM/check_connection_2umservers.ps1.j2'
+        dest: "{{script_location}}/Tasks/UM/check_connection_2umservers.ps1"
+      tags:
+        #- um_reboot_server
+        #- um_restart_iis
+        - check_connection_2umservers
+
+    - name: message "UM Task running" {{env}}
+      win_shell: |
+        $info = "NexOps UM task is running..."
+        $url_skype = "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+        Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+        Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid_pst}}"
+      tags:
+        - um_reboot_server
+        - um_restart_iis
+    ########## Restart IIS ###########
+    - name: cp IIS.ps1 template
+      win_template:
+        src: 'templates/UM/IIS.ps1.j2'
+        dest: "{{script_location}}/Tasks/UM/IIS.ps1"
+      tags:
+        - um_restart_iis
+        - testing
+
+    - name: Executing script to restart IIS Site, ASP State
+      win_shell: Get-Service -Name aspnet_state
+      #win_shell: | ##'{{ script_location }}\Tasks\UM\IIS.ps1 >> {{ script_location }}\Tasks\UM\IIS.log chdir={{ script_location }}\Tasks\UM'
+      #  (Get-WmiObject win32_service -ComputerName 10.18.200.103 | Where-Object {$_.Name -eq "aspnet_state"}).StopService()
+      #win_command: powershell.exe D:\NexOps\Tasks\UM\IIS.ps1
+      register: debug_iis
+      become_user: 'rocketor.vn'
+      tags:
+        - um_restart_iis
+        - testing
+
+    - debug:
+        msg: "{{ debug_iis.stdout.split('\n')}}"
+      tags:
+        - um_restart_iis
+        - testing
+
+    - name: Executing script2 to restart IIS Site, ASP State
+      win_shell: powershell.exe "Get-Service -Name aspnet_state -ComputerName 10.18.200.103 | Restart-Service"
+      args:
+        executable: cmd
+      #win_shell: | ##'{{ script_location }}\Tasks\UM\IIS.ps1 >> {{ script_location }}\Tasks\UM\IIS.log chdir={{ script_location }}\Tasks\UM'
+      #  (Get-WmiObject win32_service -ComputerName 10.18.200.103 | Where-Object {$_.Name -eq "aspnet_state"}).StopService()
+      #win_command: powershell.exe D:\NexOps\Tasks\UM\IIS.ps1
+      register: debug_iis2
+      tags:
+        - um_restart_iis
+        - testing
+
+    - debug:
+        msg: "{{ debug_iis.stdout.split('\n')}}"
+      tags:
+        - um_restart_iis2
+        - testing
+    ########## Reboot Server ###########
+    - name: cp restart_servers_UM_Task.ps1 template
+      win_template:
+        src: 'templates/UM/restart_servers_UM_Task.ps1.j2'
+        dest: "{{script_location}}/Tasks/UM/restart_servers_UM_Task.ps1"
+      tags:
+        - um_reboot_server
+
+    - name: Executing script to Reboot Servers
+      win_shell: '{{ script_location }}\Tasks\UM\restart_servers_UM_Task.ps1 >> {{ script_location }}\Tasks\UM\restart_servers_UM_Task.log chdir={{ script_location }}\Tasks\UM'
+      #win_command: powershell.exe -ExecutionPolicy ByPass -File {{ script_location }}\Tasks\UM\restart_servers_UM_Task.ps1
+      #register: debug_reboot
+      tags:
+        - um_reboot_server
+
+    #- debug:
+    #    msg: "{{ debug_reboot.stdout.split('\n')}}"
+    #  tags:
+    #    - um_reboot_server
+    - name: cp flush_cached_couchbase.ps1 template {{env}}
+      win_template:
+        src: 'templates/UM/flush_cached_couchbase.ps1.j2'
+        dest: "{{script_location}}/Tasks/UM/flush_cached_couchbase.ps1"
+      tags:
+        - flush_couchbase
+
+    - name: cp BucketName.txt template {{env}}
+      win_template:
+        src: 'templates/UM/BucketName.txt.j2'
+        dest: "{{script_location}}/Tasks/UM/BucketName.txt"
+      tags:
+        - flush_couchbase
+
+    - name: Flush couchbase
+      win_shell: '{{ script_location }}\Tasks\UM\flush_cached_couchbase.ps1 >> {{ script_location }}\Tasks\UM\flush_cached_couchbase.log chdir={{ script_location }}\Tasks\UM'
+      tags:
+        - flush_couchbase
+      ignore_errors: true
+
+    - name: message "End UM Task" {{env}}
+      win_shell: |
+        $info = "NexOps UM task has completed."
+        $url_skype = "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+        Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+        Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid_pst}}"
+      tags:
+        - um_reboot_server
+        - um_restart_iis
+
+    - name: Inform message "AFTER run UM Task scripts"
+      win_shell: |
+        $info= "-------------- Check Connection -------------------"
+        $url_skype = "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+        Invoke-RestMethod $url_skype
+      tags:
+        - check_connection_2umservers
+
+    - name: Executing check_connection_2umservers.ps1 AFTER run UM Task script
+      win_shell: '{{ script_location }}\Tasks\UM\check_connection_2umservers.ps1 >> {{ script_location }}\Tasks\UM\check_connection_2umservers.log chdir={{ script_location }}\Tasks\UM'
+      register: connection_2web
+      tags:
+        #- um_reboot_server
+        #- um_restart_iis
+        - check_connection_2umservers
+
+    #- debug:
+    #    msg: "{{ connection_2web.stdout.split('\n')}}"
+    #  tags:
+    #    - um_reboot_server
+    #    - um_restart_iis
+        
+    - name: Check connection Web srv to Service and DB srv
+      win_shell: |
+        [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+        Invoke-RestMethod "{{ansible_api}}" -Method "POST" -Headers @{"Authorization"= "Bearer {{ansible_token}}"}
+      tags:
+        #- um_restart_iis
+        #- um_reboot_server
+        - check_web_2db

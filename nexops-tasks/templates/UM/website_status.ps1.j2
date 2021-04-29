@@ -1,0 +1,45 @@
+$ipadd = ((Test-Connection -ComputerName (hostname) -Count 1).IPV4Address).IPAddressToString
+$script_path = "{{script_location}}\Tasks\UM"
+If (-not (Test-Path $script_path))
+    {New-Item -ItemType Directory -Path $script_path}
+Set-Location -Path $script_path
+if ($iisVersion.MajorVersion -eq 7)
+{
+    if ($iisVersion.MinorVersion -ge 5)
+    {
+        Import-Module WebAdministration;
+    }           
+    else
+    {
+        if (-not (Get-PSSnapIn | Where {$_.Name -eq "WebAdministration";})) {
+            Add-PSSnapIn WebAdministration;
+        }
+    }
+}
+$sites = Get-Website
+$sites | ForEach-Object {
+    $sitename = $_.name
+    if ($sitename -ne $NULL -and $sitename -ne "Default Web Site")
+    {  
+        ###Start-Website $sitename
+        $state = $_.state
+        $apppool_name = (Get-ChildItem IIS:\AppPools\  | Where-Object { $_.Name -like "$sitename" }).name
+        $apppool_status = (Get-ChildItem IIS:\AppPools\  | Where-Object { $_.Name -like "$sitename" }).state
+        if($state -eq "Stopped" -or $apppool_status -eq "Stopped")
+        {
+            $site_status = "
+            ----
+            $ipadd
+            site:  $sitename is $state
+            AppPool $apppool_name is $apppool_status
+            ----"
+            $url_skype = "{{webapi_skynex}}/bot_api_skype.php?message=$site_status&API={{API}}&skypeid={{skypeid}}"
+            Invoke-RestMethod $url_skype
+        }
+        else
+        {
+            $site_status = "$ipadd | site:  $sitename is OK"
+        }
+        write-host $site_status
+    }
+}

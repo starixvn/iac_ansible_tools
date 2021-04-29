@@ -62,3 +62,8 @@
   roles:
     - scp-folder
   tags: scp-folder
+
+- hosts: all
+  roles:
+    - setting-ntp
+  tags: setting-ntp-synctime

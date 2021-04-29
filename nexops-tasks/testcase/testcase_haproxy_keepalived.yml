@@ -1,0 +1,199 @@
+- name: Test Case for HAProxy and keepalived
+  hosts: all
+  ####Handler
+  handlers:
+    - name: stop keepalived
+      service:
+        name: keepalived
+        state: stopped
+      become: yes
+
+    - name: start keepalived
+      service:
+        name: keepalived
+        state: started
+      become: yes
+
+    - name: Sleep for 5s
+      wait_for:
+        delay: 5
+        timeout: 0
+      tags:
+        - haproxy
+        - keepalived
+
+    - name: Sleep for 10s
+      wait_for:
+        delay: 10
+        timeout: 0
+      tags:
+        - haproxy
+        - keepalived
+
+  tasks:
+    - name: stop haproxy
+      service:
+        name: haproxy
+        state: stopped
+      become: yes
+      tags:
+        - haproxy
+
+    - name: Sleep for {{interval_check}} seconds
+      wait_for:
+        delay: '{{interval_check}}'
+        timeout: 0
+      tags:
+        - haproxy
+
+    - name: checking {{url_check}} for case STOP HAProxy
+      uri:
+        url: '{{url_check}}'
+        method: GET
+        return_content: yes
+      register: webpage_healthcheck
+      #retries: 2
+      #delay: 10
+      ignore_errors: true
+      tags:
+        - haproxy
+
+    - name: Debug webpage_healthcheck
+      debug:
+        msg: "{{webpage_healthcheck}}"
+      ignore_errors: true
+      tags:
+        - haproxy
+
+    - name: start haroxy
+      service:
+        name: haproxy
+        state: started
+      become: yes
+      tags:
+        - haproxy
+    
+    - name: Sleep for {{interval_check}} seconds
+      wait_for:
+        delay: '{{interval_check}}'
+        timeout: 0
+      tags:
+        - haproxy
+
+    - name: checking {{url_check}} for case re-START HAProxy
+      uri:
+        url: '{{url_check}}'
+        method: GET
+        return_content: yes
+      register: webpage_healthcheck2
+      retries: 2
+      delay: 10
+      ignore_errors: true
+      tags:
+        - haproxy
+
+    - name: Debug second webpage_healthcheck
+      debug:
+        msg: "{{webpage_healthcheck2}}"
+      ignore_errors: true
+      tags:
+        - haproxy
+
+    ########Keepalived
+    - name: stop keepalived
+      service:
+        name: keepalived
+        state: stopped
+      become: yes
+      tags:
+        - keepalived
+
+    - name: Sleep for {{interval_check}} seconds
+      wait_for:
+        delay: '{{interval_check}}'
+        timeout: 0
+      tags:
+        - keepalived
+
+    - name: checking {{url_check}} for case STOP keepalived
+      uri:
+        url: '{{url_check}}'
+        method: GET
+        return_content: yes
+      register: webpage_healthcheck
+      #retries: 2
+      #delay: 10
+      ignore_errors: true
+      tags:
+        - haproxy
+
+    - name: Debug webpage_healthcheck
+      debug:
+        msg: "{{webpage_healthcheck}}"
+      ignore_errors: true
+      tags:
+        - haproxy
+
+    - name: start keepalived
+      service:
+        name: keepalived
+        state: started
+      become: yes
+      tags:
+        - keepalived
+    
+    - name: Sleep for {{interval_check}} seconds
+      wait_for:
+        delay: '{{interval_check}}'
+        timeout: 0
+      tags:
+        - keepalived
+
+    - name: checking second {{url_check}} for case re-START keepalived
+      uri:
+        url: '{{url_check}}'
+        method: GET
+        return_content: yes
+      register: webpage_healthcheck2
+      retries: 2
+      delay: 10
+      ignore_errors: true
+      tags:
+        - keepalived
+
+    - name: Debug second webpage_healthcheck
+      debug:
+        msg: "{{webpage_healthcheck2}}"
+      ignore_errors: true
+      tags:
+        - keepalived
+
+    - name: "check current version of haproxy"
+      shell: echo "$(haproxy -v)"
+      become: yes
+      args:
+        executable: /bin/bash
+      register: haproxy_v
+      tags:
+        - haproxy
+        - check_version
+    - debug:
+        msg: "{{ haproxy_v.stdout.split('\n')}}"
+      tags:
+        - haproxy
+        - check_version
+
+    - name: "check current version of keepalived"
+      shell: echo "$(keepalived -v)"
+      become: yes
+      args:
+        executable: /bin/bash
+      register: keepalived_v
+      tags:
+        - keepalived
+        - check_version
+    - debug:
+        var: keepalived_v
+      tags:
+        - keepalived
+        - check_version

@@ -1,0 +1,144 @@
+- name: NexOps UM Tasks
+  hosts: all
+  ####Handler
+  handlers:
+    - name: wait_for_2mins
+      pause:
+        prompt: "Task will start after 2 minutes.."
+        minutes: 2
+
+  tasks:
+    - name: Create working directory
+      win_file:
+        path: "{{script_location}}/Tasks/UM"
+        state: "directory"
+      tags:
+        - um_reboot_server
+        - um_restart_iis
+
+    - name: Remove *.log file
+      win_shell: |
+        $logpath = "{{script_location}}/Tasks"
+        Get-ChildItem $logpath -recurse *.log -force | Remove-Item -force
+      tags:
+        - um_reboot_server
+        - um_restart_iis
+        - check_connection_2umservers
+        - check_web_2db
+      ignore_errors: true
+
+    - name: cp template files
+      win_template:
+        src: "templates/UM/{{ item }}.j2"
+        dest: "{{script_location}}/Tasks/UM/{{ item }}"
+      with_items:
+        #- no_umpage.txt
+        #- um_page.txt
+        - stateservers.txt
+        - content.txt
+        - IIS.ps1
+        - restart_servers_UM_Task.ps1
+        - BucketName.txt
+        - check_connection_2umservers.ps1
+      tags:
+        - um_reboot_server
+        - um_restart_iis
+        - check_connection_2umservers
+
+    - name: message "UM Task running" {{env}}
+      win_shell: |
+        $info = "NexOps UM task is running..."
+        Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+      tags:
+        - um_reboot_server
+        - um_restart_iis
+
+    - name: message "UM Task running" {{env}} pst team
+      win_shell: |
+        $info = "NexOps UM task is running..."
+        Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid_pst}}"
+      tags:
+        - pst
+    ########## Flush Couchbase ###########
+    - name: cp flush_cached_couchbase.ps1 template {{env}}
+      win_template:
+        src: "templates/UM/flush_cached_couchbase.ps1.j2"
+        dest: "{{script_location}}/Tasks/UM/flush_cached_couchbase.ps1"
+      tags:
+        - flush_couchbase
+        - um_restart_iis
+        - um_reboot_server
+      ignore_errors: true
+
+    - name: Flush couchbase
+      win_shell: '{{ script_location }}\Tasks\UM\flush_cached_couchbase.ps1 >> {{ script_location }}\Tasks\UM\flush_cached_couchbase.log chdir={{ script_location }}\Tasks\UM'
+      tags:
+        - flush_couchbase
+        - um_restart_iis
+        - um_reboot_server
+      ignore_errors: true
+
+    ########## Restart IIS ###########
+    - name: Restart ASP State and IIS Service - {{env}}
+      win_shell: '{{ script_location }}\Tasks\UM\IIS.ps1 >> {{ script_location }}\Tasks\UM\IIS.ps1.log chdir={{ script_location }}\Tasks\UM'
+      become: yes
+      become_method: runas
+      become_user: "{{user_id}}"
+      vars:
+        ansible_become_password: "{{pass_id}}"
+      tags:
+        - um_restart_iis
+    ########## Reboot Server ###########
+    - name: message "reboot Server" {{env}}
+      win_shell: |
+        $info= "-------------- All of Servers will be rebooted after 30s -------------------"
+        Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+      tags:
+        - um_reboot_server
+    - name: Reboot servers
+      win_shell: '{{ script_location }}\Tasks\UM\restart_servers_UM_Task.ps1 >> {{ script_location }}\Tasks\UM\restart_servers_UM_Task.ps1.log chdir={{ script_location }}\Tasks\UM'
+      become: yes
+      become_method: runas
+      become_user: "{{user_id}}"
+      vars:
+        ansible_become_password: "{{pass_id}}"
+      tags:
+        - um_reboot_server
+
+    - name: message "end reboot Server" {{env}}
+      win_shell: |
+        $info= "-------------- End Reboot Server -------------------"
+        Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+      tags:
+        - um_reboot_server
+
+    - name: Inform message "AFTER run UM Task scripts"
+      win_shell: |
+        $info= "-------------- Check Connection -------------------"
+        Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+      tags:
+        - um_reboot_server
+        - um_restart_iis
+        - check_connection_2umservers
+
+    - name: Executing check_connection_2umservers.ps1 AFTER run UM Task script
+      win_shell: '{{ script_location }}\Tasks\UM\check_connection_2umservers.ps1 >> {{ script_location }}\Tasks\UM\check_connection_2umservers.log chdir={{ script_location }}\Tasks\UM'
+      register: connection_2web
+      tags:
+        - um_reboot_server
+        - um_restart_iis
+        - check_connection_2umservers
+
+    - name: message "End UM Task" {{env}}
+      win_shell: |
+        $info = "NexOps UM task has completed."
+        Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+      tags:
+        - um_reboot_server
+        - um_restart_iis
+    - name: message "End UM Task" {{env}} pst team
+      win_shell: |
+        $info = "NexOps UM task has completed."
+        Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid_pst}}"
+      tags:
+        - pst

@@ -1,0 +1,79 @@
+- name: Restart Service of ASP State and IIS servers
+  hosts: all
+  gather_facts: false
+
+  tasks:
+    ####### Restart IIS Task
+    - name: Check if IIS service exists
+      win_service:
+        name: W3Svc
+      register: iis_service
+      tags:
+        - um_restart_iis
+
+    - name: notify Restart IIS {{env}}
+      win_shell: |
+        $ipadd = ((Test-Connection -ComputerName (hostname) -Count 1).IPV4Address).IPAddressToString
+        $info = "Restart IIS on $ipadd "
+        $url_skype = "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+        Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+      tags:
+        #- um_reboot_server
+        - um_restart_iis
+
+    - name: restart IIS service
+      win_service:
+        name: W3Svc
+        state: restarted
+        start_mode: auto
+      when: iis_service.exists
+      tags:
+        - um_restart_iis
+    ####### ASP
+    - name: Check if ASP_State service exists
+      win_service:
+        name: aspnet_state
+      register: aspnet_service
+      tags:
+        - um_restart_iis
+
+    - name: notify Restart ASP State {{env}}
+      win_shell: |
+        $check_service = (Get-Service "aspnet_state").starttype
+        if($check_service -eq "Automatic")
+        {
+          $ipadd = ((Test-Connection -ComputerName (hostname) -Count 1).IPV4Address).IPAddressToString
+          $info = "Restart ASP State on $ipadd "
+          $url_skype = "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+          Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+          Restart-Service -Name aspnet_state
+        }
+        
+      when: aspnet_service.exists
+      tags:
+        #- um_reboot_server
+        - um_restart_iis
+
+    #- name: restart ASP_State service
+    #  win_service:
+    #    name: aspnet_state
+    #    state: restarted
+    #    start_mode: auto
+    #  when: aspnet_service.exists
+    #  tags:
+    #    - um_restart_iis
+
+        ####### Reboot Server Task
+    - name: Validate that the netlogon service has started, before reboot server
+      win_reboot:
+        test_command: 'exit (Get-Service -Name Netlogon).Status -ne "Running"'
+      tags:
+        - um_reboot_server
+
+    - wait_for: host=localhost port=80 timeout=300
+      tags:
+        - um_reboot_server
+        - um_restart_iis
+    - debug: msg=ok
+      tags:
+          - um_reboot_server

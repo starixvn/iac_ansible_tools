@@ -1,0 +1,234 @@
+$script_path = "{{script_location}}\Tasks\UM"
+If (-not (Test-Path $script_path))
+    {New-Item -ItemType Directory -Path $script_path}
+Set-Location -Path $script_path
+
+if ($iisVersion.MajorVersion -eq 7)
+{
+    if ($iisVersion.MinorVersion -ge 5)
+    {
+        Import-Module WebAdministration;
+    }           
+    else
+    {
+        if (-not (Get-PSSnapIn | Where {$_.Name -eq "WebAdministration";})) {
+            Add-PSSnapIn WebAdministration;
+        }
+    }
+}
+
+$logTime = Get-Date -Format "dd-MM-yyyy HH:mm:ss"
+##### RESTART ASP state service #######
+$UM_mes = "--------------- Restart ASP State ------------------"
+Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$UM_mes&API={{API}}&skypeid={{skypeid}}"
+$ASP_State ="aspnet_state"
+$IIS_service = "W3Svc"
+$ASP_State_srv = get-content "$pwd\stateservers.txt"
+foreach($computer in $ASP_State_srv)
+	{
+		if (Test-Connection -ComputerName $computer -Count 1 -ErrorAction SilentlyContinue)
+		{
+			$info = "restarting $ASP_State on $computer"
+			Restart-Service -InputObject $(Get-Service -Computer $computer -Name $ASP_State)
+			Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+			start-sleep -seconds 15
+			$check_service = "";
+			$check_service = (Get-Service "$ASP_State" -ComputerName $computer).Status
+			$status_info = "--> service $ASP_State ($computer) is $check_service"
+			$service_notify_skype = "{{webapi_skynex}}/bot_api_skype.php?message=$status_info&API={{API}}&skypeid={{skypeid}}"
+			Invoke-RestMethod $service_notify_skype
+		}
+		else
+		{
+			$info = "$computer -> down"
+			Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+		}
+		Write-Host "$info"
+	}
+$info= "--------------DONE Restart ASP State -------------------"
+Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+#######	RESTART IIS Servers #######
+write "Starting process at $logTime"
+$UM_mes = "--------------- Restart IIS ------------------"
+Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$UM_mes&API={{API}}&skypeid={{skypeid}}"
+Clear-Content restarted_iis.txt
+{%if env=='local' %}
+$um_servers = @{
+                local_web = @{
+                    srv1 = "10.18.200.202"
+                    srv2 = "10.18.200.209"
+                }
+                local_service = @{
+                    srv1 = "10.18.200.104"
+                    srv2 = "10.18.200.103"
+                }
+            }
+{%endif%}
+{%if env=='uat' %}
+$um_servers = @{
+                uat_web = @{
+                    srv1 = "10.2.23.6"
+                    srv2 = "10.2.27.13"
+                }
+                uat_service = @{
+                    srv1 = "10.40.40.73"
+                    srv2 = "10.40.40.75"
+                }
+            }
+{%endif%}
+{%if env=='prod' %}
+$um_servers = @{
+                alpha_new = @{
+                    srv1 = "10.2.27.111"
+                    srv2 = "10.2.27.112"
+                }
+                service = @{
+                    srv1 = "10.40.40.22"
+                    srv2 = "10.99.99.70"
+                }
+                nap = @{
+                    srv1 = "10.3.113.138"
+                    srv2 = "10.3.113.139"
+                }
+                nap_new = @{
+                    srv1 = "10.2.27.119"
+                    srv2 = "10.2.27.120"
+                }
+                lap = @{
+                    srv1 = "10.2.8.9"
+                    srv2 = "10.2.8.10"
+                }
+                lrf = @{
+                    srv1 = "10.2.8.6"
+                    srv2 = "10.2.8.7"
+                }
+            }
+{%endif%}
+$isComputerUp = $true
+do{
+    $isUp1 = 1;$isUp2 = 1;$isUp = 1
+    ##### UM Page #####
+    foreach($name in $um_servers.keys)
+    {
+        $server_um = $um_servers[$name]
+        $um_srv1 = $server_um.srv1
+        $um_srv2 = $server_um.srv2
+        $except_list = get-content restarted_iis.txt
+        ##### reboot UM - server1
+        if ($um_srv1 -notin $except_list)
+        {   
+            if (Test-Connection -ComputerName $um_srv2 -Count 1 -ErrorAction SilentlyContinue)
+            {
+            	$check_iisservice = "";
+				$check_iisservice = (Get-Service "$IIS_service" -ComputerName $um_srv2).Status
+				if($check_iisservice -eq "Running")
+				{
+					$info = "$IIS_service on $um_srv2 ($name) is UP --> restart $IIS_service on $um_srv1"             
+					Restart-Service -InputObject $(Get-Service -Computer $um_srv1 -Name $IIS_service)
+	                "$um_srv1" | Add-Content 'restarted_iis.txt'
+	                Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+					start-sleep -seconds 15
+					$check_service = "";
+					$check_service = (Get-Service "$IIS_service" -ComputerName $um_srv1).Status
+					$status_info = "--> service $IIS_service ($um_srv1) is $check_service"
+					$service_notify_skype = "{{webapi_skynex}}/bot_api_skype.php?message=$status_info&API={{API}}&skypeid={{skypeid}}"
+					Invoke-RestMethod $service_notify_skype
+				}
+				else
+	            {
+	                $info = "$IIS_service on $um_srv2 -> down"                  
+	                $isUp1 = 0
+	                Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+	            }
+                
+            }
+            else
+            {
+                $info = "$um_srv2 -> down"                  
+                $isUp1 = 0
+                Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+            }
+            write-host $info
+        }
+    }
+    ###
+    foreach($name in $um_servers.keys)
+    {
+        $server_um = $um_servers[$name]
+        $um_srv1 = $server_um.srv1
+        $um_srv2 = $server_um.srv2
+        $except_list = get-content restarted_iis.txt
+        ##### reboot UM - server2
+        if ($um_srv2 -notin $except_list)
+        {   
+            if (Test-Connection -ComputerName $um_srv1 -Count 1 -ErrorAction SilentlyContinue)
+            {
+            	$check_iisservice = "";
+				$check_iisservice = (Get-Service "$IIS_service" -ComputerName $um_srv1).Status
+				if($check_iisservice -eq "Running")
+				{
+					$info = "$IIS_service on $um_srv1 ($name) is UP --> restart $IIS_service on $um_srv2"             
+					Restart-Service -InputObject $(Get-Service -Computer $um_srv2 -Name $IIS_service)
+	                "$um_srv2" | Add-Content 'restarted_iis.txt'
+	                Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+					start-sleep -seconds 15
+					$check_service = "";
+					$check_service = (Get-Service "$IIS_service" -ComputerName $um_srv2).Status
+					$status_info = "--> service $IIS_service ($um_srv2) is $check_service"
+					$service_notify_skype = "{{webapi_skynex}}/bot_api_skype.php?message=$status_info&API={{API}}&skypeid={{skypeid}}"
+					Invoke-RestMethod $service_notify_skype
+				}
+				else
+	            {
+	                $info = "$IIS_service on $um_srv1 -> down"                  
+	                $isUp1 = 0
+	                Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+	            }
+                
+            }
+            else
+            {
+                $info = "$um_srv1 -> down"                  
+                $isUp1 = 0
+                Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+            }
+            write-host $info
+        }
+    }
+    ##### No UM Page #####
+    ##$content = get-content no_umpage.txt
+    $content = get-content content.txt
+    foreach($computer in $content)
+    {
+    	$except_list = get-content restarted_iis.txt
+        if ($computer -notin $except_list)
+        {
+            if (Test-Connection -ComputerName $computer -Count 1 -ErrorAction SilentlyContinue)
+            {
+                $info = "$computer is up --> restart IIS on $computer"                   
+                Restart-Service -InputObject $(Get-Service -Computer $computer -Name $IIS_service)
+                "$computer" | Add-Content 'restarted_iis.txt'
+                Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+            }
+            else
+            {
+                $info = "$computer -> down" 
+                $isUp = 0
+                Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+            }
+            write-host $info
+        }
+    }
+    ###
+    if($isUp -eq 0 -or $isUp1 -eq 0 -or $isUp2 -eq 0)
+    {
+        $isComputerUp = $false
+        start-sleep 5
+    }
+    else
+    {
+        $isComputerUp = $true
+    }
+}while(!$isComputerUp)
+$info= "--------------DONE Restart IIS -------------------"
+Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"

@@ -1,0 +1,217 @@
+- name: NexOps UM Tasks
+  hosts: all
+  ####Handler
+  handlers:
+    - name: wait_for_2mins
+      pause:
+        prompt: "Task will start after 2 minutes.."
+        minutes: 2
+
+  tasks:
+    - name: Create working directory
+      win_file:
+        path: "{{script_location}}/Tasks/UM"
+        state: "directory"
+      tags:
+        - um_reboot_server
+        - um_restart_iis
+
+    - name: Remove *.log file
+      win_shell: |
+        $logpath = "{{script_location}}/Tasks"
+        Get-ChildItem $logpath -recurse *.log -force | Remove-Item -force
+      tags:
+        - um_reboot_server
+        - um_restart_iis
+        - check_connection_2umservers
+        - check_web_2db
+      ignore_errors: true
+
+    - name: cp template files
+      win_template:
+        src: 'templates/UM/{{ item }}.txt.j2'
+        dest: "{{script_location}}/Tasks/UM/{{ item }}.txt"
+      with_items: 
+        - no_umpage
+        - um_page
+        - stateservers
+        - content
+        - BucketName
+      tags:
+        - um_reboot_server
+        - um_restart_iis
+        - check_connection_2umservers
+
+    - name: cp check_connection_2umservers.ps1 template {{env}}
+      win_template:
+        src: 'templates/UM/check_connection_2umservers.ps1.j2'
+        dest: "{{script_location}}/Tasks/UM/check_connection_2umservers.ps1"
+      tags:
+        - um_reboot_server
+        - um_restart_iis
+        - check_connection_2umservers
+
+    - name: message "UM Task running" {{env}}
+      win_shell: |
+        $info = "NexOps UM task is running..."
+        Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+      tags:
+        - um_reboot_server
+        - um_restart_iis
+
+    - name: message "UM Task running" {{env}} pst team
+      win_shell: |
+        $info = "NexOps UM task is running..."
+        Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid_pst}}"
+      tags:
+        - pst
+    ########## Flush Couchbase ###########
+    - name: cp flush_cached_couchbase.ps1 template {{env}}
+      win_template:
+        src: 'templates/UM/flush_cached_couchbase.ps1.j2'
+        dest: "{{script_location}}/Tasks/UM/flush_cached_couchbase.ps1"
+      tags:
+        - flush_couchbase
+        - um_restart_iis
+        - um_reboot_server
+
+    - name: Flush couchbase
+      win_shell: '{{ script_location }}\Tasks\UM\flush_cached_couchbase.ps1 >> {{ script_location }}\Tasks\UM\flush_cached_couchbase.log chdir={{ script_location }}\Tasks\UM'
+      tags:
+        - flush_couchbase
+        - um_restart_iis
+        - um_reboot_server
+      ignore_errors: true
+        
+    ########## Restart IIS ###########
+    - name: message "Restart IIS" {{env}}
+      win_shell: |
+        $info = "--------------- Restart IIS ------------------"
+        Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+      tags:
+        - um_restart_iis
+    - name: NO-UMPage Invoke restart IIS Site, ASP State
+      win_shell: |
+        [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+        Invoke-RestMethod "{{no_umpage_IIS_task_api}}" -Method "POST" -Headers @{"Authorization"= "Bearer {{ansible_token}}"}
+      tags:
+        - um_restart_iis
+
+    - pause:
+        prompt: "Task will start after 2 minutes.."
+        minutes: 2
+      tags:
+        - um_restart_iis
+
+    - name: UMPage Invoke restart IIS Site, ASP State
+      win_shell: |
+        [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+        Invoke-RestMethod "{{umpage_IIS_task_api}}" -Method "POST" -Headers @{"Authorization"= "Bearer {{ansible_token}}"}
+      tags:
+        - um_restart_iis
+    ########## Reboot Server ###########
+    - name: message "reboot Server" {{env}}
+      win_shell: |
+        $info= "-------------- All of Servers will be rebooted after 30s -------------------"
+        Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+      tags:
+        - um_reboot_server
+    - name: Reboot servers NO-UMPage
+      win_shell: |
+        [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+        Invoke-RestMethod "{{no_umpage_reboot_task_api}}" -Method "POST" -Headers @{"Authorization"= "Bearer {{ansible_token}}"}
+      tags:
+        - um_reboot_server
+
+    - pause:
+        prompt: "Task will start after 2 minutes.."
+        minutes: 2
+      tags:
+        - um_reboot_server
+        - um_restart_iis
+
+    - name: message "End Restart IIS" {{env}}
+      win_shell: |
+        $info = "--------------- End Restart IIS ------------------"
+        Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+      tags:
+        - um_restart_iis
+
+    - name: Before reboot UM Page srv - Executing check_connection_2umservers.ps1
+      win_shell: '{{ script_location }}\Tasks\UM\check_connection_2umservers.ps1 >> {{ script_location }}\Tasks\UM\check_connection_2umservers.log chdir={{ script_location }}\Tasks\UM'
+      register: connection_2web
+      tags:
+        - um_reboot_server
+        - check_connection_2umservers
+
+    - pause:
+        prompt: "Task will start after 60s"
+        minutes: 1
+      tags:
+        - um_reboot_server
+        - um_restart_iis
+
+    - name: Reboot UMPage servers
+      win_shell: |
+        [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+        Invoke-RestMethod "{{umpage_reboot_task_api}}" -Method "POST" -Headers @{"Authorization"= "Bearer {{ansible_token}}"}
+      tags:
+        - um_reboot_server
+
+    - pause:
+        prompt: "Waiting for Reboot UMPage servers"
+        minutes: 2
+      tags:
+        - um_reboot_server
+
+    - name: message "end reboot Server" {{env}}
+      win_shell: |
+        $info= "-------------- End Reboot Server -------------------"
+        Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+      tags:
+        - um_reboot_server
+
+    - name: Inform message "AFTER run UM Task scripts"
+      win_shell: |
+        $info= "-------------- Check Connection -------------------"
+        Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+      tags:
+        - um_reboot_server
+        - um_restart_iis
+        - check_connection_2umservers
+
+    - name: Executing check_connection_2umservers.ps1 AFTER run UM Task script
+      win_shell: '{{ script_location }}\Tasks\UM\check_connection_2umservers.ps1 >> {{ script_location }}\Tasks\UM\check_connection_2umservers.log chdir={{ script_location }}\Tasks\UM'
+      register: connection_2web
+      tags:
+        - um_reboot_server
+        - um_restart_iis
+        - check_connection_2umservers
+
+    - name: message "End UM Task" {{env}}
+      win_shell: |
+        $info = "NexOps UM task has completed."
+        Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+      tags:
+        - um_reboot_server
+        - um_restart_iis
+    - name: message "End UM Task" {{env}} pst team
+      win_shell: |
+        $info = "NexOps UM task has completed."
+        Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid_pst}}"
+      tags:
+        - pst
+    #- debug:
+    #    msg: "{{ connection_2web.stdout.split('\n')}}"
+    #  tags:
+    #    - um_reboot_server
+    #    - um_restart_iis
+        
+    - name: Check connection Web srv to Service and DB srv
+      win_shell: |
+        [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+        Invoke-RestMethod "{{webstatus_task_api}}" -Method "POST" -Headers @{"Authorization"= "Bearer {{ansible_token}}"}
+      tags:
+        - um_restart_iis
+        - um_reboot_server
+        - check_web_2db

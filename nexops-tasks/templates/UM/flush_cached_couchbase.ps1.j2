@@ -1,0 +1,22 @@
+$BucketNames = Get-Content BucketName.txt
+$info = "--------------- Flushes Couchbase ------------------"
+iwr "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+if (Test-Connection -ComputerName {{couchbase_server}} -Count 1 -ErrorAction SilentlyContinue)
+{
+   foreach ($BucketName in $BucketNames)
+	{
+		Write-Host "================================================================================" 
+		$info = "Flushing bucket name $BucketName ..."
+		write-host $info
+	    iwr "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+	    iwr "http://Administrator:{{couchbase_password}}@{{couchbase_server}}:8091/pools/default/buckets/$BucketName/controller/doFlush" -Method "POST"
+		$info = "--> done flushing $BucketName"
+		iwr "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+	}
+	$info = "--------------- DONE Flushing Couchbase ------------------"
+}
+else
+{
+    $info = "{{couchbase_server}} -> down"
+}
+iwr "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"

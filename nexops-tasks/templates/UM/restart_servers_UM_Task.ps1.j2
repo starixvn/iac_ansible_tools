@@ -1,0 +1,167 @@
+$skypeid_pst = "19:b6e908e254c64b64b38fdce25d2c0250@thread.skype"
+Clear-Content rebooted.txt
+$info= "--------------Reboot ASP State Server-------------------"
+Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+$ASP_State_srv = get-content "$pwd\stateservers.txt"
+foreach($computer in $ASP_State_srv)
+    {
+        if (Test-Connection -ComputerName $computer -Count 1 -ErrorAction SilentlyContinue)
+        {
+            $info = "$computer is up --> performing reboot $computer"
+            Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"            
+            restart-computer $computer -force
+            "$computer" | Add-Content 'rebooted.txt'
+            start-sleep 5
+        }
+        else
+        {
+            $info = "$computer -> down"
+            Write-Host "$info"
+            Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+        }
+        start-sleep -seconds 5
+    }
+$info= "--------------Reboot Web Server-------------------"
+Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+#################### Start Rebooting Servers##############################
+{%if env=='local' %}
+$um_servers = @{
+                local_web = @{
+                    srv1 = "10.18.200.202"
+                    srv2 = "10.18.200.209"
+                }
+                local_service = @{
+                    srv1 = "10.18.200.103"
+                    srv2 = "10.18.200.104"
+                }
+            }
+{%endif%}
+{%if env=='uat' %}
+$um_servers = @{
+                uat_web = @{
+                    srv1 = "10.2.23.6"
+                    srv2 = "10.2.27.13"
+                }
+                uat_service = @{
+                    srv1 = "10.40.40.73"
+                    srv2 = "10.40.40.75"
+                }
+            }
+{%endif%}
+{%if env=='prod' %}
+$um_servers = @{
+                alpha_new = @{
+                    srv1 = "10.2.27.111"
+                    srv2 = "10.2.27.112"
+                }
+                service = @{
+                    srv1 = "10.40.40.22"
+                    srv2 = "10.99.99.70"
+                }
+                nap_new = @{
+                    srv1 = "10.2.27.119"
+                    srv2 = "10.2.27.120"
+                }
+                lap = @{
+                    srv1 = "10.2.8.9"
+                    srv2 = "10.2.8.10"
+                }
+                lrf = @{
+                    srv1 = "10.2.8.6"
+                    srv2 = "10.2.8.7"
+                }
+            }
+{%endif%}
+$isComputerUp = $true
+do{
+    $isUp1 = 1;$isUp2 = 1;$isUp = 1
+    ##### UM Page #####
+    foreach($name in $um_servers.keys)
+    {
+        $server_um = $um_servers[$name]
+        $um_srv1 = $server_um.srv1
+        $um_srv2 = $server_um.srv2
+        $except_list = get-content rebooted.txt
+        ##### reboot UM - server1
+        if ($um_srv1 -notin $except_list)
+        {   
+            if (Test-Connection -ComputerName $um_srv2 -Count 1 -ErrorAction SilentlyContinue)
+            {
+                $info = "$name | $um_srv2 is up --> rebooting $um_srv1"             
+                restart-computer $um_srv1 -force
+                "$um_srv1" | Add-Content 'rebooted.txt'
+                start-sleep 10
+            }
+            else
+            {
+                $info = "$um_srv2 -> down"                  
+                $isUp1 = 0
+            }
+            write-host $info
+            Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+        }
+    }
+    ###
+    foreach($name in $um_servers.keys)
+    {
+        $server_um = $um_servers[$name]
+        $um_srv1 = $server_um.srv1
+        $um_srv2 = $server_um.srv2
+        $except_list = get-content rebooted.txt
+        ##### reboot UM - server2
+        if ($um_srv2 -notin $except_list)
+        {   
+            start-sleep 20
+            if (Test-Connection -ComputerName $um_srv1 -Count 1 -ErrorAction SilentlyContinue)
+            {
+                $info = "$name | $um_srv1 is up --> rebooting $um_srv2"                     
+                restart-computer $um_srv2 -force
+                "$um_srv2" | Add-Content 'rebooted.txt'
+                start-sleep 10
+            }
+            else
+            {
+                $info = "$um_srv1 -> down"      
+                $isUp2 = 0
+            }
+            write-host $info
+            Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+        }
+    }
+    ##### No UM Page #####
+    ##$content = get-content no_umpage.txt
+    $content = get-content content.txt
+    foreach($computer in $content)
+    {
+        $except_list = get-content rebooted.txt
+        if ($computer -notin $except_list)
+        {
+            if (Test-Connection -ComputerName $computer -Count 1 -ErrorAction SilentlyContinue)
+            {
+                $info = "$computer is up --> performing reboot $computer"                   
+                restart-computer $computer -force
+                "$computer" | Add-Content 'rebooted.txt'
+                start-sleep 1
+            }
+            else
+            {
+                $info = "$computer -> down" 
+                $isUp = 0
+            }
+            write-host $info
+            Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+        }
+    }
+    ###
+    if($isUp -eq 0 -or $isUp1 -eq 0 -or $isUp2 -eq 0)
+    {
+        $isComputerUp = $false
+        start-sleep 5
+    }
+    else
+    {
+        $isComputerUp = $true
+    }
+}while(!$isComputerUp)
+$info= "--------------DONE Reboot Server-------------------"
+Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"

@@ -1,0 +1,75 @@
+$ipadd = ((Test-Connection -ComputerName (hostname) -Count 1).IPV4Address).IPAddressToString
+$realhostname = (gwmi win32_operatingsystem).csname
+$servers = Get-Content "$pwd\listip_db.txt"
+$logTime = Get-Date -Format "dd-MM-yyyy HH:mm:ss"
+$alpha = "10.4.27.1","10.4.27.2","10.4.27.3","10.4.27.4","10.4.27.5","10.4.27.6","10.4.27.7","10.4.188.31","10.4.188.32";
+$nap = "10.3.113.138","10.3.113.139","10.2.113.138","10.2.113.139"
+$lrf = "10.4.8.6","10.2.8.6","10.4.8.7","10.2.8.7"
+$lap = "10.4.8.9","10.2.8.9","10.4.8.10","10.2.8.10"
+$coreservice = "10.40.40.22","10.99.99.70"
+$system = ""
+if($ipadd -in $alpha -OR $ipadd -in $lrf -OR $ipadd -in $nap -OR $ipadd -in $coreservice)
+{
+	if($ipadd -in $alpha)
+	{
+		$system = "Alpha";
+		$state = "10.2.27.11"
+		if(test-connection -computername $state -quiet -count 1)
+		{
+			$data = (Test-Connection "$state" -Count 1).responsetime
+			$info = "$system | ping from $ipadd to $state is OK -> response time: $data ms"
+		}
+		else
+		{
+			$info = "<b>$system | ping from $ipadd to $state is FAIL</b>"
+		}
+
+		Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+	}
+	if($ipadd -in $nap)
+	{
+		$system = "NAP";
+	}
+	if($ipadd -in $coreservice)
+	{
+		$system = "CoreService";
+	}
+	if($ipadd -in $lrf)
+	{
+		$system = "LRF";
+	}
+	if($ipadd -in $lap)
+	{
+		$system = "LAP";
+	}
+	###
+}
+else
+{
+	$system = "Other";
+}
+## check network connection to CoreService and DB server
+foreach($server in $servers)
+{
+	if($ipadd -eq "$server")
+	{
+		write-host "$ipadd = $server . Same server, ignore!"
+	}
+	else
+	{
+		if(test-connection -computername $server -quiet -count 1)
+		{
+			$data = (Test-Connection "$server" -Count 1).responsetime
+			$info = "$system | ping from $ipadd to $server is OK -> response time: $data ms"
+			$color = "green"
+		}
+		else
+		{
+			$info = "<b>$system | ping from $ipadd to $server is FAIL</b> !!!!!!"
+			$color = "red"
+		}
+		$url_skype = "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"			
+		Write-Host "$info" -foregroundcolor "$color"
+		Invoke-RestMethod $url_skype
+	}
+}

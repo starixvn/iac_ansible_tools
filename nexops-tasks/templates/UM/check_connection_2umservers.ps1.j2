@@ -1,0 +1,76 @@
+#################### Start to Check connection to all UM Servers ##############################
+$alpha = "10.2.27.1","10.2.27.2","10.2.27.3","10.2.27.4","10.2.27.5","10.2.27.6","10.2.27.7","10.2.188.31","10.2.188.32","10.4.27.1","10.4.27.2","10.4.27.3","10.4.27.4","10.4.27.5","10.4.27.6","10.4.27.7","10.4.188.31","10.4.188.32";
+$nap = "10.3.113.138","10.3.113.139","10.2.113.138","10.2.113.139"
+$lrf = "10.4.8.6","10.2.8.6","10.4.8.7","10.2.8.7"
+$coreservice = "10.40.40.22","10.99.99.70"
+$ASP_State ="aspnet_state"
+$IIS_service = "W3Svc"
+Clear-Content checked_connection.txt
+$isComputerUp = $true
+do{
+    $content = get-content content.txt
+    $isUp = 1
+    foreach($computer in $content)
+    {
+        $system = ""
+        if($computer -in $alpha)
+        {
+            $system = "Alpha";
+        }
+        if($computer -in $nap)
+        {
+            $system = "NAP";
+        }
+        if($computer -in $coreservice)
+        {
+            $system = "CoreService";
+        }
+        if($computer -in $lrf)
+        {
+            $system = "LRF";
+        }
+        $except_list = get-content checked_connection.txt
+	    if ($computer -notin $except_list)
+        {
+		    if (Test-Connection -ComputerName $computer -Count 1 -ErrorAction SilentlyContinue)
+		    {
+			    $info = "$system $computer -> up"
+			    $isComputerUp = $true
+                $color = "green"
+                "$computer" | Add-Content 'checked_connection.txt'
+                $check_service = "";
+                $check_service = (Get-Service "$IIS_service" -ComputerName $computer).Status
+                $status_info = "--> service $IIS_service ($computer) is $check_service"
+                $service_notify_skype = "{{webapi_skynex}}/bot_api_skype.php?message=$status_info&API={{API}}&skypeid={{skypeid}}"
+                Invoke-RestMethod $service_notify_skype
+                #$isUp = 1
+                $url_skype = "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+                Invoke-RestMethod $url_skype
+		    }
+		    else
+		    {
+			    $isComputerUp = $false
+			    $info = "<b>$computer -> down</b>" 
+                $color = "red"
+			    start-sleep 2;
+                $isUp = 0
+                $url_skype = "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+                Invoke-RestMethod $url_skype
+		    }
+		    Write-Host "$info" -foregroundcolor "$color"
+        }
+    }
+##
+    if($isUp -eq 0)
+    {
+        $isComputerUp = $false
+        start-sleep 10
+    }
+    else
+    {
+        $isComputerUp = $true
+    }
+}while(!$isComputerUp)
+####################End Scan Check connection ##############################
+$logTime = Get-Date -Format "dd-MM-yyyy HH:mm:ss"
+write "END process at $logTime"

@@ -1,0 +1,51 @@
+- name: NexOps Daily Tasks
+  hosts: all
+  gather_facts: false
+
+  tasks:
+    - name: Create working directory
+      win_file:
+        path: "{{script_location}}/Tasks/Clean"
+        state: "directory"
+      tags:
+        - iislog
+
+    - name: cp template files
+      win_template:
+        src: 'templates/Clean/{{ item }}.j2'
+        dest: "{{script_location}}/Tasks/Clean/{{ item }}"
+      with_items: 
+        - del_iislogs.ps1
+        - listip_web.txt
+      tags:
+        - iislog
+
+    - name: message "clean IISlog task is running.." {{env}}
+      win_shell: |
+        $info = "clean IISlog task is running.."
+        Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+      tags:
+        - iislog
+
+    - name: Run clean IISlog script
+      win_shell: '{{ script_location }}\Tasks\Clean\del_iislogs.ps1 >> {{ script_location }}\Tasks\Clean\del_iislogs.ps1.txt chdir={{ script_location }}\Tasks\Clean'
+      register: result1
+      become: yes
+      become_method: runas
+      become_user: "{{user_id}}"
+      vars:
+        ansible_become_password: "{{pass_id}}"
+      tags:
+        - iislog
+
+    - debug:
+        msg: "{{ result1.stdout.split('\n')}}"
+      tags:
+        - iislog
+
+    - name: message "End IISlog task is running.." {{env}}
+      win_shell: |
+        $info = "{{env}} - clean IISlog task has finished"
+        Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+      tags:
+        - iislog

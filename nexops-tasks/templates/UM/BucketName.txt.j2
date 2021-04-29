@@ -1,0 +1,14 @@
+{%if env=='local' %}
+livematches
+Fanex.Security.SpamFilter
+{%endif%}
+{%if env=='uat' %}
+oddsfeed
+deadmatches
+{%endif%}
+{%if env=='prod' %}
+Alpha
+Alpha-BF-I1
+Alpha-BF-I7
+Fanex.Security.SpamFilter
+{%endif%}
