@@ -1,0 +1,27 @@
+---
+- name: Create working directory
+  file:
+    path: "{{ working_directory }}"
+    state: directory
+    mode: "0777"
+  become: yes
+
+- name: cp docker-compose file
+  template:
+    src: "templates/{{ item }}.j2"
+    dest: "{{ working_directory }}/{{ item }}"
+  with_items:
+    - docker-compose.yml
+
+- name: Install jsondiff python package
+  pip:
+    name: jsondiff
+  ignore_errors: true
+
+- name: Deploy FTPD
+  docker_stack:
+    name: "ftpd"
+    state: present
+    with_registry_auth: "yes"
+    compose:
+      - "{{working_directory}}/docker-compose.yml"
