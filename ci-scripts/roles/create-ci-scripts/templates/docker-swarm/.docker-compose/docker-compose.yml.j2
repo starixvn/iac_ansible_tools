@@ -87,9 +87,9 @@ services:
 {% if item.0.framework is defined and item.0.framework == "dotnet" %}
     healthcheck:
       test: ['CMD', 'curl', '-f', "http://localhost:{{item.0.port | default('5000')}}{{item.0.healthcheck_path | default('')}}"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
+      interval: {{item.0.healthcheck_interval | default('5s')}}
+      timeout: {{item.0.healthcheck_timeout | default('5s')}}
+      retries: {{item.0.healthcheck_retries | default('5')}}
 {% endif %}
 {% endif %}
     labels:
