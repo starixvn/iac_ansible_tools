@@ -6,8 +6,8 @@ services:
         environment:
             PUBLICHOST: {{PUBLICHOST}} #10.18.200.133
         volumes:
-            - "/var/www/gluster/nexops/ftpd/configs:/etc/pure-ftpd/passwd"
-            - "/var/www/gluster/nexops/ftpd/data/olympus:/home/ftpusers/olympus"
+            - "/var/www/gluster/web/ftpd/configs:/etc/pure-ftpd/passwd"
+            - "/var/www/gluster/web/ftpd/data/olympus:/home/ftpusers/olympus"
         working_dir: /home/
         restart: always
         deploy:
