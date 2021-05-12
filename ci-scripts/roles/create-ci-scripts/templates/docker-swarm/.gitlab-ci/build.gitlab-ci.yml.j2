@@ -36,6 +36,12 @@ build_image_{{ service_name }}_local{{ version_number }}:
   dependencies:
     - build_cocos_web_local{{ version_number }}
 {% endif %}
+{% if transform_config is defined and transform_config == true %}  
+  needs: ['transform_config_local{{ version_number }}']
+  dependencies:
+    - transform_config_local{{ version_number }}
+{% endif %}
+
 build_image_{{ service_name }}_sit{{ version_number }}:
   extends:
     - .deploy_vars_{{ service_name }}
@@ -50,6 +56,11 @@ build_image_{{ service_name }}_sit{{ version_number }}:
   needs: ['build_cocos_web_sit{{ version_number }}']
   dependencies:
     - build_cocos_web_sit{{ version_number }}
+{% endif %}
+{% if transform_config is defined and transform_config == true %}  
+  needs: ['transform_config_sit{{ version_number }}']
+  dependencies:
+    - transform_config_sit{{ version_number }}
 {% endif %}
 
 build_image_{{ service_name }}_uat{{ version_number }}:
@@ -66,6 +77,11 @@ build_image_{{ service_name }}_uat{{ version_number }}:
   needs: ['build_cocos_web_uat{{ version_number }}']
   dependencies:
     - build_cocos_web_uat{{ version_number }}
+{% endif %}
+{% if transform_config is defined and transform_config == true %}  
+  needs: ['transform_config_uat{{ version_number }}']
+  dependencies:
+    - transform_config_uat{{ version_number }}
 {% endif %}
 
 {% if org_name != 'luminet' %}
@@ -84,6 +100,11 @@ build_image_{{ service_name }}_prod{{ version_number }}:
   dependencies:
     - build_cocos_web_prod{{ version_number }}
 {% endif %}
+{% if transform_config is defined and transform_config == true %}  
+  needs: ['transform_config_prod{{ version_number }}']
+  dependencies:
+    - transform_config_prod{{ version_number }}
+{% endif %}
 
 build_image_{{ service_name }}_aws{{ version_number }}:
   extends:
@@ -99,6 +120,11 @@ build_image_{{ service_name }}_aws{{ version_number }}:
   needs: ['build_cocos_web_aws{{ version_number }}']
   dependencies:
     - build_cocos_web_aws{{ version_number }}
+{% endif %}
+{% if transform_config is defined and transform_config == true %}  
+  needs: ['transform_config_aws{{ version_number }}']
+  dependencies:
+    - transform_config_aws{{ version_number }}
 {% endif %}
 
 {% endif %}
@@ -120,6 +146,12 @@ build_image_{{ service_name }}_prod:
   dependencies:
     - build_cocos_web_prod
 {% endif %}
+{% if transform_config is defined and transform_config == true %}  
+  needs: ['transform_config_prod']
+  dependencies:
+    - transform_config_prod
+{% endif %}
+
 
 build_image_{{ service_name }}_aws:
   extends:
@@ -136,6 +168,12 @@ build_image_{{ service_name }}_aws:
   dependencies:
     - build_cocos_web_aws
 {% endif %}
+{% if transform_config is defined and transform_config == true %}  
+  needs: ['transform_config_aws']
+  dependencies:
+    - transform_config_aws
+{% endif %}
+
 {% endif %}
 
 {% endif %}

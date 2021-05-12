@@ -19,6 +19,14 @@
   with_items: '{{ services }}'
   become: yes
 
+- name: Build transform-configs.gitlab-ci.yml for each service
+  template:
+    src: templates/docker-swarm/.gitlab-ci/transform-configs.gitlab-ci.yml.j2
+    dest: /var/ci-scripts/{{repo_name}}/.gitlab-ci/{{item.name | replace('-','_')}}/transform-configs.gitlab-ci.yml
+  with_items: '{{ services }}'
+  when: transform_config is defined and transform_config == true
+  become: yes
+
 - name: Build build-cocos-web.gitlab-ci.yml for each service
   template:
     src: templates/docker-swarm/.gitlab-ci/build-cocos-web.gitlab-ci.yml.j2

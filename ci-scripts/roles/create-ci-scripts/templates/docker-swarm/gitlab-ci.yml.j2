@@ -2,6 +2,9 @@ stages:
 {% if sonarqube_enabled is defined and sonarqube_enabled == true %}
   - test
 {%endif%}
+{% if transform_config is defined and transform_config == true %}
+  - transform-config
+{%endif%}
 {% if frameworks is defined and "cocos" in frameworks %}
   - build-cocos-web
 {%endif%}
@@ -41,6 +44,9 @@ include:
   - .gitlab-ci/{{service.name | replace('-','_') }}/build.gitlab-ci.yml
 {% if service.framework is defined and service.framework == "cocos" %}
   - .gitlab-ci/{{service.name | replace('-','_') }}/build-cocos-web.gitlab-ci.yml
+{%endif%}
+{% if transform_config is defined and transform_config == true %}
+  - .gitlab-ci/{{service.name | replace('-','_') }}/transform-configs.gitlab-ci.yml
 {%endif%}
   - .gitlab-ci/{{service.name | replace('-','_') }}/deploy-vars.gitlab-ci.yml
   - .gitlab-ci/{{service.name | replace('-','_') }}/rules.gitlab-ci.yml
