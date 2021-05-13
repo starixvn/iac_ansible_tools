@@ -16,7 +16,11 @@ build_image_{{ service_name }}:
   dependencies:
     - build_cocos_web
 {% endif %}
-
+{% if transform_config is defined and transform_config == true %}  
+  needs: ['transform_config_local']
+  dependencies:
+    - transform_config_local
+{% endif %}
 {% else %}
 
 {% for version in versions %}
