@@ -17,7 +17,7 @@
     - docker
   artifacts:
     paths:
-      - ./
+      - ./{{config_dest_file_path}}/{{config_file}}
     expire_in: 1 day
 
 {% for version in versions %}
