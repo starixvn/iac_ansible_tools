@@ -12,6 +12,7 @@
     update_cache: yes
     pkg:
       - python3-pip
+  ignore_errors: yes
 
 - name: Install Docker Python library (2/2)
   become: true
@@ -19,6 +20,7 @@
   pip:
     name: docker
     state: latest
+  ignore_errors: yes
 
 - name: Prune images
   shell: |
