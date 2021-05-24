@@ -18,7 +18,7 @@ services:
             - MYSQL_PASSWORD=Pass1234AA
         volumes:
             - {{db_volume}}:/var/lib/mysql
-            - /var/www/{{ container_name }}/custom-mysql.cnf:/etc/mysql/conf.d/custom-mysql.cnf
+            #- {{ gluster_path }}/{{team_path}}/custom-mysql.cnf:/etc/mysql/conf.d/custom-mysql.cnf
         healthcheck:
             test: out=$$(mysqladmin ping -h localhost -P 3306 -u root --password=1qaz@WSX 2>&1); echo $$out | grep 'mysqld is alive' || { echo $$out; exit 1; }
             interval: 5s
@@ -52,7 +52,7 @@ services:
                 constraints:
                 - node.labels.{{node_label | default ('NEXCEL_HIGH_STORAGE')}} == yes
         networks:
-            - swarm_nexcel_local
+            - {{swarm_network_nexops}}
 
 networks:
   {{swarm_network_nexops}}:
