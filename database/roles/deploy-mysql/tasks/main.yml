@@ -6,6 +6,19 @@
     state: directory
   become: yes
 
+- name: Create phpadmin directory
+  file:
+    path: "{{gluster_path}}/{{team_path}}/phpadmin"
+    mode: "0755"
+    state: directory
+  become: yes
+
+- name: Copy phpadmin configuration
+  copy:
+    src: "files/uploads.ini"
+    dest: "{{gluster_path}}/{{team_path}}/phpadmin"
+  become: yes
+
 - name: Create directory
   file:
     path: "{{gluster_path}}/{{team_path}}/data"
