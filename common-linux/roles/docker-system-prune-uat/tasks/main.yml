@@ -1,4 +1,3 @@
-
 - name: Prune images
   shell: |
     docker image prune --all -f --filter "until=360h"
