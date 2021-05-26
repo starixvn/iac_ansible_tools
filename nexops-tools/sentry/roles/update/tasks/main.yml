@@ -19,8 +19,8 @@
 
 - name: Remove Sentry web and configs
   shell: |
-    docker service rm sentry_web_{{org}}
-    docker config rm sentry_sentry_config_{{org}}
+    docker service rm {{stack}}_web_{{org}}
+    docker config rm {{stack}}_sentry_config_{{org}}
   become: yes
   ignore_errors: true
 
