@@ -57,12 +57,14 @@
     replace: "{{org}}"
 
 - name: Deploy Sentry
-  docker_stack:
-    name: "sentry"
-    state: present
-    with_registry_auth: "yes"
-    compose:
-      - "{{working_directory}}/docker-compose.yml"
+  shell: |
+    docker stack deploy -c {{working_directory}}/docker-compose.yml {{stack}} --with-registry-auth
+#  docker_stack:
+#    name: "{{stack}}"
+#    state: present
+#    with_registry_auth: "yes"
+#    compose:
+#      - "{{working_directory}}/docker-compose.yml"
 
 - name: Init database for sentry {{org}} ...
   shell: |
