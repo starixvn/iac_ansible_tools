@@ -12,7 +12,7 @@ x-sentry-environment: &sentry-environment
 
 services:
   web_{{org}}:
-    image: registry.nexdev.net:5050/docker/nexops-tools/sentry:9.1.1
+    image: registry.nexdev.net:5050/docker/nexops-tools/sentry:{{sentry_version}}
     deploy:
       placement:
         constraints:
@@ -26,7 +26,7 @@ services:
     # command:  bash -c "pip uninstall sentry-plugins -y; sentry upgrade --noinput; sentry run web"
 
   worker_{{org}}:
-    image: registry.nexdev.net:5050/docker/nexops-tools/sentry:9.1.1
+    image: registry.nexdev.net:5050/docker/nexops-tools/sentry:{{sentry_version}}
     deploy:
       placement:
         constraints:
@@ -37,7 +37,7 @@ services:
     command: run worker
 
   cron_{{org}}:
-    image: registry.nexdev.net:5050/docker/nexops-tools/sentry:9.1.1
+    image: registry.nexdev.net:5050/docker/nexops-tools/sentry:{{sentry_version}}
     deploy:
       placement:
         constraints:
