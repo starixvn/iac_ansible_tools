@@ -13,6 +13,8 @@ x-sentry-environment: &sentry-environment
 services:
   web_{{org}}:
     image: registry.nexdev.net:5050/docker/nexops-tools/sentry:{{sentry_version}}
+    ports:
+      - {{port}}:9000
     deploy:
       placement:
         constraints:
