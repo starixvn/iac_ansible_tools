@@ -15,9 +15,3 @@
     - role: create-directory-deploy
     - role: deploy-prometheus
   tags: deploy-prometheus
-
-- hosts: all
-  roles:
-    - role: create-directory-deploy
-    - role: update-prometheus
-  tags: deploy-prometheus
