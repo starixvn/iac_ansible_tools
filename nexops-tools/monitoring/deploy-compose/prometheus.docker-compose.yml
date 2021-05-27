@@ -66,6 +66,8 @@ services:
 
   prometheus:
     image: registry.nexdev.net:5050/docker/nexops-tools/prometheus
+    ports:
+      - '9090:9090'
     networks:
       - net
     command:
