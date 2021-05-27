@@ -16,12 +16,6 @@ scrape_configs:
     static_configs:
       - targets: ['localhost:9090']
 
-  - job_name: redis_exporter
-    static_configs:
-      - targets: ['localhost:9121'] ## redis-export ip: port
-        labels:
-          instance: redis_exporter
-
   - job_name: 'dockerd-exporter'
     dns_sd_configs:
       - names:
@@ -47,12 +41,36 @@ scrape_configs:
     static_configs:
       - targets: ['{{haproxy_url}}']
 {%endif%}
-{%if sedie_api is defined%}
-  - job_name: '{{sedie_api}}'
+{%if job_api1 is defined%}
+  - job_name: '{{job_api1}}'
     scrape_interval: 10s
-    metrics_path: '/sedie/api/metrics'
+    metrics_path: '{{job_api1_metric}}'
     params:
-      secretKey: ['{{sedie_api_token}}']
+      secretKey: ['{{job_api1_token}}']
     static_configs:
-      - targets: ['{{sedie_api_url}}']
+      - targets: ['{{job_api1_url}}']
+        labels:
+            service: '{{job_api1}}'
+{%endif%}
+{%if job_api2 is defined%}
+  - job_name: '{{job_api2}}'
+    scrape_interval: 10s
+    metrics_path: '{{job_api2_metric}}'
+    params:
+      secretKey: ['{{job_api2_token}}']
+    static_configs:
+      - targets: ['{{job_api2_url}}']
+        labels:
+            service: '{{job_api2}}'
+{%endif%}
+{%if job_api3 is defined%}
+  - job_name: '{{job_api3}}'
+    scrape_interval: 10s
+    metrics_path: '{{job_api3_metric}}'
+    params:
+      secretKey: ['{{job_api3_token}}']
+    static_configs:
+      - targets: ['{{job_api3_url}}']
+        labels:
+            service: '{{job_api3}}'
 {%endif%}
