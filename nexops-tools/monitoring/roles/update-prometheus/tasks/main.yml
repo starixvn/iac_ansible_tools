@@ -18,6 +18,7 @@
     docker service rm monitoring_prometheus
     docker config rm monitoring_prometheus_config
   become: yes
+  ignore_errors: yes
 
 - name: Copy tools' configs files
   copy:
