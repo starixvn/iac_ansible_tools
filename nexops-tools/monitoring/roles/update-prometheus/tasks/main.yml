@@ -44,5 +44,5 @@
   shell: |
     cd {{ working_directory }}
     export ENV={{ENV}}
-    docker stack deploy --compose-file=docker-compose.yml mon
+    docker stack deploy --compose-file=docker-compose.yml monitoring
   become: yes
