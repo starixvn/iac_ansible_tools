@@ -65,6 +65,13 @@ nexcel_ports_prod-nex3:
     { "published": 80, "target": 80, "mode": "ingress" },
     { "published": 8000, "target": 8000, "mode": "ingress" },
     { "published": 8012, "target": 8012, "mode": "ingress" },
+    { "published": 9321, "target": 9321, "mode": "host" },
+    { "published": 9320, "target": 9320, "mode": "ingress" },
+    { "published": 9323, "target": 9323, "mode": "ingress" },
+    { "published": 9120, "target": 9120, "mode": "ingress" },
+    { "published": 8781, "target": 8781, "mode": "ingress" },
+    { "published": 9325, "target": 9325, "mode": "ingress" },
+    { "published": 9100, "target": 9100, "mode": "ingress" },
   ]
 
 nexcel_ports_aws-nex3: [{ "published": 80, "target": 80, "mode": "host" }]
