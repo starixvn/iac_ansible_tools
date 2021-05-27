@@ -42,7 +42,6 @@ scrape_configs:
           - 'tasks.node-exporter'
         type: 'A'
         port: 9100        
-##########
 {%if haproxy_url is defined%}
   - job_name: 'haproxy'
       static_configs:
@@ -57,4 +56,3 @@ scrape_configs:
       static_configs:
         - targets: ['{{sedie_api_url}}']
 {%endif%}
-###########
