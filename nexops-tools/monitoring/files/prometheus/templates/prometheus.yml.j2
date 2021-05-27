@@ -44,15 +44,15 @@ scrape_configs:
         port: 9100        
 {%if haproxy_url is defined%}
   - job_name: 'haproxy'
-      static_configs:
-       - targets: ['{{haproxy_url}}']
+    static_configs:
+      - targets: ['{{haproxy_url}}']
 {%endif%}
 {%if sedie_api is defined%}
   - job_name: '{{sedie_api}}'
-      scrape_interval: 10s
-      metrics_path: '/api/metrics'
-      params:
-        auth: ['{{sedie_api_token}}']
-      static_configs:
-        - targets: ['{{sedie_api_url}}']
+    scrape_interval: 10s
+    metrics_path: '/api/metrics'
+    params:
+      auth: ['{{sedie_api_token}}']
+    static_configs:
+      - targets: ['{{sedie_api_url}}']
 {%endif%}
