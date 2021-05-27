@@ -41,18 +41,20 @@ scrape_configs:
       - names:
           - 'tasks.node-exporter'
         type: 'A'
-        port: 9100
-        
-  - job_name: 'haproxy'
+        port: 9100        
+##########
+{%if haproxy_url is defined%}
+- job_name: 'haproxy'
     static_configs:
       - targets: ['{{haproxy_url}}']
-##########
-  - job_name: '{{sedie_api}}'
+{%endif%}
+{%if sedie_api is defined%}
+- job_name: '{{sedie_api}}'
     scrape_interval: 10s
     metrics_path: '/api/metrics'
     params:
       auth: ['{{sedie_api_token}}']
     static_configs:
-      - targets: ['{{sedie_api}}']
-
+      - targets: ['{{sedie_api_url}}']
+{%endif%}
 ###########
