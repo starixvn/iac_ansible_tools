@@ -50,7 +50,7 @@ scrape_configs:
 {%if sedie_api is defined%}
   - job_name: '{{sedie_api}}'
     scrape_interval: 10s
-    metrics_path: '/api/metrics'
+    metrics_path: '/sedie/api/metrics'
     params:
       auth: ['{{sedie_api_token}}']
     static_configs:
