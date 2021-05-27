@@ -1,0 +1,48 @@
+---
+- name: Copy docker-compose template
+  copy:
+    src: 'deploy-compose/prometheus.docker-compose.yml'
+    dest: '{{ working_directory }}/docker-compose.yml'
+  become: yes
+
+- name: Pull latest images
+  shell: |
+    export ENV={{ENV}}
+    cd {{ working_directory }}
+    docker-compose pull
+  become: yes
+
+- name: remove service and config
+  when: inventory_hostname in groups['gluster_leader']
+  shell: |
+    docker service rm monitoring_prometheus
+    docker config rm monitoring_prometheus_config
+  become: yes
+
+- name: Copy tools' configs files
+  copy:
+    src: 'files/{{item}}/conf/'
+    dest: '{{ working_directory }}/{{item}}'
+    mode: '0755'
+  become: yes
+  with_items:
+    #- caddy
+    - prometheus
+  ignore_errors: yes
+
+- name: Generate configs from templates
+  template:
+    src: 'files/{{item}}/templates/{{item}}.yml.j2'
+    dest: '{{ working_directory }}/{{item}}/{{item}}.yml'
+  become: yes
+  with_items:
+    - prometheus
+  ignore_errors: yes
+
+- name: Update Promethus
+  when: inventory_hostname in groups['gluster_leader']
+  shell: |
+    cd {{ working_directory }}
+    export ENV={{ENV}}
+    docker stack deploy --compose-file=docker-compose.yml mon
+  become: yes
