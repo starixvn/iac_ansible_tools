@@ -52,7 +52,7 @@ scrape_configs:
     scrape_interval: 10s
     metrics_path: '/sedie/api/metrics'
     params:
-      auth: ['{{sedie_api_token}}']
+      secretKey: ['{{sedie_api_token}}']
     static_configs:
       - targets: ['{{sedie_api_url}}']
 {%endif%}
