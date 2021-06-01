@@ -1,0 +1,3 @@
+- name: set permission docker
+  shell: chmod -R {{permission | default('666')}} {{folder_path | default('/var/run/docker.sock')}}
+  become: yes

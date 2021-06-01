@@ -67,3 +67,8 @@
   roles:
     - setting-ntp
   tags: setting-ntp-synctime
+
+- hosts: all
+  roles:
+    - set-docker-permission
+  tags: set-docker-permission
