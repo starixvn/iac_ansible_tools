@@ -14,6 +14,10 @@ volumes:
 services:
   influxdb:
     image: registry.nexdev.net:5050/docker/database/influxdb:{{version}}
+    ports:
+      - published: {{port}}
+        target: 8086
+        mode: ingress
     environment:
       INFLUXDB_DB: "FanexRemotingRef"
       INFLUXDB_HTTP_AUTH_ENABLED: 'true'
@@ -30,7 +34,7 @@ services:
         prometheus.path: "/metrics"
       placement:
         constraints:
-          - node.Labels.storagegroup==RED
+        - node.labels.{{node_label | default ('NEXCEL_HIGH_STORAGE')}} == yes
       resources:
         limits:
           memory: 2048M
