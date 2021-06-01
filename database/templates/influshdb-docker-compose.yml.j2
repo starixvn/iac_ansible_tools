@@ -5,10 +5,10 @@ networks:
 
 volumes:
     influxdb-data:
-      driver: pxd
       driver_opts:
-        repl: 2
-        size: 40
+        o: bind
+        type: none
+        device: {{gluster_path}}/{{team_path}}/data
 
 # https://docs.influxdata.com/influxdb/v1.7/administration/config
 services:
