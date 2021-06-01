@@ -20,7 +20,6 @@
 
 - hosts: all
   roles:
-    - role: influshdb
+    - role: influxdb
   tags:
-    - build-inf
-    - deploy-inf
+    - deploy-influxdb
