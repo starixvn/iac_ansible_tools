@@ -1,17 +1,17 @@
 ---
-- hosts: haproxy
+- hosts: all
   roles:
     - role: sync-configs-swarm
     - role: reload-configs-swarm
   tags: reload-configs-swarm
 
-- hosts: haproxy
+- hosts: all
   roles:
     - role: sync-configs-swarm
     - role: create-service-swarm
   tags: create-haproxy-swarm-service
 
-- hosts: haproxy
+- hosts: all
   roles:
     - role: create-service-swarm
   tags: update-haproxy-swarm-service
