@@ -14,7 +14,7 @@ services:
   web_{{org}}:
     image: registry.nexdev.net:5050/docker/nexops-tools/sentry:{{sentry_version}}
     ports:
-      - {{port}}:9000
+      - {{web_port}}:9000
     deploy:
       placement:
         constraints:
@@ -64,6 +64,8 @@ services:
       placement:
         constraints:
           - node.labels.SENTRY == yes
+    ports:
+      - {{db_port}}:5432
     networks:
       - {{swarm_network_nexops}}
     environment:
