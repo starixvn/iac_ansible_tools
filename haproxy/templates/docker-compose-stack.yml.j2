@@ -5,12 +5,14 @@ services:
     image: {{haproxy_image_name}}:{{haproxy_version}}
     volumes:
       - data:{{image_config_path}}
+{% if enable_port is undefined or enable_port == true %}
     ports:
 {% for port in lookup('vars', team + '_ports_' + env) %}
       - published: {{port.published}}
         target: {{port.target}}
         mode: {{port.mode}}
 {% endfor %}
+{% endif %}
     dns:
       - 127.0.0.11
     networks:
