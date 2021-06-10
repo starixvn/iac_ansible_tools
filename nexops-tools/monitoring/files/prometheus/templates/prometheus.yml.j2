@@ -74,3 +74,47 @@ scrape_configs:
         labels:
             service: '{{job_api3}}'
 {%endif%}
+{%if job_api4 is defined%}
+  - job_name: '{{job_api4}}'
+    scrape_interval: 10s
+    metrics_path: '{{job_api4_metric}}'
+    params:
+      secretKey: ['{{job_api4_token}}']
+    static_configs:
+      - targets: ['{{job_api4_url}}']
+        labels:
+            service: '{{job_api4}}'
+{%endif%}
+{%if job_api5 is defined%}
+  - job_name: '{{job_api5}}'
+    scrape_interval: 10s
+    metrics_path: '{{job_api5_metric}}'
+    params:
+      secretKey: ['{{job_api5_token}}']
+    static_configs:
+      - targets: ['{{job_api5_url}}']
+        labels:
+            service: '{{job_api5}}'
+{%endif%}
+{%if job_api6 is defined%}
+  - job_name: '{{job_api6}}'
+    scrape_interval: 10s
+    metrics_path: '{{job_api6_metric}}'
+    params:
+      secretKey: ['{{job_api6_token}}']
+    static_configs:
+      - targets: ['{{job_api6_url}}']
+        labels:
+            service: '{{job_api6}}'
+{%endif%}
+{%if job_api7 is defined%}
+  - job_name: '{{job_api7}}'
+    scrape_interval: 10s
+    metrics_path: '{{job_api7_metric}}'
+    params:
+      secretKey: ['{{job_api7_token}}']
+    static_configs:
+      - targets: ['{{job_api7_url}}']
+        labels:
+            service: '{{job_api7}}'
+{%endif%}
