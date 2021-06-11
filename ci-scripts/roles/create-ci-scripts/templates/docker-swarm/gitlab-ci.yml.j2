@@ -1,6 +1,11 @@
 stages:
 {% if sonarqube_enabled is defined and sonarqube_enabled == true %}
+{% if unit_test is undefined or unit_test == true %}
   - test
+  - post-test
+{% else %}
+  - test
+{%endif%}
 {%endif%}
 {% if transform_config is defined and transform_config == true %}
   - transform-config
@@ -20,12 +25,36 @@ variables:
 
 include:
 {% if sonarqube_enabled is defined and sonarqube_enabled == true %}
+{% if frameworks is defined and "dotnet" in frameworks %}
+
+{% if unit_test is undefined or unit_test == true %}
+  - project: "ci/common-ci"
+    ref: rocketor
+    file: "unit-test/dotnet-unit-test.gitlab-ci.yml"
+  - project: "ci/common-ci"
+    ref: rocketor
+    file: "sonarqube/sonarqube-dotnet-unittest.gitlab-ci.yml"  
+{% else %}
   - project: 'ci/common-ci'
     ref: rocketor
-{% if frameworks is defined and "dotnet" in frameworks %}
     file: 'sonarqube/sonarqube-dotnet.gitlab-ci.yml'
+{% endif %}
+
 {% else %}
-    file: 'sonarqube/sonarqube.gitlab-ci.yml'
+
+{% if unit_test is undefined or unit_test == true %}
+  - project: "ci/common-ci"
+    ref: rocketor
+    file: "unit-test/js-unit-test.gitlab-ci.yml"
+  - project: "ci/common-ci"
+    ref: rocketor
+    file: "sonarqube/sonarqube.js-unittest.gitlab-ci.yml"  
+{% else %}
+  - project: "ci/common-ci"
+    ref: rocketor
+    file: "sonarqube/sonarqube.gitlab-ci.yml"  
+{%endif%}
+
 {%endif%}
 {%endif%}
   - project: 'ci/common-ci'
