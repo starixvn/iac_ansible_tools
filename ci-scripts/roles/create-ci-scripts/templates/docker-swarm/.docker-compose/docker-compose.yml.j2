@@ -27,7 +27,7 @@
 version: '3.3'
 {% if config_file is defined %}
 configs:
-  {{service_name}}_{{ environment }}_config:
+  {{service_name}}_{{ environment }}_config_@CONFIG_VERSION:
     file: {{working_path}}/{{environment}}/configs/{{config_file}}
     labels:
 {% if env == "prod" or env == "aws" %}
@@ -36,7 +36,7 @@ configs:
       - "io.portainer.accesscontrol.teams={{team_name | upper}}"
 {% endif %}
 {% if sp_file is defined %}
-  {{service_name}}_{{ environment }}_sp_config:
+  {{service_name}}_{{ environment }}_sp_config_@CONFIG_VERSION:
     file: {{working_path}}/{{environment}}/configs/{{sp_file}}
     labels:
 {% if env == "prod" or env == "aws" %}
@@ -56,10 +56,10 @@ services:
 {% endif %}
 {% if config_file is defined %}
     configs:
-      - source: {{service_name}}_{{ environment }}_config
+      - source: {{service_name}}_{{ environment }}_config_@CONFIG_VERSION
         target: {{container_root_path}}/{{config_container_path}}/{{config_file}}
 {% if sp_file is defined %}
-      - source: {{service_name}}_{{ environment }}_sp_config
+      - source: {{service_name}}_{{ environment }}_sp_config_@CONFIG_VERSION
         target: {{container_root_path}}/App_Data/{{sp_file}}
 {% endif %}
 {% endif %}

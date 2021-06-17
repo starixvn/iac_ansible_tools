@@ -28,7 +28,7 @@
     - prometheus
 
 - name: Deploy NexOps monitoring tools
-  when: inventory_hostname in groups['gluster_leader']
+  when: inventory_hostname in groups['swarm_leader']
   shell: |
     cd {{ working_directory }}
     export ENV={{ENV}}
