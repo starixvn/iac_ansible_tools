@@ -15,7 +15,9 @@ services:
     image: registry.nexdev.net:5050/docker/nexops-tools/sentry:{{sentry_version}}
     ports:
       - {{web_port}}:9000
-    deploy:
+    deploy: 
+      endpoint_mode: dnsrr
+      replicas: 2
       placement:
         constraints:
           - node.labels.SENTRY == yes

@@ -9,6 +9,7 @@ cat /etc/keepalived/keepalived_status
 ###docker-swarm
 show labels
 docker node ls -q | xargs docker node inspect -f '{{ .ID }} [{{ .Description.Hostname }}]: {{ .Spec.Labels }}'
+docker network ls|grep swarm_nexcel_local > /dev/null || docker network create --attachable --driver overlay swarm_nexcel_local
 
 docker swarm join-token --quiet manager
 docker swarm join-token --quiet worker
@@ -39,3 +40,5 @@ service docker restart
 sudo chmod 666 /var/run/docker.sock
 
 ############
+##Remove/Clean
+docker rm $(docker ps -a -f status=exited -q)

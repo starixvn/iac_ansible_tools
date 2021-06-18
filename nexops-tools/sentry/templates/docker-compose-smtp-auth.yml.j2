@@ -33,6 +33,8 @@ services:
   worker_{{org}}:
     image: registry.nexdev.net:5050/docker/nexops-tools/sentry:9.1.1
     deploy:
+      endpoint_mode: dnsrr
+      replicas: 2
       placement:
         constraints:
           - node.labels.SENTRY == yes
