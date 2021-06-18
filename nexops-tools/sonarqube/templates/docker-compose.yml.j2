@@ -9,9 +9,9 @@ services:
       - {{swarm_network_nexops}}
     healthcheck:
       test: wget -qO- http://localhost:9000/api/system/status || exit 1
-      interval: 300s
+      interval: 90s
       timeout: 15s
-      retries: 10
+      retries: 30
     #ports: 
     #  - 9009:9000
     deploy:
