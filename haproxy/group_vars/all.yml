@@ -1,7 +1,7 @@
 ---
 # Variables here are applicable to all host groups
 haproxy_version: 2.2
-haproxy_image_name: haproxytech/haproxy-debian
+haproxy_image_name: registry.nexdev.net:5050/docker/haproxy/haproxy-debian
 stack_name: haproxy
 config_filename: haproxy.cfg
 image_config_path: /usr/local/etc/haproxy
