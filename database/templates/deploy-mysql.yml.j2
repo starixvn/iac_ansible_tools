@@ -34,7 +34,7 @@ services:
             - {{swarm_network_nexops}}
 
     
-    phpmyadmin:
+    {{mysql_name}}_phpmyadmin:
         image: registry.nexdev.net:5050/docker/phpmyadmin:latest
         volumes:
             - {{gluster_path}}/{{team_path}}/phpadmin/uploads.ini:/usr/local/etc/php/conf.d/php-phpmyadmin.ini

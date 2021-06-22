@@ -1,24 +1,24 @@
 ---
-- hosts: all
+- hosts: swarm_leader
   roles:
     - role: build-mysql
   tags:
     - build-mysql
 
-- hosts: all
+- hosts: swarm_leader
   roles:
     - role: deploy-mysql
   tags:
     - deploy-mysql
 
-- hosts: all
+- hosts: swarm_leader
   roles:
     - role: postgres
   tags:
     - build-postgres
     - deploy-postgres
 
-- hosts: all
+- hosts: swarm_leader
   roles:
     - role: influxdb
   tags:
