@@ -4,3 +4,9 @@
     docker builder prune --all -f
   become: yes
   ignore_errors: yes
+
+- name: Prune volume
+  shell: |
+    docker volume prune -f
+  become: yes
+  ignore_errors: yes
