@@ -31,7 +31,7 @@ services:
                 constraints:
                 - node.labels.{{node_label | default ('NEXCEL_HIGH_STORAGE')}} == yes
         networks:
-            - {{swarm_network_nexops}}
+            - {{network | default('swarm_nexops')}}
 
     
     {{mysql_name}}_phpmyadmin:
@@ -52,10 +52,10 @@ services:
                 constraints:
                 - node.labels.{{node_label | default ('NEXCEL_HIGH_STORAGE')}} == yes
         networks:
-            - {{swarm_network_nexops}}
+            - {{network | default('swarm_nexops')}}
 
 networks:
-  {{swarm_network_nexops}}:
+  {{network | default('swarm_nexops')}}:
     external: true
 
 volumes:
