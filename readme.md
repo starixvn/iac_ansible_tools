@@ -42,3 +42,5 @@ sudo chmod 666 /var/run/docker.sock
 ############
 ##Remove/Clean
 docker rm $(docker ps -a -f status=exited -q)
+#show lable node
+docker node ls -q | xargs docker node inspect -f '{{ .ID }} [{{ .Description.Hostname }}]: {{ .Spec.Labels }}'
