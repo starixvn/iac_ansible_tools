@@ -10,6 +10,7 @@
   archive:
     path: /var/www/gluster/nexops/backups/swarm/swarm_local_nex_{{ansible_date_time.date}}
     dest: /var/www/gluster/nexops/backups/swarm/swarm_local_nex_{{ansible_date_time.date}}.zip
+    format: zip
     remove: yes
   become: yes
   #ignore_errors: yes
