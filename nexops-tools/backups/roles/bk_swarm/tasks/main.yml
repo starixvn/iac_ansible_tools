@@ -1,39 +1,39 @@
 - name: Copy Swarm configuration
   copy:
     src: "/var/lib/docker/swarm"
-    dest: "/var/www/gluster/nexops/backups/swarm/swarm_local_nex_{{ansible_date_time.date}}"
+    dest: "/var/www/gluster/nexops/backups/swarm/swarm_{{env}}_{{org}}_{{ansible_date_time.date}}"
     remote_src: yes 
   become: yes
   #ignore_errors: yes
 
-- name: Zip swarm_local_nex_{{ansible_date_time.date}}
+- name: Zip swarm_{{env}}_{{org}}_{{ansible_date_time.date}}
   archive:
-    path: /var/www/gluster/nexops/backups/swarm/swarm_local_nex_{{ansible_date_time.date}}
-    dest: /var/www/gluster/nexops/backups/swarm/swarm_local_nex_{{ansible_date_time.date}}.zip
+    path: /var/www/gluster/nexops/backups/swarm/swarm_{{env}}_{{org}}_{{ansible_date_time.date}}
+    dest: /var/www/gluster/nexops/backups/swarm/swarm_{{env}}_{{org}}_{{ansible_date_time.date}}.zip
     format: zip
     remove: yes
   become: yes
   #ignore_errors: yes
 
-- name: Delete swarm_local_nex_{{ansible_date_time.date}}
+- name: Delete swarm_{{env}}_{{org}}_{{ansible_date_time.date}}
   file:
     state: absent
-    path: /var/www/gluster/nexops/backups/swarm/swarm_local_nex_{{ansible_date_time.date}}
+    path: /var/www/gluster/nexops/backups/swarm/swarm_{{env}}_{{org}}_{{ansible_date_time.date}}
   become: yes
   ignore_errors: yes
 
 - name: find all files that are older than 7 days
   find:
     paths: /var/www/gluster/nexops/backups/swarm
-    age: 10d
+    age: 7d
     recurse: yes
-  register: filesOlderThan10
+  register: filesOlderThan7
   become: yes
   ignore_errors: yes
-- name: remove files older than 10
+- name: remove files older than 7
   file:
     path: "{{ item.path }}" 
     state: absent
-  with_items: "{{ filesOlderThan10.files }}"
+  with_items: "{{ filesOlderThan7.files }}"
   become: yes
   ignore_errors: yes
