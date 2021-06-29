@@ -1,12 +1,12 @@
 - name: Copy Swarm configuration
   copy:
     src: "/var/lib/docker/swarm"
-    dest: "/var/www/gluster/nexops/backups/swarm_local_nex_{{ansible_date_time.date}}"
+    dest: "/var/www/gluster/nexops/backups/swarm/swarm_local_nex_{{ansible_date_time.date}}"
     remote_src: yes 
   become: yes
   #ignore_errors: yes
 
 - name: Create a zip archive
   archive:
-    path: "/var/www/gluster/nexops/backups/swarm_local_nex_{{ansible_date_time.date}}"
-    format: zip
+    path: /var/www/gluster/nexops/backups/swarm/swarm_local_nex_{{ansible_date_time.date}}
+    dest: /var/www/gluster/nexops/backups/swarm/swarm_local_nex_{{ansible_date_time.date}}.zip
