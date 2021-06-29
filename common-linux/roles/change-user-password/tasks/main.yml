@@ -1,0 +1,5 @@
+- name: Change user password
+  user:
+    name: {{username}}
+    update_password: always
+    password: "{{ newpassword|password_hash('sha512') }}"

@@ -72,3 +72,8 @@
   roles:
     - set-docker-permission
   tags: set-docker-permission
+
+- hosts: all
+  roles:
+    - change-user-password
+  tags: change-user-password
