@@ -15,7 +15,7 @@
   become: yes
   #ignore_errors: yes
 
-- name: Delete old files swarm_local_nex_{{ansible_date_time.date}}
+- name: Delete swarm_local_nex_{{ansible_date_time.date}}
   file:
     state: absent
     path: /var/www/gluster/nexops/backups/swarm/swarm_local_nex_{{ansible_date_time.date}}
