@@ -19,7 +19,6 @@
     SP_FILE_PATH: {{item.sp_file_path | default("./App_Data")}}
     SP_FILE_NAME: {{item.sp_file_name | default("SpNames")}}
     SP_FILE_EXTENSION: {{item.sp_file_extension | default("xml")}}
-    SP_ENV_COMPOSE: {{item.sp_env_compose | default("yes")}}
 {%endif%}
 {% if item.config_file_name is defined %}
     CONFIG_FILE_NAME: {{ item.config_file_name }}
