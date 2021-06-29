@@ -1,2 +1,21 @@
+- name: Setup Docker Proxy (1/3)
+  when: enable_docker_proxy == true
+  file:
+    path: '/etc/systemd/system/docker.service.d'
+    state: directory
+  become: yes
+  
+- name: Setup Docker Proxy Copy Proxy Config (2/3)
+  when: enable_docker_proxy == true
+  template:
+    src: 'files/proxy.conf'
+    dest: /etc/systemd/system/docker.service.d/proxy.conf
+  become: yes
+
+- name: Setup Docker Proxy (3/3)
+  when: enable_docker_proxy == true
+  shell: systemctl daemon-reload && systemctl restart docker.service && chmod 666 /var/run/docker.sock
+  become: yes
+
 - name: Login registry
   shell: docker login --username={{docker_registry_username}} --password={{docker_registry_password}} {{docker_registry_url}}
