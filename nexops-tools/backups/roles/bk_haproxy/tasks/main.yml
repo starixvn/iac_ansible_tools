@@ -1,0 +1,18 @@
+- name: backup haproxy DB
+  shell: |
+    docker exec nexops_local_db /usr/bin/mysqldump -u haproxy --password={{haproxy_dbpass}} haproxy > /var/lib/docker/volumes/data_backup/_data/haproxy/db/`date +%Y-%m-%d`-haproxy.sql
+- name: copying data to root@{{backup_nexops_server}}:/var/lib/docker/volumes/data_backup/_data/haproxy
+  shell: |
+    scp -r -P{{backup_server_sshport}} /var/lib/docker/volumes/data_backup/_data/haproxy/db/`date +%Y-%m-%d`-haproxy.sql root@{{backup_nexops_server}}:/var/lib/docker/volumes/data_backup/_data/haproxy/db/
+    scp -r -P{{haproxy_sshport}} root@{{haproxy_server}}:/etc/haproxy /var/lib/docker/volumes/data_backup/_data/haproxy/conf/`date +%Y-%m-%d`-haproxy
+    scp -r -P{{backup_server_sshport}} /var/lib/docker/volumes/data_backup/_data/haproxy/conf/`date +%Y-%m-%d`-haproxy root@{{backup_nexops_server}}:/var/lib/docker/volumes/data_backup/_data/haproxy/conf/
+- name: remove old backup data /var/lib/docker/volumes/data_backup/_data/haproxy/db
+  shell: |
+    find /var/lib/docker/volumes/data_backup/_data/haproxy/ -mtime +7 -exec rm {} \;
+    ssh -p{{backup_server_sshport}} root@{{backup_nexops_server}} "find /var/lib/docker/volumes/data_backup/_data/haproxy/ -mtime +7 -exec rm {} \;"
+
+- name: notify to Admin
+  shell: |
+    curl -d "token={{token}}&message={{env}} - stored backup `date +%Y-%m-%d`-haproxy.sql &conversationId={{skypegroupid}}" {{proxy_param}} POST https://bot.nexdev.net/skynex/api/messages/ForwardWithToken
+##
+##Skynex

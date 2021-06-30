@@ -1,0 +1,12 @@
+---
+##Grafana
+- name: backup grafana 
+  shell: |
+    docker exec nexops_local_db /usr/bin/mysqldump -u grafana_web --password='{{grafana_dbpass}}' grafana_web > /var/lib/docker/volumes/data_backup/_data/grafana/db/grafana-web-`date +%Y-%m-%d`.sql
+    docker exec nexops_local_db /usr/bin/mysqldump -u grafana_pontus --password='{{grafana_dbpass}}' grafana_pontus > /var/lib/docker/volumes/data_backup/_data/grafana/db/grafana-pontus-`date +%Y-%m-%d`.sql
+    curl -d "token={{token}}&message={{env}} - stored backup grafana-web-`date +%Y-%m-%d`.sql and grafana-pontus-`date +%Y-%m-%d`.sql &conversationId={{skypegroupid}}" {{proxy_param}} POST https://bot.nexdev.net/skynex/api/messages/ForwardWithToken
+    scp /var/lib/docker/volumes/data_backup/_data/grafana/db/grafana-web-`date +%Y-%m-%d`.sql root@{{backup_nexops_server}}:/var/lib/docker/volumes/data_backup/_data/grafana/db/
+    scp /var/lib/docker/volumes/data_backup/_data/grafana/db/grafana-pontus-`date +%Y-%m-%d`.sql root@{{backup_nexops_server}}:/var/lib/docker/volumes/data_backup/_data/grafana/db/
+    find /var/lib/docker/volumes/data_backup/_data/grafana/db/ -mtime +3 -exec rm {} \;
+    ssh root@{{backup_nexops_server}} "find /var/lib/docker/volumes/data_backup/_data/grafana/db/ -mtime +3 -exec rm {} \;"
+##Skynex
