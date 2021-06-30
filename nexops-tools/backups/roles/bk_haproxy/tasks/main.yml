@@ -3,17 +3,17 @@
     docker exec nexops_local_db /usr/bin/mysqldump -u haproxy --password={{haproxy_dbpass}} haproxy > /var/lib/docker/volumes/data_backup/_data/haproxy/db/`date +%Y-%m-%d`-haproxy.sql
   become: yes
   #ignore_errors: yes
-- name: copying data to root@{{backup_nexops_server}}:/var/lib/docker/volumes/data_backup/_data/haproxy
+- name: copying data to root@{{backup_nexops_server}}:{{backup_path}}/haproxy
   shell: |
-    scp -r -P{{backup_server_sshport}} /var/lib/docker/volumes/data_backup/_data/haproxy/db/`date +%Y-%m-%d`-haproxy.sql root@{{backup_nexops_server}}:/var/lib/docker/volumes/data_backup/_data/haproxy/db/
-    scp -r -P{{haproxy_sshport}} root@{{haproxy_server}}:/etc/haproxy /var/lib/docker/volumes/data_backup/_data/haproxy/conf/`date +%Y-%m-%d`-haproxy
-    scp -r -P{{backup_server_sshport}} /var/lib/docker/volumes/data_backup/_data/haproxy/conf/`date +%Y-%m-%d`-haproxy root@{{backup_nexops_server}}:/var/lib/docker/volumes/data_backup/_data/haproxy/conf/
+    scp -r -P{{backup_server_sshport}} /var/lib/docker/volumes/data_backup/_data/haproxy/db/`date +%Y-%m-%d`-haproxy.sql root@{{backup_nexops_server}}:{{backup_path}}/haproxy/db/
+    scp -r -P{{haproxy_sshport}} root@{{haproxy_server}}:/etc/haproxy root@{{backup_nexops_server}}:{{backup_path}}/haproxy/conf/`date +%Y-%m-%d`-haproxy
+#scp -r -P{{backup_server_sshport}} /var/lib/docker/volumes/data_backup/_data/haproxy/conf/`date +%Y-%m-%d`-haproxy root@{{backup_nexops_server}}:/var/lib/docker/volumes/data_backup/_data/haproxy/conf/
   become: yes
   #ignore_errors: yes
-- name: remove old backup data /var/lib/docker/volumes/data_backup/_data/haproxy/db
+- name: remove old backup data {{backup_path}}/haproxy/
   shell: |
     find /var/lib/docker/volumes/data_backup/_data/haproxy/ -mtime +7 -exec rm {} \;
-    ssh -p{{backup_server_sshport}} root@{{backup_nexops_server}} "find /var/lib/docker/volumes/data_backup/_data/haproxy/ -mtime +7 -exec rm {} \;"
+    ssh -p{{backup_server_sshport}} root@{{backup_nexops_server}} "find {{backup_path}}/haproxy/ -mtime +7 -exec rm {} \;"
   become: yes
   #ignore_errors: yes
 - name: notify to Admin
