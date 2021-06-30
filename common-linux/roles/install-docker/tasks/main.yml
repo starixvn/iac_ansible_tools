@@ -24,6 +24,7 @@
     update_cache: yes
     pkg:
       - python3-pip
+      - python
       - curl
 
 - name: Install Docker Python library
