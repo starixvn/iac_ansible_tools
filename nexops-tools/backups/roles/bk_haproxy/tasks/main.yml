@@ -6,8 +6,8 @@
 - name: copying data to root@{{backup_nexops_server}}:{{backup_path}}/haproxy
   shell: |
     scp -r -P{{backup_server_sshport}} /var/lib/docker/volumes/data_backup/_data/haproxy/db/`date +%Y-%m-%d`-haproxy.sql root@{{backup_nexops_server}}:{{backup_path}}/haproxy/db/
-    scp -r -P{{haproxy_sshport}} root@{{haproxy_server}}:/etc/haproxy root@{{backup_nexops_server}}:{{backup_path}}/haproxy/conf/`date +%Y-%m-%d`-haproxy
-#scp -r -P{{backup_server_sshport}} /var/lib/docker/volumes/data_backup/_data/haproxy/conf/`date +%Y-%m-%d`-haproxy root@{{backup_nexops_server}}:/var/lib/docker/volumes/data_backup/_data/haproxy/conf/
+    scp -r -P{{haproxy_sshport}} root@{{haproxy_server}}:/etc/haproxy /var/lib/docker/volumes/data_backup/_data/haproxy/conf/`date +%Y-%m-%d`-haproxy
+    scp -r -P{{backup_server_sshport}} /var/lib/docker/volumes/data_backup/_data/haproxy/conf/`date +%Y-%m-%d`-haproxy root@{{backup_nexops_server}}:{{backup_path}}/conf/
   become: yes
   #ignore_errors: yes
 - name: remove old backup data {{backup_path}}/haproxy/
