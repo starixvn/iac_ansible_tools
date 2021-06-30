@@ -19,6 +19,7 @@
 {% set container_root_path = item.0.container_root_path | default ('/app') %}
 {% if item.0.sp_mapper is defined and item.0.sp_mapper == true %}
 {% set sp_file = item.0.sp_file_name | default("SpNames") ~ '.' ~ item.0.sp_file_extension | default("xml") %}
+{% set sp_container_path = item.0.sp_container_path | default ('App_Data') %}
 {% endif %}
 {% set storage_label = '_LOW_STORAGE' if high_storage is undefined or high_storage == false else '_HIGH_STORAGE'%}
 {% set org_node_label = org_name ~ storage_label %}
@@ -60,7 +61,7 @@ services:
         target: {{container_root_path}}/{{config_container_path}}/{{config_file}}
 {% if sp_file is defined %}
       - source: {{service_name}}_{{ environment }}_sp_config_@CONFIG_VERSION
-        target: {{container_root_path}}/App_Data/{{sp_file}}
+        target: {{container_root_path}}/{{sp_container_path}}/{{sp_file}}
 {% endif %}
 {% endif %}
 {% if item.0.volumes is defined %}

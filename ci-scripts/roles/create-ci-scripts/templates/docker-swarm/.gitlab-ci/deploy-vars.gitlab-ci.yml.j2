@@ -16,9 +16,10 @@
     DOCKER_FILE_NAME: {{item.docker_file_name | default("Dockerfile")}}
     CONFIG_FILE_PATH: {{item.config_file_path | default(".")}}
 {% if item.sp_mapper is defined and item.sp_mapper == true %}
-    SP_FILE_PATH: {{item.sp_file_path | default(".")}}/App_Data
+    SP_FILE_PATH: {{item.sp_file_path | default("./App_Data")}}
     SP_FILE_NAME: {{item.sp_file_name | default("SpNames")}}
     SP_FILE_EXTENSION: {{item.sp_file_extension | default("xml")}}
+    SP_FILE_COMPOSE: {{item.sp_file_compose | default("enabled")}}
 {%endif%}
 {% if item.config_file_name is defined %}
     CONFIG_FILE_NAME: {{ item.config_file_name }}
