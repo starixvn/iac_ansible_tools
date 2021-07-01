@@ -8,3 +8,8 @@
   roles:
     - role: bk_haproxy
   tags: bk_haproxy
+
+- hosts: all
+  roles:
+    - role: bk_sentry
+  tags: bk_sentry
