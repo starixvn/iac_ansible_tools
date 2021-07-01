@@ -9,4 +9,10 @@
   shell: |
     scp -r -P{{backup_server_sshport}} /tmp/sentry_{{env}}_{{org}}-`date +%Y-%m-%d`.sql root@{{backup_nexops_server}}:{{backup_path}}/sentry/
   become: yes
-  ignore_errors: yes
+  #ignore_errors: yes
+
+- name: remove old backup Sentry
+  shell: |
+    find /tmp/ -mtime +7 -exec rm {} \;
+    ssh -p{{backup_server_sshport}} root@{{backup_nexops_server}} "find {{backup_path}}/sentry/ -mtime +7 -exec rm {} \;"
+  become: yes
