@@ -5,7 +5,7 @@
   tags:
     - build-mysql
 
-- hosts: swarm_leader
+- hosts: all
   roles:
     - role: deploy-mysql
   tags:
