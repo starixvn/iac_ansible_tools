@@ -18,6 +18,11 @@
     src: "files/uploads.ini"
     dest: "{{gluster_path}}/{{team_path}}/phpadmin"
   become: yes
+- name: Copy mysql conf
+  copy:
+    src: "files/custom-mysql.cnf"
+    dest: "{{gluster_path}}/{{team_path}}"
+  become: yes
 
 - name: Create directory
   file:
