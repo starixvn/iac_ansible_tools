@@ -6,7 +6,7 @@ services:
         environment:
             PUBLICHOST: {{PUBLICHOST}} #10.18.200.133
         #FTP_MAX_CLIENTS: 50
-            ADDED_FLAGS: "-d -d -c 50 -p 30000:30099"
+            ADDED_FLAGS: "-d -d -C 50 -c 50 -p 30000:30099"
         volumes:
             - "/var/www/gluster/web/ftpd/configs:/etc/pure-ftpd/passwd"
             - "/var/www/gluster/web/ftpd/data/olympus:/home/ftpusers/olympus"
