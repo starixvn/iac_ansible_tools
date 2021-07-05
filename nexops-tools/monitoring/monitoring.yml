@@ -4,7 +4,7 @@
     - role: build-full-monitoring-tools
   tags: build-monitoring-tools
 
-- hosts: all
+- hosts: swarm_leader
   roles:
     - role: create-directory-deploy
     - role: deploy-full-monitoring-tools
