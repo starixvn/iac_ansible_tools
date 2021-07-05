@@ -5,7 +5,8 @@ services:
         image: registry.nexdev.net:5050/docker/nexops-tools/ftpd
         environment:
             PUBLICHOST: {{PUBLICHOST}} #10.18.200.133
-            FTP_MAX_CLIENTS: 50
+        #FTP_MAX_CLIENTS: 50
+            ADDED_FLAGS: "-d -d -c 50 -p 30000:30099"
         volumes:
             - "/var/www/gluster/web/ftpd/configs:/etc/pure-ftpd/passwd"
             - "/var/www/gluster/web/ftpd/data/olympus:/home/ftpusers/olympus"
@@ -19,7 +20,7 @@ services:
           - {{swarm_network_nexops}}
         ports:
             - "2121:21"
-            - "30000-30009:30000-30009"
+            - "30000-30099:30000-30099"
 networks:
   {{swarm_network_nexops}}:
     external: true
