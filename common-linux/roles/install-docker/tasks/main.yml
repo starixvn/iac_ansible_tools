@@ -55,7 +55,6 @@
 
 - name: Add "{{ansible_user}}" user to "docker" group
   become: yes
-  #become_method: sudo
   shell: 'adduser {{ansible_user}} docker'
 
 - name: Waiting for Docker service to become available

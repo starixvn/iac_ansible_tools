@@ -77,3 +77,8 @@
   roles:
     - change-user-password
   tags: change-user-password
+
+- hosts: all
+  roles:
+    - install-docker-with-version
+  tags: install-docker-with-version

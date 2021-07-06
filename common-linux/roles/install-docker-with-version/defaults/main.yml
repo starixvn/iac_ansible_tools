@@ -1,0 +1,4 @@
+docker_engine_version: 20.10.7
+
+# affectiong only on relogin or newgrp docker
+docker_engine_allow_non_root: []
