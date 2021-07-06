@@ -6,6 +6,12 @@
     update_cache: yes
     pkg:
       - software-properties-common
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gnupg-agent
+      - python3-pip
+      - python
 
 - name: Install Software common (2/2)
   become: yes
@@ -16,17 +22,7 @@
     - 'deb http://archive.ubuntu.com/ubuntu/ bionic universe'
     - 'deb http://archive.ubuntu.com/ubuntu/ bionic-updates universe'
     - 'deb http://security.ubuntu.com/ubuntu/ bionic-security universe'
-
-- name: Install Docker Python library
-  become: true
-  apt:
-    state: present
-    update_cache: yes
-    pkg:
-      - python3-pip
-      - python
-      - curl
-
+    
 - name: Install Docker Python library
   become: true
   ignore_errors: true
