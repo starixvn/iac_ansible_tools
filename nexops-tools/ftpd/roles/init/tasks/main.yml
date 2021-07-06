@@ -6,6 +6,16 @@
     mode: "0777"
   become: yes
 
+- name: Create conf directory
+  file:
+    path: "{{ working_directory }}/{{ item }}"
+    state: directory
+    mode: "0777"
+  become: yes
+  with_items:
+    - data
+    - configs
+
 - name: cp docker-compose file
   template:
     src: "templates/{{ item }}.j2"
