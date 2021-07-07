@@ -112,6 +112,11 @@ volumes:
        o: bind
        type: none
        device: {{gluster_path}}{{volume.src}}/{{environment}}
+{% if item.0.custom_volumes is defined %}
+       device: {{custom_volumes}}
+{% else %}
+       device: {{gluster_path}}{{volume.src}}/{{environment}}
+{% endif %}
     labels:
 {% if env == "prod" or env == "aws" %}
       - "io.portainer.accesscontrol.teams={{team_name | upper}}_LEADERS"
