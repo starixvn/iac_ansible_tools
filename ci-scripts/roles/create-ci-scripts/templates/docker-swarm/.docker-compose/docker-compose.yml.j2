@@ -111,9 +111,8 @@ volumes:
     driver_opts:
        o: bind
        type: none
-       device: {{gluster_path}}{{volume.src}}/{{environment}}
 {% if item.0.custom_volumes is defined %}
-       device: {{custom_volumes}}
+       device: {{item.0.custom_volumes}}
 {% else %}
        device: {{gluster_path}}{{volume.src}}/{{environment}}
 {% endif %}
