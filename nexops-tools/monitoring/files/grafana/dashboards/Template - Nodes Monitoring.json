@@ -39,7 +39,7 @@
       "colorBackground": false,
       "colorValue": false,
       "colors": ["rgba(245, 54, 54, 0.9)", "rgba(237, 129, 40, 0.89)", "rgba(50, 172, 45, 0.97)"],
-      "datasource": "Prometheus-Luminet-PROD",
+      "datasource": "Prometheus-PROD",
       "fieldConfig": {
         "defaults": {},
         "overrides": []
@@ -120,7 +120,7 @@
       "colorBackground": false,
       "colorValue": false,
       "colors": ["rgba(245, 54, 54, 0.9)", "rgba(237, 129, 40, 0.89)", "rgba(50, 172, 45, 0.97)"],
-      "datasource": "Prometheus-Luminet-PROD",
+      "datasource": "Prometheus-PROD",
       "decimals": 0,
       "fieldConfig": {
         "defaults": {},
@@ -206,7 +206,7 @@
       "colorBackground": false,
       "colorValue": false,
       "colors": ["rgba(245, 54, 54, 0.9)", "rgba(237, 129, 40, 0.89)", "rgba(50, 172, 45, 0.97)"],
-      "datasource": "Prometheus-Luminet-PROD",
+      "datasource": "Prometheus-PROD",
       "decimals": 1,
       "fieldConfig": {
         "defaults": {},
@@ -292,7 +292,7 @@
       "colorBackground": false,
       "colorValue": false,
       "colors": ["rgba(245, 54, 54, 0.9)", "rgba(237, 129, 40, 0.89)", "rgba(50, 172, 45, 0.97)"],
-      "datasource": "Prometheus-Luminet-PROD",
+      "datasource": "Prometheus-PROD",
       "decimals": 1,
       "fieldConfig": {
         "defaults": {},
@@ -376,7 +376,7 @@
     },
     {
       "columns": [],
-      "datasource": "Prometheus-Luminet-PROD",
+      "datasource": "Prometheus-PROD",
       "fieldConfig": {
         "defaults": {},
         "overrides": []
@@ -441,7 +441,7 @@
       "colorBackground": false,
       "colorValue": false,
       "colors": ["rgba(245, 54, 54, 0.9)", "rgba(237, 129, 40, 0.89)", "rgba(50, 172, 45, 0.97)"],
-      "datasource": "Prometheus-Luminet-PROD",
+      "datasource": "Prometheus-PROD",
       "decimals": 0,
       "fieldConfig": {
         "defaults": {},
@@ -524,7 +524,7 @@
       "colorBackground": false,
       "colorValue": false,
       "colors": ["rgba(245, 54, 54, 0.9)", "rgba(237, 129, 40, 0.89)", "rgba(50, 172, 45, 0.97)"],
-      "datasource": "Prometheus-Luminet-PROD",
+      "datasource": "Prometheus-PROD",
       "decimals": null,
       "fieldConfig": {
         "defaults": {},
@@ -607,7 +607,7 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "Prometheus-Luminet-PROD",
+      "datasource": "Prometheus-PROD",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -685,7 +685,7 @@
       "colorBackground": false,
       "colorValue": false,
       "colors": ["rgba(245, 54, 54, 0.9)", "rgba(237, 129, 40, 0.89)", "rgba(50, 172, 45, 0.97)"],
-      "datasource": "Prometheus-Luminet-PROD",
+      "datasource": "Prometheus-PROD",
       "fieldConfig": {
         "defaults": {},
         "overrides": []
@@ -1363,7 +1363,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "Prometheus-Luminet-PROD",
+          "datasource": "Prometheus-PROD",
           "fieldConfig": {
             "defaults": {
               "unit": "percent"
@@ -1467,7 +1467,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "Prometheus-Luminet-PROD",
+          "datasource": "Prometheus-PROD",
           "fieldConfig": {
             "defaults": {
               "unit": "bytes"
@@ -1580,7 +1580,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "Prometheus-Luminet-PROD",
+          "datasource": "Prometheus-PROD",
           "decimals": 2,
           "fieldConfig": {
             "defaults": {},
@@ -1689,7 +1689,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "Prometheus-Luminet-PROD",
+          "datasource": "Prometheus-PROD",
           "decimals": 2,
           "fieldConfig": {
             "defaults": {},
@@ -1792,7 +1792,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "Prometheus-Luminet-PROD",
+          "datasource": "Prometheus-PROD",
           "decimals": 2,
           "fieldConfig": {
             "defaults": {},
@@ -1903,7 +1903,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "Prometheus-Luminet-PROD",
+          "datasource": "Prometheus-PROD",
           "fieldConfig": {
             "defaults": {},
             "overrides": []
@@ -2033,7 +2033,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "Prometheus-Luminet-PROD",
+      "datasource": "Prometheus-PROD",
       "decimals": 2,
       "fieldConfig": {
         "defaults": {},
@@ -2137,7 +2137,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "Prometheus-Luminet-PROD",
+      "datasource": "Prometheus-PROD",
       "fieldConfig": {
         "defaults": {},
         "overrides": []
@@ -2245,7 +2245,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "Prometheus-Luminet-PROD",
+      "datasource": "Prometheus-PROD",
       "decimals": 2,
       "fieldConfig": {
         "defaults": {},
@@ -2348,7 +2348,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "Prometheus-Luminet-PROD",
+      "datasource": "Prometheus-PROD",
       "fieldConfig": {
         "defaults": {},
         "overrides": []
@@ -2450,7 +2450,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "Prometheus-Luminet-PROD",
+      "datasource": "Prometheus-PROD",
       "fieldConfig": {
         "defaults": {},
         "overrides": []
@@ -2551,7 +2551,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "Prometheus-Luminet-PROD",
+      "datasource": "Prometheus-PROD",
       "fieldConfig": {
         "defaults": {},
         "overrides": []
@@ -3103,7 +3103,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "Prometheus-Luminet-PROD",
+      "datasource": "Prometheus-PROD",
       "decimals": 0,
       "fieldConfig": {
         "defaults": {},
@@ -3217,7 +3217,7 @@
           "text": ["All"],
           "value": ["$__all"]
         },
-        "datasource": "Prometheus-Luminet-PROD",
+        "datasource": "Prometheus-PROD",
         "definition": "",
         "description": null,
         "error": null,
@@ -3229,7 +3229,7 @@
         "options": [],
         "query": {
           "query": "node_meta",
-          "refId": "Prometheus-Luminet-PROD-node_id-Variable-Query"
+          "refId": "Prometheus-PROD-node_id-Variable-Query"
         },
         "refresh": 1,
         "regex": "/node_id=\"([^\"]+)\"/",
