@@ -44,3 +44,20 @@ sudo chmod 666 /var/run/docker.sock
 docker rm $(docker ps -a -f status=exited -q)
 #show lable node
 docker node ls -q | xargs docker node inspect -f '{{ .ID }} [{{ .Description.Hostname }}]: {{ .Spec.Labels }}'
+
+#########FTP
+pure-pw useradd olympus -f /etc/pure-ftpd/passwd/pureftpd.passwd -m -u ftpuser -d /home/ftpusers/olympus
+
+host: 10.99.99.96
+user: nexus
+pass: Pro_nexus_@1234aa
+port: 2121
+
+
+host: 10.18.200.131
+host: 10.2.189.41
+host: 10.2.27.8
+port: 2121
+user: olympus
+pass: Pro_olympus_@1234aa
+
