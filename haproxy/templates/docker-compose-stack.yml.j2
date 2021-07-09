@@ -25,6 +25,11 @@ services:
         placement:
           constraints: 
             - node.labels.HAPROXY == yes
+    healthcheck:
+      test: ['CMD', 'curl', '-f', "http://localhost:80/stats"]
+      interval: 30s
+      timeout: 5s
+      retries: 20
 
 networks:
 {% for swarm_network in swarm_networks %}
