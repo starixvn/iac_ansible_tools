@@ -74,6 +74,7 @@
   with_items:
     - keepalived.conf
     - keepalived_notify.sh
+    - haproxy-curl-check.sh
 
 - name: Set permission keepalived_notify.sh
   shell: chmod +x {{ keepalived_conf_dir }}/keepalived_notify.sh
