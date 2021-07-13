@@ -16,7 +16,7 @@ services:
     ports:
       - {{web_port}}:9000
     deploy: 
-      endpoint_mode: dnsrr
+      #endpoint_mode: dnsrr
       replicas: 1
       placement:
         constraints:
