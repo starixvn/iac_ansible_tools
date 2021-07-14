@@ -1,0 +1,10 @@
+---
+- name: Export pgDB to sql
+  shell: docker exec -t {{ container_name }} pg_dumpall -c -U {{ POSTGRES_USER }} > {{ backup_server_path }}/ansibledb_`date +%d-%m-%Y"_"%H_%M_%S`.sql
+  become: yes
+
+- name: scp backup file
+  shell: |
+    latest_file=$(ls -t {{ backup_server_path }}| head -n 1)
+    scp -P{{ restore_server_sshport }} {{ backup_server_path }}/$latest_file root@{{ restore_server }}:{{ restore_server_path }}
+  become: yes

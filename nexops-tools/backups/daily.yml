@@ -13,3 +13,8 @@
   roles:
     - role: bk_sentry
   tags: bk_sentry
+
+- hosts: all
+  roles:
+    - role: bk_ansible
+  tags: bk_ansible
