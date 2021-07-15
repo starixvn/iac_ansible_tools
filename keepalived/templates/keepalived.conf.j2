@@ -7,7 +7,7 @@ global_defs {
 vrrp_script haproxy_container {
     script "/etc/keepalived/haproxy-curl-check.sh"
     interval 1
-    weight -20
+    weight 50
     fall 3
     rise 3
 }
