@@ -19,6 +19,7 @@ services:
 {% for swarm_network in swarm_networks %}
       - {{swarm_network}}
 {% endfor %}
+      - {{swarm_network_nexops}}
     deploy:
         update_config:
           order: start-first
@@ -32,7 +33,7 @@ services:
           delay: 5s
           max_attempts: 3
           window: 120s
-        replicas: 3
+        mode: global
         placement:
           constraints: 
             - node.labels.HAPROXY == yes
@@ -47,6 +48,8 @@ networks:
   {{swarm_network}}:
     external: true
 {% endfor %}
+  {{swarm_network_nexops}}:
+    external: true
 
 volumes:
   data:
