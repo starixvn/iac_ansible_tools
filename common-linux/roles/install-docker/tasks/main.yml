@@ -12,6 +12,7 @@
       - gnupg-agent
       - python3-pip
       - python
+      - python3-docker
 
 - name: Install Software common (2/2)
   become: yes

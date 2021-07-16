@@ -5,9 +5,9 @@ global_defs {
 }
 
 vrrp_script haproxy_container {
-    script "/etc/keepalived/haproxy-curl-check.sh"
+    script "/usr/bin/docker container ls --filter name={{haproxy_service_name | default('haproxy_service')}}"
     interval 1
-    weight 50
+    weight -20
     fall 3
     rise 3
 }

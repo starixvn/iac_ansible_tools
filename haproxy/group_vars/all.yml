@@ -87,6 +87,7 @@ luminet_ports_local:
     { "published": 7100, "target": 7100, "mode": "ingress" },
     { "published": 7101, "target": 7101, "mode": "ingress" },
     { "published": 5673, "target": 5672, "mode": "ingress" },
+    { "published": 7102, "target": 7102, "mode": "ingress" },
   ]
 
 luminet_ports_sit:

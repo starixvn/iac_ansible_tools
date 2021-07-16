@@ -1,4 +1,4 @@
-version: '3.5'
+version: '3.8'
 
 services:
   service:
@@ -21,15 +21,27 @@ services:
 {% endfor %}
       - {{swarm_network_nexops}}
     deploy:
+        update_config:
+          order: start-first
+          failure_action: rollback
+          delay: 10s
+        rollback_config:
+          parallelism: 0
+          order: stop-first
+        restart_policy:
+          condition: any
+          delay: 5s
+          max_attempts: 3
+          window: 120s
         mode: global
         placement:
           constraints: 
             - node.labels.HAPROXY == yes
     healthcheck:
       test: ['CMD', 'curl', '-f', "http://localhost:80/metrics"]
-      interval: 30s
+      interval: 5s
       timeout: 5s
-      retries: 20
+      retries: 100
 
 networks:
 {% for swarm_network in swarm_networks %}
