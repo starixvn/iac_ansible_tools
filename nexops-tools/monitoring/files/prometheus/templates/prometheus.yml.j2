@@ -41,80 +41,17 @@ scrape_configs:
     static_configs:
       - targets: ['{{haproxy_url}}']
 {%endif%}
-{%if job_api1 is defined%}
-  - job_name: '{{job_api1}}'
+versions: [1, 2, 3 , 4, 5, 6, 7, 8 , 9, 10]
+{% for version in versions %}
+{%if job_api_{{version}} is defined%}
+  - job_name: 'job_api_{{version}}'
     scrape_interval: 10s
-    metrics_path: '{{job_api1_metric}}'
+    metrics_path: 'job_api{{version}}_metric'
     params:
-      secretKey: ['{{job_api1_token}}']
+      secretKey: ['job_api{{version}}_token']
     static_configs:
-      - targets: ['{{job_api1_url}}']
+      - targets: ['job_api{{version}}_url']
         labels:
-            service: '{{job_api1}}'
+            service: 'job_api{{version}}'
 {%endif%}
-{%if job_api2 is defined%}
-  - job_name: '{{job_api2}}'
-    scrape_interval: 10s
-    metrics_path: '{{job_api2_metric}}'
-    params:
-      secretKey: ['{{job_api2_token}}']
-    static_configs:
-      - targets: ['{{job_api2_url}}']
-        labels:
-            service: '{{job_api2}}'
-{%endif%}
-{%if job_api3 is defined%}
-  - job_name: '{{job_api3}}'
-    scrape_interval: 10s
-    metrics_path: '{{job_api3_metric}}'
-    params:
-      secretKey: ['{{job_api3_token}}']
-    static_configs:
-      - targets: ['{{job_api3_url}}']
-        labels:
-            service: '{{job_api3}}'
-{%endif%}
-{%if job_api4 is defined%}
-  - job_name: '{{job_api4}}'
-    scrape_interval: 10s
-    metrics_path: '{{job_api4_metric}}'
-    params:
-      secretKey: ['{{job_api4_token}}']
-    static_configs:
-      - targets: ['{{job_api4_url}}']
-        labels:
-            service: '{{job_api4}}'
-{%endif%}
-{%if job_api5 is defined%}
-  - job_name: '{{job_api5}}'
-    scrape_interval: 10s
-    metrics_path: '{{job_api5_metric}}'
-    params:
-      secretKey: ['{{job_api5_token}}']
-    static_configs:
-      - targets: ['{{job_api5_url}}']
-        labels:
-            service: '{{job_api5}}'
-{%endif%}
-{%if job_api6 is defined%}
-  - job_name: '{{job_api6}}'
-    scrape_interval: 10s
-    metrics_path: '{{job_api6_metric}}'
-    params:
-      secretKey: ['{{job_api6_token}}']
-    static_configs:
-      - targets: ['{{job_api6_url}}']
-        labels:
-            service: '{{job_api6}}'
-{%endif%}
-{%if job_api7 is defined%}
-  - job_name: '{{job_api7}}'
-    scrape_interval: 10s
-    metrics_path: '{{job_api7_metric}}'
-    params:
-      secretKey: ['{{job_api7_token}}']
-    static_configs:
-      - targets: ['{{job_api7_url}}']
-        labels:
-            service: '{{job_api7}}'
-{%endif%}
+{% endfor %}
