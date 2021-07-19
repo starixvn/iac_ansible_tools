@@ -41,7 +41,11 @@ sudo chmod 666 /var/run/docker.sock
 
 ############
 ##Remove/Clean
-docker rm $(docker ps -a -f status=exited -q)
+To delete all containers including its volumes use,
+-->docker rm -vf $(docker ps -a -q)
+To delete all the images,
+-->docker rmi -f $(docker images -a -q)
+
 #show lable node
 docker node ls -q | xargs docker node inspect -f '{{ .ID }} [{{ .Description.Hostname }}]: {{ .Spec.Labels }}'
 
