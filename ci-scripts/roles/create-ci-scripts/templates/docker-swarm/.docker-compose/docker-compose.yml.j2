@@ -2,6 +2,8 @@
 # File managed by Ansible - NexOps
 # Your changes will be overwritten.
 #######################################################################
+version: '3.8'
+
 {% set service_name = item.0.name | replace('-','_') %}
 {% set underscore = '' if item.1 == 0  else '_' %}
 {% set environment_version = '' if item.1 == 0  else item.1 %}
@@ -25,7 +27,6 @@
 {% set org_node_label = org_name ~ storage_label %}
 {% set network = org_name | lower ~ '_' ~ env | lower %}
 
-version: '3.3'
 {% if config_file is defined %}
 configs:
   {{service_name}}_{{ environment }}_config_@CONFIG_VERSION:
@@ -74,6 +75,18 @@ services:
       mode: replicated
       replicas: {{item.0.number_of_replicas | default('1') }}
       endpoint_mode: dnsrr
+      update_config:
+        order: start-first
+        failure_action: rollback
+        delay: 10s
+      rollback_config:
+        parallelism: 0
+        order: stop-first
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+        window: 120s
       placement:
         constraints:
           - node.labels.{{ org_node_label | upper }} == yes
