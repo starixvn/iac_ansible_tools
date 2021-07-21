@@ -56,7 +56,7 @@ services:
 {% else %}
     image: registry.nexdev.net:5050/{{item.0.docker_image_registry_path}}:{{environment}}-latest
 {% endif %}
-    hostname: "{{ .Service.Name }}"
+    hostname: "'{{ .Service.Name }}'"
 {% if config_file is defined %}
     configs:
       - source: {{service_name}}_{{ environment }}_config_@CONFIG_VERSION
