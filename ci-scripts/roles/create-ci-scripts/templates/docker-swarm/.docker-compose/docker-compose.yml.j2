@@ -56,7 +56,7 @@ services:
 {% else %}
     image: registry.nexdev.net:5050/{{item.0.docker_image_registry_path}}:{{environment}}-latest
 {% endif %}
-{% set hostname_new = "{{.Node.Hostname}}-{{.Node.ID}}-{{.Service.Name}}" %}
+{% set hostname_new = {{.Node.Hostname}}-{{.Node.ID}}-{{.Service.Name}} %}
     hostname: "{{hostname_new}}"
 {% if config_file is defined %}
     configs:
