@@ -16,6 +16,7 @@ docker swarm join-token --quiet worker
 docker swarm join --token ip:2377
 
 docker login --username=gitlab-ci --password=Vv3AQX-aaSZ3M6PtvyD4 registry.nexdev.net:5050
+docker login --username=gitlab-ci --password=H5nF5ywy262wt881ZWpq  git3.nexdev.net:5050
 
 docker swarm leave -f
 docker node demote <node name>
