@@ -75,10 +75,12 @@ services:
       mode: replicated
       replicas: {{item.0.number_of_replicas | default('1') }}
       endpoint_mode: dnsrr
+{% if env == "prod"%}
       update_config:
         order: start-first
         failure_action: rollback
         delay: 10s
+{% endif %}
       rollback_config:
         parallelism: 0
         order: stop-first
