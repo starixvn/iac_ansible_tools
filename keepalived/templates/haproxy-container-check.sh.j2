@@ -1,0 +1,11 @@
+#!/bin/bash
+# Check Web Healtcheck Status (200 OR NOT)
+#MR.NUTSS
+
+CHECK_COMMAND=$(/usr/bin/docker container ls --filter name={{haproxy_service_name | default('haproxy_service')}} | /bin/grep {{haproxy_service_name | default('haproxy_service')}})
+if [ ! $CHECK_COMMAND ]
+then
+	exit 1
+else
+	exit 0
+fi
