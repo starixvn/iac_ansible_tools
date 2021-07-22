@@ -7,19 +7,19 @@
   apt: upgrade=dist
   become: yes
 
-- name: Install dependencies
-  become: yes 
-  apt:
-    name: "{{ packages }}"
-    state: present
-    update_cache: yes
-  vars:
-    packages:
-    - apt-transport-https
-    - ca-certificates
-    - curl
-    - software-properties-common
-    - gnupg-agent
+# - name: Install dependencies
+#   become: yes 
+#   apt:
+#     name: "{{ packages }}"
+#     state: present
+#     update_cache: yes
+#   vars:
+#     packages:
+#     - apt-transport-https
+#     - ca-certificates
+#     - curl
+#     - software-properties-common
+#     - gnupg-agent
   
 - name: Add an apt signing key for Docker
   become: yes
