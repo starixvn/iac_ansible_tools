@@ -47,6 +47,7 @@
   loop:
     - docker
     - docker-compose
+    - docker-py
 
 - name: Install Docker GPG key
   become: yes
