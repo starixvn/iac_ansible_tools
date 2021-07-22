@@ -82,3 +82,8 @@
   roles:
     - install-docker-with-version
   tags: install-docker-with-version
+
+- hosts: all
+  roles:
+    - reboot
+  tags: reboot
