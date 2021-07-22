@@ -9,7 +9,7 @@
   when: enable_docker_proxy == true
   template:
     src: 'files/proxy.conf'
-    dest: /etc/systemd/system/docker.service.d/proxy.conf
+    dest: /etc/systemd/system/docker.service.d/proxy-{{env}}.conf
   become: yes
 
 - name: Setup Docker Proxy (3/3)
