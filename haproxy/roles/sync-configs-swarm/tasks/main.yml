@@ -50,13 +50,6 @@
     dest: "{{ volume_path }}/Dockerfile"
   become: yes
 
-- name: Install Python docker
-  apt:
-    name: python-docker
-    state: present
-  become: yes
-  ignore_errors: yes
-
 - name: Remove HAProxy image for syntax check
   shell: docker image rm haproxy-check-config
   ignore_errors: yes
