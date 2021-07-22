@@ -1,5 +1,5 @@
 ---
-- name: Install Software common (1/2)
+- name: Install Software common (1/3)
   become: true
   apt:
     state: present
@@ -10,13 +10,30 @@
       - ca-certificates
       - curl
       - gnupg-agent
+
+- name: Install Software common (2/3) for {{ ansible_distribution }} {{ ansible_distribution_major_version }}
+  when: ansible_distribution_major_version == "18" or ansible_distribution_major_version == "16"
+  become: true
+  apt:
+    state: present
+    update_cache: yes
+    pkg:
+      - python
+      - python-pip
+      - python-docker
+
+- name: Install Software common (2/3) for {{ ansible_distribution }} {{ ansible_distribution_major_version }}
+  when: ansible_distribution_major_version == "20"
+  become: true
+  apt:
+    state: present
+    update_cache: yes
+    pkg:
       - python3
       - python3-pip
-      - python
-      - python-docker
       - python3-docker
 
-- name: Install Software common (2/2)
+- name: Install Software common (3/3)
   become: yes
   apt_repository:
     repo: '{{ item }}'
@@ -27,6 +44,7 @@
     - 'deb http://security.ubuntu.com/ubuntu/ bionic-security universe'
     
 - name: Install Docker Python library
+  when: ansible_distribution_major_version == "18" or ansible_distribution_major_version == "16"
   become: true
   ignore_errors: true
   pip:
@@ -38,6 +56,7 @@
     - docker-py
 
 - name: Install Docker Python3 library
+  when: ansible_distribution_major_version == "20"
   become: true
   ignore_errors: true
   pip:
