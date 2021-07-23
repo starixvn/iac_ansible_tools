@@ -1,7 +1,7 @@
 ---
 - name: Copy docker-compose template for pull
   copy:
-    src: 'deploy-compose/{{item}}.docker-compose.yml'
+    src: 'deploy-compose/{{item}}.docker-compose.yml.j2'
     dest: '{{ working_directory }}/{{item}}/docker-compose.yml'
   become: yes
   with_items:
