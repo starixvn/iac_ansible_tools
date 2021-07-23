@@ -72,7 +72,7 @@ services:
       - '9090:9090'
     networks:
       - net
-      - swarm_{{org}}_{{env}}
+      - swarm_{{org}}_{{ENV}}
     command:
       - '--config.file=/etc/prometheus/prometheus_custom.yml'
       - '--storage.tsdb.path=/prometheus'
