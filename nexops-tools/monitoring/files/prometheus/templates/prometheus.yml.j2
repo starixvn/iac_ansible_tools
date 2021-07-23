@@ -43,7 +43,7 @@ scrape_configs:
 {%endif%}
 {% for job in jobs %}
   - job_name: '{{job.name}}'
-    scrape_interval: 10s
+    scrape_interval: '{{scrape_interval}}'
     metrics_path: '{{job.metric}}'
     params:
       secretKey: ['{{job.token}}']
