@@ -35,11 +35,11 @@
 - name: Copy docker-compose file
   template:
     src: "templates/deploy-mysql.yml.j2"
-    dest: "{{gluster_path}}/{{team_path}}/{{stack_name}}_db.yml"
+    dest: "{{gluster_path}}/{{team_path}}/{{stack_name}}_{{mysql_name}}_db.yml"
   become: yes
 
-- name: Executing command docker stack deploy --compose-file={{stack_name}}_db.yml {{stack_name}} --with-registry-auth
+- name: Executing command docker stack deploy --compose-file={{stack_name}}_{{mysql_name}}_db.yml {{stack_name}} --with-registry-auth
   shell: |
     cd {{gluster_path}}/{{team_path}}
-    docker stack deploy --compose-file={{stack_name}}_db.yml {{stack_name}} --with-registry-auth
+    docker stack deploy --compose-file={{stack_name}}_{{mysql_name}}_db.yml {{stack_name}} --with-registry-auth
   become: yes
