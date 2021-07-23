@@ -1,6 +1,6 @@
 ---
 - name: Copy docker-compose template
-  copy:
+  template:
     src: 'deploy-compose/prometheus.docker-compose.yml.j2'
     dest: '{{ working_directory }}/docker-compose.yml'
   become: yes
