@@ -43,13 +43,13 @@ services:
           memory: 128M
         reservations:
           memory: 64M
-  {% set node_id = "{{.Node.ID}}" %}
+{% set node_id = "{{.Node.ID}}" %}
   node-exporter:
     image: registry.nexdev.net:5050/docker/nexops-tools/node-exporter
     networks:
       - net
-    #environment:
-    #  - NODE_ID={{node_id}}
+    environment:
+      - NODE_ID={{node_id}}
     volumes:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
