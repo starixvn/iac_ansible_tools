@@ -1,4 +1,7 @@
-#stefanprodan/swarmprom-prometheus:v2.5.0
+########################################################################
+# File managed by Ansible - NexOps
+# Your changes will be overwritten.
+#######################################################################
 version: '3.3'
 
 networks:
@@ -40,13 +43,13 @@ services:
           memory: 128M
         reservations:
           memory: 64M
-
+  {% set node_id = "{{.Node.ID}}" %}
   node-exporter:
     image: registry.nexdev.net:5050/docker/nexops-tools/node-exporter #stefanprodan/swarmprom-node-exporter:v0.16.0
     networks:
       - net
     environment:
-      - NODE_ID={{.Node.ID}}
+      - NODE_ID={{node_id}}
     volumes:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
