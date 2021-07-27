@@ -72,6 +72,9 @@
 
 - debug: msg="{{ console.stderr }}" 
 
+- wait_for:
+    timeout: "{{ sleep_in_between|default(10) }}"
+
 - name: Upgrade sentry and craete Admin user sentry {{org}} ...
   shell: |
     cd {{ working_directory }}
