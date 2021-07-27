@@ -63,20 +63,7 @@
   become: yes
 
 - name: Execute the script Init database - cd {{ working_directory }} && /bin/bash first-deployment.sh 
-  shell: |
-    docker service scale sentry_clean_{{org}}=0 sentry_web_{{org}}=0 sentry_cron_{{org}}=0 sentry_worker_{{org}}=0 
-    until docker service ps --filter desired-state=running sentry_postgres_{{org}} 2>&1 >> /dev/null
-    do
-        echo "wait sentry_postgres_{{org}} up..."
-        sleep 3
-    done
-    cd {{ working_directory }} && cat init.sql | docker exec -i $(./postgres-container-id.sh) psql -U postgres
-    docker service scale sentry_web_{{org}}=1 sentry_cron_{{org}}=1 sentry_worker_{{org}}=1 sentry_clean_{{org}}=1 
-    until docker service ps --filter desired-state=running sentry_web_{{org}} 2>&1 >> /dev/null
-    do
-        echo "wait sentry_sentry up..."
-        sleep 3
-    done
+  command: sh {{ working_directory }}/first-deployment.sh
   register: console
   become: yes #  #cd {{ working_directory }} && /bin/bash first-deployment.sh
 
