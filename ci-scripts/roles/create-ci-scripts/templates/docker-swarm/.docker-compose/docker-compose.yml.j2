@@ -2,8 +2,6 @@
 # File managed by Ansible - NexOps
 # Your changes will be overwritten.
 #######################################################################
-version: '3.8'
-
 {% set service_name = item.0.name | replace('-','_') %}
 {% set underscore = '' if item.1 == 0  else '_' %}
 {% set environment_version = '' if item.1 == 0  else item.1 %}
@@ -26,6 +24,12 @@ version: '3.8'
 {% set storage_label = '_LOW_STORAGE' if high_storage is undefined or high_storage == false else '_HIGH_STORAGE'%}
 {% set org_node_label = org_name ~ storage_label %}
 {% set network = org_name | lower ~ '_' ~ env | lower %}
+
+{% if env == "sit"%}
+version: '3.4'
+{% else %}
+version: '3.8'
+{% endif %}
 
 {% if config_file is defined %}
 configs:
