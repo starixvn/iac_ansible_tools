@@ -59,12 +59,15 @@
 #    compose:
 #      - "{{working_directory}}/docker-compose.yml"
 
-- name: Init database for sentry {{org}} ...
+- name: grant scripts permission
   shell: |
     cd {{ working_directory }}
     docker-compose pull
     chmod 777 first-deployment.sh postgres-container-id.sh sentry-container-id.sh
-    sh first-deployment.sh
+  become: yes
+
+- name: Execute the script Init database for sentry {{ working_directory }}/first-deployment.sh 
+  command: sh {{ working_directory }}/first-deployment.sh
   become: yes
 
 - name: Upgrade sentry and craete Admin user sentry {{org}} ...
