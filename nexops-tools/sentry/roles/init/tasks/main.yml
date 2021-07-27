@@ -15,15 +15,6 @@
     mode: "0777"
   become: yes
 
-- name: cp script files
-  copy:
-    src: "templates/{{ item }}.j2"
-    dest: "{{ working_directory }}/{{ item }}"
-  with_items:
-    #- first-deployment.sh
-    - postgres-container-id.sh
-    - sentry-container-id.sh
-
 - name: cp docker-compose file
   template:
     src: "templates/{{ item }}.j2"
@@ -32,6 +23,8 @@
     - docker-compose.yml
     - sentry-config.yml
     - first-deployment.sh
+    - postgres-container-id.sh
+    - sentry-container-id.sh
 
 - name: Copy Sentry configuration
   copy:
