@@ -63,7 +63,7 @@
   become: yes
 
 - name: Execute the script Init database - cd {{ working_directory }} && /bin/bash first-deployment.sh 
-  command: sh {{ working_directory }}/first-deployment.sh
+  shell: cd {{ working_directory }} && /bin/bash first-deployment.sh
   register: console
   become: yes #  #cd {{ working_directory }} && /bin/bash first-deployment.sh
 
