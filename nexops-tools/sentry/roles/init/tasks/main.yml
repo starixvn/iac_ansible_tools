@@ -15,6 +15,7 @@
   with_items:
     - sentry-data
     - sentry-postgres
+    - sentry-redis
 
 - name: cp docker-compose file
   template:
