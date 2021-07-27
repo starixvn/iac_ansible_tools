@@ -6,7 +6,7 @@ docker service scale sentry_clean_{{org}}=0 sentry_web_{{org}}=0 sentry_cron_{{o
 until docker service ps --filter desired-state=running sentry_postgres_{{org}} 2>&1 >> /dev/null
 do
     echo "wait sentry_postgres_{{org}} up..."
-    sleep 1
+    sleep 3
 done
 
 cat init.sql | docker exec -i $(./postgres-container-id.sh) psql -U postgres
@@ -16,5 +16,5 @@ docker service scale sentry_web_{{org}}=1 sentry_cron_{{org}}=1 sentry_worker_{{
 until docker service ps --filter desired-state=running sentry_web_{{org}} 2>&1 >> /dev/null
 do
     echo "wait sentry_sentry up..."
-    sleep 1
+    sleep 3
 done
