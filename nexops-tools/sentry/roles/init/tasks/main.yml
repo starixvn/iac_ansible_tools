@@ -9,7 +9,7 @@
 
 - name: Create DB folder
   file:
-    path: "{{ working_directory }}/data"
+    path: "{{ working_directory }}/sentry-postgres"
     #/var/www/gluster/nexops/sentry_{{org}}#s11
     state: directory
     mode: "0777"
@@ -39,10 +39,10 @@
     dest: "{{ working_directory }}"
   become: yes
 
-- name: Install jsondiff python package
-  pip:
-    name: jsondiff
-  ignore_errors: true
+#- name: Install jsondiff python package
+#  pip:
+#    name: jsondiff
+#  ignore_errors: true
 
 - name: replace org {{org}} in postgres-container-id.sh
   replace:
