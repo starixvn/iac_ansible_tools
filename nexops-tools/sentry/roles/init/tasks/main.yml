@@ -2,18 +2,19 @@
 - name: Create working directory
   file:
     path: "{{ working_directory }}"
-    #/var/www/gluster/nexops/sentry_{{org}}#s11
     state: directory
     mode: "0777"
   become: yes
 
 - name: Create DB folder
   file:
-    path: "{{ working_directory }}/sentry-postgres"
-    #/var/www/gluster/nexops/sentry_{{org}}#s11
+    path: "{{ working_directory }}/{{ item }}"
     state: directory
     mode: "0777"
   become: yes
+  with_items:
+    - sentry-data
+    - sentry-postgres
 
 - name: cp docker-compose file
   template:
@@ -52,12 +53,6 @@
 - name: Deploy Sentry
   shell: |
     docker stack deploy -c {{working_directory}}/docker-compose.yml {{stack}} --with-registry-auth
-#  docker_stack:
-#    name: "{{stack}}"
-#    state: present
-#    with_registry_auth: "yes"
-#    compose:
-#      - "{{working_directory}}/docker-compose.yml"
 
 - name: grant scripts permission
   shell: |
@@ -66,8 +61,9 @@
     chmod 777 first-deployment.sh postgres-container-id.sh sentry-container-id.sh
   become: yes
 
-- name: Execute the script Init database sh {{ working_directory }}/first-deployment.sh 
-  command: bash "{{ working_directory }}/first-deployment.sh"
+- name: Execute the script Init database - cd {{ working_directory }} && /bin/bash first-deployment.sh 
+  shell: |
+    cd {{ working_directory }} && /bin/bash first-deployment.sh
   register: console
   become: yes
 
