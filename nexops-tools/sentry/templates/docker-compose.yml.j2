@@ -1,12 +1,11 @@
 version: "3.7"
 x-sentry-environment: &sentry-environment
+  SENTRY_MEMCACHED_HOST: memcached_{{org}}
   SENTRY_REDIS_HOST: redis_{{org}}
   SENTRY_POSTGRES_HOST: postgres_{{org}}
-  SENTRY_DB_USER: sentry
-  SENTRY_DB_NAME: sentry
-  SENTRY_DB_PASSWORD: postgres1234AA
-  # Generate this secret with "docker run --rm sentry:9.0.0 sentry config generate-secret-key"
+  #SENTRY_EMAIL_HOST: smtp
   SENTRY_SECRET_KEY: "ZDFvdmcjZnZob2lzbC01cWQpd2ZnM2owcjErLW44Kz1AbmNpaz10YzFkQF5AOHpmazMK"
+  ################################################################
   SENTRY_SERVER_EMAIL: "{{sender_email}}"
   SENTRY_EMAIL_HOST: "{{smtp_server}}"
 
@@ -14,6 +13,10 @@ x-defaults: &defaults
   image: registry.nexdev.net:5050/docker/nexops-tools/sentry:{{sentry_version}}
   restart: unless-stopped
   environment: *sentry-environment
+  depends_on:
+    - redis
+    - postgres
+    - memcached
   networks:
     - {{swarm_network_nexops}}
   deploy: 
@@ -23,16 +26,22 @@ x-defaults: &defaults
       placement:
         constraints:
           - node.labels.SENTRY == yes
-  #build:
-  #  context: .
-  depends_on:
-    - redis
-    - postgres
-    - memcached
   volumes:
     - ./sentry-data:/var/lib/sentry/files
 
 services:
+  memcached:
+    restart: unless-stopped
+    image: registry.nexdev.net:5050/docker/nexops-tools/memcached:1.5-alpine
+    networks:
+        - {{swarm_network_nexops}}
+    deploy: 
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.SENTRY == yes
+
   web_{{org}}:
     <<: *defaults
     ports:
