@@ -9,7 +9,7 @@ do
     sleep 3
 done
 
-cat init.sql | docker exec -i $(./postgres-container-id.sh) psql -U postgres
+#cat init.sql | docker exec -i $(./postgres-container-id.sh) psql -U postgres
 
 docker service scale sentry_web_{{org}}=1 sentry_cron_{{org}}=1 sentry_worker_{{org}}=1 sentry_clean_{{org}}=1 
 
