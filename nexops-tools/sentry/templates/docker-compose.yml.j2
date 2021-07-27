@@ -14,9 +14,9 @@ x-defaults: &defaults
   restart: unless-stopped
   environment: *sentry-environment
   depends_on:
-    - redis
-    - postgres
-    - memcached
+    - redis_{{org}}
+    - postgres_{{org}}
+    - memcached_{{org}}
   networks:
     - {{swarm_network_nexops}}
   deploy: 
@@ -30,7 +30,7 @@ x-defaults: &defaults
     - ./sentry-data:/var/lib/sentry/files
 
 services:
-  memcached:
+  memcached_{{org}}:
     restart: unless-stopped
     image: registry.nexdev.net:5050/docker/nexops-tools/memcached:1.5-alpine
     networks:
