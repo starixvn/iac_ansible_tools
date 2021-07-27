@@ -85,10 +85,10 @@ services:
         order: start-first
         failure_action: rollback
         delay: 10s
-{% endif %}
       rollback_config:
         parallelism: 0
         order: stop-first
+{% endif %}
       restart_policy:
         condition: any
         delay: 5s
