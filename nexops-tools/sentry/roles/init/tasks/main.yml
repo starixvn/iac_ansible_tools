@@ -67,7 +67,7 @@
   become: yes
 
 - name: Execute the script Init database sh {{ working_directory }}/first-deployment.sh 
-  command: bash /home/user/scripts/servicios.sh
+  command: bash "{{ working_directory }}/first-deployment.sh"
   register: console
   become: yes
 
