@@ -10,55 +10,69 @@ x-sentry-environment: &sentry-environment
   SENTRY_SERVER_EMAIL: "{{sender_email}}"
   SENTRY_EMAIL_HOST: "{{smtp_server}}"
 
-services:
-  web_{{org}}:
-    image: registry.nexdev.net:5050/docker/nexops-tools/sentry:{{sentry_version}}
-    ports:
-      - {{web_port}}:9000
-    deploy: 
-      #endpoint_mode: dnsrr
+x-defaults: &defaults
+  image: registry.nexdev.net:5050/docker/nexops-tools/sentry:{{sentry_version}}
+  restart: unless-stopped
+  environment: *sentry-environment
+  networks:
+    - {{swarm_network_nexops}}
+  deploy: 
+      mode: replicated
       replicas: 1
+      #endpoint_mode: dnsrr
       placement:
         constraints:
           - node.labels.SENTRY == yes
-    networks:
-      - {{swarm_network_nexops}}
+  #build:
+  #  context: .
+  depends_on:
+    - redis
+    - postgres
+    - memcached
+  volumes:
+    - ./sentry-data:/var/lib/sentry/files
+
+services:
+  web_{{org}}:
+    <<: *defaults
+    ports:
+      - {{web_port}}:9000
     configs:
       - source: sentry_config_{{org}}
         target: /etc/sentry/config.yml
-    environment: *sentry-environment
-    # command:  bash -c "pip uninstall sentry-plugins -y; sentry upgrade --noinput; sentry run web"
 
   worker_{{org}}:
-    image: registry.nexdev.net:5050/docker/nexops-tools/sentry:{{sentry_version}}
-    deploy:
-      placement:
-        constraints:
-          - node.labels.SENTRY == yes
-    networks:
-      - {{swarm_network_nexops}}
-    environment: *sentry-environment
+    <<: *defaults
     command: run worker
 
   cron_{{org}}:
-    image: registry.nexdev.net:5050/docker/nexops-tools/sentry:{{sentry_version}}
-    deploy:
-      placement:
-        constraints:
-          - node.labels.SENTRY == yes
-    networks:
-      - {{swarm_network_nexops}}
-    environment: *sentry-environment
+    <<: *defaults
     command: run cron
 
   redis_{{org}}:
     image: registry.nexdev.net:5050/docker/nexops-tools/redis:4.0-alpine
+    volumes:
+      - './sentry-redis:/data'
     deploy:
       placement:
         constraints:
           - node.labels.SENTRY == yes
     networks:
       - {{swarm_network_nexops}}
+
+  clean_{{org}}:
+    image: registry.nexdev.net:5050/docker/nexops-tools/sentry-clean:9.1.2
+    build:
+      context: ./cron
+    restart: unless-stopped
+    deploy:
+      placement:
+        constraints:
+          - node.labels.SENTRY == yes
+    networks:
+      - {{swarm_network_nexops}}
+    entrypoint: "/entrypoint.sh"
+    command: '"0 0 * * * gosu sentry sentry cleanup --days 3"'
 
   postgres_{{org}}:
     image: registry.nexdev.net:5050/docker/database/postgres:10.4-alpine
@@ -74,7 +88,6 @@ services:
       - POSTGRES_PASSWORD=postgres1234AA
       - POSTGRES_USER=sentry
     volumes:
-      #- sentry_postgres_{{org}}:/var/lib/postgresql/data
       - ./data:/var/lib/postgresql/data:rw
 
 configs:
