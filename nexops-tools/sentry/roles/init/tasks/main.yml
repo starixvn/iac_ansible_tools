@@ -66,8 +66,8 @@
     chmod 777 first-deployment.sh postgres-container-id.sh sentry-container-id.sh
   become: yes
 
-- name: Execute the script Init database for sentry {{ working_directory }}/first-deployment.sh 
-  command: sh {{ working_directory }}/first-deployment.sh
+- name: Execute the script Init database sh {{ working_directory }}/first-deployment.sh 
+  script: sh {{ working_directory }}/first-deployment.sh
   become: yes
 
 - name: Upgrade sentry and craete Admin user sentry {{org}} ...
