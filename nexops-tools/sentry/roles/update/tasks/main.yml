@@ -13,9 +13,9 @@
     dest: "{{ working_directory }}/docker-compose.yml"
   when: smtp_pass is defined
 
-- name: Install jsondiff python package
-  pip:
-    name: jsondiff
+#- name: Install jsondiff python package
+#  pip:
+#    name: jsondiff
 
 - name: Remove Sentry web and configs
   shell: |
