@@ -61,9 +61,38 @@ services:
           - node.labels.SENTRY == yes
 
   web_{{org}}:
-    <<: *defaults
+    image: registry.nexdev.net:5050/docker/nexops-tools/sentry:{{sentry_version}}
+    restart: unless-stopped
+    environment: *sentry-environment
+    depends_on:
+      - redis_{{org}}
+      - postgres_{{org}}
+      - memcached_{{org}}
+    networks:
+      - {{swarm_network_nexops}}
+    deploy: 
+        mode: replicated
+        replicas: 1
+{% if web_port is undefined %}
+        endpoint_mode: dnsrr
+{% endif %}
+        #endpoint_mode: dnsrr
+        update_config:
+          order: start-first
+          failure_action: rollback
+          delay: 10s
+        rollback_config:
+          parallelism: 0
+          order: stop-first
+        placement:
+          constraints:
+            - node.labels.SENTRY == yes
+    volumes:
+      - ./sentry-data:/var/lib/sentry/files
+{% if web_port is defined %}
     ports:
       - {{web_port}}:9000
+{% endif %}
     configs:
       - source: sentry_config_{{org}}
         target: /etc/sentry/config.yml
