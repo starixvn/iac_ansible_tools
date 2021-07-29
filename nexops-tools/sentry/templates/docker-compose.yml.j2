@@ -23,6 +23,13 @@ x-defaults: &defaults
       mode: replicated
       replicas: 1
       #endpoint_mode: dnsrr
+      update_config:
+        order: start-first
+        failure_action: rollback
+        delay: 10s
+      rollback_config:
+        parallelism: 0
+        order: stop-first
       placement:
         constraints:
           - node.labels.SENTRY == yes
@@ -38,6 +45,13 @@ services:
     deploy: 
       mode: replicated
       replicas: 1
+      update_config:
+        order: start-first
+        failure_action: rollback
+        delay: 10s
+      rollback_config:
+        parallelism: 0
+        order: stop-first
       placement:
         constraints:
           - node.labels.SENTRY == yes
@@ -63,6 +77,13 @@ services:
     volumes:
       - './sentry-redis:/data'
     deploy:
+      update_config:
+        order: start-first
+        failure_action: rollback
+        delay: 10s
+      rollback_config:
+        parallelism: 0
+        order: stop-first
       placement:
         constraints:
           - node.labels.SENTRY == yes
@@ -75,6 +96,13 @@ services:
       context: ./cron
     restart: unless-stopped
     deploy:
+      update_config:
+        order: start-first
+        failure_action: rollback
+        delay: 10s
+      rollback_config:
+        parallelism: 0
+        order: stop-first
       placement:
         constraints:
           - node.labels.SENTRY == yes
@@ -86,6 +114,13 @@ services:
   postgres_{{org}}:
     image: registry.nexdev.net:5050/docker/database/postgres:10.4-alpine
     deploy:
+      update_config:
+        order: start-first
+        failure_action: rollback
+        delay: 10s
+      rollback_config:
+        parallelism: 0
+        order: stop-first
       placement:
         constraints:
           - node.labels.SENTRY == yes
