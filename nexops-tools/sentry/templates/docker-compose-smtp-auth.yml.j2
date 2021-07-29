@@ -22,7 +22,7 @@ x-defaults: &defaults
     - postgres_{{org}}
     - memcached_{{org}}
   networks:
-    - {{swarm_network_nexops}}
+    - {{swarm_network_name}}
   deploy: 
       mode: replicated
       replicas: 1
@@ -45,7 +45,7 @@ services:
     restart: unless-stopped
     image: registry.nexdev.net:5050/docker/nexops-tools/memcached:1.5-alpine
     networks:
-        - {{swarm_network_nexops}}
+        - {{swarm_network_name}}
     deploy: 
       mode: replicated
       replicas: 1
@@ -69,7 +69,7 @@ services:
       - postgres_{{org}}
       - memcached_{{org}}
     networks:
-      - {{swarm_network_nexops}}
+      - {{swarm_network_name}}
     deploy: 
         mode: replicated
         replicas: 1
@@ -121,7 +121,7 @@ services:
         constraints:
           - node.labels.SENTRY == yes
     networks:
-      - {{swarm_network_nexops}}
+      - {{swarm_network_name}}
 
   clean_{{org}}:
     image: registry.nexdev.net:5050/docker/nexops-tools/sentry-clean:9.1.2
@@ -140,7 +140,7 @@ services:
         constraints:
           - node.labels.SENTRY == yes
     networks:
-      - {{swarm_network_nexops}}
+      - {{swarm_network_name}}
     entrypoint: "/entrypoint.sh"
     command: '"0 0 * * * gosu sentry sentry cleanup --days 3"'
 
@@ -160,7 +160,7 @@ services:
     ports:
       - "{{db_port}}:5432/tcp"
     networks:
-      - {{swarm_network_nexops}}
+      - {{swarm_network_name}}
     environment:
       POSTGRES_HOST_AUTH_METHOD: 'trust'
     volumes:
@@ -171,5 +171,5 @@ configs:
     file: ./sentry-config.yml
 
 networks:
-  {{swarm_network_nexops}}:
+  {{swarm_network_name}}:
     external: true
