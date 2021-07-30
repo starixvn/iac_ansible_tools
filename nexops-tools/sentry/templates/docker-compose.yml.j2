@@ -22,7 +22,7 @@ x-defaults: &defaults
   deploy: 
       mode: replicated
       replicas: 1
-      #endpoint_mode: dnsrr
+      endpoint_mode: dnsrr
       update_config:
         order: start-first
         failure_action: rollback
@@ -72,7 +72,6 @@ services:
 {% if web_port is undefined %}
         endpoint_mode: dnsrr
 {% endif %}
-        #endpoint_mode: dnsrr
         update_config:
           order: start-first
           failure_action: rollback
@@ -153,8 +152,8 @@ services:
       placement:
         constraints:
           - node.labels.SENTRY == yes
-    ports:
-      - "{{db_port}}:5432/tcp"
+    #ports:
+    #  - "{{db_port}}:5432/tcp"
     networks:
       - {{swarm_network_name}}
     environment:

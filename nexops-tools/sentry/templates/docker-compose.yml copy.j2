@@ -1,0 +1,171 @@
+version: "3.7"
+x-sentry-environment: &sentry-environment
+  SENTRY_MEMCACHED_HOST: memcached_{{org}}
+  SENTRY_REDIS_HOST: redis_{{org}}
+  SENTRY_POSTGRES_HOST: postgres_{{org}}
+  #SENTRY_EMAIL_HOST: smtp
+  SENTRY_SECRET_KEY: "ZDFvdmcjZnZob2lzbC01cWQpd2ZnM2owcjErLW44Kz1AbmNpaz10YzFkQF5AOHpmazMK"
+  ################################################################
+  SENTRY_SERVER_EMAIL: "{{sender_email}}"
+  SENTRY_EMAIL_HOST: "{{smtp_server}}"
+
+x-defaults: &defaults
+  image: registry.nexdev.net:5050/docker/nexops-tools/sentry:{{sentry_version}}
+  restart: unless-stopped
+  environment: *sentry-environment
+  depends_on:
+    - redis_{{org}}
+    - postgres_{{org}}
+    - memcached_{{org}}
+  networks:
+    - {{swarm_network_name}}
+  deploy: 
+      mode: replicated
+      replicas: 1
+      #endpoint_mode: dnsrr
+      update_config:
+        order: start-first
+        failure_action: rollback
+        delay: 10s
+      rollback_config:
+        parallelism: 0
+        order: stop-first
+      placement:
+        constraints:
+          - node.labels.SENTRY == yes
+  volumes:
+    - ./sentry-data:/var/lib/sentry/files
+
+services:
+  memcached_{{org}}:
+    restart: unless-stopped
+    image: registry.nexdev.net:5050/docker/nexops-tools/memcached:1.5-alpine
+    networks:
+        - {{swarm_network_name}}
+    deploy: 
+      mode: replicated
+      replicas: 1
+      update_config:
+        order: start-first
+        failure_action: rollback
+        delay: 10s
+      rollback_config:
+        parallelism: 0
+        order: stop-first
+      placement:
+        constraints:
+          - node.labels.SENTRY == yes
+
+  web_{{org}}:
+    image: registry.nexdev.net:5050/docker/nexops-tools/sentry:{{sentry_version}}
+    restart: unless-stopped
+    environment: *sentry-environment
+    depends_on:
+      - redis_{{org}}
+      - postgres_{{org}}
+      - memcached_{{org}}
+    networks:
+      - {{swarm_network_name}}
+    deploy: 
+        mode: replicated
+        replicas: 1
+{% if web_port is undefined %}
+        endpoint_mode: dnsrr
+{% endif %}
+        #endpoint_mode: dnsrr
+        update_config:
+          order: start-first
+          failure_action: rollback
+          delay: 10s
+        rollback_config:
+          parallelism: 0
+          order: stop-first
+        placement:
+          constraints:
+            - node.labels.SENTRY == yes
+    volumes:
+      - ./sentry-data:/var/lib/sentry/files
+{% if web_port is defined %}
+    ports:
+      - {{web_port}}:9000
+{% endif %}
+    configs:
+      - source: sentry_config_{{org}}
+        target: /etc/sentry/config.yml
+
+  worker_{{org}}:
+    <<: *defaults
+    command: run worker
+
+  cron_{{org}}:
+    <<: *defaults
+    command: run cron
+
+  redis_{{org}}:
+    image: registry.nexdev.net:5050/docker/nexops-tools/redis:4.0-alpine
+    volumes:
+      - './sentry-redis:/data'
+    deploy:
+      update_config:
+        order: start-first
+        failure_action: rollback
+        delay: 10s
+      rollback_config:
+        parallelism: 0
+        order: stop-first
+      placement:
+        constraints:
+          - node.labels.SENTRY == yes
+    networks:
+      - {{swarm_network_name}}
+
+  clean_{{org}}:
+    image: registry.nexdev.net:5050/docker/nexops-tools/sentry-clean:9.1.2
+    build:
+      context: ./cron
+    restart: unless-stopped
+    deploy:
+      update_config:
+        order: start-first
+        failure_action: rollback
+        delay: 10s
+      rollback_config:
+        parallelism: 0
+        order: stop-first
+      placement:
+        constraints:
+          - node.labels.SENTRY == yes
+    networks:
+      - {{swarm_network_name}}
+    entrypoint: "/entrypoint.sh"
+    command: '"0 0 * * * gosu sentry sentry cleanup --days 3"'
+
+  postgres_{{org}}:
+    image: registry.nexdev.net:5050/docker/database/postgres:10.4-alpine
+    deploy:
+      update_config:
+        order: start-first
+        failure_action: rollback
+        delay: 10s
+      rollback_config:
+        parallelism: 0
+        order: stop-first
+      placement:
+        constraints:
+          - node.labels.SENTRY == yes
+    ports:
+      - "{{db_port}}:5432/tcp"
+    networks:
+      - {{swarm_network_name}}
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: 'trust'
+    volumes:
+      - ./sentry-postgres:/var/lib/postgresql/data
+
+configs:
+  sentry_config_{{org}}:
+    file: ./sentry-config.yml
+
+networks:
+  {{swarm_network_name}}:
+    external: true
