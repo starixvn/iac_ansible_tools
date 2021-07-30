@@ -157,8 +157,10 @@ services:
       placement:
         constraints:
           - node.labels.SENTRY == yes
+{% if db_port is defined %}
     ports:
-      - "{{db_port}}:5432/tcp"
+      - {{db_port}}:5432/tcp
+{% endif %}
     networks:
       - {{swarm_network_name}}
     environment:
