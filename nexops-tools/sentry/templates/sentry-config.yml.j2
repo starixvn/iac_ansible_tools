@@ -1,4 +1,6 @@
+{% if root_domain is defined %}
 system.url-prefix: {{root_domain}}
+{% endif %}
 system.admin-email: {{admin_email}}
 #auth.allow-registration: true
 #beacon.anonymous: true
