@@ -152,7 +152,7 @@ services:
       placement:
         constraints:
           - node.labels.SENTRY == yes
-{% if web_port is defined %}
+{% if db_port is defined %}
     ports:
       - {{db_port}}:5432/tcp
 {% endif %}
