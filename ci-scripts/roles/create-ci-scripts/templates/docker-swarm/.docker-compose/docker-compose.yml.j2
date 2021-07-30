@@ -60,6 +60,7 @@ services:
 {% else %}
     image: registry.nexdev.net:5050/{{item.0.docker_image_registry_path}}:{{environment}}-latest
 {% endif %}
+    hostname: "swarm-{{'{{'}}.Service.Name{{'}}'}}-{{'{{'}}.Task.Slot{{'}}'}}"
 
 {% if config_file is defined %}
     configs:
