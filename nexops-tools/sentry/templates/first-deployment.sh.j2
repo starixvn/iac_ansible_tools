@@ -1,20 +1,20 @@
 #!/usr/bin/env bash
 
 #docker stack deploy -c docker-compose.yml sentry
-docker service scale sentry_clean_{{org}}=0 sentry_web_{{org}}=0 sentry_cron_{{org}}=0 sentry_worker_{{org}}=0 
+docker service scale {{stack}}_clean_{{org}}=0 {{stack}}_web_{{org}}=0 {{stack}}_cron_{{org}}=0 {{stack}}_worker_{{org}}=0 
 
-until docker service ps --filter desired-state=running sentry_postgres_{{org}} 2>&1 >> /dev/null
+until docker service ps --filter desired-state=running {{stack}}_postgres_{{org}} 2>&1 >> /dev/null
 do
-    echo "wait sentry_postgres_{{org}} up..."
+    echo "wait {{stack}}_postgres_{{org}} up..."
     sleep 1
 done
 
 cat init.sql | docker exec -i $(./postgres-container-id.sh) psql -U postgres
 
-docker service scale sentry_web_{{org}}=1 sentry_cron_{{org}}=1 sentry_worker_{{org}}=1 sentry_clean_{{org}}=1 
+docker service scale {{stack}}_web_{{org}}=1 {{stack}}_cron_{{org}}=1 {{stack}}_worker_{{org}}=1 {{stack}}_clean_{{org}}=1 
 
-until docker service ps --filter desired-state=running sentry_web_{{org}} 2>&1 >> /dev/null
+until docker service ps --filter desired-state=running {{stack}}_web_{{org}} 2>&1 >> /dev/null
 do
-    echo "wait sentry_sentry up..."
+    echo "wait {{stack}}_web_{{org}} up..."
     sleep 1
 done
