@@ -2,3 +2,14 @@
 # Variables here are applicable to all host groups
 versions: [0, 1, 2, 3]
 gluster_path: '/var/www/gluster/web/'
+luminet_network_version_local: '1'
+luminet_network_version_sit: ''
+luminet_network_version_uat: ''
+luminet_network_version_prod: ''
+luminet_network_version_aws: ''
+
+nexcel_network_version_local: ''
+nexcel_network_version_sit: ''
+nexcel_network_version_uat: ''
+nexcel_network_version_prod: ''
+nexcel_network_version_aws: ''
