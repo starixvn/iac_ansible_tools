@@ -10,13 +10,13 @@
     - role: deploy-full-monitoring-tools
   tags: deploy-monitoring-tools
 
-- hosts: all
+- hosts: swarm_leader
   roles:
     - role: create-directory-deploy
     - role: deploy-prometheus
   tags: deploy-prometheus
 
-- hosts: all
+- hosts: swarm_leader
   roles:
     - role: update-prometheus
   tags: update-prometheus

@@ -1,4 +1,8 @@
+{% if env == "sit"%}
+version: '3.4'
+{% else %}
 version: '3.8'
+{% endif %}
 
 services:
   service:
@@ -21,6 +25,7 @@ services:
 {% endfor %}
       - {{swarm_network_nexops}}
     deploy:
+{% if env != "sit"%}
         update_config:
           order: start-first
           failure_action: rollback
@@ -33,6 +38,7 @@ services:
           delay: 5s
           max_attempts: 3
           window: 120s
+{% endif %}
         mode: global
         placement:
           constraints: 
