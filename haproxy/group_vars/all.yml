@@ -92,7 +92,7 @@ luminet_ports_local:
     { "published": 7102, "target": 7102, "mode": "ingress" },
   ]
 
-luminet_ports_sit:
+luminet_ports_uat:
   [
     { "published": 80, "target": 80, "mode": "ingress" },
     { "published": 7777, "target": 7777, "mode": "ingress" },
