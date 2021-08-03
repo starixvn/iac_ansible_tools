@@ -1,26 +1,26 @@
 ---
 - name: Create backup_path working directory
   file:
-    path: "{{backup_path | default '/tmp'}}"
+    path: "{{backup_path | default ('/tmp')}}"
     state: directory
     mode: "0777"
   become: yes
 
 - name: backup sentry_{{env}}_{{org}}-`date +%Y-%m-%d`.sql
   shell: |
-    docker exec sentry-db pg_dump -h {{db_server}} -p {{db_port}} -U {{db_user}} -W {{ sentry_custom_table | default('')}} -t auth_user -t auth_group -t auth_authenticator -t django_content_type -t contenttypes_contenttype -t sites_site -t sentry_email -t sentry_option -t sentry_repository -t sentry_user -t sentry_useremail -t sentry_userip -t south_migrationhistory -t auth_permission -t sentry_recentsearch -t sentry_team -t sentry_project -t sentry_projectteam -t sentry_organizationmember_teams -t sentry_organizationmember -t sentry_counter -t sentry_projectbookmark -t sentry_projectkey -t sentry_projectoption -t sentry_rule -t sentry_savedsearch -t sentry_useroption -d {{db_name}} > {{backup_path | default "/tmp"}}/sentry_{{env}}_{{org}}-`date +%Y-%m-%d`.sql
+    docker exec {{container_backup | default('sentry-db')}} pg_dump -h {{db_server}} -p {{db_port}} -U {{db_user}} -W {{ sentry_custom_table | default('')}} -t auth_user -t auth_group -t auth_authenticator -t django_content_type -t contenttypes_contenttype -t sites_site -t sentry_email -t sentry_option -t sentry_repository -t sentry_user -t sentry_useremail -t sentry_userip -t south_migrationhistory -t auth_permission -t sentry_recentsearch -t sentry_team -t sentry_project -t sentry_projectteam -t sentry_organizationmember_teams -t sentry_organizationmember -t sentry_counter -t sentry_projectbookmark -t sentry_projectkey -t sentry_projectoption -t sentry_rule -t sentry_savedsearch -t sentry_useroption -d {{db_name}} > {{backup_path | default ('/tmp')}}/sentry_{{env}}_{{org}}-`date +%Y-%m-%d`.sql
   become: yes
 #ignore_errors: yes {{sentry_custom_table | default ''}} 
 
-- name: copying data {{backup_path | default "/tmp"}}/sentry_{{env}}_{{org}}-`date +%Y-%m-%d`.sql  to root@{{backup_nexops_server}}:{{backup_path}}/sentry/
+- name: copying data {{backup_path | default ('/tmp')}}/sentry_{{env}}_{{org}}-`date +%Y-%m-%d`.sql  to root@{{backup_nexops_server}}:{{backup_path}}/sentry/
   shell: |
-    scp -r -P{{backup_server_sshport}} {{backup_path | default "/tmp"}}/sentry_{{env}}_{{org}}-`date +%Y-%m-%d`.sql root@{{backup_nexops_server}}:{{backup_path}}/sentry/
+    scp -r -P{{backup_server_sshport}} {{backup_path | default ('/tmp')}}/sentry_{{env}}_{{org}}-`date +%Y-%m-%d`.sql root@{{backup_nexops_server}}:{{backup_path}}/sentry/
   become: yes
   ignore_errors: yes
 
 - name: remove old backup Sentry
   shell: |
-    find {{backup_path | default "/tmp"}}/ -mtime +7 -exec rm {} \;
+    find {{backup_path | default ('/tmp')}}/ -mtime +7 -exec rm {} \;
     ssh -p{{backup_server_sshport}} root@{{backup_nexops_server}} "find {{backup_path}}/sentry/ -mtime +7 -exec rm {} \;"
   become: yes
   ignore_errors: yes
