@@ -15,7 +15,6 @@
   roles:
     - role: postgres
   tags:
-    - build-postgres
     - deploy-postgres
 
 - hosts: swarm_leader

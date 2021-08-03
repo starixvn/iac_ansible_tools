@@ -1,12 +1,27 @@
 ---
-- name: build-postgres
-  import_tasks: build-postgres.yml
-  when: version is defined
-  tags:
-    - build-postgres
+- name: Create working directory
+  file:
+    path: "{{ working_directory }}"
+    state: directory
+    mode: "0777"
+  become: yes
 
-- name: deploy-postgres
-  import_tasks: deploy-postgres.yml
-  when: version is defined
-  tags:
-    - deploy-postgres
+- name: Create DB folder
+  file:
+    path: "{{ working_directory }}/{{ item }}"
+    state: directory
+    mode: "0777"
+  become: yes
+  with_items:
+    - data
+
+- name: cp docker-compose file
+  template:
+    src: "templates/{{ item }}.j2"
+    dest: "{{ working_directory }}/{{ item }}"
+  with_items:
+    - deploy-postgres.yml
+
+- name: Deploy postgresDB
+  shell: |
+    docker stack deploy -c {{working_directory}}/deploy-postgres.yml {{stack}} --with-registry-auth

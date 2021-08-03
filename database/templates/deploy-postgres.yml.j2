@@ -1,0 +1,28 @@
+version: "3.7"
+  postgres_{{org}}_{{env}}:
+    image: registry.nexdev.net:5050/docker/database/postgres:10.4-alpine
+    deploy:
+      update_config:
+        order: start-first
+        failure_action: rollback
+        delay: 10s
+      rollback_config:
+        parallelism: 0
+        order: stop-first
+      placement:
+        constraints:
+          - node.labels.SENTRY == yes
+{% if db_port is defined %}
+    ports:
+      - {{db_port}}:5432/tcp
+{% endif %}
+    networks:
+      - {{swarm_network_name}}
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: 'trust'
+    volumes:
+      - ./data:/var/lib/postgresql/data
+
+networks:
+  {{swarm_network_name}}:
+    external: true
