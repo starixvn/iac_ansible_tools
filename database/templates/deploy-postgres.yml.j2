@@ -11,7 +11,7 @@ version: "3.7"
         order: stop-first
       placement:
         constraints:
-          - node.labels.SENTRY == yes
+          - node.labels.{{LABEL_NODE}} == yes
 {% if db_port is defined %}
     ports:
       - {{db_port}}:5432/tcp
