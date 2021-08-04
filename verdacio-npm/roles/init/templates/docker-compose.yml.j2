@@ -1,8 +1,8 @@
 version: '3.1'
 
 services:
-  verdaccio:
-    image: verdaccio/verdaccio
+  verdaccio_npm:
+    image: registry.nexdev.net:5050/docker/nexops-tools/verdaccio #verdaccio/verdaccio
     environment:
       - VERDACCIO_PORT=4873
     # ports:
@@ -23,7 +23,7 @@ volumes:
     driver_opts:
       o: bind
       type: none
-      device: /var/www/gluster/nexops/verdaccio/storage
+      device: /var/www/gluster/nexops/verdaccio_npm/storage
 
 networks:
   {{ swarm_network_nexops }}:

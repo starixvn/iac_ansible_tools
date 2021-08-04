@@ -7,7 +7,7 @@
 
 - name: Create directory
   file:
-    path: '{{gluster_path}}/verdaccio'
+    path: '{{gluster_path}}/verdaccio_npm'
     mode: '0755'
     state: directory
   become: yes
@@ -31,5 +31,5 @@
   when: inventory_hostname in groups['swarm_managers']
   shell: |
     cd /home/{{ansible_user}}/stacks
-    docker stack deploy --compose-file=verdaccio.yml portainer
+    docker stack deploy --compose-file=verdaccio.yml {{stack}} --with-registry-auth
   become: yes
