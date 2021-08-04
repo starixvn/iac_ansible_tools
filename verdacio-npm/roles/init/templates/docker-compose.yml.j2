@@ -18,7 +18,7 @@ services:
         constraints:
           - node.labels.{{label_node | default ('NEXOPS')}} == yes
 volumes:
-  verdaccio_npm:
+  verdaccio_npm_vol:
     driver: local
     driver_opts:
       o: bind

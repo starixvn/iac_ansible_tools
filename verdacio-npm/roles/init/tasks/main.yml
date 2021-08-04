@@ -2,7 +2,7 @@
 - name: Verify stacks directory exists (on first swarm node)
   #when: inventory_hostname in groups['swarm_managers']
   file:
-    path: '{{gluster_path}}/verdaccio_npm'
+    path: '{{gluster_path}}/verdaccio_npm/storage'
     mode: '0755'
     state: directory
   become: yes
