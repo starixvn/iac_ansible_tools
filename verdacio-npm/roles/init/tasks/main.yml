@@ -1,6 +1,6 @@
 ---
 - name: Verify stacks directory exists (on first swarm node)
-  when: inventory_hostname in groups['swarm_managers']
+  #when: inventory_hostname in groups['swarm_managers']
   file:
     path: '{{gluster_path}}/verdaccio_npm'
     mode: '0755'
@@ -16,14 +16,14 @@
   become: yes
 
 - name: Copy docker-compose file
-  when: inventory_hostname in groups['swarm_managers']
+  #when: inventory_hostname in groups['swarm_managers']
   template:
     src: 'templates/docker-compose.yml.j2'
     dest: '{{gluster_path}}/verdaccio_npm/verdaccio.yml'
   become: yes
 
 - name: Build up and run container
-  when: inventory_hostname in groups['swarm_managers']
+  #when: inventory_hostname in groups['swarm_managers']
   shell: |
     cd {{gluster_path}}/verdaccio_npm
     docker stack deploy --compose-file=verdaccio.yml {{stack}} --with-registry-auth
