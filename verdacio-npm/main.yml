@@ -4,7 +4,7 @@
     - role: init
   tags: init-npm
 
-- hosts: all
-  roles:
-    - role: update
-  tags: update-npm
+#- hosts: all
+#  roles:
+#    - role: update
+#  tags: update-npm

@@ -18,12 +18,12 @@ services:
         constraints:
           - node.labels.{{label_node | default ('NEXOPS')}} == yes
 volumes:
-  data:
+  verdaccio_npm:
     driver: local
     driver_opts:
       o: bind
       type: none
-      device: /var/www/gluster/nexops/verdaccio_npm/storage
+      device: {{gluster_path}}/verdaccio_npm/storage
 
 networks:
   {{ swarm_network_nexops }}:
