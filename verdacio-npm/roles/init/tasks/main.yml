@@ -2,11 +2,6 @@
 - name: Verify stacks directory exists (on first swarm node)
   when: inventory_hostname in groups['swarm_managers']
   file:
-    path: '/home/{{ansible_user}}/stacks'
-    state: directory
-
-- name: Create directory
-  file:
     path: '{{gluster_path}}/verdaccio_npm'
     mode: '0755'
     state: directory
