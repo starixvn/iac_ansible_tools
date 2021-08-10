@@ -32,6 +32,11 @@ services:
                 - node.labels.{{node_label | default ('NEXCEL_HIGH_STORAGE')}} == yes
         networks:
             - {{network | default('swarm_nexops')}}
+        labels:
+{% if env == "prod" or env == "aws" %}
+      - "io.portainer.accesscontrol.teams={{team_name | upper}}_LEADERS"
+{% else %}
+      - "io.portainer.accesscontrol.teams={{team_name | upper}}"
 
     
     {{mysql_name}}_phpmyadmin:
@@ -53,6 +58,11 @@ services:
                 - node.labels.{{node_label | default ('NEXCEL_HIGH_STORAGE')}} == yes
         networks:
             - {{network | default('swarm_nexops')}}
+        labels:
+{% if env == "prod" or env == "aws" %}
+      - "io.portainer.accesscontrol.teams={{team_name | upper}}_LEADERS"
+{% else %}
+      - "io.portainer.accesscontrol.teams={{team_name | upper}}"
 
 networks:
   {{network | default('swarm_nexops')}}:

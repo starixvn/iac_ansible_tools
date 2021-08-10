@@ -23,6 +23,11 @@ services:
 {% endif %}
     networks:
       - {{swarm_network_name}}
+    labels:
+{% if env == "prod" or env == "aws" %}
+      - "io.portainer.accesscontrol.teams={{team_name | upper}}_LEADERS"
+{% else %}
+      - "io.portainer.accesscontrol.teams={{team_name | upper}}"
     environment:
       POSTGRES_HOST_AUTH_METHOD: 'trust'
     volumes:
