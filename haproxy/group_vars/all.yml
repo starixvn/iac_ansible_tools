@@ -37,6 +37,7 @@ nexcel_ports_uat:
     { "published": 5120, "target": 5120, "mode": "ingress" },
     { "published": 7100, "target": 7100, "mode": "host" },
     { "published": 8100, "target": 8100, "mode": "host" },
+    { "published": 7680, "target": 7680, "mode": "host" },
   ]
 
 nexcel_ports_prod:
