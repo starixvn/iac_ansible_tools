@@ -18,3 +18,8 @@
   roles:
     - role: bk_ansible
   tags: bk_ansible
+
+- hosts: all
+  roles:
+    - role: bk_zabbix
+  tags: bk_zabbix
