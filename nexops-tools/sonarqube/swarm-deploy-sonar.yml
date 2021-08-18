@@ -21,6 +21,12 @@
         dest: "{{working_directory}}/docker-compose.yml"
         mode: 0777
 
+    - name: Copy sonar.properties
+      copy:
+        src: "web/conf/sonar.properties"
+        dest: "{{web_folder}}/conf/sonar.properties"
+        mode: 0777
+
     - name: Install jsondiff python package
       when: inventory_hostname in groups['gluster_leader']
       pip:
