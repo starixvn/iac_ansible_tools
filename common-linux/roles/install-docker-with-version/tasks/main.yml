@@ -3,9 +3,9 @@
   apt: update_cache=yes cache_valid_time=3600
   become: yes
 
-- name: Upgrade all apt packages
-  apt: upgrade=dist
-  become: yes
+#- name: Upgrade all apt packages
+#  apt: upgrade=dist
+#  become: yes
 
 # - name: Install Software common
 #   become: true

@@ -25,6 +25,12 @@ docker node rm <node name> (id)
 docker node update --label-add SENTRY=yes ip-10-2-27-27
 docker node update --label-add SENTRY_NEW=yes ub-70-31
 
+#backup swarm data /var/lib/docker/swarm
+service docker restart
+docker swarm init --force-new-cluster --advertise-addr xx.xx.xx.xx
+docker node leave -f
+docker swarm join --token ip:2377
+
 ######### Proxy setting
 ########
 mkdir -p /etc/systemd/system/docker.service.d
