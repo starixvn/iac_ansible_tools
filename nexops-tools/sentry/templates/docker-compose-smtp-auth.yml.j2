@@ -6,12 +6,12 @@ x-sentry-environment: &sentry-environment
   #SENTRY_EMAIL_HOST: smtp
   SENTRY_SECRET_KEY: "ZDFvdmcjZnZob2lzbC01cWQpd2ZnM2owcjErLW44Kz1AbmNpaz10YzFkQF5AOHpmazMK"
   ################################################################
-  SENTRY_SERVER_EMAIL: "{{sender_email}}"
-  SENTRY_EMAIL_HOST: "{{smtp_server}}"
-  SENTRY_EMAIL_PORT: "{{smtp_port}}"
-  SENTRY_EMAIL_PASSWORD: "{{smtp_pass}}" 
-  SENTRY_EMAIL_USER: "{{sender_email}}" 
-  SENTRY_EMAIL_USE_TLS: "true"
+  #SENTRY_SERVER_EMAIL: "{{sender_email}}"
+  #SENTRY_EMAIL_HOST: "{{smtp_server}}"
+  #SENTRY_EMAIL_PORT: "{{smtp_port}}"
+  #SENTRY_EMAIL_PASSWORD: "{{smtp_pass}}" 
+  #SENTRY_EMAIL_USER: "{{sender_email}}" 
+  #SENTRY_EMAIL_USE_TLS: "true"
 
 x-defaults: &defaults
   image: registry.nexdev.net:5050/docker/nexops-tools/sentry:{{sentry_version}}

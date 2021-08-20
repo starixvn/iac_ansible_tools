@@ -6,12 +6,14 @@
   with_items:
     - docker-compose.yml
     - sentry-config.yml
+  become: yes
 
 - name: cp docker-compose and SMTP
   template:
     src: "templates/docker-compose-smtp-auth.yml.j2"
     dest: "{{ working_directory }}/docker-compose.yml"
   when: smtp_pass is defined
+  become: yes
 
 #- name: Install jsondiff python package
 #  pip:
@@ -34,3 +36,4 @@
 - name: Deploy Sentry
   shell: |
     docker stack deploy -c {{working_directory}}/docker-compose.yml {{stack}} --with-registry-auth
+  become: yes
