@@ -1,10 +1,10 @@
 ---
-- hosts: swarm_leader
+- hosts: swarm_managers
   roles:
     - role: portainer-server-swarm
       tags: portainer-server-swarm
 
-- hosts: swarm_leader
+- hosts: swarm_managers #swarm_leader
   roles:
     - role: portainer-agent-swarm
       tags: portainer-agent-swarm
