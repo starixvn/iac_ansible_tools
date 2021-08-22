@@ -145,7 +145,7 @@ services:
     command: '"0 0 * * * gosu sentry sentry cleanup --days 3"'
 
   postgres_{{org}}:
-    image: registry.nexdev.net:5050/docker/database/postgres:10.4-alpine
+    image: registry.nexdev.net:5050/docker/database/postgres:{{postgres_version | default("10.4-alpine")}}
     deploy:
       update_config:
         order: start-first
