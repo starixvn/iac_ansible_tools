@@ -11,6 +11,12 @@
   become: yes
   ignore_errors: yes
 
+- name: Prune container
+  shell: |
+    docker container prune -f --filter "until=240h"
+  become: yes
+  ignore_errors: yes
+
 - name: Removes the specified configs from the swarm
   shell: |
     docker config rm $(docker config ls)
