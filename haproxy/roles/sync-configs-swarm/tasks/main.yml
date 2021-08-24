@@ -27,9 +27,12 @@
 
 - name: Copy whitelist configuration.
   template:
-    src: "files/{{team}}/whitelisted.ips"
-    dest: "{{ volume_path }}/whitelisted.ips"
+    src: "files/{{team}}/{{item}}"
+    dest: "{{ volume_path }}/{{item}}"
   become: yes
+  with_items:
+    - 404.html
+    - whitelisted.ips
   ignore_errors: yes
 
 - name: Copy SSL Certs configuration.
