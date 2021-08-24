@@ -31,7 +31,7 @@
     dest: "{{ volume_path }}/{{item}}"
   become: yes
   with_items:
-    - 404.html
+    #- 404.html
     - whitelisted.ips
   ignore_errors: yes
 
