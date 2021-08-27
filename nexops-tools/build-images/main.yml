@@ -1,0 +1,12 @@
+---
+- hosts: swarm_managers
+  roles:
+    - role: frameworks
+  tags:
+    - build-frameworks
+
+- hosts: swarm_managers
+  roles:
+    - role: tools
+  tags:
+    - build-tools
