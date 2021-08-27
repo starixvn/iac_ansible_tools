@@ -9,7 +9,7 @@
 
 - name: Copy template files for build
   template:
-    src: "templates/{{framework}}-{{item}}.j2"
+    src: "templates/{{item}}.j2"
     dest: "{{ working_directory }}/{{framework}}/{{item}}"
   with_items:
     - docker-compose.yml
