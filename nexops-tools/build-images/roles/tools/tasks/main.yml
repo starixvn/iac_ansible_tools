@@ -1,7 +1,6 @@
 ---
-- hosts: swarm_managers
-  name: Create working directory {{ working_directory }}
-  run_once: true
+- name: Create working directory {{ working_directory }}
+#  run_once: true
   file:
     path: "{{ working_directory }}/{{tool}}"
     mode: "0755"
@@ -18,7 +17,7 @@
   become: yes
 
 - name: Executing script to build and push images
-  run_once: true
+  #run_once: true
   shell: |
     cd {{ working_directory }}/{{tool}}
     docker-compose build
