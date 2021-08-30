@@ -22,7 +22,8 @@ nexcel_ports_sit: [
 nexcel_ports_uat:
   [
     { "published": 7000, "target": 7000, "mode": "ingress" },
-    { "published": 80, "target": 80, "mode": "host" },
+    { "published": 80, "target": 80, "mode": "ingress" },
+    { "published": 8088, "target": 8088, "mode": "host" },
     { "published": 6012, "target": 6012, "mode": "ingress" },
     { "published": 7012, "target": 7012, "mode": "ingress" },
     { "published": 5321, "target": 5321, "mode": "host" },
