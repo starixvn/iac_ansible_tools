@@ -26,6 +26,7 @@
   shell: |
     ntpdate {{ntp_server}}
   become: yes
+  ignore_errors: true
 
 - name: check time
   shell: |
