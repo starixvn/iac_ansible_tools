@@ -51,9 +51,9 @@
     name: '{{ item }}'
     state: latest
   loop:
-    - docker
+    #- docker
     - docker-compose
-    - docker-py
+    #- docker-py
 
 - name: Install Docker Python3 library
   when: ansible_distribution_major_version == "20"
@@ -64,9 +64,9 @@
     state: latest
     executable: pip3
   loop:
-    - docker
+    #- docker
     - docker-compose
-    - docker-py
+    #- docker-py
 
 - name: Install Docker GPG key
   become: yes
