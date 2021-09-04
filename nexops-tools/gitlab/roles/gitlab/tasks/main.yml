@@ -17,4 +17,4 @@
 
 - import_tasks: registry_garbage_collect-git3.yml
   tags:
-    - registry_garbage_collect-git3
+    - registry_garbage_collect
