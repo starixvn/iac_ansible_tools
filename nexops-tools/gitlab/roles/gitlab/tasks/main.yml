@@ -15,6 +15,6 @@
   tags:
     - rm_old_backup_file-gitlab
 
-- import_tasks: registry_garbage_collect-git3.yml
+- import_tasks: registry_garbage_collect.yml
   tags:
     - registry_garbage_collect
