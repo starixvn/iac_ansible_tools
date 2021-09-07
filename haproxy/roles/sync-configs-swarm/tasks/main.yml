@@ -35,7 +35,8 @@
     - whitelisted.ips
   ignore_errors: yes
 
-- name: Copy SSL Certs configuration.
+- name: Copy SSL Certs configuration
+  when: cert is define and cert == true
   template:
     src: "files/{{team}}/certs/{{item}}"
     dest: "{{ volume_path }}/{{item}}"
