@@ -25,7 +25,8 @@
     dest: "{{ volume_path }}/{{ config_filename }}"
   become: yes
 
-- name: Copy whitelist configuration.
+- name: Copy whitelist configuration {{ env }} .
+  when: env != "local"
   template:
     src: "files/{{team}}/{{item}}"
     dest: "{{ volume_path }}/{{item}}"
@@ -35,7 +36,7 @@
     - whitelisted.ips
   ignore_errors: yes
 
-- name: Copy SSL Certs configuration
+- name: Copy SSL Certs configuration {{ env }}
   when: env == "local"
   template:
     src: "files/{{team}}/certs/{{item}}"
