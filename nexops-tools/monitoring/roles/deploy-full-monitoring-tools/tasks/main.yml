@@ -7,6 +7,15 @@
   with_items:
     - grafana
     - prometheus
+    
+- name: Create network
+  docker_network:
+    name: "{{item}}"
+    driver: "overlay"
+    attachable: true
+  with_items: 'swarm_{{org}}_{{ENV}}'
+  ignore_errors: yes
+  become: yes
 
 - name: Pull latest images
   shell: |
