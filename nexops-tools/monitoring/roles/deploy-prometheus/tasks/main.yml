@@ -17,5 +17,5 @@
   shell: |
     cd {{ working_directory }}
     export ENV={{ENV}}
-    docker stack deploy --compose-file=docker-compose.yml monitoring
+    docker stack deploy --compose-file=docker-compose.yml monitoring  --with-registry-auth
   become: yes
