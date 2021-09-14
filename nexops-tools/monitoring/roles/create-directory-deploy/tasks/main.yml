@@ -5,6 +5,7 @@
     mode: '0755'
     state: directory
   become: yes
+  ignore_errors: yes
 
 - name: Create tools directory
   file:
@@ -15,6 +16,7 @@
   with_items:
     - mysql
     - grafana
+  ignore_errors: yes
 
 - name: Copy tools' configs files
   copy:
