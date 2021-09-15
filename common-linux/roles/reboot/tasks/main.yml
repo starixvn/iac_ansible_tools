@@ -5,6 +5,10 @@
 
 - debug: msg={{UPTIME_PRE_REBOOT.stdout}}
 
+- name: Stop docker containers
+  shell: |
+    docker stop $(docker ps -aq)
+
 - name: Unconditionally reboot the machine with all defaults
   reboot:
     post_reboot_delay: 180
