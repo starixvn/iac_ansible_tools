@@ -13,7 +13,6 @@
   reboot:
     post_reboot_delay: 180
     
-
 - name: Check the uptime after reboot
   shell: uptime
   register: UPTIME_POST_REBOOT
