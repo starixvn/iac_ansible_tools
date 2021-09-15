@@ -7,7 +7,7 @@
 
 - name: Unconditionally reboot the machine with all defaults
   reboot:
-    reboot_timeout: 3600
+    #reboot_timeout: 3600
 
 - name: Check the uptime after reboot
   shell: uptime
