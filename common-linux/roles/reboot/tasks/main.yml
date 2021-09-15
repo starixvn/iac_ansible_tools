@@ -7,8 +7,15 @@
 
 - name: Unconditionally reboot the machine with all defaults
   reboot:
-    #reboot_timeout: 3600
-    post_reboot_delay: 180
+    reboot_timeout: 3600
+
+- name: wait for host to finish reboot
+  wait_for:
+   port: "{{ (ansible_port|default(ansible_ssh_port))|default(22) }}"
+   host: '{{ (ansible_ssh_host|default(ansible_host))|default(inventory_hostname) }}'
+   search_regex: OpenSSH
+   delay: 10  # Do not check for at least 10 sec
+  connection: local
 
 - name: Check the uptime after reboot
   shell: uptime
