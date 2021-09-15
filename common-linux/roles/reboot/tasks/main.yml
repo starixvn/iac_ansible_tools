@@ -7,11 +7,8 @@
 
 - name: Unconditionally reboot the machine with all defaults
   reboot:
-    connect_timeout: 5
-    reboot_timeout: 300
-    pre_reboot_delay: 0
-    post_reboot_delay: 30
-    test_command: uptime
+    post_reboot_delay: 180
+    
 
 - name: Check the uptime after reboot
   shell: uptime
