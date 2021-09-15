@@ -8,6 +8,7 @@
 - name: Unconditionally reboot the machine with all defaults
   reboot:
     #reboot_timeout: 3600
+    post_reboot_delay: 180
 
 - name: Check the uptime after reboot
   shell: uptime
