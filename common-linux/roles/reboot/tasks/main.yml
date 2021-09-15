@@ -9,13 +9,13 @@
   shell: |
     docker stop $(docker ps -aq)
 
-- name: Unconditionally reboot the machine with all defaults
-  reboot:
-    post_reboot_delay: 180
+#- name: Unconditionally reboot the machine with all defaults
+  #reboot:
+    #post_reboot_delay: 180
     
 
-- name: Check the uptime after reboot
-  shell: uptime
-  register: UPTIME_POST_REBOOT
+#- name: Check the uptime after reboot
+  #shell: uptime
+  #register: UPTIME_POST_REBOOT
 
-- debug: msg={{UPTIME_POST_REBOOT.stdout}}
+#- debug: msg={{UPTIME_POST_REBOOT.stdout}}
