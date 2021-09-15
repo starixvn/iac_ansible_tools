@@ -1,9 +1,16 @@
 ---
-- name: Reboot host and wait for it to restart
+- name: Check the uptime
+  shell: uptime
+  register: UPTIME_PRE_REBOOT
+
+- debug: msg={{UPTIME_PRE_REBOOT.stdout}}
+
+- name: Unconditionally reboot the machine with all defaults
   reboot:
-    msg: "Reboot initiated by Ansible"
-    connect_timeout: 5
-    reboot_timeout: 600
-    pre_reboot_delay: 0
-    post_reboot_delay: 30
-    test_command: whoami
+    reboot_timeout: 3600
+
+- name: Check the uptime after reboot
+  shell: uptime
+  register: UPTIME_POST_REBOOT
+
+- debug: msg={{UPTIME_POST_REBOOT.stdout}}
