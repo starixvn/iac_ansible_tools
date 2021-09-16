@@ -11,7 +11,7 @@
 
 - name: Unconditionally reboot the machine with all defaults
   reboot:
-    post_reboot_delay: 180
+    post_reboot_delay: 60
     
 - name: Check the uptime after reboot
   shell: uptime
