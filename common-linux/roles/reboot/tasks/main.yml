@@ -2,19 +2,27 @@
 - name: Check the uptime
   shell: uptime
   register: UPTIME_PRE_REBOOT
+  become: yes
+  ignore_errors: yes
 
 - debug: msg={{UPTIME_PRE_REBOOT.stdout}}
 
 - name: Stop docker containers
   shell: |
     docker stop $(docker ps -aq)
+  become: yes
+  ignore_errors: yes
 
 - name: Unconditionally reboot the machine with all defaults
   reboot:
     post_reboot_delay: 60
+  become: yes
+  ignore_errors: yes
     
 - name: Check the uptime after reboot
   shell: uptime
   register: UPTIME_POST_REBOOT
+  become: yes
+  ignore_errors: yes
 
 - debug: msg={{UPTIME_POST_REBOOT.stdout}}
