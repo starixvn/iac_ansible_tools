@@ -142,6 +142,7 @@ luminet_ports_uat:
 luminet_ports_prod:
   [
     { "published": 80, "target": 80, "mode": "ingress" },
+    { "published": 8088, "target": 8088, "mode": "host" },
     { "published": 8888, "target": 8888, "mode": "ingress" },
     { "published": 8889, "target": 8889, "mode": "ingress" },
     { "published": 8100, "target": 8100, "mode": "ingress" },
