@@ -1,14 +1,13 @@
 version: '3.7'
 
 secrets:
-
   # Find your registration token at: "Your project" > "Settings" > "CI/CD" > "Runners settings" > "Specific Runners" (look for registration token)
   # Register it as `GITLAB_REGISTRATION_TOKEN`: `docker secret create GITLAB_REGISTRATION_TOKEN YOUR_REGISTRATION_TOKEN`
-  GITLAB_REGISTRATION_TOKEN: VscxAqFvRVcXgpyoBDD_
+  GITLAB_REGISTRATION_TOKEN: # echo "VscxAqFvRVcXgpyoBDD_" | docker secret create GITLAB_REGISTRATION_TOKEN -
     external: true
   # Find your personal access token at: "Your user account" > "Settings" > "Access Tokens" > "Create personal access token" (for api)
   # Register it as `GITLAB_PERSONAL_ACCESS_TOKEN`: `docker secret create GITLAB_PERSONAL_ACCESS_TOKEN <YOUR ACCESS TOKEN>`
-  GITLAB_PERSONAL_ACCESS_TOKEN: 2xAEGeNEePnrFj3wdgz7 
+  GITLAB_PERSONAL_ACCESS_TOKEN: # echo "2xAEGeNEePnrFj3wdgz7" | docker secret create GITLAB_PERSONAL_ACCESS_TOKEN -
   #gitlab-runner - rocketor.vn
     external: true
 
