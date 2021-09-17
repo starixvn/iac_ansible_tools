@@ -1,10 +1,10 @@
 ---
-- hosts: swarm_leader
+- hosts: all
   roles:
     - role: init
   tags: init-ftpd
 
-- hosts: swarm_leader
+- hosts: all
   roles:
     - role: update
   tags: update-ftpd
