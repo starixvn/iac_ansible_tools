@@ -1,0 +1,28 @@
+---
+- name: Create working directory
+  file:
+    path: "{{ working_directory }}"
+    state: directory
+    mode: "0777"
+  become: yes
+
+- name: Create conf directory
+  file:
+    path: "{{ working_directory }}/{{ item }}"
+    state: directory
+    mode: "0777"
+  become: yes
+  with_items:
+    - data
+    - configs
+
+- name: cp docker-compose file
+  template:
+    src: "templates/{{ item }}.j2"
+    dest: "{{ working_directory }}/{{ item }}"
+  with_items:
+    - docker-compose.yml
+
+- name: Deploy Gitlab Runner
+  shell: |
+    docker stack deploy -c {{working_directory}}/docker-compose.yml {{stack}} --with-registry-auth
