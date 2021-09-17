@@ -20,10 +20,10 @@ services:
       - CONCURRENT=8
       - REGISTER_LOCKED=1
       - REGISTER_NON_INTERACTIVE=1
-      - RUNNER_EXECUTOR=nexcel-docker-runner
+      - RUNNER_EXECUTOR=docker
       - DOCKER_IMAGE=registry.nexdev.net:5050/docker/docker-engine/docker:20.10.7 #docker
       - DOCKER_VOLUMES=/var/run/docker.sock:/var/run/docker.sock
-      - RUNNER_NAME=docker
+      - RUNNER_NAME=nexcel-docker-runner
       - API_URL=https://gitlab.nexdev.net/api/v4
       - CI_SERVER_URL=https://gitlab.nexdev.net/ci
     entrypoint: "bash"
