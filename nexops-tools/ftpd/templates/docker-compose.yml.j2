@@ -12,6 +12,10 @@ services:
             - "/var/www/gluster/web/ftpd/data/olympus:/home/ftpusers/olympus"
         working_dir: /home/
         restart: always
+        logging:
+            driver: "json-file"
+            options:
+              max-size: "200m"
         deploy:
           placement:
             constraints:
