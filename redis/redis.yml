@@ -1,5 +1,5 @@
 ---
-- hosts: nexops
+- hosts: all
   roles:
     - role: create-redis-single-node
       tags: create-redis-single-node
