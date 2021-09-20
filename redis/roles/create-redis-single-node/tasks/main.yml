@@ -24,7 +24,7 @@
   when: inventory_hostname in groups['swarm_managers']
   template:
     src: 'templates/docker-compose.yml.j2'
-    dest: {{gluster_path}}/redis/stack/redis-stack.yml
+    dest: '{{gluster_path}}/redis/stack/redis-stack.yml'
   become: yes
 
 - name: Build up and run container
