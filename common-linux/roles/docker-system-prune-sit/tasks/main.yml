@@ -1,0 +1,12 @@
+- name: Prune images
+  shell: |
+    docker image prune --all -f --filter "until=120h"
+    docker builder prune --all -f
+  become: yes
+  ignore_errors: yes
+
+- name: Removes the specified configs from the swarm
+  shell: |
+    docker config rm $(docker config ls)
+  become: yes
+  ignore_errors: yes

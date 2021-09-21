@@ -55,6 +55,11 @@
 
 - hosts: all
   roles:
+    - docker-system-prune-sit
+  tags: docker-system-prune-sit
+
+- hosts: all
+  roles:
     - docker-system-prune-prod
   tags: docker-system-prune-prod
 
