@@ -10,3 +10,7 @@
     line="{{ ansible_default_ipv4.address }} {{ hostname }}"
   ignore_errors: true
   become: yes
+
+- name: Print hostname
+  debug:
+    msg: "{{ hostname }}"
