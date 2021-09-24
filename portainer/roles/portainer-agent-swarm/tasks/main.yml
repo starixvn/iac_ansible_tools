@@ -16,5 +16,5 @@
   when: inventory_hostname == groups['swarm_managers'][0]
   shell: |
     cd /home/{{ansible_user}}/stacks
-    docker stack deploy --compose-file=portainer-agent-stack.yml portainer
+    docker stack deploy --compose-file=portainer-agent-stack.yml portainer  --with-registry-auth
   become: yes
