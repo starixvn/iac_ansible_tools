@@ -56,7 +56,8 @@
   become: true
   apt:
     state: present
-    update_cache: yes
+    update_cache: no
+    #update_cache: yes
     #upgrade: yes
     pkg:
       - python3-pip
