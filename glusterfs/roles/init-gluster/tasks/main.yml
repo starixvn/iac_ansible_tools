@@ -26,7 +26,8 @@
   ignore_errors: yes
 
 - name: Install GlusterFS
-  apt: name={{ item }} state=latest update_cache=yes
+  #apt: name={{ item }} state=latest update_cache=yes
+  apt: name={{ item }} state=latest update_cache=no
   with_items:
     - glusterfs-server
     - glusterfs-common
