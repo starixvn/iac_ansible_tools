@@ -4,6 +4,12 @@
     dest: /var/ci-scripts/{{repo_name}}/gitlab-ci.yml
   become: yes
 
+- name: Build gitlab-ci-mixing.yml
+  template:
+    src: templates/docker-swarm/gitlab-ci-mixing.yml.j2
+    dest: /var/ci-scripts/{{repo_name}}/gitlab-ci-mixing.yml
+  become: yes
+
 - name: Create .gitlab-ci directory for each service
   file:
     path: /var/ci-scripts/{{repo_name}}/.gitlab-ci/{{item.name | replace('-','_')}}
