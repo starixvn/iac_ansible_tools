@@ -14,7 +14,7 @@ UserParameter=apppoolworker.state[*],powershell -NoProfile -ExecutionPolicy Bypa
 #UserParameter=pool.state[*],powershell -NoProfile -ExecutionPolicy Bypass -File {{path_install}}\zabbix_agent\get_poolstate.ps1 "$1"
 {%endif%}
 #================================ General ===================================== 
-
+Timeout=30
 # LogFile
 LogFile={{LogFile}}
 # DebugLevel=3
