@@ -10,6 +10,7 @@ UserParameter=site.discovery,powershell -NoProfile -ExecutionPolicy Bypass -File
 UserParameter=site.state[*],powershell -NoProfile -ExecutionPolicy Bypass -File {{path_install}}\zabbix_agent\get_sitestate.ps1 "$1"
 UserParameter=apppoolworker.discovery,powershell -NoProfile -ExecutionPolicy Bypass -File "{{path_install}}\zabbix_agent\get_apppool_worker.ps1"
 UserParameter=apppoolworker.state[*],powershell -NoProfile -ExecutionPolicy Bypass -File {{path_install}}\zabbix_agent\get_apppool_worker_state.ps1 "$1"
+UserParameter=apppoolworker_cpu.discovery,powershell -NoProfile -ExecutionPolicy Bypass -File {{path_install}}\zabbix_agent\get_apppool_worker_cpu_state.ps1
 #UserParameter=pool.discovery,powershell -NoProfile -ExecutionPolicy Bypass -File "{{path_install}}\zabbix_agent\get_pool.ps1"
 #UserParameter=pool.state[*],powershell -NoProfile -ExecutionPolicy Bypass -File {{path_install}}\zabbix_agent\get_poolstate.ps1 "$1"
 {%endif%}
@@ -29,4 +30,3 @@ ServerActive={{ServerActive}}
 
 # Hostname
 Hostname={{ ansible_hostname }}
-Timeout=30
