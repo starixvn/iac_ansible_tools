@@ -7,23 +7,23 @@
 
 - debug: msg={{UPTIME_PRE_REBOOT.stdout}}
 
-- name: Stop docker containers
+- name: Stop docker service
   shell: |
     systemctl stop docker
     systemctl stop docker.socket
   become: yes
   ignore_errors: yes
 
-#- name: Unconditionally reboot the machine with all defaults
-  #reboot:
-    #post_reboot_delay: 120
-  #become: yes
-  #ignore_errors: yes
+- name: Unconditionally reboot the machine with all defaults
+  reboot:
+    post_reboot_delay: 120
+  become: yes
+  ignore_errors: yes
     
-#- name: Check the uptime after reboot
-  #shell: uptime
-  #register: UPTIME_POST_REBOOT
-  #become: yes
-  #ignore_errors: yes
+- name: Check the uptime after reboot
+  shell: uptime
+  register: UPTIME_POST_REBOOT
+  become: yes
+  ignore_errors: yes
 
-#- debug: msg={{UPTIME_POST_REBOOT.stdout}}
+- debug: msg={{UPTIME_POST_REBOOT.stdout}}
