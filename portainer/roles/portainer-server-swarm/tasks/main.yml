@@ -14,9 +14,10 @@
 
 - name: Create network
   docker_network:
-    name: "{{swarm_network_nexops}}"
+    name: "{{item}}"
     driver: "overlay"
     attachable: true
+  with_items: '{{swarm_network_nexops}}'
   ignore_errors: yes
   become: yes
 

@@ -12,6 +12,15 @@
     dest: /home/{{ansible_user}}/stacks/portainer-agent-stack.yml
   become: yes
 
+- name: Create network
+  docker_network:
+    name: "{{item}}"
+    driver: "overlay"
+    attachable: true
+  with_items: '{{swarm_network_nexops}}'
+  ignore_errors: yes
+  become: yes
+  
 - name: Build up and run container
   when: inventory_hostname == groups['swarm_managers'][0]
   shell: |
