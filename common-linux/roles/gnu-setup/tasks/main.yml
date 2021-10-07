@@ -4,6 +4,7 @@
     - gnupg2
     - pass
   become: yes
+  ignore_errors: true
 
 - name: Generate full key
   shell: |
@@ -25,6 +26,7 @@
     EOF
     gpg2 --batch --generate-key foo
   become: yes
+  ignore_errors: true
 
 - name: Grant docker permission
   shell: chmod -R 666 /var/run/docker.sock
