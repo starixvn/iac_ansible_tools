@@ -1,0 +1,20 @@
+if(((Get-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "system.webServer/httpCompression" -Name "dynamicTypes").Collection  | Where-Object { $_.mimeType -eq 'application/json' }).Length -eq 1){
+    Write-Host "'application/json' already configured"
+} else {
+    Add-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST'  -filter "system.webServer/httpCompression/dynamicTypes" -name "." -value @{mimeType='application/json';enabled='True'}
+    Write-Host "'application/json' added successfully"
+}
+if(((Get-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "system.webServer/httpCompression" -Name "dynamicTypes").Collection  | Where-Object { $_.mimeType -eq 'application/x-msgpack' }).Length -eq 1){
+    Write-Host "'application/x-msgpack' already configured"
+} else {
+    Add-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST'  -filter "system.webServer/httpCompression/dynamicTypes" -name "." -value @{mimeType='application/x-msgpack';enabled='True'}
+    Write-Host "'application/x-msgpack' added successfully"
+}
+{% for gzip in gzips %}
+if(((Get-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "system.webServer/httpCompression" -Name "dynamicTypes").Collection  | Where-Object { $_.mimeType -eq '{{gzip.name}}' }).Length -eq 1){
+    Write-Host "'{{gzip.name}}' already configured"
+} else {
+    Add-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST'  -filter "system.webServer/httpCompression/dynamicTypes" -name "." -value @{mimeType='{{gzip.name}}';enabled='True'}
+    Write-Host "'{{gzip.name}}' added successfully"
+}
+{% endfor %}

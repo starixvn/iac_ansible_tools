@@ -52,3 +52,9 @@
     - role: msmq
   tags:
     - ws_msmq
+
+- hosts: all
+  roles:
+    - role: add_gzip
+  tags:
+    - add_gzip
