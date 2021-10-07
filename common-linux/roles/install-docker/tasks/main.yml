@@ -3,7 +3,7 @@
   become: true
   apt:
     state: present
-    update_cache: yes
+    update_cache: no
     pkg:
       - software-properties-common
       - apt-transport-https
@@ -16,7 +16,7 @@
   become: true
   apt:
     state: present
-    update_cache: yes
+    update_cache: no
     pkg:
       - python
       - python-pip
@@ -27,7 +27,7 @@
   become: true
   apt:
     state: present
-    update_cache: yes
+    update_cache: no
     pkg:
       - python3
       - python3-pip
@@ -85,7 +85,7 @@
       - containerd.io
     state: present
     force_apt_get: true
-    update_cache: yes
+    update_cache: no
 
 - name: Add "{{ansible_user}}" user to "docker" group
   become: yes
