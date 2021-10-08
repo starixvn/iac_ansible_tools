@@ -121,7 +121,7 @@ services:
   clean_{{org}}:
     image: registry.nexdev.net:5050/docker/nexops-tools/sentry-clean:9.1.2
     environment: *sentry-environment
-    depends_on:
+    links:
       - redis_{{org}}
     build:
       context: ./cron
