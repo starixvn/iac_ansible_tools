@@ -6,12 +6,15 @@
     mode: '0755'
     state: directory
 
-#- name: Create directory
-#  file:
-#    path: '{{gluster_path}}/redis'
-#    mode: '0755'
-#    state: directory
-#  become: yes
+- name: Verify stacks directory exists (on first swarm node)
+  when: inventory_hostname in groups['swarm_managers']
+  file:
+    path: '{{gluster_path}}/{{item}}'
+    mode: '0777'
+    state: directory
+  with_items:
+    - data
+    - logs
 
 - name: Create network
   docker_network:
