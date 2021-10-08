@@ -1,18 +1,22 @@
 version: "3"
 services:
   redis:
-    image: registry.nexdev.net:5050/docker/database/redis:6.2-rc
+    image: registry.nexdev.net:5050/docker/database/redis:{{redis_version | default ('5')}}
     ports:
-      - "16379:6379"
+      - "{{external_port | default ('16379')}}:6379"
     volumes:
-      - data:/data
+      - ./redis.conf:/etc/redis/redis.conf
+      - ./data:/data
+      - ./log:/var/tmp/
+      - /etc/localtime:/etc/localtime:ro
+
     deploy:
       #mode: global
       mode: replicated
       replicas: 1
       placement:
         constraints:
-          - node.labels.NEXOPS_LOW_STORAGE == yes
+          - node.labels.{{node_label | default ('NEXOPS_LOW_STORAGE')}} == yes
     command: redis-server --appendonly yes
     networks:
       - {{swarm_network_nexops}}
@@ -20,10 +24,3 @@ services:
 networks:
   {{swarm_network_nexops}}:
      external: true
-
-volumes:
-  data:
-    driver_opts:
-      o: bind
-      type: none
-      device: {{gluster_path}}/redis
