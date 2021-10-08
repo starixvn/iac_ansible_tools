@@ -17,8 +17,8 @@ services:
       placement:
         constraints:
           - node.labels.{{node_label | default ('NEXOPS_LOW_STORAGE')}} == yes
-    #command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
-    command: redis-server --appendonly yes
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+    #command: redis-server --appendonly yes
     networks:
       - {{swarm_network_nexops}}
 
