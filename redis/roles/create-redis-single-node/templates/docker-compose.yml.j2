@@ -1,6 +1,6 @@
 version: "3"
 services:
-  redis_{{name}}:
+  {{redis_name | default ('redis')}}:
     image: registry.nexdev.net:5050/docker/database/redis:{{redis_version | default ('5')}}
     ports:
       - "{{external_port | default ('13379')}}:6379"
