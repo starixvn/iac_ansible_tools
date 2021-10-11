@@ -1,0 +1,11 @@
+---
+- name: Reset index of SonarQube
+  hosts: nexops_high_storage
+
+  vars:
+    es_folder: /var/www/gluster/nexops/sonarqube/web/data/es6
+    service_name: sonar_web
+
+  roles:
+    - role: reset_index
+      when: inventory_hostname in groups['gluster_leader']

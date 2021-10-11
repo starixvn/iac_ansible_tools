@@ -1,0 +1,20 @@
+---
+- name: Stop Sonar
+  docker_swarm_service:
+    name: "{{service_name}}"
+    replicas: 0
+
+- name: Sleep for 30 seconds
+  wait_for:
+    timeout: 60
+  delegate_to: localhost
+
+- name: Delete es6 folder
+  file:
+    path: "{{es_folder}}"
+    state: absent
+
+- name: Start Sonar
+  docker_swarm_service:
+    name: "{{service_name}}"
+    replicas: 1
