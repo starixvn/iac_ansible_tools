@@ -7,7 +7,7 @@ services:
     volumes:
       - ./redis.conf:/etc/redis/redis.conf
       - ./data:/data
-      - ./logs:/var/tmp/
+      - ./logs:/var/log/redis/
       - /etc/localtime:/etc/localtime:ro
     sysctls:
       - net.core.somaxconn=65365
