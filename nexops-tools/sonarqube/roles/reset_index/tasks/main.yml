@@ -1,13 +1,10 @@
 ---
 - name: Stop Sonar
-  docker_swarm_service:
-    name: "{{service_name}}"
-    image: registry.nexdev.net:5050/docker/nexops-tools/sonarqube:8.4.2-community
-    replicas: 0
+  ansible.builtin.shell: docker service update --replicas=0 {{service_name}}
 
 - name: Sleep for 30 seconds
   wait_for:
-    timeout: 60
+    timeout: 30
   delegate_to: localhost
 
 - name: Delete es6 folder
@@ -16,7 +13,4 @@
     state: absent
 
 - name: Start Sonar
-  docker_swarm_service:
-    name: "{{service_name}}"
-    image: registry.nexdev.net:5050/docker/nexops-tools/sonarqube:8.4.2-community
-    replicas: 1
+  ansible.builtin.shell: docker service update --replicas=1 {{service_name}}
