@@ -1,6 +1,6 @@
 ---
 - name: Stop Sonar
-  ansible.builtin.shell: docker service update --replicas=0 {{service_name}}
+  shell: docker service update --replicas=0 {{service_name}}
 
 - name: Sleep for 30 seconds
   wait_for:
@@ -13,4 +13,4 @@
     state: absent
 
 - name: Start Sonar
-  ansible.builtin.shell: docker service update --replicas=1 {{service_name}}
+  shell: docker service update --replicas=1 {{service_name}}
