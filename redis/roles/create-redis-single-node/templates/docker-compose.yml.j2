@@ -25,9 +25,13 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+{% if network_mode is defined and network_mode == "host"%}
+    network_mode: bridge
+{% else %}
     networks:
       - {{swarm_network_nexops}}
 
 networks:
   {{swarm_network_nexops}}:
      external: true
+{% endif %}
