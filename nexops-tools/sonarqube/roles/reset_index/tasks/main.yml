@@ -2,6 +2,7 @@
 - name: Stop Sonar
   docker_swarm_service:
     name: "{{service_name}}"
+    image: registry.nexdev.net:5050/docker/nexops-tools/sonarqube:8.4.2-community
     replicas: 0
 
 - name: Sleep for 30 seconds
@@ -17,4 +18,5 @@
 - name: Start Sonar
   docker_swarm_service:
     name: "{{service_name}}"
+    image: registry.nexdev.net:5050/docker/nexops-tools/sonarqube:8.4.2-community
     replicas: 1
