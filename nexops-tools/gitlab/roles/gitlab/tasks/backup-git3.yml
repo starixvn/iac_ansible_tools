@@ -9,3 +9,8 @@
     latest_file=$(ls -t {{ backup_server_path }}| head -n 1)
     scp -P{{ restore_server_sshport }} {{ backup_server_path }}/$latest_file root@{{ restore_server }}:{{ restore_server_path }}
   become: yes
+
+- name: Copy config file to restore_server
+  shell: |
+    scp -P{{ restore_server_sshport }} {{ backup_server_path_config }}/gitlab-secrets.json root@{{ restore_server }}:{{ restore_server_path_config }}
+  become: yes
