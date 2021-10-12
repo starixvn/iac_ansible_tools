@@ -2,9 +2,9 @@
 - name: Stop Sonar
   shell: docker service update --replicas=0 {{service_name}}
 
-- name: Sleep for 30 seconds
+- name: Sleep for 15 seconds
   wait_for:
-    timeout: 30
+    timeout: 15
   delegate_to: localhost
 
 - name: Delete es6 folder
