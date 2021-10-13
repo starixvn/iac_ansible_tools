@@ -5,6 +5,7 @@
     path: '{{gluster_path}}'
     mode: '0755'
     state: directory
+  become: yes
 
 - name: Verify stacks directory exists (on first swarm node)
   when: inventory_hostname in groups['swarm_managers']
@@ -15,6 +16,7 @@
   with_items:
     - data
     - logs
+  become: yes
 
 - name: Create network
   docker_network:
