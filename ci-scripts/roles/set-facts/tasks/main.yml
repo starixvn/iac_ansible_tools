@@ -6,6 +6,7 @@
     registry_url: registry.nexdev.net
     registry_group_id: 7 #nexcel
     registry_token: "2QzE921_HxHXfRgE_Tgd"
+    registry_project_path: "{{services[0].docker_image_registry_path | replace('nexcel/') | urlencode}}"
   when: team_name != "nex3" and team_name != "pentagon"
   become: yes
 

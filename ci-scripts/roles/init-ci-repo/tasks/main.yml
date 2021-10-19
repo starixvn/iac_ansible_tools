@@ -24,13 +24,13 @@
     status_code: 201
   ignore_errors: yes
 
-- name: Create Built Image Repo {{item.0.docker_image_registry_path}}
+- name: Create Built Image Repo {{services[0].docker_image_registry_path}}
   uri:
     url: https://{{registry_url}}/api/v4/projects/
     headers:
       PRIVATE-TOKEN: '{{registry_token}}'
       Content-Type: 'application/json'
-    body: '{"namespace_id": "{{registry_group_id}}", "path": "{{ item.0.docker_image_registry_path | regex_replace('nexcel/') | urlencode }}",  "repository_access_level": "enabled", "visibility": "public"}'
+    body: '{"namespace_id": "{{registry_group_id}}", "path": "{{registry_project_path}}",  "repository_access_level": "enabled", "visibility": "public"}'
     body_format: json
     method: POST
     status_code: 201
@@ -38,4 +38,3 @@
   until:
   ignore_errors: yes
   when: team_name != "nex3" and team_name != "pentagon"
-  with_items: '{{services}}'
