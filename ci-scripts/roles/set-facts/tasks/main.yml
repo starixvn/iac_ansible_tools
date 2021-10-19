@@ -3,6 +3,9 @@
     ci_group_name: "others"
     repo_ci_group_id: 416
     gitlab_url: gitlab.nexdev.net
+    registry_url: registry.nexdev.net
+    registry_group_id: 7 #nexcel
+    registry_token: "2QzE921_HxHXfRgE_Tgd"
   when: team_name != "nex3" and team_name != "pentagon"
   become: yes
 
