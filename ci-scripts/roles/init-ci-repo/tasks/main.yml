@@ -30,7 +30,7 @@
     headers:
       PRIVATE-TOKEN: '{{registry_token}}'
       Content-Type: 'application/json'
-    body: '{"namespace_id": "{{registry_group_id}}", "path": "{{registry_project_path}}",  "repository_access_level": "enabled", "visibility": "public"}'
+    body: '{"namespace_id": "{{registry_group_id}}", "path": "{{registry_project}}",  "repository_access_level": "enabled", "visibility": "public"}'
     body_format: json
     method: POST
     status_code: 201
