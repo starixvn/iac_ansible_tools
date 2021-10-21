@@ -24,11 +24,11 @@
 - name: Copy docker-compose file
   template:
     src: "templates/influshdb-docker-compose.yml.j2"
-    dest: /home/{{ansible_user}}/stacks/{{stack_name}}_db.yml
+    dest: /{{gluster_path}}/{{team_path}}/{{stack_name}}_db.yml
   become: yes
 
 - name: Build up and run container
   shell: |
-    cd /home/{{ansible_user}}/stacks
+    cd /{{gluster_path}}/{{team_path}}
     docker stack deploy --compose-file={{stack_name}}_db.yml {{stack_name}}
   become: yes
