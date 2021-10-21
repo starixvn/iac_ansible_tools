@@ -52,6 +52,7 @@ nexcel_ports_prod:
     { "published": 7516, "target": 7516, "mode": "ingress" },
     { "published": 7515, "target": 7515, "mode": "ingress" },
     { "published": 7519, "target": 7519, "mode": "ingress" },
+    { "published": 9009, "target": 9009, "mode": "host" },
   ]
 
 nexcel_ports_aws:
