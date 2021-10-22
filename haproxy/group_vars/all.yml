@@ -9,7 +9,9 @@ image_config_path: /usr/local/etc/haproxy
 nexcel_ports_local:
   [
     { "published": 80, "target": 80, "mode": "host" },
+    { "published": 88, "target": 88, "mode": "ingress" },
     { "published": 443, "target": 443, "mode": "host" },
+    { "published": 8443, "target": 8443, "mode": "host" },
     { "published": 8001, "target": 8001, "mode": "ingress" },
     { "published": 7270, "target": 7270, "mode": "ingress" },
   ]
