@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 {% set ContainerID = "{{ .Status.ContainerStatus.ContainerID }}" %}
-docker inspect $(docker service ps -q --filter desired-state=running {{stack}}_web_{{org}}) --format "{{ ContainerID }}"
+docker inspect $(docker service ps -q --filter desired-state=running {{servicename}}) {{stack}}_postgres_starix_{{env}} --format "{{ ContainerID }}"
