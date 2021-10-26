@@ -12,9 +12,9 @@ services:
     sysctls:
       - net.core.somaxconn=65365
     deploy:
-      #mode: global
-      mode: replicated
-      replicas: 1
+      mode: global
+      #mode: replicated
+      #replicas: 1
       placement:
         constraints:
           - node.labels.{{node_label | default ('NEXOPS_LOW_STORAGE')}} == yes
