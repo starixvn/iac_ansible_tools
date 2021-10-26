@@ -33,6 +33,10 @@
 - name: remove old backup Sentry
   shell: |
     find {{backup_path | default ('/tmp')}}/ -mtime +7 -exec rm {} \;
+  become: yes
+
+- name: remove old backup Sentry remote
+  shell: |
     ssh -p{{backup_server_sshport}} root@{{backup_nexops_server}} "find {{backup_path}}/sentry/ -mtime +7 -exec rm {} \;"
   become: yes
   ignore_errors: yes
