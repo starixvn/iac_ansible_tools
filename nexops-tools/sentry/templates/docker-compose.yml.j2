@@ -121,8 +121,10 @@ services:
   clean_{{org}}:
     image: registry.nexdev.net:5050/docker/nexops-tools/sentry-clean:9.1.2
     #environment: *sentry-environment
-    #depends_on:
-    #  - redis_{{org}}
+    environment:
+      SENTRY_REDIS_HOST: redis_{{org}}
+      SENTRY_POSTGRES_HOST: postgres_{{org}}
+      SENTRY_SECRET_KEY: "ZDFvdmcjZnZob2lzbC01cWQpd2ZnM2owcjErLW44Kz1AbmNpaz10YzFkQF5AOHpmazMK"
     build:
       context: ./cron
     restart: unless-stopped
