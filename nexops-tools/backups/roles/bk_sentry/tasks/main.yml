@@ -16,6 +16,7 @@
 - name: backup sentry # _{{env}}_{{org}}-`date +%Y-%m-%d`.sql
   shell: |
     cd {{backup_path}}
+    chmod 777 sentry-container-id.sh
     docker exec $(./sentry-container-id.sh) pg_dump -h {{item.server}} -p {{item.port}} -U {{db_user}} -W {{ sentry_custom_table | default('')}} -t auth_user -t auth_group -t auth_authenticator -t django_content_type -t contenttypes_contenttype -t sites_site -t sentry_email -t sentry_option -t sentry_repository -t sentry_user -t sentry_useremail -t sentry_userip -t south_migrationhistory -t auth_permission -t sentry_recentsearch -t sentry_team -t sentry_project -t sentry_projectoptions -t sentry_projectteam -t sentry_organizationmember_teams -t sentry_organizationmember -t sentry_counter -t sentry_projectbookmark -t sentry_projectkey -t sentry_projectoption -t sentry_rule -t sentry_savedsearch -t sentry_useroption -d {{db_name}} > {{backup_path | default ('/tmp')}}/sentry_{{item.env}}_{{item.org}}-`date +%Y-%m-%d`.sql
   #docker exec {{container_backup | default('sentry-db')}} 
   become: yes
