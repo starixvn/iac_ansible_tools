@@ -74,8 +74,8 @@
 - name: Upgrade sentry and craete Admin user sentry {{org}} ...
   shell: |
     cd {{ working_directory }}
-    docker exec -it $(./sentry-container-id.sh) sentry upgrade --noinput
-    docker exec -it $(./sentry-container-id.sh) sentry createuser \
+    docker exec $(./sentry-container-id.sh) sentry upgrade --noinput
+    docker exec $(./sentry-container-id.sh) sentry createuser \
     --email {{admin_email}} \
     --password {{password_admin_email}} \
     --superuser --no-input > /dev/null
