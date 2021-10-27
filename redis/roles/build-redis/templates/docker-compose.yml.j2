@@ -5,6 +5,6 @@ services:
     build:
       context: ./
       dockerfile: ./Dockerfile
-    ports:
-      - "{{internal_port | default ('6379')}}:6379"
+    #ports:
+    #  - "{{internal_port | default ('6379')}}:6379"
       #- "${REDIS_MASTER_PORT:-6379}:6379"
