@@ -14,6 +14,10 @@ nexcel_ports_local:
     { "published": 8443, "target": 8443, "mode": "host" },
     { "published": 8001, "target": 8001, "mode": "ingress" },
     { "published": 7270, "target": 7270, "mode": "ingress" },
+    { "published": 6341, "target": 6341, "mode": "ingress" },
+    { "published": 6342, "target": 6342, "mode": "ingress" },
+    { "published": 6344, "target": 6344, "mode": "ingress" },
+    { "published": 6345, "target": 6345, "mode": "ingress" },
   ]
 
 nexcel_ports_sit: [
