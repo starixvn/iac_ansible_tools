@@ -3,3 +3,5 @@
   roles:
     - role: create-redis-single-node
       tags: create-redis-single-node
+    - role: create-redis-single-swarm
+      tags: create-redis-single-swarm
