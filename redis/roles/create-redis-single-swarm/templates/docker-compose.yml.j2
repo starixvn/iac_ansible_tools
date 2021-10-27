@@ -9,8 +9,8 @@ services:
       - ./data:/data
       - ./logs:/var/log/redis/
       - /etc/localtime:/etc/localtime:ro
-    sysctls:
-      - net.core.somaxconn=65365
+    #sysctls:
+    #  - net.core.somaxconn=65365
     deploy:
       mode: global
       #mode: replicated
