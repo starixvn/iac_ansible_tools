@@ -20,5 +20,5 @@
   shell: |
     cd {{gluster_path}}/redis
     docker-compose build
-#    docker-compose push
+    docker-compose push
   become: yes
