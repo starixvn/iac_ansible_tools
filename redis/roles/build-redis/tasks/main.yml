@@ -5,7 +5,7 @@
     mode: '0777'
     state: directory
   with_items:
-    - build
+    - redis
   become: yes
 
 - name: Copy docker files
@@ -20,7 +20,7 @@
 
 - name: Build image
   shell: |
-    cd {{gluster_path}}
+    cd {{gluster_path}}/{{item}}
     docker-compose build
 #    docker-compose push
   become: yes
