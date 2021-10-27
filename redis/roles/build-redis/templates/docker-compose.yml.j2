@@ -4,7 +4,7 @@ services:
     image: registry.nexdev.net:5050/docker/database/redis_{{internal_port | default ('6379')}}:{{redis_version | default ('5.0.10')}}
     build:
       context: ./
-      dockerfile: ./Dockerfile.yml
+      dockerfile: ./Dockerfile
     #ports:
     #  - "6388:6379"
       #- "${REDIS_MASTER_PORT:-6379}:6379"
