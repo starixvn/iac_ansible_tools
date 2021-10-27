@@ -3,7 +3,7 @@
   uri:
     url: https://{{registry_url}}/api/v4/projects/
     headers:
-      #PRIVATE-TOKEN: '{{registry_token}}'
+      PRIVATE-TOKEN: '{{registry_token}}'
       Content-Type: 'application/json'
     body: >
       {
