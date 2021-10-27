@@ -3,3 +3,8 @@
   tasks:
     - import_role:
         name: gitlab
+
+- hosts: all
+  tasks:
+    - import_role:
+        name: gitlab-clean_up

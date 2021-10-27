@@ -1,0 +1,25 @@
+---
+- name: Edit policy clean up Image Repo {{services[0].docker_image_registry_path}}
+  uri:
+    url: https://{{registry_url}}/api/v4/projects/
+    headers:
+      #PRIVATE-TOKEN: '{{registry_token}}'
+      Content-Type: 'application/json'
+    body: >
+      {
+        "container_expiration_policy_attributes": {
+          "cadence": "1d",
+          "enabled": true,
+          "keep_n": 10,
+          "older_than": "7d",
+          "name_regex": ".*",
+          "name_regex_keep" : "(builder|LOCAL.*|SIT.*|UAT.*|PROD.*|AWS.*)"
+        }
+      }
+    body_format: json
+    method: PUT
+    status_code: 201
+  register: result
+  until:
+  ignore_errors: yes
+  when: team_name != "nex3" and team_name != "pentagon"
