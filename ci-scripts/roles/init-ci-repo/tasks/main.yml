@@ -39,9 +39,11 @@
         "container_expiration_policy_attributes": {
           "cadence": "1d",
           "enabled": true,
-          "keep_n": 5,
+          "keep_n": 10,
           "older_than": "7d",
-          "name_regex": ".*"
+          "name_regex": "",
+          "name_regex_delete": ".*",
+          "name_regex_keep": "(builder|LOCAL.*|SIT.*|UAT.*|PROD.*|AWS.*)"
         }
       }
     body_format: json
