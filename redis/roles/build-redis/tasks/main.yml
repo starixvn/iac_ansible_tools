@@ -20,7 +20,7 @@
 
 - name: Build image
   shell: |
-    cd {{gluster_path}}/{{item}}
+    cd {{gluster_path}}/redis
     docker-compose build
 #    docker-compose push
   become: yes
