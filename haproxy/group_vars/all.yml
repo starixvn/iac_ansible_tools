@@ -25,6 +25,10 @@ nexcel_ports_sit: [
     { "published": 7680, "target": 7680, "mode": "host" }, 
     { "published": 8088, "target": 8088, "mode": "host" }, 
     { "published": 22222, "target": 22222, "mode": "ingress" }
+    { "published": 6341, "target": 6341, "mode": "ingress" },
+    { "published": 6342, "target": 6342, "mode": "ingress" },
+    { "published": 6344, "target": 6344, "mode": "ingress" },
+    { "published": 6345, "target": 6345, "mode": "ingress" },
   ]
 
 nexcel_ports_uat:
@@ -48,6 +52,10 @@ nexcel_ports_uat:
     { "published": 8100, "target": 8100, "mode": "host" },
     { "published": 8080, "target": 8080, "mode": "ingress" },
     { "published": 7680, "target": 7680, "mode": "ingress" },
+    { "published": 6341, "target": 6341, "mode": "ingress" },
+    { "published": 6342, "target": 6342, "mode": "ingress" },
+    { "published": 6344, "target": 6344, "mode": "ingress" },
+    { "published": 6345, "target": 6345, "mode": "ingress" },
   ]
 
 nexcel_ports_prod:
@@ -59,6 +67,10 @@ nexcel_ports_prod:
     { "published": 7515, "target": 7515, "mode": "ingress" },
     { "published": 7519, "target": 7519, "mode": "ingress" },
     { "published": 9009, "target": 9009, "mode": "host" },
+    { "published": 6341, "target": 6341, "mode": "ingress" },
+    { "published": 6342, "target": 6342, "mode": "ingress" },
+    { "published": 6344, "target": 6344, "mode": "ingress" },
+    { "published": 6345, "target": 6345, "mode": "ingress" },
   ]
 
 nexcel_ports_aws:
@@ -74,6 +86,10 @@ nexcel_ports_aws:
     { "published": 1710, "target": 1710, "mode": "ingress" },
     { "published": 5672, "target": 5672, "mode": "ingress" },
     { "published": 8585, "target": 8585, "mode": "ingress" },
+    { "published": 6341, "target": 6341, "mode": "ingress" },
+    { "published": 6342, "target": 6342, "mode": "ingress" },
+    { "published": 6344, "target": 6344, "mode": "ingress" },
+    { "published": 6345, "target": 6345, "mode": "ingress" },
   ]
 
 nexcel_ports_prod-nex3:
