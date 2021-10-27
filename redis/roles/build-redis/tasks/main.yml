@@ -14,9 +14,9 @@
     dest: "{{gluster_path}}/{{item}}"
   become: yes
   with_items:
-    - docker-compose.yml.j2
-    - redis.conf.j2
-    - Dockerfile.j2
+    - docker-compose.yml
+    - redis.conf
+    - Dockerfile
 
 - name: Build image
   shell: |
