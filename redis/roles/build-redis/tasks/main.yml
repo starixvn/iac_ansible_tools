@@ -1,17 +1,15 @@
 ---
 - name: Verify directory exists
   file:
-    path: '{{gluster_path}}/{{item}}'
+    path: '{{gluster_path}}/redis'
     mode: '0777'
     state: directory
-  with_items:
-    - redis
   become: yes
 
 - name: Copy docker files
   template:
     src: "templates/{{item}}.j2"
-    dest: "{{gluster_path}}/{{item}}"
+    dest: "{{gluster_path}}/redis/{{item}}"
   become: yes
   with_items:
     - docker-compose.yml
