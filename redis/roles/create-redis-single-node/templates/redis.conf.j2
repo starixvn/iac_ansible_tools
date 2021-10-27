@@ -1,5 +1,5 @@
 protected-mode no
-port 6321
+port {{internal_port | default ('6379')}}
 tcp-backlog 65536
 timeout 300
 tcp-keepalive 0
