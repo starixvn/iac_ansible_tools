@@ -24,7 +24,7 @@ nexcel_ports_sit: [
     { "published": 80, "target": 80, "mode": "ingress" }, 
     { "published": 7680, "target": 7680, "mode": "host" }, 
     { "published": 8088, "target": 8088, "mode": "host" }, 
-    { "published": 22222, "target": 22222, "mode": "ingress" }
+    { "published": 22222, "target": 22222, "mode": "ingress" },
     { "published": 6341, "target": 6341, "mode": "ingress" },
     { "published": 6342, "target": 6342, "mode": "ingress" },
     { "published": 6344, "target": 6344, "mode": "ingress" },
