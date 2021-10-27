@@ -1,0 +1,15 @@
+FROM redis:{{redis_version | default ('5.0.10')}}
+
+#COPY agile-redis-entrypoint.sh /usr/local/bin/
+#COPY redis.conf /etc/redis/
+
+#ENV REDIS_MASTER_PORT=$REDIS_MASTER_PORT_DEPLOY
+
+#RUN chmod +x /usr/local/bin/agile-redis-entrypoint.sh
+
+VOLUME /etc/redis
+COPY redis.conf /etc/redis/
+
+EXPOSE {{internal_port | default ('6379')}}
+
+#ENTRYPOINT ["agile-redis-entrypoint.sh"]

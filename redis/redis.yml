@@ -5,3 +5,5 @@
       tags: create-redis-single-node
     - role: create-redis-single-swarm
       tags: create-redis-single-swarm
+    - role: build-redis
+      tags: build-redis

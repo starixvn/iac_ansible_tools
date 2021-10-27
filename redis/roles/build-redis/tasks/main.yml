@@ -1,0 +1,26 @@
+---
+- name: Verify directory exists
+  file:
+    path: '{{gluster_path}}/{{item}}'
+    mode: '0777'
+    state: directory
+  with_items:
+    - build
+  become: yes
+
+- name: Copy docker files
+  template:
+    src: "templates/{{item}}.j2"
+    dest: "{{gluster_path}}/{{item}}"
+  become: yes
+  with_items:
+    - docker-compose.yml.j2
+    - redis.conf.j2
+    - Dockerfile.j2
+
+- name: Build image
+  shell: |
+    cd {{gluster_path}}
+    docker-compose build
+#    docker-compose push
+  become: yes

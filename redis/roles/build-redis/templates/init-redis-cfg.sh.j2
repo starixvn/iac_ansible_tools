@@ -1,0 +1,15 @@
+#!/bin/bash
+
+CONF_FILE=/etc/redis/redis.conf
+
+if [ ! -f $CONF_FILE ]
+then
+echo "appendonly yes
+requirepass {{requirepass | default('foo1@bared')}}
+masterauth {{masterauth | default('foo1@bared')}}
+port {{internal_port | default ('6379')}}
+maxmemory {{maxmemory | default('2g')}}
+" > $CONF_FILE
+fi
+
+exec docker-entrypoint.sh redis-server /etc/redis/redis.conf
