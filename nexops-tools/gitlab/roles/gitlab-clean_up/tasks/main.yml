@@ -1,7 +1,7 @@
 ---
 - name: Edit policy cleanup Image Repo {{services[0].docker_image_registry_path}}
   uri:
-    url: https://{{registry_url}}/api/v4/projects/
+    url: https://{{registry_url}}/api/v4/projects/{{id}}
     headers:
       PRIVATE-TOKEN: '{{registry_token}}'
       Content-Type: 'application/json'
