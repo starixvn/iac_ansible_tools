@@ -1,5 +1,5 @@
 ---
-- name: Edit policy clean up Image Repo {{services[0].docker_image_registry_path}}
+- name: Edit policy cleanup Image Repo {{services[0].docker_image_registry_path}}
   uri:
     url: https://{{registry_url}}/api/v4/projects/:{{id}}
     headers:
@@ -22,4 +22,4 @@
   register: result
   until:
   ignore_errors: yes
-  when: team_name != "nex3" and team_name != "pentagon"
+  #when: team_name != "nex3" and team_name != "pentagon"
