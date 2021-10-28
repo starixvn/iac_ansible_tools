@@ -27,7 +27,6 @@
     parameters: 'logfile.directory:{{website_path_log}}\{{item.name}}'
   #notify: restart iis service
   with_items: "{{ website }}"
-  ignore_errors: true
 
 - name: Copy template whoami.aspx to websites path
   win_template:

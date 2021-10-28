@@ -17,8 +17,7 @@
       processModel.userName: '{{identity_user}}'
       processModel.password: '{{identity_password}}'
       processModel.loadUserProfile: true
-  when: subpool is not defined
-  ignore_errors: true
+  when: subpool is not defined and identity_user is defined
 
 - name: Creates application pool DefaultUser - {{website_name}}, {{managedRuntimeVersion | default('v4.0')}} {{enable32BitAppOnWin64 | default('true')}}
   win_iis_webapppool:
@@ -28,8 +27,7 @@
       managedRuntimeVersion: "{{managedRuntimeVersion | default('v4.0')}}"
       autoStart: no
       enable32BitAppOnWin64: "{{enable32BitAppOnWin64 | default('true')}}"     
-  when: subpool is not defined
-  ignore_errors: true
+  when: subpool is not defined and identity_user is not defined
 
 - name: Creates Sub Application pools, sets attributes and starts it
   win_iis_webapppool:
@@ -41,7 +39,6 @@
       enable32BitAppOnWin64: "{{item.enable32BitAppOnWin64 | default('true')}}"
   with_items: "{{ subsite }}"
   when: subpool is defined and subpool == "yes"
-  ignore_errors: true
 
 - name: Create Website - {{website_name}}
   win_iis_website:
