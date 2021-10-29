@@ -20,4 +20,4 @@
     method: PUT
     status_code: 200
   register: result
-with_items: "{{ prj }}"
+  with_items: "{{ prj }}"
