@@ -1,7 +1,7 @@
 ---
-- name: Edit policy cleanup Image Repo {{services[0].docker_image_registry_path}}
+- name: Edit policy cleanup Image Repo
   uri:
-    url: https://{{registry_url}}/api/v4/projects/{{ item.id }}
+    url: https://{{registry_url}}/api/v4/projects/{{item.id}}
     headers:
       PRIVATE-TOKEN: '{{registry_token}}'
       Content-Type: 'application/json'
@@ -21,4 +21,4 @@
     method: PUT
     status_code: 200
   register: result
-  with_items: "{{ prj }}"
+  with_items: "{{projects}}"
