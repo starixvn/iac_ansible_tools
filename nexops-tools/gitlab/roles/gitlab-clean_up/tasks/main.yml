@@ -8,18 +8,18 @@
     body: >
       {
         "container_expiration_policy_attributes": {
-          "cadence": "1d",
           "enabled": true,
-          "keep_n": 10,
-          "older_than": "7d",
-          "name_regex": ".*",
-          "name_regex_keep" : "(builder|LOCAL.*|SIT.*|UAT.*|PROD.*|AWS.*)"
+          "cadence": "{{cadence}}",
+          "keep_n": "{{keep_tags}}",
+          "older_than": "{{remove_tags_older_than_days}}",
+          "name_regex": "",
+          "name_regex_delete": "{{remove_tags_matching}}",
+          "name_regex_keep" : "{{keep_tags_matching}}"
         }
       }
     body_format: json
     method: PUT
-    status_code: 201
+    status_code: 200
   register: result
-  until:
-  ignore_errors: yes
-  #when: team_name != "nex3" and team_name != "pentagon"
+  #until:
+  #ignore_errors: yes
