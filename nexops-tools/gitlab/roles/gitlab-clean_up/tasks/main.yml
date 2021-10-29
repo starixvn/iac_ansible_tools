@@ -11,6 +11,7 @@
           "enabled": true,
           "cadence": "{{cadence}}",
           "keep_n": "{{keep_tags}}",
+          "name_regex": ".*",
           "older_than": "{{remove_tags_older_than_days}}",
           "name_regex_delete": "{{remove_tags_matching}}",
           "name_regex_keep" : "{{keep_tags_matching}}"
