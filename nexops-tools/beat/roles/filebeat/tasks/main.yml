@@ -1,28 +1,31 @@
 ---
-- name: Create working directory
-  file:
-    path: "{{ working_directory }}"
-    state: directory
-    mode: "0777"
-  become: yes
+- include: debian.yml
+  when: ansible_os_family == 'Debian'
 
-- name: cp docker-compose file
+- include: redhat.yml
+  when: ansible_os_family == 'RedHat'
+
+- name: Prepare filebeat config file
   template:
-    src: "templates/{{ item }}.j2"
-    dest: "{{ working_directory }}/{{ item }}"
-  with_items:
-    - docker-compose.yml
-    - Dockerfile
-    - filebeat.yml
+    src: filebeat.yml.j2
+    dest: /etc/filebeat/filebeat.yml
+    backup: true
+  notify:
+    - restart filebeat
 
-#- name: grant scripts permission
-#  shell: |
-#    cd {{ working_directory }}
-#    docker-compose pull
-#  become: yes
+#- name: Copy filebeat modules
+#  template:
+#    src: "{{ filebeat_modules_sourcedir }}/{{ item }}"
+#    dest: /etc/filebeat/modules.d/{{ item | basename | regex_replace('\.j2','') }}
+#    backup: true
+#  with_items:
+#    - "{{ filebeat_modules }}"
+#  notify:
+#    - restart filebeat
 
-- name: Deploy Sentry
-  shell: |
-    cd {{working_directory}}
-    docker-compose pull
-    docker stack deploy -c {{working_directory}}/docker-compose.yml {{stack}} --with-registry-auth
+- name: Start and enable filebeat service
+  service:
+    name: filebeat
+    enabled: yes
+    state: started
+  changed_when: False

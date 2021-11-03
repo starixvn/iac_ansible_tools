@@ -1,0 +1,8 @@
+---
+
+- name: Install filebeat
+  yum:
+    name: filebeat
+    state: "{{ filebeat_package_state }}"
+  notify:
+    - restart filebeat

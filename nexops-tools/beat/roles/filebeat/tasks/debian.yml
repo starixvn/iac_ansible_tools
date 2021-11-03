@@ -1,0 +1,8 @@
+---
+
+- name: Install filebeat
+  apt:
+    name: filebeat
+    state: "latest"
+  notify:
+    - restart filebeat

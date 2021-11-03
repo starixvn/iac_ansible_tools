@@ -1,0 +1,28 @@
+---
+- name: Create working directory
+  file:
+    path: "{{ working_directory }}"
+    state: directory
+    mode: "0777"
+  become: yes
+
+- name: cp docker-compose file
+  template:
+    src: "templates/{{ item }}.j2"
+    dest: "{{ working_directory }}/{{ item }}"
+  with_items:
+    - docker-compose.yml
+    - Dockerfile
+    - filebeat.yml
+
+#- name: grant scripts permission
+#  shell: |
+#    cd {{ working_directory }}
+#    docker-compose pull
+#  become: yes
+
+- name: Deploy Sentry
+  shell: |
+    cd {{working_directory}}
+    docker-compose pull
+    docker stack deploy -c {{working_directory}}/docker-compose.yml {{stack}} --with-registry-auth
