@@ -72,3 +72,7 @@ port: 2121
 user: olympus
 pass: Pro_olympus_@1234aa
 
+###
+export http_proxy="http://10.40.40.245:3128"
+export https_proxy="http://10.40.40.245:3128"
+export no_proxy=localhost,127.0.0.0,127.0.1.1,127.0.1.1,local.home
