@@ -12,6 +12,8 @@ services:
     #  ELASTICSEARCH_PORT: '9200'#
     volumes:
       - /var/lib/docker:/var/lib/docker:ro
+    networks:
+      - swarm_nexops
     deploy:
       mode: global
       restart_policy:
