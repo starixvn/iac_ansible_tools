@@ -1,0 +1,10 @@
+---
+- hosts: all
+  roles:
+    - role: winbeat
+  tags: winbeat
+
+- hosts: all
+  roles:
+    - role: filebeat
+  tags: filebeat

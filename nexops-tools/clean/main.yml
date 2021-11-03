@@ -8,3 +8,8 @@
   roles:
     - role: gitlab
   tags: clean-log-gitlab
+
+- hosts: all
+  roles:
+    - role: elk
+  tags: clean-log-elk
