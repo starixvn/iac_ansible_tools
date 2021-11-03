@@ -12,6 +12,7 @@
     backup: true
   notify:
     - restart filebeat
+  become: yes
 
 #- name: Copy filebeat modules
 #  template:
@@ -29,3 +30,4 @@
     enabled: yes
     state: started
   changed_when: False
+  become: yes
