@@ -5,7 +5,8 @@ services:
   filebeat:
     image: registry.nexdev.net:5050/docker/nexops-tools/elk/filebeat:{{version}}
     build:
-      context: Dockerfile
+      context: .
+      dockerfile: Dockerfile
     #environment:
     #  ELASTICSEARCH_HOST: 'elasticsearch'
     #  ELASTICSEARCH_PORT: '9200'#
