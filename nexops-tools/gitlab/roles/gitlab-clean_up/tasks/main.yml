@@ -1,0 +1,24 @@
+---
+- name: Edit policy cleanup Image Repo
+  uri:
+    url: https://{{registry_url}}/api/v4/projects/{{item.id}}
+    headers:
+      PRIVATE-TOKEN: '{{registry_token}}'
+      Content-Type: 'application/json'
+    body: >
+      {
+        "container_expiration_policy_attributes": {
+          "enabled": true,
+          "cadence": "{{cadence}}",
+          "keep_n": "{{keep_tags}}",
+          "name_regex": ".*",
+          "older_than": "{{remove_tags_older_than_days}}",
+          "name_regex_delete": "{{remove_tags_matching}}",
+          "name_regex_keep" : "{{keep_tags_matching}}"
+        }
+      }
+    body_format: json
+    method: PUT
+    status_code: 200
+  register: result
+  with_items: "{{projects}}"
