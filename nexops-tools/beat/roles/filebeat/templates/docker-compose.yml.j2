@@ -22,7 +22,7 @@ services:
         delay: 30s
       placement:
         constraints:
-          - node.labels.ELK == yes
+          - node.labels.filebeat == yes
 networks:
   swarm_nexops:
      external: true
