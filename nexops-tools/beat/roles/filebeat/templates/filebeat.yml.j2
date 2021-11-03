@@ -1,11 +1,8 @@
 filebeat.inputs:
-
-# Each - is an input. Most options can be set at the input level, so
-# you can use different inputs for various configurations.
-# Below are the input specific configurations.
 - type: container
   paths: 
     - '/var/lib/docker/containers/*/*.log'
+
 processors:
 - add_docker_metadata:
     host: "unix:///var/run/docker.sock"
@@ -15,5 +12,10 @@ processors:
     target: "json"
     overwrite_keys: true
 
-output.logstash:
+output.elasticsearch:
   hosts: ["{{logstash_server | default('elk_logstash:5000')}}"]
+  indices:
+    - index: "filebeat-%{[agent.version]}-%{+yyyy.MM.dd}"
+
+logging.json: true
+logging.metrics.enabled: false
