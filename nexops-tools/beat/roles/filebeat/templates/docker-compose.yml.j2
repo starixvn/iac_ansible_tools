@@ -12,6 +12,7 @@ services:
     #  ELASTICSEARCH_PORT: '9200'#
     volumes:
       - /var/lib/docker:/var/lib/docker:ro
+      - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - swarm_nexops
     deploy:
