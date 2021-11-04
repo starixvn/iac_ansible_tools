@@ -1,8 +1,11 @@
 ---
 
 - name: Install filebeat
+  become: true
   apt:
-    name: filebeat
-    state: "latest"
+    state: present
+    update_cache: yes
+    pkg:
+      - filebeat
   notify:
     - restart filebeat
