@@ -1,26 +1,11 @@
 ---
-
-- name: Install filebeat
-  become: true
-  apt:
+- name: Add Elasticsearch GPG key.
+  rpm_key:
+    key: https://packages.elastic.co/GPG-KEY-elasticsearch
     state: present
-    update_cache: yes
-    pkg:
-      - filebeat
-  notify:
-    - restart filebeat
-- name: Download filebeat .deb file
-  command: curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/{{version}}
-#filebeat-7.14.1-amd64.deb
-    # Use command module
-- name: Install filebeat .deb
-  command: dpkg -i {{version}}
 
-#- name: enable and configure system module
-#  command: filebeat modules enable system
-
-  # Use command module
-#- name: Setup filebeat
-#  command: filebeat setup
-
-  # Use command module
+- name: Add Filebeat repository.
+  template:
+    src: beats.repo.j2
+    dest: /etc/yum.repos.d/beats.repo
+    mode: 0644
