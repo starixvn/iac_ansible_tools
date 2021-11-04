@@ -63,7 +63,7 @@
     path: "{{ item.path }}"
     state: directory
   with_items: "{{ subsite }}"
-  when: subsite | length > 0
+  when: subsite|length > 0
 
 - name: Add Web Application for {{website_name}}.
   win_iis_webapplication:
@@ -73,7 +73,7 @@
     state: present
     physical_path: "{{ item.path }}"
   with_items: "{{ subsite }}"
-  when: subsite | length > 0
+  when: subsite|length > 0
 
 - name: Create virtual directory path
   win_file:
@@ -101,7 +101,7 @@
     src: "whoami.aspx.j2"
     dest: '{{ item.path }}\whoami.aspx'
   with_items: "{{ subsite }}"
-  when: subsite | length > 0
+  when: subsite|length > 0
 
 - name: Check website {{site_name}} returns a status 200 and page contents
   win_uri:
@@ -123,11 +123,11 @@
     return_content: yes
   register: subsite_healthcheck
   with_items: "{{ subsite }}"
-  when: subsite | length > 0
+  when: subsite|length > 0
   ignore_errors: true
 
 - name: Debug website_healthcheck
   debug:
     msg: "{{subsite_healthcheck}}"
   ignore_errors: true
-  when: subsite | length > 0
+  when: subsite|length > 0
