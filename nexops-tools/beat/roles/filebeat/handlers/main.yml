@@ -3,3 +3,5 @@
 #  service: name=filebeat state=restarted
 - name: restart filebeat
   command: service filebeat restart
+  become: true
+  ignore_errors: true
