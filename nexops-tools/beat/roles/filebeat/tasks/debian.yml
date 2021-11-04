@@ -10,7 +10,7 @@
   notify:
     - restart filebeat
 - name: Download filebeat .deb file
-    command: curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/{{version}}
+  command: curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/{{version}}
 #filebeat-7.14.1-amd64.deb
     # Use command module
 - name: Install filebeat .deb
