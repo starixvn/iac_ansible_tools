@@ -7,3 +7,5 @@
     group: root
     mode: 0644
   notify: restart filebeat
+  become: true
+  ignore_errors: true

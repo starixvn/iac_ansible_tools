@@ -18,3 +18,5 @@
     name: filebeat
     state: started
     enabled: true
+  become: true
+  ignore_errors: true
