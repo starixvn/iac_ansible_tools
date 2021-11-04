@@ -1,3 +1,5 @@
 ---
+#- name: restart filebeat
+#  service: name=filebeat state=restarted
 - name: restart filebeat
-  service: name=filebeat state=restarted
+  command: service filebeat restart

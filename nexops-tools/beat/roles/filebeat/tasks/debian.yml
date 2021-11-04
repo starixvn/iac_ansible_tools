@@ -1,15 +1,21 @@
 ---
-- name: Add Elasticsearch GPG key.
-  rpm_key:
-    key: https://packages.elastic.co/GPG-KEY-elasticsearch
-    state: present
-  become: true
-  ignore_errors: true
+- name: APT - Add elastic.co key
+  apt_key: url="https://artifacts.elastic.co/GPG-KEY-elasticsearch"
+  when: ansible_distribution == "Ubuntu"
 
-- name: Add Filebeat repository.
-  template:
-    src: beats.repo.j2
-    dest: /etc/yum.repos.d/beats.repo
-    mode: 0644
-  become: true
-  ignore_errors: true
+- name: APT - Add elastic.co repository
+  apt_repository: repo="deb https://artifacts.elastic.co/packages/{{version}}/apt stable main" filename="elastic-{{version}}" update_cache=yes
+  when: ansible_distribution == "Ubuntu"
+
+- name: FILEBEAT - Install Filebeat
+  apt: pkg=filebeat
+  when: ansible_distribution == "Ubuntu"
+
+#- name: enable and configure system module
+#  command: filebeat modules enable system
+
+  # Use command module
+#- name: Setup filebeat
+#  command: filebeat setup
+
+  # Use command module
