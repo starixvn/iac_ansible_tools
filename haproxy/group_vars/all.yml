@@ -67,6 +67,11 @@ nexcel_ports_prod:
     { "published": 7515, "target": 7515, "mode": "ingress" },
     { "published": 7519, "target": 7519, "mode": "ingress" },
     { "published": 9009, "target": 9009, "mode": "host" },
+    { "published": 6341, "target": 6341, "mode": "ingress" },
+    { "published": 6342, "target": 6342, "mode": "ingress" },
+    { "published": 6344, "target": 6344, "mode": "ingress" },
+    { "published": 6343, "target": 6343, "mode": "ingress" },
+    { "published": 6345, "target": 6345, "mode": "ingress" },
     { "published": 8282, "target": 8282, "mode": "host" },
   ]
 
