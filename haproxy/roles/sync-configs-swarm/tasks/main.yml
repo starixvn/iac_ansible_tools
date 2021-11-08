@@ -53,7 +53,7 @@
 - name: Copy API configuration {{ env }}
   when: env == "local_test"
   template:
-    src: "{{ volume_path }}/configs/{{ env }}/dataplaneapi.hcl"
+    src: "files/{{team}}/configs/{{ env }}/dataplaneapi.hcl"
     dest: "{{ volume_path }}/dataplaneapi.hcl"
   become: yes
   ignore_errors: yes
