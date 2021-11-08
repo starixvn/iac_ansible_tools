@@ -37,7 +37,7 @@
   ignore_errors: yes
 
 - name: Copy SSL Certs configuration {{ env }}
-  when: env == "local"
+  when: env == "local" or env == "local_test"
   template:
     src: "files/{{team}}/certs/{{item}}"
     dest: "{{ volume_path }}/{{item}}"
