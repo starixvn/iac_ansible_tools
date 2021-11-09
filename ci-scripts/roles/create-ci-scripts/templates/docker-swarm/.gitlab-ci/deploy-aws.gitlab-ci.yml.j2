@@ -21,6 +21,7 @@ deploy_{{service_name}}_aws{{ version_number }}:
     - .deploy:aws{{ version_number }}:base:swarm:stack
     - .deploy:aws{{ version_number }}:{{service_name}}:rules
   needs: ['post_build_{{service_name}}_aws{{ version_number }}']
+
 {% endif %}
 {% endfor %}
 
@@ -41,6 +42,7 @@ deploy_{{service_name}}_aws:
   extends:
     - .deploy_vars_{{service_name}}
     - .deploy:aws:base:swarm:stack
-    - .deploy:aws:{{service_name}}:manual:rules
+    - .deploy:aws:{{service_name}}:rules
   needs: ['post_build_{{service_name}}_aws']
+
 {% endif %}

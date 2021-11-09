@@ -21,6 +21,7 @@ deploy_{{service_name}}_prod{{ version_number }}:
     - .deploy:prod{{ version_number }}:base:swarm:stack
     - .deploy:prod{{ version_number }}:{{service_name}}:rules
   needs: ['post_build_{{service_name}}_prod{{ version_number }}']
+
 {% endif %}
 {% endfor %}
 
@@ -41,6 +42,7 @@ deploy_{{service_name}}_prod:
   extends:
     - .deploy_vars_{{service_name}}
     - .deploy:prod:base:swarm:stack
-    - .deploy:prod:{{service_name}}:manual:rules
+    - .deploy:prod:{{service_name}}:rules
   needs: ['post_build_{{service_name}}_prod']
+
 {% endif %}
