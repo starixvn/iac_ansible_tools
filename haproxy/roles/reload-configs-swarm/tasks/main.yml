@@ -1,4 +1,4 @@
 - name: Restart service
-  shell: docker kill --signal USR2 $(docker container ls --filter name={{ service_name | default('haproxy-service') }} --quiet)
+  shell: docker kill --signal USR2 $(docker container ls --filter name={{ service_name | default('haproxy_service') }} --quiet)
   ignore_errors: yes
   become: yes
