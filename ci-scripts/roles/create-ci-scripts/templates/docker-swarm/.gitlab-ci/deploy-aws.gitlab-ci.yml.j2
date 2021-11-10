@@ -9,7 +9,7 @@ post_build_{{service_name}}_aws{{ version_number }}:
     - .post_build
     - .deploy:aws{{ version_number }}
     - .deploy:aws{{ version_number }}:{{service_name}}:rules
-{% if item.multiple_image_env is undefined or item.multiple_image_env == false %}  
+{% if item.multiple_image_env is undefined or item.multiple_image_env == false %}
   needs: ['build_image_{{service_name}}']
 {% else %}
   needs: ['build_image_{{service_name}}_aws{{ version_number }}']
@@ -21,6 +21,7 @@ deploy_{{service_name}}_aws{{ version_number }}:
     - .deploy:aws{{ version_number }}:base:swarm:stack
     - .deploy:aws{{ version_number }}:{{service_name}}:rules
   needs: ['post_build_{{service_name}}_aws{{ version_number }}']
+
 {% endif %}
 {% endfor %}
 
@@ -31,7 +32,7 @@ post_build_{{service_name}}_aws:
     - .post_build
     - .deploy:aws
     - .deploy:aws:{{service_name}}:rules
-{% if item.multiple_image_env is undefined or item.multiple_image_env == false %}  
+{% if item.multiple_image_env is undefined or item.multiple_image_env == false %}
   needs: ['build_image_{{service_name}}']
 {% else %}
   needs: ['build_image_{{service_name}}_aws']
@@ -41,6 +42,7 @@ deploy_{{service_name}}_aws:
   extends:
     - .deploy_vars_{{service_name}}
     - .deploy:aws:base:swarm:stack
-    - .deploy:aws:{{service_name}}:manual:rules
+    - .deploy:aws:{{service_name}}:rules
   needs: ['post_build_{{service_name}}_aws']
+
 {% endif %}
