@@ -28,13 +28,6 @@
   if: '$CI_COMMIT_TAG =~ /^deploy-{{rule_name}}-aws{{ version_number }}- */'
 
 {% endfor %}
-{% if org_name == 'luminet'%}
-.if-deploy-prod: &if-deploy-prod
-    if: '$CI_COMMIT_BRANCH == "master"'
-
-.if-deploy-aws: &if-deploy-aws
-    if: '$CI_COMMIT_BRANCH == "master"'
-{% endif %}
 
 .build:image:{{service_name}}:rules:
   rules:
