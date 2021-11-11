@@ -1,3 +1,5 @@
+{% set smoke_test = services[0].smoke_test | default (true) %}
+
 stages:
 {% if sonarqube_enabled is defined and sonarqube_enabled == true %}
 {% if unit_test is undefined or unit_test == true %}
@@ -16,6 +18,9 @@ stages:
   - build
   - post-build
   - deploy
+{% if org_name == 'luminet' and smoke_test == true %}
+  - post-deploy
+{%endif%}
 
 {% if sonarqube_enabled is defined and sonarqube_enabled == true %}
 variables:
@@ -70,6 +75,15 @@ include:
   - project: 'ci/common-ci'
     ref: rocketor
     file: '_teams/{{org_name}}/{{ci_group_name}}/deploy-docker-swarm-stack/index.gitlab-ci.yml'
+{% if org_name == 'luminet' and smoke_test == true %}
+  - project: 'ci/common-ci'
+    ref: rocketor
+{% if project_name == 'l1' %}
+    file: 'smoke-test/smoke-test-sc1.gitlab-ci.yml'
+{% else %}
+    file: 'smoke-test/smoke-test-sc2.gitlab-ci.yml'
+{%endif%}
+{%endif%}
 {% for service in services %}
   - .gitlab-ci/{{service.name | replace('-','_') }}/build.gitlab-ci.yml
 {% if service.framework is defined and service.framework == "cocos" %}

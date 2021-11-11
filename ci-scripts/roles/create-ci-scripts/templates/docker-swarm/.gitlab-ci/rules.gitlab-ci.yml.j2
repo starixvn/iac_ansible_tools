@@ -28,13 +28,6 @@
   if: '$CI_COMMIT_TAG =~ /^deploy-{{rule_name}}-aws{{ version_number }}- */'
 
 {% endfor %}
-{% if org_name == 'luminet'%}
-.if-deploy-prod: &if-deploy-prod
-    if: '$CI_COMMIT_BRANCH == "master"'
-
-.if-deploy-aws: &if-deploy-aws
-    if: '$CI_COMMIT_BRANCH == "master"'
-{% endif %}
 
 .build:image:{{service_name}}:rules:
   rules:
@@ -57,10 +50,6 @@
     - <<: *if-deploy-{{rule_name}}-aws{{ version_number }}
       when: always
 {% endfor %}
-{% if org_name == 'luminet'%}
-    - <<: *if-deploy-prod
-      when: always
-{% endif %}
 
 {% for version in versions %}
 {% set version_number = '' if version == 0 else version %}
@@ -92,40 +81,24 @@
   rules:
     - <<: *if-deploy-{{rule_name}}-prod{{ version_number }}
       when: on_success
-{% if org_name == 'luminet'%}
-    - <<: *if-deploy-prod
-      when: on_success
-{% endif %}
     - when: never
 
 .deploy:prod{{ version_number }}:{{service_name}}:manual:rules:
   rules:
     - <<: *if-deploy-{{rule_name}}-prod{{ version_number }}
       when: manual
-{% if org_name == 'luminet'%}
-    - <<: *if-deploy-prod
-      when: manual
-{% endif %}
     - when: never
     
 .deploy:aws{{ version_number }}:{{service_name}}:rules:
   rules:
     - <<: *if-deploy-{{rule_name}}-aws{{ version_number }}
       when: on_success
-{% if org_name == 'luminet'%}
-    - <<: *if-deploy-aws
-      when: on_success
-{% endif %}
     - when: never
 
 .deploy:aws{{ version_number }}:{{service_name}}:manual:rules:
   rules:
     - <<: *if-deploy-{{rule_name}}-aws{{ version_number }}
       when: manual
-{% if org_name == 'luminet'%}
-    - <<: *if-deploy-aws
-      when: manual
-{% endif %}
     - when: never
 
 {% endfor %}
