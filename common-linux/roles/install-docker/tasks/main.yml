@@ -96,7 +96,7 @@
     update_cache: yes
   vars:
     packages:
-    - "{{docker_engine_version | default 'docker-ce=5:20.10.7~3-0~ubuntu-focal'}}"
+    - docker-ce={{docker_engine_version}}
     - docker-ce-cli 
     - containerd.io
 
