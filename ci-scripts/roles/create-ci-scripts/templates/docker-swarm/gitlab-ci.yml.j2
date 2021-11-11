@@ -1,4 +1,4 @@
-{% set smoke_test = smoke_test | default (true) %}
+{% set smoke_test = services[0].smoke_test | default (true) %}
 
 stages:
 {% if sonarqube_enabled is defined and sonarqube_enabled == true %}
