@@ -40,7 +40,7 @@
     update_cache: yes
   vars:
     packages:
-    - docker-ce={{docker_engine_version}}
+    - "{{docker_engine_version | default 'docker-ce=5:20.10.7~3-0~ubuntu-bionic'}}"
     - docker-ce-cli 
     - containerd.io
 
