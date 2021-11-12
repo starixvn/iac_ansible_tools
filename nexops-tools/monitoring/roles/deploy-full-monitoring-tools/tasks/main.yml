@@ -36,10 +36,17 @@
     - grafana
     - prometheus
 
+- name: Pull latest images
+  shell: |
+    docker config rm monitoring_prometheus_config
+  ignore_errors: yes
+  become: yes
+
 - name: Deploy NexOps monitoring tools
   when: inventory_hostname in groups['swarm_leader']
   shell: |
     cd {{ working_directory }}
     export ENV={{ENV}}
-    docker stack deploy --compose-file grafana.docker-compose.yml -c prometheus.docker-compose.yml monitoring  --with-registry-auth
+    docker config rm monitoring_prometheus_config
+    docker stack deploy --compose-file grafana.docker-compose.yml -c prometheus.docker-compose.yml monitoring --with-registry-auth
   become: yes
