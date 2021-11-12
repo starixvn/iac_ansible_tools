@@ -26,21 +26,15 @@
     - grafana
     - prometheus
 
-- name: Pull latest images
+- name: remove service and config
+  when: inventory_hostname in groups['gluster_leader']
   shell: |
-    export ENV={{ENV}}
-    cd {{ working_directory }}/{{item}}
-    docker-compose pull
-  become: yes
-  with_items:
-    - grafana
-    - prometheus
-
-- name: remove existed configs
-  shell: |
+    docker service rm monitoring_prometheus
+    docker service rm  monitoring_caddy
+    docker config rm monitoring_caddy_config
     docker config rm monitoring_prometheus_config
-  ignore_errors: yes
   become: yes
+  ignore_errors: yes
 
 - name: Deploy NexOps monitoring tools
   when: inventory_hostname in groups['swarm_leader']
