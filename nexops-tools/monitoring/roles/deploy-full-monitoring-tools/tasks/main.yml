@@ -36,8 +36,9 @@
     - grafana
     - prometheus
 
-- name: Pull latest images
+- name: remove existed configs
   shell: |
+    docker config rm monitoring_prometheus_config
     docker config rm monitoring_prometheus_config
   ignore_errors: yes
   become: yes
