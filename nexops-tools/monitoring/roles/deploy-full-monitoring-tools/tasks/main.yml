@@ -17,20 +17,20 @@
   ignore_errors: yes
   become: yes
 
-- name: Pull latest images
-  shell: |
-    export ENV={{ENV}}
-    cd {{ working_directory }}/{{item}}
-    docker-compose pull
+- name: Copy docker-compose template for deploy
+  template:
+    src: 'deploy-compose/{{item}}.docker-compose.yml.j2'
+    dest: '{{ working_directory }}/{{item}}.docker-compose.yml'
   become: yes
   with_items:
     - grafana
     - prometheus
 
-- name: Copy docker-compose template for deploy
-  template:
-    src: 'deploy-compose/{{item}}.docker-compose.yml.j2'
-    dest: '{{ working_directory }}/{{item}}.docker-compose.yml'
+- name: Pull latest images
+  shell: |
+    export ENV={{ENV}}
+    cd {{ working_directory }}/{{item}}
+    docker-compose pull
   become: yes
   with_items:
     - grafana
