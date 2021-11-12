@@ -1,12 +1,12 @@
 ---
-- name: Copy docker-compose template for pull
-  template:
-    src: 'deploy-compose/{{item}}.docker-compose.yml.j2'
-    dest: '{{ working_directory }}/{{item}}/docker-compose.yml'
-  become: yes
-  with_items:
-    - grafana
-    - prometheus
+#- name: Copy docker-compose template for pull
+#  template:
+#    src: 'deploy-compose/{{item}}.docker-compose.yml.j2'
+#    dest: '{{ working_directory }}/{{item}}/docker-compose.yml'
+#  become: yes
+#  with_items:
+#    - grafana
+#    - prometheus
     
 - name: Create network
   docker_network:
@@ -28,8 +28,8 @@
     - prometheus
 
 - name: Copy docker-compose template for deploy
-  copy:
-    src: 'deploy-compose/{{item}}.docker-compose.yml'
+  template:
+    src: 'deploy-compose/{{item}}.docker-compose.yml.j2'
     dest: '{{ working_directory }}/{{item}}.docker-compose.yml'
   become: yes
   with_items:
@@ -41,6 +41,5 @@
   shell: |
     cd {{ working_directory }}
     export ENV={{ENV}}
-    docker stack deploy -c docker-compose.yml monitoring  --with-registry-auth
-  #docker stack deploy --compose-file grafana.docker-compose.yml -c prometheus.docker-compose.yml monitoring  --with-registry-auth
+    docker stack deploy --compose-file grafana.docker-compose.yml -c prometheus.docker-compose.yml monitoring  --with-registry-auth
   become: yes
