@@ -5,10 +5,10 @@
     state: directory
   become: yes
   
-- name: Setup Docker Proxy Copy Proxy Config (2/3)
+- name: Setup Docker Proxy Copy Proxy Config (2/3) - {{env}}
   when: enable_docker_proxy == "true"
   template:
-    src: 'files/proxy.conf'
+    src: 'files/proxy-{{env}}.conf'
     dest: /etc/systemd/system/docker.service.d/proxy-{{env}}.conf
   become: yes
 
