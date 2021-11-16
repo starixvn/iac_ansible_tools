@@ -79,17 +79,6 @@
 - name: Install Docker
   become: yes
   apt:
-    pkg:
-      - docker-ce
-      - docker-ce-cli
-      - containerd.io
-    state: present
-    force_apt_get: true
-    update_cache: yes
-
-- name: Install Docker
-  become: yes
-  apt:
     name: "{{ packages }}"
     state: present
     force: yes
