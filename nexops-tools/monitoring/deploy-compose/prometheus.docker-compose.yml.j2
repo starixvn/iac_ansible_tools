@@ -34,7 +34,8 @@ services:
       #- '--docker=tcp://socket-proxy:2375'
       - '--housekeeping_interval=15s'
       - '--docker_only=true'
-      - '--disable_metrics=disk,network,tcp,udp,percpu,sched,process'
+      - '--disable_metrics=disk,tcp,udp,percpu,sched,process'
+      #- '--disable_metrics=disk,network,tcp,udp,percpu,sched,process'
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /:/rootfs:ro
