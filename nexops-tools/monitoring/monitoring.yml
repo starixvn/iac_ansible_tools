@@ -4,19 +4,19 @@
     - role: build-full-monitoring-tools
   tags: build-monitoring-tools
 
-- hosts: swarm_leader
+- hosts: all
   roles:
     - role: create-directory-deploy
     - role: deploy-full-monitoring-tools
   tags: deploy-monitoring-tools
 
-- hosts: swarm_leader
+- hosts: all
   roles:
     - role: create-directory-deploy
     - role: deploy-prometheus
   tags: deploy-prometheus
 
-- hosts: swarm_leader
+- hosts: all
   roles:
     - role: update-prometheus
   tags: update-prometheus
