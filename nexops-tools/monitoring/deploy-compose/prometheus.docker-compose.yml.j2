@@ -5,7 +5,7 @@
 version: '3.3'
 
 networks:
-  swarm_{{org}}_{{ENV}}:
+  swarm_{{org}}_{{env}}:
     external: true
   net:
     driver: overlay
@@ -84,7 +84,7 @@ services:
       - '9090:9090'
     networks:
       - net
-      - swarm_{{org}}_{{ENV}}
+      - swarm_{{org}}_{{env}}
     command:
       - '--config.file=/etc/prometheus/prometheus_custom.yml'
       - '--storage.tsdb.path=/prometheus'
