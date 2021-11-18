@@ -13,7 +13,7 @@
     name: "{{item}}"
     driver: "overlay"
     attachable: true
-  with_items: 'swarm_{{org}}_{{ENV}}'
+  with_items: 'swarm_{{org}}_{{env}}'
   ignore_errors: yes
   become: yes
 
@@ -27,7 +27,7 @@
     - prometheus
 
 - name: remove service and config
-  when: inventory_hostname in groups['gluster_leader']
+  #when: inventory_hostname in groups['gluster_leader']
   shell: |
     docker service rm monitoring_prometheus
     docker service rm  monitoring_caddy
