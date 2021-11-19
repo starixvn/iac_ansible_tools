@@ -1,0 +1,18 @@
+- name: Copy 99-redis.conf.
+  template:
+    src: "templates/99-redis.conf"
+    dest: "/etc/sysctl.d/99-redis.conf"
+  become: yes
+
+- name: get cfg Redis tuning
+  shell: cat /etc/sysctl.d/99-redis.conf | grep overcommit_memory && cat /etc/sysctl.d/99-redis.conf | grep somaxconn
+  become: yes
+  register: Redis
+  #retries: 2
+  #delay: 10
+  ignore_errors: true
+
+- name: SHOW cfg Redis tuning 
+  debug:
+    msg: "{{Redis}}"
+  ignore_errors: true
