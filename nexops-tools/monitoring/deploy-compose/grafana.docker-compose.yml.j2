@@ -91,7 +91,7 @@ services:
     environment:
         MYSQL_USERNAME: grafana
         MYSQL_ROOT_PASSWORD: grafana
-        PMA_HOSTS: grafana
+        PMA_HOSTS: mysql
     deploy:
         mode: replicated
         replicas: 1
