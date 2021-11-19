@@ -87,7 +87,7 @@ services:
     image: registry.nexdev.net:5050/docker/phpmyadmin:latest
     restart: always
     ports:
-        - {{phpadmin_port}}:80
+        - {{phpadmin_port | default ('8088')}}:80
     environment:
         MYSQL_USERNAME: grafana
         MYSQL_ROOT_PASSWORD: grafana
