@@ -2,16 +2,16 @@
 - hosts: all
   roles:
     - role: create-redis-single-node
-    - role: redis-tunning
+    - role: redis_tunning
   tags: create-redis-single-node
 
 - hosts: all
   roles:
     - role: create-redis-single-swarm
-    - role: redis-tunning
+    - role: redis_tunning
   tags:  create-redis-single-swarm
 
 - hosts: all
   roles:
     - role: redis-tunning
-  tags:  redis-tunning
+  tags:  redis_tunning
