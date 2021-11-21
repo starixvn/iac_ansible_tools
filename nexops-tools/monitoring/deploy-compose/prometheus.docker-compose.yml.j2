@@ -15,8 +15,11 @@ networks:
         - subnet: 172.177.0.0/24
 
 volumes:
-  prometheus_data: {}
-  alertmanager: {}
+  {{prometheus_volume | default ('prometheus_data')}}:
+    driver_opts:
+      o: bind
+      type: none
+      device: {{working_directory}}/prometheus/data
 
 configs:
   caddy_config:

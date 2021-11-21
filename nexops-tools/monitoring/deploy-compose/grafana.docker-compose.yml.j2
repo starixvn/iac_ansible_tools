@@ -1,22 +1,5 @@
 #stefanprodan/swarmprom-prometheus:v2.5.0
 version: "3.3"
-
-networks:
-  net:
-    driver: overlay
-    attachable: true
-    ipam:
-      config:
-        - subnet: 172.177.0.0/24
-
-volumes:
-  grafana: {}
-  mysql:
-    driver_opts:
-      o: bind
-      type: none
-      device: "{{working_directory}}/mysql"
-
 services:
   grafana:
     image: registry.nexdev.net:5050/docker/nexops-tools/grafana:${ENV}
@@ -102,9 +85,22 @@ services:
     networks:
       - net
 
+networks:
+  net:
+    driver: overlay
+    attachable: true
+    ipam:
+      config:
+        - subnet: 172.177.0.0/24
+
 volumes:
   {{grafana_volume | default ('grafana')}}:
     driver_opts:
       o: bind
       type: none
-      device: {{gluster_path}}/grafana/data
+      device: {{working_directory}}/grafana/data
+  mysql:
+    driver_opts:
+      o: bind
+      type: none
+      device: "{{working_directory}}/mysql"

@@ -15,11 +15,8 @@ networks:
         - subnet: 172.177.0.0/24
 
 volumes:
-  {{prometheus_volume | default ('prometheus_data')}}:
-    driver_opts:
-      o: bind
-      type: none
-      device: {{gluster_path}}/prometheus/data
+  prometheus_data: {}
+  alertmanager: {}
 
 configs:
   caddy_config:
@@ -84,7 +81,7 @@ services:
       - '--storage.tsdb.path=/prometheus'
       - '--storage.tsdb.retention=24h'
     volumes:
-      - {{prometheus_volume | default ('prometheus_data')}}:/prometheus
+      - prometheus_data:/prometheus
     configs:
       - source: prometheus_config
         target: /etc/prometheus/prometheus_custom.yml
