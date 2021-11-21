@@ -41,7 +41,8 @@ services:
       #- GF_SMTP_USER=${GF_SMTP_USER}
       #- GF_SMTP_PASSWORD=${GF_SMTP_PASSWORD}
     volumes:
-      - grafana:/var/lib/grafana
+      - {{grafana_volume | default ('grafana')}}:/var/lib/grafana
+      #- grafana:/var/lib/grafana
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000"]
       interval: 10s
@@ -100,3 +101,10 @@ services:
             - node.labels.{{node_label | default ('NEXOPS_LOW_STORAGE')}} == yes
     networks:
       - net
+
+volumes:
+  {{grafana_volume | default ('grafana')}}:
+    driver_opts:
+      o: bind
+      type: none
+      device: {{gluster_path}}/grafana/data
