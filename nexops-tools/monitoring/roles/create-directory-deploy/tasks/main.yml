@@ -15,7 +15,8 @@
   become: yes
   with_items:
     - mysql
-    - grafana
+    - grafana/data
+    - prometheus/data
   ignore_errors: yes
 
 - name: Copy tools' configs files
