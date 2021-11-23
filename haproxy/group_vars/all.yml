@@ -24,7 +24,6 @@ nexcel_ports_local:
   [
     { "published": 80, "target": 80, "mode": "host" },
     { "published": 88, "target": 88, "mode": "ingress" },
-    { "published": 7979, "target": 7979, "mode": "ingress" },
     { "published": 443, "target": 443, "mode": "host" },
     { "published": 6341, "target": 6341, "mode": "ingress" },
     { "published": 6343, "target": 6343, "mode": "ingress" },
@@ -34,7 +33,6 @@ nexcel_ports_sit: [
     { "published": 80, "target": 80, "mode": "ingress" }, 
     { "published": 7680, "target": 7680, "mode": "host" }, 
     { "published": 8088, "target": 8088, "mode": "host" },
-    { "published": 7979, "target": 7979, "mode": "ingress" },
     { "published": 22222, "target": 22222, "mode": "ingress" },
     { "published": 6341, "target": 6341, "mode": "ingress" },
     { "published": 6342, "target": 6342, "mode": "ingress" },
@@ -48,7 +46,6 @@ nexcel_ports_uat:
     { "published": 7000, "target": 7000, "mode": "ingress" },
     { "published": 80, "target": 80, "mode": "ingress" },
     { "published": 8088, "target": 8088, "mode": "host" },
-    { "published": 7979, "target": 7979, "mode": "ingress" },
     { "published": 6012, "target": 6012, "mode": "ingress" },
     { "published": 7012, "target": 7012, "mode": "ingress" },
     { "published": 5321, "target": 5321, "mode": "host" },
@@ -75,7 +72,6 @@ nexcel_ports_prod:
   [
     { "published": 80, "target": 80, "mode": "ingress" },
     { "published": 8088, "target": 8088, "mode": "host" },
-    { "published": 7979, "target": 7979, "mode": "ingress" },
     { "published": 8000, "target": 8000, "mode": "ingress" },
     { "published": 7516, "target": 7516, "mode": "ingress" },
     { "published": 7515, "target": 7515, "mode": "ingress" },
@@ -94,7 +90,6 @@ nexcel_ports_aws:
     { "published": 80, "target": 80, "mode": "ingress" },
     { "published": 42424, "target": 42424, "mode": "ingress" },
     { "published": 43434, "target": 43434, "mode": "ingress" },
-    { "published": 7979, "target": 7979, "mode": "ingress" },
     { "published": 7577, "target": 7577, "mode": "ingress" },
     { "published": 8887, "target": 8887, "mode": "ingress" },
     { "published": 7578, "target": 7578, "mode": "ingress" },
@@ -113,7 +108,6 @@ nexcel_ports_prod-nex3:
   [
     { "published": 80, "target": 80, "mode": "ingress" },
     { "published": 8000, "target": 8000, "mode": "ingress" },
-    { "published": 7979, "target": 7979, "mode": "ingress" },
     { "published": 8012, "target": 8012, "mode": "ingress" },
     { "published": 9321, "target": 9321, "mode": "host" },
     { "published": 9320, "target": 9320, "mode": "ingress" },
@@ -130,7 +124,6 @@ luminet_ports_local:
   [
     { "published": 80, "target": 80, "mode": "ingress" },
     { "published": 443, "target": 443, "mode": "ingress" },
-    { "published": 7979, "target": 7979, "mode": "ingress" },
     { "published": 7000, "target": 7000, "mode": "ingress" },
     { "published": 7001, "target": 7001, "mode": "ingress" },
     { "published": 7002, "target": 7002, "mode": "ingress" },
@@ -143,7 +136,6 @@ luminet_ports_local:
 luminet_ports_uat:
   [
     { "published": 80, "target": 80, "mode": "ingress" },
-    { "published": 7979, "target": 7979, "mode": "ingress" },
     { "published": 6310, "target": 6310, "mode": "ingress" },
     { "published": 6313, "target": 6313, "mode": "ingress" },
     { "published": 6314, "target": 6314, "mode": "ingress" },
@@ -164,7 +156,6 @@ luminet_ports_prod:
   [
     { "published": 80, "target": 80, "mode": "ingress" },
     { "published": 8088, "target": 8088, "mode": "host" },
-    { "published": 7979, "target": 7979, "mode": "ingress" },
     { "published": 8889, "target": 8889, "mode": "ingress" },
     { "published": 8100, "target": 8100, "mode": "ingress" },
     { "published": 8300, "target": 8300, "mode": "ingress" },
@@ -185,7 +176,6 @@ luminet_ports_prod:
 luminet_ports_aws:
   [
     { "published": 80, "target": 80, "mode": "ingress" },
-    { "published": 7979, "target": 7979, "mode": "ingress" },
     { "published": 9002, "target": 9002, "mode": "ingress" },
     { "published": 8080, "target": 8080, "mode": "ingress" },
   ]

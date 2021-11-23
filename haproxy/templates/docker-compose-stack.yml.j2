@@ -44,7 +44,7 @@ services:
           constraints: 
             - node.labels.HAPROXY == yes
     healthcheck:
-      test: ['CMD', 'curl', '-f', "http://localhost:7979"]
+      test: ['CMD', 'curl', '-f', "http://localhost:80/metrics"]
       interval: 5s
       timeout: 5s
       retries: 100
