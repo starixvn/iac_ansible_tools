@@ -102,7 +102,7 @@ services:
     ports:
       - 5439:5432
     volumes:
-      - '{{gluster_path}}/pgdocker/10/data/:/var/lib/postgresql/data/pgdata:Z'
+      - './pgdata:/var/lib/postgresql/data/pgdata:Z'
     networks:
       - {{swarm_network_nexops}}
     environment:
