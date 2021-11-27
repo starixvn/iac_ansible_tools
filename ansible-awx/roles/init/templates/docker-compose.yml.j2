@@ -3,7 +3,7 @@ services:
   web:
     image: registry.nexdev.net:5050/docker/awx/web:11.2.0 #ansible/awx_web:11.0.0
     ports:
-      - '8089:8052'
+      - '{{external_port | default('8089')}}:8052'
     user: root
     networks:
       - {{swarm_network_nexops}}
@@ -21,10 +21,10 @@ services:
       - '/etc/localtime:/etc/localtime:ro'
     deploy:
       mode: replicated
-      replicas: 2
+      replicas: {{replicas | default (2)}}
       placement:
         constraints:
-          - node.labels.NEXOPS_LOW_STORAGE == yes
+          - node.labels.{{label_node | default ('NEXOPS_HIGH_STORAGE')}} == yes
     environment:
       http_proxy:
       https_proxy:
@@ -56,10 +56,10 @@ services:
       SUPERVISOR_WEB_CONFIG_PATH: '/supervisor.conf'
     deploy:
       mode: replicated
-      replicas: 4
+      replicas: {{replicas | default (2)}}
       placement:
         constraints:
-          - node.labels.NEXOPS_LOW_STORAGE == yes
+          - node.labels.{{label_node | default ('NEXOPS_HIGH_STORAGE')}} == yes
 
   redis:
     image: redis
@@ -79,7 +79,7 @@ services:
       replicas: 1
       placement:
         constraints:
-          - node.labels.NEXOPS_LOW_STORAGE == yes
+          - node.labels.{{label_node | default ('NEXOPS_HIGH_STORAGE')}} == yes
 
   memcached:
     image: 'memcached:alpine'
@@ -95,7 +95,7 @@ services:
       replicas: 1
       placement:
         constraints:
-          - node.labels.NEXOPS_LOW_STORAGE == yes
+          - node.labels.{{label_node | default ('NEXOPS_HIGH_STORAGE')}} == yes
 
   postgres:
     image: registry.nexdev.net:5050/docker/database/postgres:10
@@ -118,7 +118,7 @@ services:
       replicas: 1
       placement:
         constraints:
-          - node.labels.NEXOPS_LOW_STORAGE == yes
+          - node.labels.{{label_node | default ('NEXOPS_HIGH_STORAGE')}} == yes
 
 networks:
   {{swarm_network_nexops}}:
