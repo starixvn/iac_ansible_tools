@@ -23,3 +23,8 @@
   roles:
     - role: bk_zabbix
   tags: bk_zabbix
+
+- hosts: all
+  roles:
+    - role: bk_portainer_prod
+  tags: bk_portainer_prod
