@@ -8,6 +8,7 @@
     - redis_socket
     - memcached_socket
     - pgdata
+    - projects
 
 - name: Create network
   docker_network:
