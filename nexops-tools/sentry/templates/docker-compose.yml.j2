@@ -71,7 +71,10 @@ services:
       - postgres_{{org}}
       - memcached_{{org}}
     networks:
-      - {{swarm_network_name}}
+{% for swarm_network in swarm_networks %}
+      - {{swarm_network}}
+{% endfor %}
+      - {{swarm_network_nexops}}
     deploy: 
         mode: replicated
         replicas: 1
