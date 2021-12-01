@@ -44,6 +44,7 @@ services:
 {% for swarm_network in swarm_networks %}
       - {{swarm_network}}
 {% endfor %}
+      - {{swarm_network_nexops}}
     deploy: 
       mode: replicated
       replicas: 1
