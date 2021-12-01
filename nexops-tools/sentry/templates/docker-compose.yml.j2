@@ -41,7 +41,9 @@ services:
     restart: unless-stopped
     image: registry.nexdev.net:5050/docker/nexops-tools/memcached:1.5-alpine
     networks:
-        - {{swarm_network_name}}
+{% for swarm_network in swarm_networks %}
+      - {{swarm_network}}
+{% endfor %}
     deploy: 
       mode: replicated
       replicas: 1
