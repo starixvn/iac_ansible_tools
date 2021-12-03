@@ -28,6 +28,19 @@ configs:
     file: ./prometheus/prometheus.yml
 
 services:
+  netshoot:
+    image: registry.nexdev.net:5050/docker/nexops-tools/netshoot
+    networks:
+      - net
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    deploy:
+      mode: global
+      resources:
+        limits:
+          memory: 2G
+        reservations:
+          memory: 64M
   cadvisor:
     image: registry.nexdev.net:5050/docker/nexops-tools/cadvisor
     networks:

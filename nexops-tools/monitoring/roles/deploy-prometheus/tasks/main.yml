@@ -12,14 +12,14 @@
     docker-compose pull
   become: yes
 
-- name: Create network
-  docker_network:
-    name: "{{item}}"
-    driver: "overlay"
-    attachable: true
-  with_items: 'swarm_{{org}}_{{env}}'
-  ignore_errors: yes
-  become: yes
+#- name: Create network
+#  docker_network:
+#    name: "{{item}}"
+#    driver: "overlay"
+#    attachable: true
+#  with_items: 'swarm_{{org}}_{{env}}'
+#  ignore_errors: yes
+#  become: yes
 
 - name: remove service and config
   #when: inventory_hostname in groups['gluster_leader']
@@ -30,7 +30,7 @@
     docker config rm monitoring_prometheus_config
   become: yes
   ignore_errors: yes
-  
+
 - name: Deploy NexOps monitoring tools
   when: inventory_hostname in groups['swarm_managers']
   shell: |

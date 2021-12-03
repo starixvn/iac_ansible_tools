@@ -42,14 +42,14 @@
     - prometheus
   ignore_errors: yes
 
-- name: Create network
-  docker_network:
-    name: "{{item}}"
-    driver: "overlay"
-    attachable: true
-  with_items: 'swarm_{{org}}_{{ENV}}'
-  ignore_errors: yes
-  become: yes
+#- name: Create network
+#  docker_network:
+#    name: "{{item}}"
+#    driver: "overlay"
+#    attachable: true
+#  with_items: 'swarm_{{org}}_{{ENV}}'
+#  ignore_errors: yes
+#  become: yes
   
 - name: Update Promethus
   when: inventory_hostname in groups['gluster_leader']
