@@ -41,6 +41,7 @@ services:
           memory: 2G
         reservations:
           memory: 64M
+    command: ping localhost
   cadvisor:
     image: registry.nexdev.net:5050/docker/nexops-tools/cadvisor
     networks:
