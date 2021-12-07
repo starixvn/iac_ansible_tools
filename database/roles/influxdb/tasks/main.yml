@@ -1,7 +1,7 @@
 ---
-- name: Create directory
+- name: Create stack directory
   file:
-    path: "{{gluster_path}}/{{team_path}}/data"
+    path: "/home/{{ansible_user}}/stacks"
     mode: "0755"
     state: directory
   become: yes
@@ -17,11 +17,11 @@
 - name: Copy docker-compose file
   template:
     src: "templates/influshdb-docker-compose.yml.j2"
-    dest: /{{gluster_path}}/{{team_path}}/{{stack_name}}_db.yml
+    dest: /home/{{ansible_user}}/stacks/{{stack_name}}_db.yml
   become: yes
 
 - name: Build up and run container
   shell: |
-    cd /{{gluster_path}}/{{team_path}}
+    cd /home/{{ansible_user}}/stacks
     docker stack deploy --compose-file={{stack_name}}_db.yml {{stack_name}}
   become: yes

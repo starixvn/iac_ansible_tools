@@ -36,4 +36,4 @@ services:
     networks:
     - {{swarm_network_nexops}}
     volumes:
-      - ./influxdb-data:/var/lib/influxdb
+      - {{volume_path}}:/var/lib/influxdb
