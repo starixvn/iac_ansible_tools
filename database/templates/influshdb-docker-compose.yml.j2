@@ -3,13 +3,6 @@ networks:
   {{swarm_network_nexops}}:
     external: true
 
-volumes:
-    influxdb-data:
-      driver_opts:
-        o: bind
-        type: none
-        device: {{gluster_path}}/{{team_path}}/data
-
 # https://docs.influxdata.com/influxdb/v1.7/administration/config
 services:
   influxdb:
@@ -42,10 +35,5 @@ services:
 #          memory: 1024M
     networks:
     - {{swarm_network_nexops}}
- #   healthcheck:
- #     test: "ln -sf /bin/busybox /bin/wget && /bin/wget -q -Y off http://localhost:8086/metrics -O /dev/null > /dev/null 2>&1"
- #     interval: 25s
- #     timeout: 3s
- #     start_period: 30s
     volumes:
-      - influxdb-data:/var/lib/influxdb
+      - ./influxdb-data:/var/lib/influxdb

@@ -1,11 +1,4 @@
 ---
-- name: Create stack directory
-  file:
-    path: "/home/{{ansible_user}}/stacks"
-    mode: "0755"
-    state: directory
-  become: yes
-
 - name: Create directory
   file:
     path: "{{gluster_path}}/{{team_path}}/data"
@@ -13,13 +6,13 @@
     state: directory
   become: yes
 
-- name: Create network
-  docker_network:
-    name: "{{swarm_network_nexops}}"
-    driver: "overlay"
-    attachable: true
-  ignore_errors: yes
-  become: yes
+#- name: Create network
+#  docker_network:
+#    name: "{{swarm_network_nexops}}"
+#    driver: "overlay"
+#    attachable: true
+#  ignore_errors: yes
+#  become: yes
 
 - name: Copy docker-compose file
   template:
