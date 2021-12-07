@@ -28,9 +28,9 @@ services:
       placement:
         constraints:
         - node.labels.{{node_label | default ('NEXOPS_HIGH_STORAGE')}} == yes
-#      resources:
-#        limits:
-#          memory: 2048M
+      resources:
+        limits:
+          memory: 2048M
 #        reservations:
 #          memory: 1024M
     networks:
