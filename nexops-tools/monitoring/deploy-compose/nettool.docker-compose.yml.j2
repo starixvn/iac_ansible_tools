@@ -1,0 +1,25 @@
+########################################################################
+# File managed by Ansible - NexOps
+# Your changes will be overwritten.
+#######################################################################
+version: '3.3'
+
+networks:
+  swarm_{{org}}_{{env}}:
+    external: true
+
+services:
+  netshoot:
+    image: registry.nexdev.net:5050/docker/nexops-tools/netshoot
+    networks:
+      - net
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    deploy:
+      mode: global
+      resources:
+        limits:
+          memory: 2G
+        reservations:
+          memory: 64M
+    command: ping localhost

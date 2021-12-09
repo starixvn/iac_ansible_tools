@@ -18,5 +18,10 @@
 
 - hosts: all
   roles:
+    - role: deploy-nettool
+  tags: deploy-nettool
+
+- hosts: all
+  roles:
     - role: update-prometheus
   tags: update-prometheus
