@@ -36,7 +36,7 @@ x-defaults: &defaults
         order: stop-first
       placement:
         constraints:
-          - node.labels.SENTRY == yes
+          - node.labels.{{label | default ('SENTRY')}} == yes
   volumes:
     - ./sentry-data:/var/lib/sentry/files
 
@@ -58,7 +58,7 @@ services:
         order: stop-first
       placement:
         constraints:
-          - node.labels.SENTRY == yes
+          - node.labels.{{label | default ('SENTRY')}} == yes
 
   web_{{org}}:
     image: registry.nexdev.net:5050/docker/nexops-tools/sentry:{{sentry_version}}
@@ -86,7 +86,7 @@ services:
           order: stop-first
         placement:
           constraints:
-            - node.labels.SENTRY == yes
+            - node.labels.{{label | default ('SENTRY')}} == yes
     volumes:
       - ./sentry-data:/var/lib/sentry/files
 {% if web_port is defined %}
@@ -119,7 +119,7 @@ services:
         order: stop-first
       placement:
         constraints:
-          - node.labels.SENTRY == yes
+          - node.labels.{{label | default ('SENTRY')}} == yes
     networks:
       - {{swarm_network_name}}
 
@@ -138,7 +138,7 @@ services:
         order: stop-first
       placement:
         constraints:
-          - node.labels.SENTRY == yes
+          - node.labels.{{label | default ('SENTRY')}} == yes
     networks:
       - {{swarm_network_name}}
     entrypoint: "/entrypoint.sh"
@@ -156,7 +156,7 @@ services:
         order: stop-first
       placement:
         constraints:
-          - node.labels.SENTRY == yes
+          - node.labels.{{label | default ('SENTRY')}} == yes
 {% if db_port is defined %}
     ports:
       - {{db_port}}:5432/tcp
