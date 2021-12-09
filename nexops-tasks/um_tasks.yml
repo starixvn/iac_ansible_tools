@@ -60,24 +60,6 @@
       tags:
         - pst
     ########## Flush Couchbase ###########
-    - name: cp flush_cached_couchbase.ps1 template {{env}}
-      win_template:
-        src: "templates/UM/flush_cached_couchbase.ps1.j2"
-        dest: "{{script_location}}/Tasks/UM/flush_cached_couchbase.ps1"
-      tags:
-        - flush_couchbase
-        - um_restart_iis
-        - um_reboot_server
-      ignore_errors: true
-
-    - name: Flush couchbase
-      win_shell: '{{ script_location }}\Tasks\UM\flush_cached_couchbase.ps1 >> {{ script_location }}\Tasks\UM\flush_cached_couchbase.log chdir={{ script_location }}\Tasks\UM'
-      tags:
-        - flush_couchbase
-        - um_restart_iis
-        - um_reboot_server
-      ignore_errors: true
-
     ########## Restart IIS ###########
     - name: Restart ASP State and IIS Service - {{env}}
       win_shell: '{{ script_location }}\Tasks\UM\IIS.ps1 >> {{ script_location }}\Tasks\UM\IIS.ps1.log chdir={{ script_location }}\Tasks\UM'
