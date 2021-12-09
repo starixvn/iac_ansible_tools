@@ -8,5 +8,5 @@
 - name: Deploy nettool
   shell: |
     cd {{ working_directory }}
-    docker stack deploy --compose-file=nettool.docker-compose.yml monitoring  --with-registry-auth
+    docker stack deploy -c nettool.docker-compose.yml monitoring --with-registry-auth
   become: yes
