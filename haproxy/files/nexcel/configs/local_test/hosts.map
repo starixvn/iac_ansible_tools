@@ -1,4 +1,3 @@
-
 #domainname           backendname
 static.haproxydev.local be_static
 www.haproxydev.local be_www
