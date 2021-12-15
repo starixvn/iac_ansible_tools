@@ -43,7 +43,7 @@
           "older_than": "7d",
           "name_regex": ".*",
           "name_regex_delete": ".*",
-          "name_regex_keep": "(builder|LOCAL.*|SIT.*|UAT.*|PROD.*|AWS.*)"
+          "name_regex_keep": "(builder|((LOCAL|SIT|UAT|PROD|AWS)_?[123]?\-latest))"
         }
       }
     body_format: json
