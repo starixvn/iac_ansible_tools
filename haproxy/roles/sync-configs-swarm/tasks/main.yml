@@ -69,6 +69,7 @@
   ignore_errors: yes
   with_items:
     - hosts.map
+    - proxy_l3_api.map
 
 - name: Copy HAProxy Dockerfile.
   template:
