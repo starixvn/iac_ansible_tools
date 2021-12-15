@@ -59,7 +59,6 @@
   ignore_errors: yes
   with_items:
     - dataplaneapi.hcl
-    - hosts.map
 
 - name: Copy custom configuration {{ env }}
   when: env == "local_test"
