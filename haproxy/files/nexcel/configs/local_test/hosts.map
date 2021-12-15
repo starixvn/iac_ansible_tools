@@ -4,4 +4,3 @@ www.haproxydev.local be_www
 api.haproxydev.local be_api
 nginx.haproxydev.local ngin_nodes
 prometheus.haproxydev.local monitoring_prometheus_nodes
-l3-api-proxy.haproxydev.local be_www2
