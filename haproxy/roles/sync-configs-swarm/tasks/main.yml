@@ -50,13 +50,16 @@
     - nexcel.vn.pem
   ignore_errors: yes
 
-- name: Copy API configuration {{ env }}
+- name: Copy custom configuration {{ env }}
   when: env == "local_test"
   template:
-    src: "files/{{team}}/configs/{{ env }}/dataplaneapi.hcl"
-    dest: "{{ volume_path }}/dataplaneapi.hcl"
+    src: "files/{{team}}/configs/{{ env }}/{{item}}"
+    dest: "{{ volume_path }}/{{item}}"
   become: yes
   ignore_errors: yes
+  with_items:
+    - dataplaneapi.hcl
+    - hosts.map
 
 - name: Copy HAProxy Dockerfile.
   template:
