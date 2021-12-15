@@ -59,6 +59,15 @@
   ignore_errors: yes
   with_items:
     - dataplaneapi.hcl
+
+- name: Copy custom configuration {{ env }}
+  when: env == "local_test"
+  template:
+    src: "files/{{team}}/configs/{{ env }}/{{item}}"
+    dest: "{{ volume_path }}/maps/{{item}}"
+  become: yes
+  ignore_errors: yes
+  with_items:
     - hosts.map
 
 - name: Copy HAProxy Dockerfile.
