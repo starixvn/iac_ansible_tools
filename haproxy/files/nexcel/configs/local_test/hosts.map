@@ -5,6 +5,6 @@ www.haproxydev.local be_www
 api.haproxydev.local be_api
 nginx.haproxydev.local ngin_nodes
 prometheus.haproxydev.local monitoring_prometheus_nodes
-l3-api-proxy.nexdev.net be_www2
-#l3-api-proxy.nexdev.net/paigowpoker be_www3
-#l3-api-proxy.nexdev.net/game-api game_api
+l3-api-proxy.haproxydev.local be_www2
+l3-api-proxy.haproxydev.local/paigowpoker be_www3
+l3-api-proxy.haproxydev.local/game-api game_api
