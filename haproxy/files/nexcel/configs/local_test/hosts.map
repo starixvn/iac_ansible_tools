@@ -1,4 +1,3 @@
 static.haproxydev.local be_static
 www.haproxydev.local be_www
-haproxydev.local be_www
 api.haproxydev.local be_api
