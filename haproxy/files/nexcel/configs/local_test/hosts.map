@@ -1,0 +1,7 @@
+# A comment begins with a hash sign
+static.haproxydev.local  be_static
+www.haproxydev.local     be_www
+
+# You can add additional comments, but they must be on a new line
+haproxydev.local         be_www
+api.haproxydev.local     be_api
