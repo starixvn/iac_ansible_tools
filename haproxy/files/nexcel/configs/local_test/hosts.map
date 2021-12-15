@@ -1,12 +1,5 @@
 
 #domainname           backendname
-example.com           be_default
-example.net           be_default
-api.example.com       be_api
-api1.example.net      be_api1
-api2.example.com      be_api2
-# [...]
-api10000.example.com  be_api
-#static.haproxydev.local be_static
-#www.haproxydev.local be_www
-#api.haproxydev.local be_api
+static.haproxydev.local be_static
+www.haproxydev.local be_www
+api.haproxydev.local be_api
