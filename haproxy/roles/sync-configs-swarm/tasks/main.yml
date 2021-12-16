@@ -64,7 +64,7 @@
   when: env == "local_test"
   template:
     src: "files/{{team}}/configs/{{ env }}/{{item}}"
-    dest: "{{ volume_path }}/maps/{{item}}"
+    dest: "{{ volume_path }}/{{item}}"
   become: yes
   ignore_errors: yes
   with_items:
