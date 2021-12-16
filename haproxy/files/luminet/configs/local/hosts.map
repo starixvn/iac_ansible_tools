@@ -1,4 +1,5 @@
 #domainname           #backendname
+#L2 LOCAL
 l2-m.lumigame.com l2_game_client_mobi_nodes
 l2-games.lumigame.com l2_game_client_nodes
 l2-api.lumigame.com l2_api_nodes
@@ -10,3 +11,15 @@ l2-ows.lumigame.com l2_owapi_simulator_nodes
 l2-result.lumigame.com l2_game_result_nodes
 l2-guide.lumigame.com l2_game_guides_nodes
 l2-gw.lumigame.com l2_socket_gateway_nodes
+#L2 LOCAL1
+l2-m1.lumigame.com l2_game_client_mobi_nodes_1
+l2-games1.lumigame.com l2_game_client_nodes_1
+l2-api1.lumigame.com l2_api_nodes_1
+l2-auth1.lumigame.com l2_auth_api_nodes_1
+l2-admin1.lumigame.com l2_game_admin_site_nodes_1
+l2-admin-api1.lumigame.com l2_game_admin_api_nodes_1
+l2-glbs1.lumigame.com l2_gamelobby_simulator_nodes_1
+l2-ows1.lumigame.com l2_owapi_simulator_nodes_1
+l2-result1.lumigame.com l2_game_result_nodes_1
+l2-guide-1.lumigame.com l2_game_guides_nodes_1
+l2-gw1.lumigame.com l2_socket_gateway_nodes_1
