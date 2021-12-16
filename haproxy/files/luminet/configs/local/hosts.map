@@ -23,3 +23,10 @@ l2-ows1.lumigame.com l2_owapi_simulator_nodes_1
 l2-result1.lumigame.com l2_game_result_nodes_1
 l2-guide-1.lumigame.com l2_game_guides_nodes_1
 l2-gw1.lumigame.com l2_socket_gateway_nodes_1
+#NexOps Tool
+sonarqube.lumigame.com sonarqube_nodes
+npm.lumigame.com verdacio_npm_nodes
+sentry.lumigame.com sentry_web_nodes
+deploy.lumigame.com rocketor_nodes
+deploymentapi.lumigame.com nexops_deploymentapi_nodes
+logs.lumigame.com elk_nodes
