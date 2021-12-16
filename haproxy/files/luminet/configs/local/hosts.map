@@ -1,4 +1,4 @@
-#domainname           backendname
+#domainname           #backendname
 l2-m.lumigame.com   l2_game_client_mobi_nodes
 l2-games.lumigame.com  l2_game_client_nodes
 l2-api.lumigame.com l2_api_nodes
