@@ -71,6 +71,17 @@
     - hosts.map
     - proxy.map
 
+- name: Copy custom configuration {{ env }}
+  when: env == "local" and team == "luminet"
+  template:
+    src: "files/{{team}}/configs/{{ env }}/{{item}}"
+    dest: "{{ volume_path }}/{{item}}"
+  become: yes
+  ignore_errors: yes
+  with_items:
+    - hosts.map
+    - l2-game-proxy.map
+
 - name: Copy HAProxy Dockerfile.
   template:
     src: "templates/{{team}}/check-config.Dockerfile.j2"
@@ -81,6 +92,13 @@
   when: env == "local_test"
   template:
     src: "templates/{{team}}/check-config.Dockerfile_testlab.j2"
+    dest: "{{ volume_path }}/Dockerfile"
+  become: yes
+
+- name: Copy HAProxy Dockerfile Testlab.
+  when: env == "local" and team == "luminet"
+  template:
+    src: "templates/{{team}}/check-config.Dockerfile_local.j2"
     dest: "{{ volume_path }}/Dockerfile"
   become: yes
 
