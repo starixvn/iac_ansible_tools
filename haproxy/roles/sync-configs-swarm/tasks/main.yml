@@ -77,6 +77,13 @@
     dest: "{{ volume_path }}/Dockerfile"
   become: yes
 
+- name: Copy HAProxy Dockerfile Testlab.
+  when: env == "local_test"
+  template:
+    src: "templates/{{team}}/check-config.Dockerfile_testlab.j2"
+    dest: "{{ volume_path }}/Dockerfile"
+  become: yes
+
 - name: Remove HAProxy image for syntax check
   shell: docker image rm haproxy-check-config
   ignore_errors: yes
