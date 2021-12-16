@@ -44,12 +44,12 @@ services:
       timeout: 5s
       retries: 10
     user: root
-    ports: 
-      - 5455:5432
+    #ports: 
+    #  - 5455:5432
     deploy:
       mode: replicated
       replicas: 1
-      #endpoint_mode: dnsrr
+      endpoint_mode: dnsrr
       placement:
         constraints:
           - "node.labels.{{node_label}}==yes"
