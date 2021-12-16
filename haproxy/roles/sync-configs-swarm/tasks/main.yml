@@ -69,7 +69,7 @@
   ignore_errors: yes
   with_items:
     - hosts.map
-    - proxy.map
+    - l2-game-proxy.map
 
 - name: Copy custom configuration {{ env }}
   when: env == "local" and team == "luminet"
