@@ -30,6 +30,7 @@
   when: identity_user is not defined
 
 - name: Creates Sub Application pools, sets attributes and starts it
+  when: subsite is defined
   win_iis_webapppool:
     name: "{{item.pool}}"
     state: started
