@@ -30,7 +30,7 @@
   when: identity_user is not defined
 
 - name: Creates Sub Application pools, sets attributes and starts it
-  when: subsite is defined
+  when: subsite is defined and item.pool != website_name
   win_iis_webapppool:
     name: "{{item.pool}}"
     state: started
@@ -39,7 +39,7 @@
       autoStart: no
       enable32BitAppOnWin64: "{{item.enable32BitAppOnWin64 | default('true')}}"
   with_items: "{{ subsite }}"
-  when: item.pool != website_name
+  ignore_errors: true
 
 - name: Create Website - {{website_name}}
   win_iis_website:
