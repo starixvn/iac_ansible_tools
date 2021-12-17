@@ -27,7 +27,7 @@ services:
       SONAR_HOME: /opt/sonarqube
       SONAR_JDBC_USERNAME: sonar
       SONAR_JDBC_PASSWORD: SQL@Root1105
-      SONAR_JDBC_URL: jdbc:postgresql://postgres/sonar
+      SONAR_JDBC_URL: jdbc:postgresql://postgres:5432/sonar
     volumes:
       - conf:/opt/sonarqube/conf
       - data:/opt/sonarqube/data
