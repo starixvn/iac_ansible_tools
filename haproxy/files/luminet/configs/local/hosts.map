@@ -1,4 +1,17 @@
 #domainname           #backendname
+#L1 LOCAL2
+l1-m2.lumigame.com l1_game_client_mobi_nodes_2
+l1-games2.lumigame.com l1_game_client_nodes_2
+l1-api2.lumigame.com l1_api_nodes_2
+l1-auth2.lumigame.com l1_auth_api_nodes_2
+l1-admin2.lumigame.com l1_game_admin_site_nodes_2
+l1-admin-api2.lumigame.com l1_game_admin_api_nodes_2
+l1-glbs2.lumigame.com l1_gamelobby_simulator_nodes_2
+l1-ows2.lumigame.com l1_owapi_simulator_nodes_2
+l1-result2.lumigame.com l1_game_result_nodes_2
+l1-gw2.lumigame.com l1_socket_gateway_nodes_2
+l1-guide-2.lumigame.com l1_guide_nodes_2
+
 #L2 LOCAL
 l2-m.lumigame.com l2_game_client_mobi_nodes
 l2-games.lumigame.com l2_game_client_nodes
@@ -11,6 +24,7 @@ l2-ows.lumigame.com l2_owapi_simulator_nodes
 l2-result.lumigame.com l2_game_result_nodes
 l2-guide.lumigame.com l2_game_guides_nodes
 l2-gw.lumigame.com l2_socket_gateway_nodes
+
 #L2 LOCAL1
 l2-m1.lumigame.com l2_game_client_mobi_nodes_1
 l2-games1.lumigame.com l2_game_client_nodes_1
@@ -23,6 +37,7 @@ l2-ows1.lumigame.com l2_owapi_simulator_nodes_1
 l2-result1.lumigame.com l2_game_result_nodes_1
 l2-guide-1.lumigame.com l2_game_guides_nodes_1
 l2-gw1.lumigame.com l2_socket_gateway_nodes_1
+
 #NexOps Tool
 sonarqube.lumigame.com sonarqube_nodes
 npm.lumigame.com verdacio_npm_nodes
