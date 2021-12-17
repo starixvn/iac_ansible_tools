@@ -63,7 +63,7 @@
 - name: Copy custom configuration {{ env }}
   when: env == "local_test"
   template:
-    src: "files/{{team}}/configs/{{ env }}/{{item}}"
+    src: "files/{{team}}/configs/{{ env }}/maps/{{item}}"
     dest: "{{ volume_path }}/{{item}}"
   become: yes
   ignore_errors: yes
