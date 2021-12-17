@@ -82,6 +82,7 @@
     - hosts.map
     - l2-game-proxy.map
     - l2-game-proxy1.map
+    - l1-game-proxy2.map
 
 - name: Copy HAProxy Dockerfile.
   template:
