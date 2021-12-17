@@ -93,7 +93,7 @@
   when: virtual_directory is defined
 
 - name: Copy template whoami.aspx to path {{website_path}}
-  when: subsite is defined
+  #when: subsite is defined
   win_template:
     src: "whoami.aspx.j2"
     dest: '{{ website_path }}\whoami.aspx'
