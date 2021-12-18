@@ -4,7 +4,7 @@ services:
   web:
     image: registry.nexdev.net:5050/docker/nexops-tools/sonarqube:8.9.5-community
     depends_on:
-      - postgres
+      - db
     networks:
       - {{swarm_network_nexops}}
     healthcheck:
