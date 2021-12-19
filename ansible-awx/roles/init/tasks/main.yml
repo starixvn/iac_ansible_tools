@@ -53,6 +53,7 @@
   with_items:
     - credentials.py
     - krb5.conf
+    - environment.sh
 
 - name: Copy SSH files
   when: inventory_hostname in groups['swarm_managers']
