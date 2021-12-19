@@ -39,7 +39,7 @@ services:
     volumes:
       - supervisor-socket:/var/run/supervisor
       - rsyslog-socket:/var/run/awx-rsyslog/
-      - '{{gluster_path}}/.netrc:/home/awx/.netrc'
+      #- '{{gluster_path}}/.netrc:/home/awx/.netrc'
       - '{{gluster_path}}/krb5.conf:/etc/krb5.conf'
       - '{{gluster_path}}/SECRET_KEY:/etc/tower/SECRET_KEY'
       - '{{gluster_path}}/.ssh:/root/.ssh'
