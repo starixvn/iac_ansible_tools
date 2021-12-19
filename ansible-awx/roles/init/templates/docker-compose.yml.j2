@@ -62,7 +62,7 @@ services:
           - node.labels.{{label_node | default ('NEXOPS_HIGH_STORAGE')}} == yes
 
   redis:
-    image: redis
+    image: registry.nexdev.net:5050/docker/nexops-tools/redis:5
     environment:
       http_proxy:
       https_proxy:
@@ -82,7 +82,7 @@ services:
           - node.labels.{{label_node | default ('NEXOPS_HIGH_STORAGE')}} == yes
 
   memcached:
-    image: 'memcached:alpine'
+    image: registry.nexdev.net:5050/docker/awx/memcached:alpine
     command: ['-s', '/var/run/memcached/memcached.sock', '-a', '0666']
     environment:
       http_proxy:
