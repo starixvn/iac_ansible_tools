@@ -38,11 +38,22 @@
   ignore_errors: yes
   with_items:
     - SECRET_KEY
-    - .netrc
+    #- .netrc
     - credentials.py
-    - environment.sh
+    #- environment.sh
     - krb5.conf
     - nginx.conf
+
+- name: Copy configuration env - {{env}} files
+  when: inventory_hostname in groups['swarm_managers']
+  template:
+    src: 'templates/env/{{ item }}_{{env}}'
+    dest: '{{gluster_path}}/{{ item }}'
+  become: yes
+  ignore_errors: yes
+  with_items:
+    - credentials.py
+    - krb5.conf
 
 - name: Copy SSH files
   when: inventory_hostname in groups['swarm_managers']
