@@ -56,7 +56,7 @@ services:
       SUPERVISOR_WEB_CONFIG_PATH: '/supervisor.conf'
     deploy:
       mode: replicated
-      replicas: {{replicas | default (2)}}
+      replicas: {{replicas | default (1)}}
       placement:
         constraints:
           - node.labels.{{label_node | default ('NEXOPS_HIGH_STORAGE')}} == yes
