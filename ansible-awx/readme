@@ -1,0 +1,6 @@
+###clean database_name
+DROP SCHEMA public CASCADE;
+CREATE SCHEMA public;
+
+######
+docker exec -i awx_postgres.1.nk8a0kceadaicjtdkt1dvxh8t psql -U awx -d ansibledb < /var/www/gluster/nexops/awx/ansibledb_18-12-2021_23_30_29.sql
