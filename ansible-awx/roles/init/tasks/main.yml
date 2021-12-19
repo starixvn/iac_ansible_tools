@@ -39,9 +39,8 @@
   with_items:
     - SECRET_KEY
     #- .netrc
-    - credentials.py
     #- environment.sh
-    - krb5.conf
+    #- krb5.conf
     - nginx.conf
 
 - name: Copy configuration env - {{env}} files
