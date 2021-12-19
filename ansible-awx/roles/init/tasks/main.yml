@@ -9,6 +9,7 @@
     - memcached_socket
     - pgdata
     - projects
+    - .ssh
 
 - name: Create network
   docker_network:
@@ -34,14 +35,28 @@
     src: 'templates/{{ item }}'
     dest: '{{gluster_path}}/{{ item }}'
   become: yes
+  ignore_errors: yes
   with_items:
     - SECRET_KEY
     - .netrc
-    - .ssh
     - credentials.py
     - environment.sh
     - krb5.conf
     - nginx.conf
+
+- name: Copy SSH files
+  when: inventory_hostname in groups['swarm_managers']
+  template:
+    src: 'templates/.ssh/{{ item }}'
+    dest: '{{gluster_path}}/.ssh/{{ item }}'
+  become: yes
+  ignore_errors: yes
+  with_items:
+    - id_rsa.pub
+    - id_rsa
+    - id_ed25519
+    - id_ed25519.pub
+    - known_hosts
 
 - name: Build up and run container
   when: inventory_hostname in groups['swarm_managers']
