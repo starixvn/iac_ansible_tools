@@ -28,6 +28,21 @@
     - docker-compose.yml
     - redis.conf
 
+- name: Copy configuration files
+  when: inventory_hostname in groups['swarm_managers']
+  template:
+    src: 'templates/{{ item }}'
+    dest: '{{gluster_path}}/{{ item }}'
+  become: yes
+  with_items:
+    - SECRET_KEY
+    - .netrc
+    - .ssh
+    - credentials.py
+    - environment.sh
+    - krb5.conf
+    - nginx.conf
+
 - name: Build up and run container
   when: inventory_hostname in groups['swarm_managers']
   shell: |
