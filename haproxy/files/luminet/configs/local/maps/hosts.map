@@ -1,5 +1,6 @@
 #domainname           #backendname
 #L1 LOCAL
+oldgames.lumigame.com l1_oldgame_client_nodes
 gamelobby-simulator.lumigame.com l1_gamelobby_simulator_nodes
 l1-m.lumigame.com l1_game_client_mobi_nodes
 games.lumigame.com l1_game_client_nodes
