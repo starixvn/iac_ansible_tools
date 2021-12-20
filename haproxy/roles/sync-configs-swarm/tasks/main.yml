@@ -53,21 +53,12 @@
 - name: Copy custom configuration {{ env }}
   when: env == "local_test"
   template:
-    src: "files/{{team}}/configs/{{ env }}/{{item}}"
-    dest: "{{ volume_path }}/{{item}}"
-  become: yes
-  ignore_errors: yes
-  with_items:
-    - dataplaneapi.hcl
-
-- name: Copy custom configuration {{ env }}
-  when: env == "local_test"
-  template:
     src: "files/{{team}}/configs/{{ env }}/maps/{{item}}"
     dest: "{{ volume_path }}/{{item}}"
   become: yes
   ignore_errors: yes
   with_items:
+    - dataplaneapi.hcl
     - hosts.map
     - l2-game-proxy.map
 
@@ -86,23 +77,23 @@
     - l1-game-proxy1.map
     - l1-game-proxy.map
 
-- name: Copy HAProxy Dockerfile.
+- name: Copy custom configuration {{ env }}
+  when: env == "uat" and team == "luminet"
   template:
-    src: "templates/{{team}}/check-config.Dockerfile.j2"
-    dest: "{{ volume_path }}/Dockerfile"
+    src: "files/{{team}}/configs/{{ env }}/maps/{{item}}"
+    dest: "{{ volume_path }}/{{item}}"
   become: yes
+  ignore_errors: yes
+  with_items:
+    - hosts.map
+    - uat-l1-game-proxy.map
+    - uat-l2-game-proxy.map
+    - sit-l1-game-proxy.map
+    - sit-l1-game-proxy.map
 
 - name: Copy HAProxy Dockerfile Testlab.
-  when: env == "local_test"
   template:
-    src: "templates/{{team}}/check-config.Dockerfile_testlab.j2"
-    dest: "{{ volume_path }}/Dockerfile"
-  become: yes
-
-- name: Copy HAProxy Dockerfile Testlab.
-  when: env == "local" and team == "luminet"
-  template:
-    src: "templates/{{team}}/check-config.Dockerfile_local.j2"
+    src: "templates/{{team}}/check-config.Dockerfile_{{env}}.j2"
     dest: "{{ volume_path }}/Dockerfile"
   become: yes
 
