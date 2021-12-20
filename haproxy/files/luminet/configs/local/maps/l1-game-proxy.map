@@ -2,7 +2,7 @@
 /sedie/ l1_sedie_nodes
 /vsedie/ l1_vip_sedie_nodes
 /specialsedie/  l1_special_sedie_nodes
-/blackjack/ l2_blackjack_nodes
+/blackjack/ l1_blackjack_nodes
 /vipfishprawncrab/  l1_vip_fish_prawn_crab_nodes
 /sicbo/ l1_sicbo_nodes
 /vipbaccarat/ l1_vip_baccarat_nodes
