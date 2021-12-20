@@ -89,7 +89,7 @@
     - uat-l1-game-proxy.map
     - uat-l2-game-proxy.map
     - sit-l1-game-proxy.map
-    - sit-l1-game-proxy.map
+    - sit-l2-game-proxy.map
 
 - name: Copy HAProxy Dockerfile Testlab.
   template:
