@@ -3,33 +3,6 @@
 scdeployapi.starixplay.com nexops_deploymentapi_nodes
 scsentry.sgamesuat.com nexops_sentry_nodes
 l2haproxy.sgamesuat.com  nexops_whoami_api_nodes
-#UAT - L1
-l1uat.sgamesuat.com l1_game_client_nodes_uat
-l1uatapi.sgamesuat.com l1_api_nodes_uat
-l1uatadm.sgamesuat.com l1_game_admin_site_nodes_uat
-l1uatresult.sgamesuat.com l1_game_round_result_nodes_uat
-l1uatm.sgamesuat.com l1_game_client_mobi_nodes_UAT
-l1guidesuat.sgamesuat.com l1_game_guides_nodes_uat
-l1socceruat.sgamesuat.com nexops_whoami_api_nodes
-l1miniuat.sgamesuat.com l1_instant_game_client_nodes_UAT
-l1gwuat.sgamesuat.com l1_socket_gateway_nodes_uat
-intl1uatapi.sgamesuat.com l1_api_nodes_uat
-intl1uatresult.sgamesuat.com l1_game_round_result_nodes_uat
-intl1sitapi.sgamesuat.com l1_api_nodes_sit
-intl1sitresult.sgamesuat.com l1_game_round_result_nodes_sit
-l1sitows.sgamesuat.com l1_ow_api_simulator_nodes_sit
-l1sitglbs.sgamesuat.com l1_game_lobby_simulator_nodes_sit
-
-#SIT - L1
-l1sit.sgamesuat.com l1_game_client_nodes_sit
-l1sitapi.sgamesuat.com l1_api_nodes_sit
-l1sitadm.sgamesuat.com l1_game_admin_site_nodes_sit
-l1sitresult.sgamesuat.com l1_game_round_result_nodes_sit
-l1sitm.sgamesuat.com l1_game_client_mobi_nodes_SIT
-l1guidessit.sgamesuat.com l1_game_guides_nodes_sit
-l1soccersit.sgamesuat.com default_backend_nodes
-l1minisit.sgamesuat.com l1_instant_game_client_nodes_SIT
-l1gwsit.sgamesuat.com l1_socket_gateway_nodes_sit
 
 #UAT - L2
 l2uat.sgamesuat.com l2_game_client_nodes_uat
@@ -58,3 +31,31 @@ l2soccersit.sgamesuat.com default_backend_nodes
 l2minisit.sgamesuat.com default_backend_nodes
 l2gwsit.sgamesuat.com l2_socket_gateway_nodes_sit
 l2newssit.sgamesuat.com default_backend_nodes
+
+#UAT - L1
+l1uat.sgamesuat.com l1_game_client_nodes_uat
+l1uatapi.sgamesuat.com l1_api_nodes_uat
+l1uatadm.sgamesuat.com l1_game_admin_site_nodes_uat
+l1uatresult.sgamesuat.com l1_game_round_result_nodes_uat
+l1uatm.sgamesuat.com l1_game_client_mobi_nodes_UAT
+l1guidesuat.sgamesuat.com l1_game_guides_nodes_uat
+l1socceruat.sgamesuat.com nexops_whoami_api_nodes
+l1miniuat.sgamesuat.com l1_instant_game_client_nodes_UAT
+l1gwuat.sgamesuat.com l1_socket_gateway_nodes_uat
+intl1uatapi.sgamesuat.com l1_api_nodes_uat
+intl1uatresult.sgamesuat.com l1_game_round_result_nodes_uat
+intl1sitapi.sgamesuat.com l1_api_nodes_sit
+intl1sitresult.sgamesuat.com l1_game_round_result_nodes_sit
+l1sitows.sgamesuat.com l1_ow_api_simulator_nodes_sit
+l1sitglbs.sgamesuat.com l1_game_lobby_simulator_nodes_sit
+
+#SIT - L1
+l1sit.sgamesuat.com l1_game_client_nodes_sit
+l1sitapi.sgamesuat.com l1_api_nodes_sit
+l1sitadm.sgamesuat.com l1_game_admin_site_nodes_sit
+l1sitresult.sgamesuat.com l1_game_round_result_nodes_sit
+l1sitm.sgamesuat.com l1_game_client_mobi_nodes_SIT
+l1guidessit.sgamesuat.com l1_game_guides_nodes_sit
+l1soccersit.sgamesuat.com default_backend_nodes
+l1minisit.sgamesuat.com l1_instant_game_client_nodes_SIT
+l1gwsit.sgamesuat.com l1_socket_gateway_nodes_sit
