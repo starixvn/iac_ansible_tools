@@ -10,6 +10,42 @@ grafana.nexdev.net nexops_grafana_nodes
 mon.nexdev.net nexops_grafana_nodes
 portainer.nexdev.net nexops_portainer_nodes
 
+###VG3
+gitlab-webhook.nexdev.net nex3_l3_gitlab_webhook_bot_service_nodes_local1
+l3-games.nexdev.net nex3_l3_game_client_nodes_local
+l3-lobby.nexdev.net nex3_l3_game_lobby_nodes_local
+l3-ow-api.nexdev.net nex3_l3_ow_api_nodes_local
+
+#Local1
+l3-games-1.nexdev.net nex3_l3_game_client_nodes_local1
+l3-admin-1.nexdev.net nex3_l3_game_admin_site_nodes_local1
+l3-lobby-1.nexdev.net nex3_l3_game_lobby_nodes_local1
+l3-ow-api-1.nexdev.net nex3_l3_ow_api_nodes_local1
+l3-result-1.nexdev.net nex3_l3_round_result_nodes_local1
+l3-user-1.nexdev.net nex3_l3_user_nodes_local1
+l3-middle-site-1.nexdev.net nex3_l3_middle_site_nodes_local1
+l3-games-mini-1.nexdev.net nex3_l3_game_client_mini_nodes_local1
+
+#Local2
+l3-games-2.nexdev.net nex3_l3_game_client_nodes_local2
+l3-admin-2.nexdev.net nex3_l3_game_admin_site_nodes_local2
+l3-lobby-2.nexdev.net nex3_l3_game_lobby_nodes_local2
+l3-ow-api-2.nexdev.net nex3_l3_ow_api_nodes_local2
+l3-result-2.nexdev.net nex3_l3_round_result_nodes_local2
+l3-user-2.nexdev.net nex3_l3_user_nodes_local2
+l3-middle-site-2.nexdev.net nex3_l3_middle_site_nodes_local2
+l3-games-mini-2.nexdev.net nex3_l3_game_client_mini_nodes_local2
+
+#Local3
+l3-games-3.nexdev.net nex3_l3_game_client_nodes_local3
+l3-admin-3.nexdev.net nex3_l3_game_admin_site_nodes_local3
+l3-lobby-3.nexdev.net nex3_l3_game_lobby_nodes_local3
+l3-ow-api-3.nexdev.net nex3_l3_ow_api_nodes_local3
+l3-result-3.nexdev.net nex3_l3_round_result_nodes_local3
+l3-user-3.nexdev.net nex3_l3_user_nodes_local3
+l3-middle-site-3.nexdev.net nex3_l3_middle_site_nodes_local3
+l3-games-mini-3.nexdev.net nex3_l3_game_client_mini_nodes_local3
+
 #Nexus
 nexdev.net nexus_redmine_nodes_PROD
 info.nexcel.vn nexus_nexcel_info_site
