@@ -11,6 +11,7 @@ mon.nexdev.net nexops_grafana_nodes
 portainer.nexdev.net nexops_portainer_nodes
 
 ###VG3
+l3-api-proxy.nexdev.net default_backend_nodes
 gitlab-webhook.nexdev.net nex3_l3_gitlab_webhook_bot_service_nodes_local1
 l3-games.nexdev.net nex3_l3_game_client_nodes_local
 l3-lobby.nexdev.net nex3_l3_game_lobby_nodes_local
