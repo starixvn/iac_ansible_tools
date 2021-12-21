@@ -78,6 +78,16 @@
     - l1-game-proxy.map
 
 - name: Copy custom configuration {{ env }}
+  when: env == "local" and team == "nexcel"
+  template:
+    src: "files/{{team}}/configs/{{ env }}/maps/{{item}}"
+    dest: "{{ volume_path }}/{{item}}"
+  become: yes
+  ignore_errors: yes
+  with_items:
+    - hosts.map
+
+- name: Copy custom configuration {{ env }}
   when: env == "uat" and team == "luminet"
   template:
     src: "files/{{team}}/configs/{{ env }}/maps/{{item}}"
