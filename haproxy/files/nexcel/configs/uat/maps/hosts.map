@@ -43,25 +43,28 @@ spuvr.starixuat.com spu_nap_vr_job_service_UAT
 sputgr.starixuat.com spu_nap_tgr_job_service_UAT
 spuafc.starixuat.com spu_nap_afc_job_service_UAT
 
-#VG3
+###VG3
+
+#SIT
 sit.vgamesuat.com nex3_l3_game_client_nodes_sit
-uat.vgamesuat.com nex3_l3_game_client_nodes_uat
-uatmini.vgamesuat.com nex3_l3_game_client_mini_UAT_nodes
 sitmini.vgamesuat.com nex3_l3_game_client_mini_SIT_nodes
 sitapi.vgamesuat.com nex3_l3_game_api_nodes_sit
-uatapi.vgamesuat.com nex3_l3_game_api_nodes_uat
-sitresult.vgamesuat.com nex3_l3_result_nodes_sit
-uatresult.vgamesuat.com nex3_l3_result_nodes_uat
 situser.vgamesuat.com nex3_l3_user_nodes_sit
-uatuser.vgamesuat.com nex3_l3_user_nodes_uat
 sitmiddlesite.vgamesuat.com nex3_l3_middle_site_sit
-uatmiddlesite.vgamesuat.com nex3_l3_middle_site_uat
-
+sitresult.vgamesuat.com nex3_l3_result_nodes_sit
 sitadm.vgamesuat.com nex3_l3_admin_site_nodes_sit
-uatadm.vgamesuat.com nex3_l3_admin_site_nodes_uat
 intsitapi.vgamesuat.com nex3_l3_game_api_nodes_sit
-intuatapi.vgamesuat.com nex3_l3_game_api_nodes_uat
 intsitresult.vgamesuat.com nex3_l3_result_nodes_sit
-intuatresult.vgamesuat.com nex3_l3_result_nodes_uat
 intsitmiddlesite.vgamesuat.com nex3_l3_middle_site_sit
+
+#UAT
+uatresult.vgamesuat.com nex3_l3_result_nodes_uat
+uat.vgamesuat.com nex3_l3_game_client_nodes_uat
+uatmini.vgamesuat.com nex3_l3_game_client_mini_UAT_nodes
+uatuser.vgamesuat.com nex3_l3_user_nodes_uat
+uatapi.vgamesuat.com nex3_l3_game_api_nodes_uat
+uatmiddlesite.vgamesuat.com nex3_l3_middle_site_uat
+uatadm.vgamesuat.com nex3_l3_admin_site_nodes_uat
+intuatapi.vgamesuat.com nex3_l3_game_api_nodes_uat
+intuatresult.vgamesuat.com nex3_l3_result_nodes_uat
 intuatmiddlesite.vgamesuat.com nex3_l3_middle_site_uat
