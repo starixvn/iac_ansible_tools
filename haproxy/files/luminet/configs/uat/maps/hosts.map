@@ -4,6 +4,18 @@ scdeployapi.starixplay.com nexops_deploymentapi_nodes
 scsentry.sgamesuat.com nexops_sentry_nodes
 l2haproxy.sgamesuat.com  nexops_whoami_api_nodes
 
+#L1 L2 Internal
+intl1uatapi.sgamesuat.com l1_api_nodes_uat
+intl1uatresult.sgamesuat.com l1_game_round_result_nodes_uat
+intl1sitapi.sgamesuat.com l1_api_nodes_sit
+intl1sitresult.sgamesuat.com l1_game_round_result_nodes_sit
+l1sitows.sgamesuat.com l1_ow_api_simulator_nodes_sit
+l1sitglbs.sgamesuat.com l1_game_lobby_simulator_nodes_sit
+intl2uatapi.sgamesuat.com l2_api_nodes_uat
+intl2uatresult.sgamesuat.com l2_game_round_result_nodes_uat
+intl2sitapi.sgamesuat.com l2_api_nodes_sit
+intl2sitresult.sgamesuat.com l2_game_round_result_nodes_sit
+
 #UAT - L2
 l2uat.sgamesuat.com l2_game_client_nodes_uat
 l2uatapi.sgamesuat.com l2_api_nodes_uat
