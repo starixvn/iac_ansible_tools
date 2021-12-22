@@ -9,7 +9,16 @@ zabbix.nexdev.net nexops_zabbix_webserver
 grafana.nexdev.net nexops_grafana_nodes
 mon.nexdev.net nexops_grafana_nodes
 portainer.nexdev.net nexops_portainer_nodes
-
+##RnD
+onebookum-3rd.nexdev.net onebook_um_3rd_nodes 
+result-demo.nexdev.net result_core_demo_nodes 
+dcs-demo.nexdev.net dcs_demo_nodes 
+onebookum-token.nexdev.net onebook_um_token_nodes 
+remotingref-demo.nexdev.net remotingref_demo_nodes 
+remotingref-api.nexdev.net remotingref_api_nodes 
+betlist-demo.nexdev.net betList_core_demo_nodes 
+fanex-grid.nexdev.net fanex_grid_nodes 
+nap-admin.nexdev.net nap_admin_nodes 
 ###VG3
 l3-api-proxy.nexdev.net default_backend_nodes
 gitlab-webhook.nexdev.net nex3_l3_gitlab_webhook_bot_service_nodes_local1
@@ -217,7 +226,6 @@ oddsfeed-service.nexdev.net nexus_oddsfeed_webservice_nodes
 oddsfeed.nexdev.net nexus_oddsfeed_admin_nodes
 n88-sc.nexdev.net nexus_n88_nap_sc_nodes
 n88-api.nexdev.net nexus_n88_nap_api_nodes
-
 info.nexcel.vn nexus_nexcel_info_site
 qland.nexdev.net nexus_qland_nodes
 thor-api1.nexdev.net nexus_thor_api_LOCAL_1
