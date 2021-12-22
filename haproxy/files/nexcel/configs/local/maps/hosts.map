@@ -97,7 +97,7 @@ chatbot-mock.nexdev.net rome_alpha_letstalk_mockservice_nodes
 betlist-api.nexdev.net rome_alpha_betlist_api_nodes
 chatbot-webhook.nexdev.net rome_alpha_letstalk_webhook_nodes
 chatbot-service.nexdev.net rome_alpha_services_api_nodes
-rome_alpha_annoucements_api_nodeschatbot-announcement.nexdev.net 
+chatbot-announcement.nexdev.net rome_alpha_annoucements_api_nodes
 chatbot-site.nexdev.net rome_alpha_letstalk_simulator_nodes
 cloneaccount.nexdev.net rome_alpha_copy_customer_api_nodes
 mbc-assets.nexdev.net rome_alpha_assetsi1_nodes
