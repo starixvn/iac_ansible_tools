@@ -1,9 +1,9 @@
-/uat/main/  l2_game_server_nodes_UAT
+/uat/main/ l2_game_server_nodes_UAT
 /uat/sedie/ l2_sedie_nodes_UAT
 /uat/vsedie/ l2_vip_sedie_nodes_UAT
-/uat/specialsedie/  l2_special_sedie_nodes_UAT
+/uat/specialsedie/ l2_special_sedie_nodes_UAT
 /uat/blackjack/ l2_blackjack_nodes_UAT
-/uat/vipfishprawncrab/  l2_vip_fish_prawn_crab_nodes_UAT
+/uat/vipfishprawncrab/ l2_vip_fish_prawn_crab_nodes_UAT
 /uat/sicbo/ l2_sicbo_nodes_UAT
 /uat/vipbaccarat/ l2_vip_baccarat_nodes_UAT
 /uat/vipsediewar/ l2_vip_sedie_war_nodes_UAT
@@ -27,12 +27,13 @@
 /uat/kenopower/ l2_keno_power_nodes_UAT
 /uat/casinoholdempoker/ default_backend_nodes
 /uat/bitcoinmaster/ l2_bitcoin_master_nodes_UAT
-/sit/main/  l2_game_server_nodes_SIT
+/uat/luckywheel/ l2_lucky_wheel_service_nodes_UAT
+/sit/main/ l2_game_server_nodes_SIT
 /sit/sedie/ l2_sedie_nodes_SIT
 /sit/vsedie/ l2_vip_sedie_nodes_SIT
-/sit/specialsedie/  l2_special_sedie_nodes_SIT
+/sit/specialsedie/ l2_special_sedie_nodes_SIT
 /sit/blackjack/ l2_blackjack_nodes_SIT
-/sit/vipfishprawncrab/  l2_vip_fish_prawn_crab_nodes_SIT
+/sit/vipfishprawncrab/ l2_vip_fish_prawn_crab_nodes_SIT
 /sit/sicbo/ l2_sicbo_nodes_SIT
 /sit/vipbaccarat/ l2_vip_baccarat_nodes_SIT
 /sit/vipsediewar/ l2_vip_sedie_war_nodes_SIT
@@ -56,3 +57,4 @@
 /sit/kenopower/ l2_keno_power_nodes_SIT
 /sit/casinoholdempoker/ default_backend_nodes
 /sit/bitcoinmaster/ l2_bitcoin_master_nodes_SIT
+/sit/luckywheel/ l2_lucky_wheel_service_nodes_SIT

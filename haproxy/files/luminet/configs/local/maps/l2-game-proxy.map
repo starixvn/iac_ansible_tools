@@ -1,9 +1,9 @@
-/main/  l2_game_server_nodes
+/main/ l2_game_server_nodes
 /sedie/ l2_sedie_nodes
-/vsedie/    l2_vip_sedie_nodes
-/specialsedie/  l2_special_sedie_nodes
+/vsedie/ l2_vip_sedie_nodes
+/specialsedie/ l2_special_sedie_nodes
 /blackjack/ l2_blackjack_node
-/vipfishprawncrab/  l2_vip_fish_prawn_crab_nodes
+/vipfishprawncrab/ l2_vip_fish_prawn_crab_nodes
 /sicbo/ l2_sicbo_nodes
 /vipbaccarat/ l2_vip_baccarat_nodes
 /vipsediewar/ l2_vip_sedie_war_nodes
