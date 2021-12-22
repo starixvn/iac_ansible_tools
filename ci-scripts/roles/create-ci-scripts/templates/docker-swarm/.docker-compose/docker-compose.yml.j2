@@ -83,9 +83,9 @@ services:
       resources:
         limits:
 {% if item.0.max_memory > 4 %}
-            memory: 4G
+          memory: 4G
 {% else %}
-            memory: {{ item.0.max_memory | default('1G') }}
+          memory: {{ item.0.max_memory | default('1') }}G
 {% endif %}
 {% endif %}
 {% if env == "prod"%}
