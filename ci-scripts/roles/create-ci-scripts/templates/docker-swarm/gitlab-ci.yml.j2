@@ -25,6 +25,11 @@ stages:
 {% if sonarqube_enabled is defined and sonarqube_enabled == true %}
 variables:
   PROJECT_NAME: {{sonarqube_project_name}}
+{% if team_name == "nex3" or team_name == "pentagon"  %}
+  SONAR_PROJECT_NAME: {{sonarqube_project_name}}
+{% else %}
+  SONAR_PROJECT_NAME: "{{team_name | upper}} / {{sonarqube_project_name}}"
+{%endif%}
   SRC_PATH: {{ sonarqube_src_path | default ("./src") }}
   TEST_PATH: {{ sonarqube_test_path | default ("./src") }}
 {%endif%}
