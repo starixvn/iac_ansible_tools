@@ -79,7 +79,7 @@ services:
 {% endif %}
     deploy:
       mode: replicated
-{% if item.0.max_memory is define%}
+{% if item.0.max_memory is defined %}
       resources:
         limits:
 {% if item.0.max_memory > 4 %}
