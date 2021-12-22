@@ -1,11 +1,19 @@
 ---
 - name: Copy docker-compose template
+  when: inventory_hostname == groups['swarm_managers'][0]
   template:
     src: 'deploy-compose/nettool.docker-compose.yml.j2'
     dest: '{{ working_directory }}/nettool.docker-compose.yml'
   become: yes
 
+- name: Pull images
+  shell: |
+    cd {{ working_directory }}
+    docker-compose -f nettool.docker-compose.yml pull
+  become: yes
+
 - name: Deploy nettool
+  when: inventory_hostname == groups['swarm_managers'][0]
   shell: |
     cd {{ working_directory }}
     docker stack deploy -c nettool.docker-compose.yml monitoring --with-registry-auth
