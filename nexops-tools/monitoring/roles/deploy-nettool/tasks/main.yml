@@ -1,6 +1,14 @@
 ---
+- name: Create working directory {{ working_directory }}
+  file:
+    path: '{{ working_directory }}'
+    mode: '0755'
+    state: directory
+  become: yes
+  ignore_errors: yes
+
 - name: Copy docker-compose template
-  when: inventory_hostname == groups['swarm_managers'][0]
+  #when: inventory_hostname == groups['swarm_managers'][0]
   template:
     src: 'deploy-compose/nettool.docker-compose.yml.j2'
     dest: '{{ working_directory }}/nettool.docker-compose.yml'
