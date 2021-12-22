@@ -62,6 +62,51 @@ n88.nexdev.net legion_aff_n88_nodes
 
 #ROME
 nap-u3.nexdev.net rome_nap_u3_nodes
+onebookum.nexdev.net rnd_onebook_um_api_nodes 
+dcs-api.nexdev.net rome_dsc_setting_api_nodes 
+dcs-static-resources.nexdev.net rome_dsc_staticresources_nodes 
+dcs-matrix-api.nexdev.net rome_dsc_matrix_api_nodes 
+accounting.nexdev.net rome_nap_nodes 
+external-accounting.nexdev.net rome_extnap_nodes 
+nap-cm.nexdev.net rome_nap_cm_nodes 
+u3.nexdev.net rome_u3_nodes 
+nap-home.nexdev.net rome_nap_home_nodes 
+alpha.nexdev.net rome_alpha_bf_site_nodes 
+mb1.nexdev.net rome_alpha_site01_nodes 
+mb2.nexdev.net rome_alpha_site02_nodes 
+mb3.nexdev.net rome_alpha_site03_nodes 
+mb4.nexdev.net rome_alpha_site04_nodes 
+mb5.nexdev.net rome_alpha_site05_nodes 
+mb6.nexdev.net rome_alpha_site06_nodes 
+mb7.nexdev.net rome_alpha_site07_nodes
+mb8.nexdev.net rome_alpha_site08_nodes 
+mb9.nexdev.net rome_alpha_site09_nodes 
+mb10.nexdev.net rome_alpha_site10_nodes 
+mb11.nexdev.net rome_alpha_site11_nodes 
+mb12.nexdev.net rome_alpha_site12_nodes 
+mb13.nexdev.net rome_alpha_site13_nodes 
+mb14.nexdev.net rome_alpha_site14_nodes 
+mb15.nexdev.net rome_alpha_site15_nodes
+mb16.nexdev.net rome_alpha_site16_nodes 
+mb17.nexdev.net rome_alpha_site17_nodes 
+mb18.nexdev.net rome_alpha_site18_nodes 
+mb19.nexdev.net rome_alpha_site19_nodes 
+mb20.nexdev.net rome_alpha_site20_nodes 
+m7.nexdev.net rome_alpha_maintenance_nodes 
+chatbot-mock.nexdev.net rome_alpha_letstalk_mockservice_nodes
+betlist-api.nexdev.net rome_alpha_betlist_api_nodes 
+chatbot-webhook.nexdev.net rome_alpha_letstalk_webhook_nodes 
+chatbot-service.nexdev.net rome_alpha_services_api_nodes 
+rome_alpha_annoucements_api_nodes chatbot-announcement.nexdev.net 
+chatbot-site.nexdev.net rome_alpha_letstalk_simulator_nodes 
+cloneaccount.nexdev.net rome_alpha_copy_customer_api_nodes
+mbc-assets.nexdev.net rome_alpha_assetsi1_nodes 
+789y-assets.nexdev.net rome_alpha_assetsi7_nodes
+alpha-u3.nexdev.net rome_alpha_u3_nodes
+dcs-api.nexdev.net rome_dsc_setting_api_nodes 
+dcs-static-resources.nexdev.net rome_dsc_staticresources_nodes
+dcs-matrix-api.nexdev.net rome_dsc_matrix_api_nodes
+chatbot-api.nexdev.net rome_chatbot_api_nodes
 
 #Olympus
 specialdelete.nexdev.net olympus_nap_special_delete_nodes
