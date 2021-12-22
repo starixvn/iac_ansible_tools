@@ -47,27 +47,6 @@ l3-user-3.nexdev.net nex3_l3_user_nodes_local3
 l3-middle-site-3.nexdev.net nex3_l3_middle_site_nodes_local3
 l3-games-mini-3.nexdev.net nex3_l3_game_client_mini_nodes_local3
 
-#Nexus
-nexdev.net nexus_redmine_nodes_PROD
-info.nexcel.vn nexus_nexcel_info_site
-qland.nexdev.net nexus_qland_nodes
-thor-api1.nexdev.net nexus_thor_api_LOCAL_1
-thor-api.nexdev.net nexus_thor_api_LOCAL
-rm-bk.nexdev.net nexus_redmine_nodes_PROD_bk
-rm-old.nexdev.net nexus_redmine_nodes_PROD_OLD
-rm-pro.nexdev.net nexus_redmine_nodes_PROD
-rm.nexdev.net nexus_redmine_nodes_LOCAL
-licbot2.nexdev.net nexus_ncb_endpoint_LOCAL_1
-licbot.nexdev.net nexus_ncb_endpoint_LOCAL
-ncb-main3.nexdev.net nexus_ncb_main_LOCAL_3
-ncb-main2.nexdev.net nexus_ncb_main_LOCAL_2
-ncb-main1.nexdev.net nexus_ncb_main_LOCAL_1
-ncb-main.nexdev.net nexus_ncb_main_LOCAL
-saba-news-v3.nexdev.net nexus_saba_sports_saba_news_site_1
-saba-news-v2.nexdev.net nexus_saba_sports_saba_news_site_1
-saba-news-v1.nexdev.net nexus_saba_sports_saba_news_site
-saba-reports-upload.nexdev.net nexus_saba_sports_saba_news_upload_nodes
-saba-reports.nexdev.net nexus_saba_sports_saba_news_wp_nodes
 
 #Legion
 lap-betticket1.nexdev.net legion_lap_bet_ticket_nodes1
@@ -123,3 +102,25 @@ spu-fs-job.nexdev.net nap_spu_fs_job_service_LOCAL_nodes
 spu-dcs-job.nexdev.net nap_spu_dcs_job_service_LOCAL_nodes
 spu-cts-job.nexdev.net nap_spu_cts_job_service_LOCAL_nodes
 spu-main.nexdev.net nap_spu_main_service_LOCAL_nodes
+
+#Nexus
+info.nexcel.vn nexus_nexcel_info_site
+qland.nexdev.net nexus_qland_nodes
+thor-api1.nexdev.net nexus_thor_api_LOCAL_1
+thor-api.nexdev.net nexus_thor_api_LOCAL
+rm-bk.nexdev.net nexus_redmine_nodes_PROD_bk
+rm-old.nexdev.net nexus_redmine_nodes_PROD_OLD
+rm-pro.nexdev.net nexus_redmine_nodes_PROD
+rm.nexdev.net nexus_redmine_nodes_LOCAL
+licbot2.nexdev.net nexus_ncb_endpoint_LOCAL_1
+licbot.nexdev.net nexus_ncb_endpoint_LOCAL
+ncb-main3.nexdev.net nexus_ncb_main_LOCAL_3
+ncb-main2.nexdev.net nexus_ncb_main_LOCAL_2
+ncb-main1.nexdev.net nexus_ncb_main_LOCAL_1
+ncb-main.nexdev.net nexus_ncb_main_LOCAL
+saba-news-v3.nexdev.net nexus_saba_sports_saba_news_site_1
+saba-news-v2.nexdev.net nexus_saba_sports_saba_news_site_1
+saba-news-v1.nexdev.net nexus_saba_sports_saba_news_site
+saba-reports-upload.nexdev.net nexus_saba_sports_saba_news_upload_nodes
+saba-reports.nexdev.net nexus_saba_sports_saba_news_wp_nodes
+nexdev.net nexus_redmine_nodes_PROD
