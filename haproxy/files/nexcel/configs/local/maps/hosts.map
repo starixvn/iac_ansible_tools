@@ -49,6 +49,15 @@ l3-result-3.nexdev.net nex3_l3_round_result_nodes_local3
 l3-user-3.nexdev.net nex3_l3_user_nodes_local3 
 l3-middle-site-3.nexdev.net nex3_l3_middle_site_nodes_local3 
 l3-games-mini-3.nexdev.net nex3_l3_game_client_mini_nodes_local3 
+l3-admin-api1.nexdev.net nex3_l3_game_admin_api_nodes_local1
+l3-game-api1.nexdev.net nex3_l3_game_api_nodes_local1
+l3-game-server-api1.nexdev.net nex3_l3_game_server_api_nodes_local1
+l3-admin-api2.nexdev.net nex3_l3_game_admin_api_nodes_local2
+l3-game-api2.nexdev.net nex3_l3_game_api_nodes_local2
+l3-game-server-api2.nexdev.net nex3_l3_game_server_api_nodes_local2
+l3-admin-api3.nexdev.net nex3_l3_game_admin_api_nodes_local3
+l3-game-api3.nexdev.net nex3_l3_game_api_nodes_local3
+l3-game-server-api3.nexdev.net nex3_l3_game_server_api_nodes_local3
 
 #Local1
 l3-games-1.nexdev.net nex3_l3_game_client_nodes_local1
