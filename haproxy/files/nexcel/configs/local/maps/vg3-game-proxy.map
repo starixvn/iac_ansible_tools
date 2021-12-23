@@ -30,7 +30,7 @@
 /local2/casinoholdempoker/ nex3_l3_casino_holdem_poker_nodes_local2
 /local2/texasholdempoker/ nex3_l3_texas_holdem_poker_nodes_local2
 /local2/paigowpoker/ nex3_paigowpoker_nodes_local2
-/local2game-server-api/ nex3_l3_game_server_api_nodes_local2
+/local2/game-server-api/ nex3_l3_game_server_api_nodes_local2
 /local2/game-api/ nex3_l3_game_api_nodes_local2
 /local2/game-admin-api/ nex3_l3_game_admin_api_nodes_local2
 #
@@ -48,6 +48,6 @@
 /local3/casinoholdempoker/ nex3_l3_casino_holdem_poker_nodes_local3
 /local3/texasholdempoker/ nex3_l3_texas_holdem_poker_nodes_local3
 /local3/paigowpoker/ nex3_paigowpoker_nodes_local3
-/local3game-server-api/ nex3_l3_game_server_api_nodes_local3
+/local3/game-server-api/ nex3_l3_game_server_api_nodes_local3
 /local3/game-api/ nex3_l3_game_api_nodes_local3
 /local3/game-admin-api/ nex3_l3_game_admin_api_nodes_local3
