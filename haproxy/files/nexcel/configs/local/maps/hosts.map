@@ -10,17 +10,6 @@ grafana.nexdev.net nexops_grafana_nodes
 mon.nexdev.net nexops_grafana_nodes
 portainer.nexdev.net nexops_portainer_nodes
 
-##RnD
-onebookum-3rd.nexdev.net onebook_um_3rd_nodes 
-result-demo.nexdev.net result_core_demo_nodes 
-dcs-demo.nexdev.net dcs_demo_nodes 
-onebookum-token.nexdev.net onebook_um_token_nodes 
-remotingref-demo.nexdev.net remotingref_demo_nodes 
-remotingref-api.nexdev.net remotingref_api_nodes 
-betlist-demo.nexdev.net betList_core_demo_nodes 
-fanex-grid.nexdev.net fanex_grid_nodes 
-nap-admin.nexdev.net nap_admin_nodes
-
 ###VG3
 l3-api-proxy.nexdev.net default_backend_nodes
 l3-auth-1.nexdev.net nex3_l3_game_auth_api_nodes_local1
@@ -185,6 +174,14 @@ dcs-api.nexdev.net rome_dsc_setting_api_nodes
 dcs-static-resources.nexdev.net rome_dsc_staticresources_nodes
 dcs-matrix-api.nexdev.net rome_dsc_matrix_api_nodes
 chatbot-api.nexdev.net rome_chatbot_api_nodes
+onebookum-3rd.nexdev.net onebook_um_3rd_nodes 
+result-demo.nexdev.net result_core_demo_nodes 
+dcs-demo.nexdev.net dcs_demo_nodes 
+onebookum-token.nexdev.net onebook_um_token_nodes 
+remotingref-demo.nexdev.net remotingref_demo_nodes 
+remotingref-api.nexdev.net remotingref_api_nodes 
+betlist-demo.nexdev.net betList_core_demo_nodes 
+fanex-grid.nexdev.net fanex_grid_nodes 
 
 #Olympus
 specialdelete.nexdev.net olympus_nap_special_delete_nodes
@@ -204,6 +201,7 @@ prms-netcore-v1.nexdev.net olympus_prms_netcore_v1_nodes
 devnotes.nexdev.net olympus_devnotes_nodes
 owp.nexdev.net olympus_owp_nodes
 prms.nexdev.net olympus_prms_nodes
+nap-admin.nexdev.net nap_admin_nodes
 
 #SPU
 fps-admin.nexdev.net spu_fps_admin_nodes
