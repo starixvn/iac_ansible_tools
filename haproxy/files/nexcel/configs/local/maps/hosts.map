@@ -25,7 +25,7 @@ nap-admin.nexdev.net nap_admin_nodes
 l3-api-proxy.nexdev.net default_backend_nodes
 l3-auth-1.nexdev.net nex3_l3_game_auth_api_nodes_local1
 l3-auth-2.nexdev.net nex3_l3_game_auth_api_nodes_local2
-l3-auth-2.nexdev.net nex3_l3_game_auth_api_nodes_local3
+l3-auth-3.nexdev.net nex3_l3_game_auth_api_nodes_local3
 gitlab-webhook.nexdev.net nex3_l3_gitlab_webhook_bot_service_nodes_local1
 l3-games.nexdev.net nex3_l3_game_client_nodes_local
 l3-lobby.nexdev.net nex3_l3_game_lobby_nodes_local
