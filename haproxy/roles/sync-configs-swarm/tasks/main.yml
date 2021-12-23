@@ -86,6 +86,7 @@
   ignore_errors: yes
   with_items:
     - hosts.map
+    - vg3-game-proxy.map
 
 - name: Copy custom configuration {{ env }}
   when: env == "uat" and team == "luminet"
