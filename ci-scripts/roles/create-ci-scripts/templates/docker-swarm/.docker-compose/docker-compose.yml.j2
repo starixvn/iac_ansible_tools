@@ -157,7 +157,7 @@ services:
       retries: {{item.0.healthcheck_retries | default('5')}}
 {% endif %}
 {% endif %}
-{% if dump_permission == true %}
+{% if item.0.dump_permission == true %}
     cap_add:
       - SYS_PTRACE
 {% endif %}
