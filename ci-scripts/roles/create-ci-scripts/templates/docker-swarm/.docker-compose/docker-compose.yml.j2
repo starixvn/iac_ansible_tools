@@ -157,6 +157,10 @@ services:
       retries: {{item.0.healthcheck_retries | default('5')}}
 {% endif %}
 {% endif %}
+{% if dump_permission == true %}
+    cap_add:
+      - SYS_PTRACE
+{% endif %}
     labels:
 {% if env == "prod" or env == "aws" %}
       - "io.portainer.accesscontrol.teams={{team_name | upper}}_LEADERS"
