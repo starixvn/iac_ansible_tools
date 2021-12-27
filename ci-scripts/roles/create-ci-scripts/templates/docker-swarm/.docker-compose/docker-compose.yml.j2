@@ -79,14 +79,12 @@ services:
 {% endif %}
     deploy:
       mode: replicated
-{% if item.0.max_memory is defined %}
       resources:
         limits:
-{% if item.0.max_memory > 4 %}
+{% if item.0.max_memory is defined and item.0.max_memory > 4 %}
           memory: 4G
 {% else %}
           memory: {{ item.0.max_memory | default('1') }}G
-{% endif %}
 {% endif %}
 {% if env == "prod"%}
 {% if item.0.number_of_replicas_prod is defined and item.0.number_of_replicas_prod > 2 %}
