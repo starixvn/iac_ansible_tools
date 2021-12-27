@@ -142,7 +142,7 @@ services:
         constraints:
           - node.labels.{{ org_node_label | upper }} == yes
 {% if item.0.node_label is defined %}
-          - node.labels.{{ node_label | upper }} == yes
+          - node.labels.{{ item.0.node_label | upper }} == yes
 {% endif %}
     networks:
       - swarm_{{ network }}
