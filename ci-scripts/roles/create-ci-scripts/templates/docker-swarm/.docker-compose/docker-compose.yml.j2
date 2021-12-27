@@ -140,9 +140,10 @@ services:
         window: 120s
       placement:
         constraints:
-          - node.labels.{{ org_node_label | upper }} == yes
 {% if item.0.node_label is defined %}
           - node.labels.{{ item.0.node_label | upper }} == yes
+{% else %}
+          - node.labels.{{ org_node_label | upper }} == yes
 {% endif %}
     networks:
       - swarm_{{ network }}
