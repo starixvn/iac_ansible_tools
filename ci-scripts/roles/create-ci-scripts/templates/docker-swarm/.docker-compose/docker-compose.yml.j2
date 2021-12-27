@@ -141,10 +141,8 @@ services:
       placement:
         constraints:
           - node.labels.{{ org_node_label | upper }} == yes
-{% if item.0.node_labels is defined %}
-{% for node_label in item.0.node_labels %}
+{% if item.0.node_label is defined %}
           - node.labels.{{ node_label | upper }} == yes
-{% endfor %}
 {% endif %}
     networks:
       - swarm_{{ network }}
