@@ -7,6 +7,7 @@ api.vgaming88.net nex3_l3_game_api_nodes_prod
 result.vgaming88.net nex3_l3_result_nodes_prod
 user.vgaming88.net nex3_l3_user_nodes_prod
 middlesite.vgaming88.net nex3_l3_middle_site_prod
+adm.vgaming88.net nex3_l3_admin_site_nodes_prod
 proxy.vgaming88.net default_backend_nodes
 #internal
 intapi.vgaming88.net nex3_l3_game_api_nodes_prod

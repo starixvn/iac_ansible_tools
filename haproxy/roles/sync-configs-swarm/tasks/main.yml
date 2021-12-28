@@ -111,6 +111,27 @@
     - hosts.map
     - uat-vg3-game-proxy.map
 
+- name: Copy custom configuration {{ env }}
+  when: env == "prod" and team == "nexcel"
+  template:
+    src: "files/{{team}}/configs/{{ env }}/maps/{{item}}"
+    dest: "{{ volume_path }}/{{item}}"
+  become: yes
+  ignore_errors: yes
+  with_items:
+    - hosts.map
+
+- name: Copy custom configuration {{ env }}
+  when: env == "prod-nex3" and team == "nexcel"
+  template:
+    src: "files/{{team}}/configs/{{ env }}/maps/{{item}}"
+    dest: "{{ volume_path }}/{{item}}"
+  become: yes
+  ignore_errors: yes
+  with_items:
+    - hosts.map
+    - game-proxy.map
+
 - name: Copy HAProxy Dockerfile Testlab.
   template:
     src: "templates/{{team}}/check-config.Dockerfile_{{env}}.j2"
