@@ -5,7 +5,7 @@
 
 - name: remove old backup Ansible file
   shell: |
-    find {{ backup_server_path }} -mtime 1 -exec rm {} \;
+    find {{ backup_server_path }} -mtime +1 -exec rm {} \;
   become: yes
   
 
