@@ -166,7 +166,6 @@ luminet_ports_prod:
     { "published": 8314, "target": 8314, "mode": "ingress" },
     { "published": 8315, "target": 8315, "mode": "ingress" },
     { "published": 8316, "target": 8316, "mode": "ingress" },
-    { "published": 9009, "target": 9009, "mode": "ingress" },
   ]
 
 luminet_ports_aws:
