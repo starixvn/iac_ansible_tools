@@ -44,7 +44,11 @@ services:
           constraints: 
             - node.labels.HAPROXY == yes
     healthcheck:
+{% if env == "local_test"%}
+      test: ['CMD', 'curl', '-f', "http://localhost:8001"]
+{% else %}
       test: ['CMD', 'curl', '-f', "http://localhost:80/metrics"]
+{% endif %}
       interval: 5s
       timeout: 5s
       retries: 100
