@@ -5,7 +5,7 @@ RUN apt-get update && apt-get install -y \
   curl \
   wget
 
-RUN /tmp/fetch_binaries.sh
+RUN chmod 777 /tmp/fetch_binaries.sh && /tmp/fetch_binaries.sh
 
 FROM alpine:3.14
 
@@ -63,8 +63,8 @@ RUN set -ex \
     git \
     zsh \
     websocat \
-    swaks \
-    node-ws
+    swaks
+#    node-ws
 
 # Installing httpie ( https://httpie.io/docs#installation)
 RUN pip3 install --upgrade httpie
