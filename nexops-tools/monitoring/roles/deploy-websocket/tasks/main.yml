@@ -1,0 +1,29 @@
+---
+- name: Create working directory {{ working_directory }}
+  file:
+    path: '{{ working_directory }}'
+    mode: '0755'
+    state: directory
+  become: yes
+  ignore_errors: yes
+
+- name: Copy docker-compose template
+  #when: inventory_hostname == groups['swarm_managers'][0]
+  template:
+    src: 'deploy-compose/websocket.docker-compose.yml.j2'
+    dest: '{{ working_directory }}/websocket.docker-compose.yml'
+  become: yes
+
+- name: Pull images
+  shell: |
+    cd {{ working_directory }}
+    docker login --username=gitlab-ci --password=Vv3AQX-aaSZ3M6PtvyD4 registry.nexdev.net:5050
+    docker-compose -f websocket.docker-compose.yml pull
+  become: yes
+
+- name: Deploy websocket
+  when: inventory_hostname == groups['swarm_managers'][0]
+  shell: |
+    cd {{ working_directory }}
+    docker stack deploy -c websocket.docker-compose.yml monitoring --with-registry-auth
+  become: yes

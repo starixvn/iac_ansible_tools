@@ -23,5 +23,10 @@
 
 - hosts: all
   roles:
+    - deploy-websocket
+  tags: deploy-websocket
+
+- hosts: all
+  roles:
     - role: update-prometheus
   tags: update-prometheus
