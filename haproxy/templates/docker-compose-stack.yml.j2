@@ -45,7 +45,7 @@ services:
             - node.labels.HAPROXY == yes
     healthcheck:
 {% if env == "local_test"%}
-      test: ['CMD', 'curl', '-f', "http://localhost:8001"]
+      test: ['CMD', 'curl', '-f', "http://localhost:8001/checkstatus"]
 {% else %}
       test: ['CMD', 'curl', '-f', "http://localhost:80/metrics"]
 {% endif %}
