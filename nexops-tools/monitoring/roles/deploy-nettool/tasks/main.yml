@@ -14,6 +14,9 @@
     dest: '{{ working_directory }}/nettool.docker-compose.yml'
   become: yes
 
+- name: Login registry
+  shell: docker login --username={{docker_registry_username}} --password={{docker_registry_password}} {{docker_registry_url}}
+  
 - name: Pull images
   shell: |
     cd {{ working_directory }}

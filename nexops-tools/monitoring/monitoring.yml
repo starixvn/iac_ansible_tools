@@ -19,7 +19,6 @@
 - hosts: all
   roles:
     - deploy-nettool
-    - docker-registry-login
   tags: deploy-nettool
 
 - hosts: all
