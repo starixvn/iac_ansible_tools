@@ -21,3 +21,6 @@ services:
           memory: 200M
         reservations:
           memory: 64M
+      placement:
+          constraints:
+            - node.labels.{{label | default ('MONITORING')}} == yes
