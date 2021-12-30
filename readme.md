@@ -79,3 +79,5 @@ export no_proxy=localhost,127.0.0.0,127.0.1.1,127.0.1.1,local.home
 
 ##docker version
 apt-cache madison docker-ce
+####websocket 
+wscat -c "ws://l1-proxy1.lumigame.com/dragontiger/socket.io/?EIO=4&transport=websocket"
