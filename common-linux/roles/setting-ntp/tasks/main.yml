@@ -12,6 +12,7 @@
     name:
       - ntpdate
       - tzdata
+      - node-ws
     state: present
     autoclean: yes
   become: yes
