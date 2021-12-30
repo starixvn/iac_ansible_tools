@@ -17,6 +17,7 @@
     - grafana
     - node-exporter
     - prometheus
+    - netshoot
   ignore_errors: yes
 
 - name: Executing script to build and push images
@@ -30,4 +31,6 @@
     docker-compose -f node-exporter/docker-compose.yml push
     docker-compose -f prometheus/docker-compose.yml build
     docker-compose -f prometheus/docker-compose.yml push
+    docker-compose -f netshoot/docker-compose.yml build
+    docker-compose -f netshoot/docker-compose.yml push
   become: yes

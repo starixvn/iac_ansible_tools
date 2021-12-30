@@ -13,6 +13,7 @@ COPY configs/ldap-local.toml /etc/grafana/ldap.toml
 RUN grafana-cli plugins install alexanderzobnin-zabbix-app
 RUN grafana-cli plugins install redis-datasource
 RUN grafana-cli plugins install grafana-clock-panel
+RUN grafana-polystat-panel
 
 ENV GF_SECURITY_ADMIN_PASSWORD=admin \
     GF_SECURITY_ADMIN_USER=admin \
