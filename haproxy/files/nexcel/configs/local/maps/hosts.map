@@ -1,7 +1,7 @@
 #domainname           backendname
 #Nexops
-awx.nexdev.net nexops_awx_nodes
-ansible.nexdev.net nexops_awx109_nodes
+awx.nexdev.net nexops_awx109_nodes
+ansible.nexdev.net nexops_awx_nodes
 deploymentapi.nexdev.net nexops_deploymentapi_nodes
 sonarqube.nexdev.net nexops_sonar_nodes
 sentry.nexdev.net nexops_sentry_nodes
