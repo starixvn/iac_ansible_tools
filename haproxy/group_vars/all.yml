@@ -155,7 +155,6 @@ luminet_ports_uat:
     { "published": 7314, "target": 7314, "mode": "ingress" },
     { "published": 7315, "target": 7315, "mode": "ingress" },
     { "published": 7311, "target": 7311, "mode": "host" },
-    { "published": 9009, "target": 9009, "mode": "host" },
     { "published": 8088, "target": 8088, "mode": "host" },
   ]
 
