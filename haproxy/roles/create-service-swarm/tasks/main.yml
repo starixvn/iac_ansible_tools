@@ -21,7 +21,7 @@
   become: yes
 
 - name: Deploy haproxy service
-  when: inventory_hostname in groups['swarm_managers']
+  when: inventory_hostname in groups['swarm_managers'] and inventory_hostname == groups['haproxy'][0]
   shell: |
     cd /home/{{ansible_user}}/stacks
     docker stack deploy --compose-file=haproxy-stack.yml {{stack_name}}
