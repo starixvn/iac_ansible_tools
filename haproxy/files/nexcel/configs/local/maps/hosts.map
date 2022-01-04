@@ -213,6 +213,7 @@ tgrs-api.nexdev.net spu_naptgrs_webapi_nodes
 fps-demo.nexdev.net spu_fps_dfp_demo_nodes
 fps-newapi.nexdev.net spu_fps_integration_api_nodes
 afc-api.nexdev.net spu_afc_api_nodes
+spu-fs-bsng-job.nexdev.net nap_spu_fs_bsng_job_service_LOCAL_nodes
 cts-api.nexdev.net spu_cts_portal_api_nodes
 cts.nexdev.net spu_cts_nodes
 fs.nexdev.net spu_fraudsensor2_nodes
