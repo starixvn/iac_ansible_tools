@@ -8,4 +8,4 @@
 
   roles:
     - role: reset_index
-      when: inventory_hostname in groups['gluster_leader']
+      when: inventory_hostname in groups['swarm_managers']
