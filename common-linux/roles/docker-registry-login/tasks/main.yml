@@ -17,5 +17,13 @@
   shell: systemctl daemon-reload && systemctl restart docker.service && chmod 666 /var/run/docker.sock
   become: yes
 
+- name: Verify that the configuration has been loaded "systemctl show docker --property Environment"
+  shell: |
+    echo "$(systemctl show docker --property Environment)"
+  register: proxy_cfg
+
+- debug:
+    msg: '{{ proxy_cfg.stdout }}'
+
 - name: Login registry
   shell: docker login --username={{docker_registry_username}} --password={{docker_registry_password}} {{docker_registry_url}}

@@ -77,6 +77,7 @@ export http_proxy="http://10.40.40.245:3128"
 export https_proxy="http://10.40.40.245:3128"
 export no_proxy=localhost,127.0.0.0,127.0.1.1,127.0.1.1,local.home
 
+systemctl show docker --property Environment
 ##docker version
 apt-cache madison docker-ce
 ####websocket 
