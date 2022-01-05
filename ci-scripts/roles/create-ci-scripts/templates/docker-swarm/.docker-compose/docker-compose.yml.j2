@@ -87,8 +87,8 @@ services:
           memory: {{ item.0.max_memory | default('2') }}G
 {% endif %}
 {% if env == "prod"%}
-{% if item.0.number_of_replicas_prod is defined and item.0.number_of_replicas_prod > 2 %}
-      replicas: 2
+{% if item.0.number_of_replicas_prod is defined and item.0.number_of_replicas_prod > 6 %}
+      replicas: 6
 {% else %}
       replicas: {{item.0.number_of_replicas_prod | default('1') }}
 {% endif %}
