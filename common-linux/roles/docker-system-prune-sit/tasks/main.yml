@@ -4,3 +4,15 @@
     docker builder prune --all -f
   become: yes
   ignore_errors: yes
+
+- name: Prune volume
+  shell: |
+    docker volume prune -f
+  become: yes
+  ignore_errors: yes
+
+- name: Prune container
+  shell: |
+    docker container prune -f --filter "until=48h"
+  become: yes
+  ignore_errors: yes
