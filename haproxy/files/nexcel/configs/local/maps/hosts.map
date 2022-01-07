@@ -11,49 +11,18 @@ mon.nexdev.net nexops_grafana_nodes
 portainer.nexdev.net nexops_portainer_nodes
 
 ###VG3
+#Local
 l3-api-proxy.nexdev.net default_backend_nodes
-l3-auth-1.nexdev.net nex3_l3_game_auth_api_nodes_local1
-l3-auth-2.nexdev.net nex3_l3_game_auth_api_nodes_local2
-l3-auth-3.nexdev.net nex3_l3_game_auth_api_nodes_local3
-gitlab-webhook.nexdev.net nex3_l3_gitlab_webhook_bot_service_nodes_local1
 l3-games.nexdev.net nex3_l3_game_client_nodes_local
 l3-lobby.nexdev.net nex3_l3_game_lobby_nodes_local
 l3-ow-api.nexdev.net nex3_l3_ow_api_nodes_local
-l3-games-1.nexdev.net nex3_l3_game_client_nodes_local1 
-l3-admin-1.nexdev.net nex3_l3_game_admin_site_nodes_local1 
-l3-lobby-1.nexdev.net nex3_l3_game_lobby_nodes_local1 
-l3-ow-api-1.nexdev.net nex3_l3_ow_api_nodes_local1 
-l3-result-1.nexdev.net nex3_l3_round_result_nodes_local1 
-l3-user-1.nexdev.net nex3_l3_user_nodes_local1 
-l3-middle-site-1.nexdev.net nex3_l3_middle_site_nodes_local1 
-l3-games-mini-1.nexdev.net nex3_l3_game_client_mini_nodes_local1 
-l3-games-2.nexdev.net nex3_l3_game_client_nodes_local2 
-l3-admin-2.nexdev.net nex3_l3_game_admin_site_nodes_local2 
-l3-lobby-2.nexdev.net nex3_l3_game_lobby_nodes_local2 
-l3-ow-api-2.nexdev.net nex3_l3_ow_api_nodes_local2 
-l3-result-2.nexdev.net nex3_l3_round_result_nodes_local2 
-l3-user-2.nexdev.net nex3_l3_user_nodes_local2 
-l3-middle-site-2.nexdev.net nex3_l3_middle_site_nodes_local2 
-l3-games-mini-2.nexdev.net nex3_l3_game_client_mini_nodes_local2 
-l3-games-3.nexdev.net nex3_l3_game_client_nodes_local3 
-l3-admin-3.nexdev.net nex3_l3_game_admin_site_nodes_local3 
-l3-lobby-3.nexdev.net nex3_l3_game_lobby_nodes_local3 
-l3-ow-api-3.nexdev.net nex3_l3_ow_api_nodes_local3 
-l3-result-3.nexdev.net nex3_l3_round_result_nodes_local3 
-l3-user-3.nexdev.net nex3_l3_user_nodes_local3 
-l3-middle-site-3.nexdev.net nex3_l3_middle_site_nodes_local3 
-l3-games-mini-3.nexdev.net nex3_l3_game_client_mini_nodes_local3 
+
+#Local1
+l3-auth-1.nexdev.net nex3_l3_game_auth_api_nodes_local1
+gitlab-webhook.nexdev.net nex3_l3_gitlab_webhook_bot_service_nodes_local1
 l3-admin-api1.nexdev.net nex3_l3_game_admin_api_nodes_local1
 l3-game-api1.nexdev.net nex3_l3_game_api_nodes_local1
 l3-game-server-api1.nexdev.net nex3_l3_game_server_api_nodes_local1
-l3-admin-api2.nexdev.net nex3_l3_game_admin_api_nodes_local2
-l3-game-api2.nexdev.net nex3_l3_game_api_nodes_local2
-l3-game-server-api2.nexdev.net nex3_l3_game_server_api_nodes_local2
-l3-admin-api3.nexdev.net nex3_l3_game_admin_api_nodes_local3
-l3-game-api3.nexdev.net nex3_l3_game_api_nodes_local3
-l3-game-server-api3.nexdev.net nex3_l3_game_server_api_nodes_local3
-
-#Local1
 l3-games-1.nexdev.net nex3_l3_game_client_nodes_local1
 l3-admin-1.nexdev.net nex3_l3_game_admin_site_nodes_local1
 l3-lobby-1.nexdev.net nex3_l3_game_lobby_nodes_local1
@@ -64,7 +33,11 @@ l3-middle-site-1.nexdev.net nex3_l3_middle_site_nodes_local1
 l3-games-mini-1.nexdev.net nex3_l3_game_client_mini_nodes_local1
 
 #Local2
+l3-auth-2.nexdev.net nex3_l3_game_auth_api_nodes_local2
 l3-games-2.nexdev.net nex3_l3_game_client_nodes_local2
+l3-admin-api2.nexdev.net nex3_l3_game_admin_api_nodes_local2
+l3-game-api2.nexdev.net nex3_l3_game_api_nodes_local2
+l3-game-server-api2.nexdev.net nex3_l3_game_server_api_nodes_local2
 l3-admin-2.nexdev.net nex3_l3_game_admin_site_nodes_local2
 l3-lobby-2.nexdev.net nex3_l3_game_lobby_nodes_local2
 l3-ow-api-2.nexdev.net nex3_l3_ow_api_nodes_local2
@@ -74,15 +47,18 @@ l3-middle-site-2.nexdev.net nex3_l3_middle_site_nodes_local2
 l3-games-mini-2.nexdev.net nex3_l3_game_client_mini_nodes_local2
 
 #Local3
+l3-auth-3.nexdev.net nex3_l3_game_auth_api_nodes_local3
 l3-games-3.nexdev.net nex3_l3_game_client_nodes_local3
 l3-admin-3.nexdev.net nex3_l3_game_admin_site_nodes_local3
+l3-admin-api3.nexdev.net nex3_l3_game_admin_api_nodes_local3
+l3-game-api3.nexdev.net nex3_l3_game_api_nodes_local3
+l3-game-server-api3.nexdev.net nex3_l3_game_server_api_nodes_local3
 l3-lobby-3.nexdev.net nex3_l3_game_lobby_nodes_local3
 l3-ow-api-3.nexdev.net nex3_l3_ow_api_nodes_local3
 l3-result-3.nexdev.net nex3_l3_round_result_nodes_local3
 l3-user-3.nexdev.net nex3_l3_user_nodes_local3
 l3-middle-site-3.nexdev.net nex3_l3_middle_site_nodes_local3
 l3-games-mini-3.nexdev.net nex3_l3_game_client_mini_nodes_local3
-
 
 #Legion
 aff-b2c.nexdev.net legion_aff_n88_nodes
