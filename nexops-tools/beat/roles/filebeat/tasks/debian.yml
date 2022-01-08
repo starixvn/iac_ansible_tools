@@ -12,6 +12,7 @@
     filename: "elastic-{{version}}"
     #update_cache: true
   become: yes
+
 - name: FILEBEAT - Install Filebeat
   apt: pkg=filebeat
   when: ansible_distribution == "Ubuntu"
