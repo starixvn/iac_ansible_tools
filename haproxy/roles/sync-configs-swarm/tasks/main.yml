@@ -153,7 +153,7 @@
       path: "{{ volume_path }}"
     state: present
   become: yes
-  ignore_errors: yes
+  #ignore_errors: yes
 
 - name: Check HAProxy config
   shell: docker run -it --rm haproxy-check-config haproxy -c -V -f /etc/haproxy/haproxy.cfg
