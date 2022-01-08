@@ -154,6 +154,9 @@
     state: present
   become: yes
   #ignore_errors: yes
+- name: Build HAProxy container for syntax check 2
+  shell: cd {{ volume_path }} && docker build -t haproxy-check-config .
+  become: yes
 
 - name: Check HAProxy config
   shell: docker run -it --rm haproxy-check-config haproxy -c -V -f /etc/haproxy/haproxy.cfg
