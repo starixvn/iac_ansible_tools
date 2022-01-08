@@ -5,8 +5,12 @@
   become: yes
 
 - name: APT - Add elastic.co repository
-  apt_repository: repo="deb https://artifacts.elastic.co/packages/{{version}}/apt stable main" filename="elastic-{{version}}" update_cache=yes
   when: ansible_distribution == "Ubuntu"
+  apt_repository:
+      repo: "deb https://artifacts.elastic.co/packages/{{version}}/apt stable main"
+      state: present
+      filename: "elastic-{{version}}"
+      update_cache: true
   
   become: yes
 - name: FILEBEAT - Install Filebeat
