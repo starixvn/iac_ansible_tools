@@ -4,6 +4,12 @@
   when: ansible_distribution == "Ubuntu"
   become: yes
 
+- name: Run apt upgrade
+  apt:
+    upgrade: "yes"
+    update_cache: yes
+    cache_valid_time: 432000
+    
 - name: APT - Add elastic.co repository
   when: ansible_distribution == "Ubuntu"
   apt_repository:
