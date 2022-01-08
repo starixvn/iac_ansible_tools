@@ -1,15 +1,15 @@
 ---
 - name: APT - Add elastic.co key
-    apt_key: url="https://artifacts.elastic.co/GPG-KEY-elasticsearch"
-    when: ansible_distribution == "Ubuntu"
+  apt_key: url="https://artifacts.elastic.co/GPG-KEY-elasticsearch"
+  when: ansible_distribution == "Ubuntu"
 
-  - name: APT - Add elastic.co repository
-    apt_repository: repo="deb https://artifacts.elastic.co/packages/{{version}}/apt stable main" filename="elastic-5.x" update_cache=yes
-    when: ansible_distribution == "Ubuntu"
+- name: APT - Add elastic.co repository
+  apt_repository: repo="deb https://artifacts.elastic.co/packages/{{version}}/apt stable main" filename="elastic-5.x" update_cache=yes
+  when: ansible_distribution == "Ubuntu"
 
-  - name: FILEBEAT - Install Filebeat
-    apt: pkg=filebeat
-    when: ansible_distribution == "Ubuntu"
+- name: FILEBEAT - Install Filebeat
+  apt: pkg=filebeat
+  when: ansible_distribution == "Ubuntu"
 
 - name: FILEBEAT - Install Filebeat
   apt: pkg=filebeat
