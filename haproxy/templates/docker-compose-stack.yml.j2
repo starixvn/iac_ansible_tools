@@ -1,4 +1,8 @@
+{% if env == "sit"%}
+version: '3.4'
+{% else %}
 version: '3.8'
+{% endif %}
 
 services:
   service:
