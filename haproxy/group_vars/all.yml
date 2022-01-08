@@ -18,11 +18,11 @@ nexcel_ports_local_test:
 nexcel_ports_local:
   [
     { "published": 80, "target": 80, "mode": "host" },
-    { "published": 88, "target": 88, "mode": "ingress" },
-    { "published": 8001, "target": 8001, "mode": "ingress" },
+    { "published": 88, "target": 88, "mode": "host" },
+    { "published": 8001, "target": 8001, "mode": "host" },
     { "published": 443, "target": 443, "mode": "host" },
-    { "published": 6341, "target": 6341, "mode": "ingress" },
-    { "published": 6343, "target": 6343, "mode": "ingress" },
+    { "published": 6341, "target": 6341, "mode": "host" },
+    { "published": 6343, "target": 6343, "mode": "host" },
   ]
 
 nexcel_ports_sit: [
