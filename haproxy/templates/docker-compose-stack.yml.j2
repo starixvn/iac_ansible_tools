@@ -64,7 +64,7 @@ volumes:
        o: bind
        type: none
        device: {{volume_path}}
-{% if env == "local_test"
+{% if env == "local_test" %}
   log:
     driver: local
     driver_opts:
