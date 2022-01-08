@@ -5,7 +5,7 @@ services:
     image: {{haproxy_image_name}}:{{haproxy_version}}
     volumes:
       - data:{{image_config_path}}
-{% if env == "local_test" %}
+{% if env == "local_test" or env == "local" %}
       - log:/var/log/haproxy
 {% endif %}
 {% if enable_port is undefined or enable_port == true %}
