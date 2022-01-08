@@ -32,6 +32,8 @@
     - "{{ filebeat_modules }}"
   notify:
     - restart filebeat
+  become: yes
+
 - name: Start and enable filebeat service
   service:
     name: filebeat
