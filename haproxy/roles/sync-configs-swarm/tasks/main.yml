@@ -1,8 +1,11 @@
 - name: Create HAProxy directory
   file:
-    path: "{{ volume_path }}"
+    path: "{{item}}"
     state: directory
     mode: "0777"
+  with_items:
+    - "{{ volume_path }}"
+    - "/var/www/log_haproxy"
   become: yes
 
 - name: Clean HAProxy config directory
