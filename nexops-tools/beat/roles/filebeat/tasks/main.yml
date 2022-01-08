@@ -26,7 +26,7 @@
 - name: Clean filebeat modules
   file:
     state: absent
-    path: "/etc/filebeat/modules.d/"
+    path: "/etc/filebeat/modules.d/*"
   become: yes
   ignore_errors: yes
 
