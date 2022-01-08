@@ -25,9 +25,8 @@ services:
 {% endfor %}
       - {{swarm_network_nexops}}
     deploy:
-{% if env != "sit"%}
         update_config:
-          order: start-first
+          order: stop-first
           failure_action: rollback
           delay: 10s
         rollback_config:
@@ -38,7 +37,6 @@ services:
           delay: 5s
           max_attempts: 3
           window: 120s
-{% endif %}
         mode: global
         placement:
           constraints: 
