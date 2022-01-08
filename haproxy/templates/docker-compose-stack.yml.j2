@@ -68,3 +68,11 @@ volumes:
        o: bind
        type: none
        device: {{volume_path}}
+{% if env == "local_test"
+  log:
+    driver: local
+    driver_opts:
+       o: bind
+       type: none
+       device: /var/www/log_haproxy
+{% endif %}
