@@ -23,6 +23,13 @@
 #    - "{{ filebeat_modules }}"
 #  notify:
 #    - restart filebeat
+- name: Clean filebeat modules
+  file:
+    state: absent
+    path: "/etc/filebeat/modules.d"
+  become: yes
+  ignore_errors: yes
+
 - name: Copy filebeat modules
   template:
     src: "modules.d/{{ item }}.yml.j2"
