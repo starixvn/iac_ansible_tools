@@ -1,0 +1,23 @@
+
+filebeat.inputs:
+
+# Each - is an input. Most options can be set at the input level, so
+# you can use different inputs for various configurations.
+# Below are the input specific configurations.
+- type: container
+  paths: 
+    - '/var/lib/docker/containers/*/*.log'
+processors:
+- add_docker_metadata:
+    host: "unix:///var/run/docker.sock"
+
+- decode_json_fields:
+    fields: ["message"]
+    target: "json"
+    overwrite_keys: true
+tags: ["docker","container"]
+output.logstash:
+  hosts: ["{{logstash_server | default('elk_logstash:5000')}}"]
+
+logging.json: true
+logging.metrics.enabled: false
