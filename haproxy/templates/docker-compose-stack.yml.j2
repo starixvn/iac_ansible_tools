@@ -26,11 +26,7 @@ services:
       - {{swarm_network_nexops}}
     deploy:
         update_config:
-{% if env == "prod" or env == "prod-nex3"  %}
           order: start-first
-{% else %}
-          order: stop-first
-{% endif %}
           failure_action: rollback
           delay: 10s
         rollback_config:
