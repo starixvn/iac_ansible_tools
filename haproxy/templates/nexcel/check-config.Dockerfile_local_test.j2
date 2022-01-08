@@ -1,4 +1,5 @@
 FROM {{haproxy_image_name}}:{{haproxy_version}}
+touch /var/log/haproxy/haproxy.log
 COPY haproxy.cfg {{image_config_path}}/haproxy.cfg
 COPY whitelisted.ips {{image_config_path}}/whitelisted.ips
 COPY nexdev.net.pem {{image_config_path}}/nexdev.net.pem
