@@ -1,0 +1,21 @@
+---
+- name: APT - Add elastic.co key
+  apt_key: url="https://artifacts.elastic.co/GPG-KEY-elasticsearch"
+  become: yes
+
+- name: APT - Add elastic.co repository
+  apt_repository: repo="deb https://artifacts.elastic.co/packages/{{version}}/apt stable main" filename="elastic-{{version}}" update_cache=yes
+  become: yes
+
+- name: FILEBEAT - Install Filebeat
+  apt: pkg=filebeat
+  become: yes
+
+#- name: enable and configure system module
+#  command: filebeat modules enable system
+
+  # Use command module
+#- name: Setup filebeat
+#  command: filebeat setup
+
+  # Use command module
