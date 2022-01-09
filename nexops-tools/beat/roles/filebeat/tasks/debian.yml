@@ -10,7 +10,3 @@
 - name: Enable and configure System Module
   command: filebeat modules enable system
   become: yes
-
-- name: This is where I hate my life
-  command: filebeat setup
-  become: yes
