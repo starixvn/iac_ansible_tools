@@ -128,15 +128,15 @@ nexcel_ports_aws-nex3:
 luminet_ports_local:
   [
     { "published": 80, "target": 80, "mode": "host" },
-    { "published": 8001, "target": 8001, "mode": "host" },
+    { "published": 8001, "target": 8001, "mode": "ingress" },
     { "published": 443, "target": 443, "mode": "host" },
-    { "published": 7000, "target": 7000, "mode": "host" },
-    { "published": 7001, "target": 7001, "mode": "host" },
-    { "published": 7002, "target": 7002, "mode": "host" },
-    { "published": 7100, "target": 7100, "mode": "host" },
-    { "published": 7101, "target": 7101, "mode": "host" },
-    { "published": 5673, "target": 5672, "mode": "host" },
-    { "published": 7102, "target": 7102, "mode": "host" },
+    { "published": 7000, "target": 7000, "mode": "ingress" },
+    { "published": 7001, "target": 7001, "mode": "ingress" },
+    { "published": 7002, "target": 7002, "mode": "ingress" },
+    { "published": 7100, "target": 7100, "mode": "ingress" },
+    { "published": 7101, "target": 7101, "mode": "ingress" },
+    { "published": 5673, "target": 5672, "mode": "ingress" },
+    { "published": 7102, "target": 7102, "mode": "ingress" },
   ]
 
 luminet_ports_uat:
