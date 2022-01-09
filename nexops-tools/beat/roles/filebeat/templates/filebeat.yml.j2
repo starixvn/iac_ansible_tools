@@ -1,16 +1,41 @@
-filebeat.prospectors:
-- input_type: log
-  paths:
-    - /var/www/log_haproxy/*.log
-  document_type: haproxy_access
 filebeat:
-  spool_size: 1024
-  idle_timeout: "5s"
-  registry_file: /var/lib/filebeat/registry
-output.logstash:
-  hosts: ["logstash.nexdev.net:5000"]
+  # List of inputs.
+  inputs:
+    {{ filebeat_inputs | to_json }}
+
+# Configure what outputs to use when sending the data collected by the beat.
+# Multiple outputs may be used.
+output:
+{% if filebeat_output_logstash_enabled %}
+  ### Logstash as output
+  logstash:
+    # The Logstash hosts
+    hosts: {{ filebeat_output_logstash_hosts | to_json }}
+
+    # Number of workers per Logstash host.
+    #worker: 1
+
+    # Optional load balance the events between the Logstash hosts
+    #loadbalance: true
+
+    # Optional index name. The default index name depends on the each beat.
+    # For Packetbeat, the default is set to packetbeat, for Topbeat
+    # top topbeat and for Filebeat to filebeat.
+    #index: filebeat
+
+{% if filebeat_enable_logging %}
 logging:
+  ### Filebeat log
+  level: {{ filebeat_log_level }}
+
+  # Enable file rotation with default configuration
+  to_files: true
+
+  # Do not log to syslog
+  to_syslog: false
+
   files:
-    path: /var/log/mybeat
-    name: mybeat
-    rotateeverybytes: 10485760
+    path: {{ filebeat_log_dir }}
+    name: {{ filebeat_log_filename }}
+    keepfiles: 7
+{% endif %}
