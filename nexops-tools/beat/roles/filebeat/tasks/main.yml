@@ -9,7 +9,7 @@
   template:
     src: "filebeat.yml.j2"
     dest: "/etc/filebeat/filebeat.yml"
-  notify: restart filebeat
+  #notify: restart filebeat
   become: yes
 
 - name: Start and enable filebeat service
