@@ -1,0 +1,50 @@
+---
+- include: debian.yml
+  when: ansible_os_family == 'Debian'
+
+- include: redhat.yml
+  when: ansible_os_family == 'RedHat'
+
+- name: Prepare filebeat config file
+  template:
+    src: filebeat.yml.j2
+    dest: /etc/filebeat/filebeat.yml
+    backup: true
+  notify:
+    - restart filebeat
+  become: yes
+
+#- name: Copy filebeat modules
+#  template:
+#    src: "{{ filebeat_modules_sourcedir }}/{{ item }}"
+#    dest: /etc/filebeat/modules.d/{{ item | basename | regex_replace('\.j2','') }}
+#    backup: true
+#  with_items:
+#    - "{{ filebeat_modules }}"
+#  notify:
+#    - restart filebeat
+- name: Clean filebeat modules
+  file:
+    state: absent
+    path: "/etc/filebeat/modules.d/*"
+  become: yes
+  ignore_errors: yes
+
+- name: Copy filebeat modules
+  template:
+    src: "modules.d/{{ item }}.yml.j2"
+    dest: "/etc/filebeat/modules.d/{{ item }}.yml"
+#    backup: true
+  with_items:
+    - "{{ filebeat_modules }}"
+  notify:
+    - restart filebeat
+  become: yes
+
+- name: Start and enable filebeat service
+  service:
+    name: filebeat
+    enabled: yes
+    state: started
+  changed_when: False
+  become: yes
