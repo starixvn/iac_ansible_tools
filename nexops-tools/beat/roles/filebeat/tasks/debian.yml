@@ -1,12 +1,12 @@
 ---
-- name: Download Filebeats Package
-  command: curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-7.14.1-amd64.deb
+- name: APT - Add elastic.co key
+  apt_key: url="https://artifacts.elastic.co/GPG-KEY-elasticsearch"
   become: yes
 
-- name: Install Filebeats Package
-  command: dpkg -i filebeat-7.14.1-amd64.deb
+- name: APT - Add elastic.co repository
+  apt_repository: repo="deb https://artifacts.elastic.co/packages/{{version}}/apt stable main" filename="elastic-{{version}}" update_cache=yes
   become: yes
 
-- name: Enable and configure System Module
-  command: filebeat modules enable system
+- name: FILEBEAT - Install Filebeat
+  apt: pkg=filebeat
   become: yes
