@@ -81,10 +81,10 @@ services:
       mode: replicated
       resources:
         limits:
-{% if item.0.max_memory is defined and item.0.max_memory > 4 %}
-          memory: 4G
+{% if item.0.max_memory is defined and item.0.max_memory > 4000 %}
+          memory: 4096M
 {% else %}
-          memory: {{ item.0.max_memory | default('2') }}G
+          memory: {{ item.0.max_memory | default('2048') }}M
 {% endif %}
 {% if env == "prod"%}
 {% if item.0.number_of_replicas_prod is defined and item.0.number_of_replicas_prod > 6 %}
