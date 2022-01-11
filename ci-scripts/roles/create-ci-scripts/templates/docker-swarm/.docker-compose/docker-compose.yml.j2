@@ -83,7 +83,7 @@ services:
         limits:
 {% if item.0.max_memory is defined and item.0.max_memory > 4000 %}
           memory: 4096M
-{% elseif item.0.max_memory is defined and item.0.max_memory < 100 %}
+{% else if item.0.max_memory is defined and item.0.max_memory < 100 %}
           memory: {{ item.0.max_memory | default('1000') }}M
 {% else %}
           memory: {{ item.0.max_memory | default('2048') }}M
