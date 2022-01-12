@@ -4,7 +4,7 @@ Version: 1.2 (30-oct-2020 Troy)
 #> 
  set-executionpolicy unrestricted
 #Sets the number of days files to keep 
-[int] $DaysOfHistoryToKeep = 3
+[int] $DaysOfHistoryToKeep = {{DaysOfHistoryToKeep}}
 $ComputerList = Get-Content "$pwd\listip_web.txt"
 $outputPath = "$pwd\Cleanup_Old_logs.log" 
  
