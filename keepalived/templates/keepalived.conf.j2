@@ -14,9 +14,9 @@ vrrp_script haproxy_container {
 
 vrrp_instance VI_0 {
     interface {{nic}}
-    state {{keepalive_role}}
+    state BACKUP
     virtual_router_id {{virtual_router_id | default('205')}}
-    priority {{keepalive_priority}}
+    priority {{keepalive_priority | default('100')}}
     virtual_ipaddress {
         {{vip}}
     }
@@ -33,9 +33,9 @@ vrrp_instance VI_0 {
 {% if vip1 is defined %}
 vrrp_instance VI_1 {
     interface {{nic}}
-    state {{keepalive_role}}
+    state BACKUP
     virtual_router_id {{virtual_router_id1 | default('206')}}
-    priority {{keepalive_priority}}
+    priority {{keepalive_priority | default('100')}}
     virtual_ipaddress {
         {{vip1}}
     }
@@ -53,9 +53,9 @@ vrrp_instance VI_1 {
 {% if vip2 is defined %}
 vrrp_instance VI_2 {
     interface {{nic}}
-    state {{keepalive_role}}
+    state BACKUP
     virtual_router_id {{virtual_router_id2 | default('207')}}
-    priority {{keepalive_priority}}
+    priority {{keepalive_priority | default('100')}}
     virtual_ipaddress {
         {{vip2}}
     }
