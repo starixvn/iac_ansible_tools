@@ -5,7 +5,7 @@ global_defs {
 }
 
 vrrp_script haproxy_container {
-    script "/usr/bin/docker container ls --filter name={{haproxy_service_name | default('haproxy_service')}} | /bin/grep {{haproxy_service_name | default('haproxy_service')}}"
+    script "/etc/keepalived/haproxy-container-check.sh"
     interval 1
     weight -20
     fall 3
@@ -14,9 +14,9 @@ vrrp_script haproxy_container {
 
 vrrp_instance VI_0 {
     interface {{nic}}
-    state BACKUP
+    state {{keepalive_role}}
     virtual_router_id {{virtual_router_id | default('205')}}
-    priority {{keepalive_priority | default('100')}}
+    priority {{keepalive_priority}}
     virtual_ipaddress {
         {{vip}}
     }
@@ -33,9 +33,9 @@ vrrp_instance VI_0 {
 {% if vip1 is defined %}
 vrrp_instance VI_1 {
     interface {{nic}}
-    state BACKUP
+    state {{keepalive_role}}
     virtual_router_id {{virtual_router_id1 | default('206')}}
-    priority {{keepalive_priority | default('100')}}
+    priority {{keepalive_priority}}
     virtual_ipaddress {
         {{vip1}}
     }
@@ -53,9 +53,9 @@ vrrp_instance VI_1 {
 {% if vip2 is defined %}
 vrrp_instance VI_2 {
     interface {{nic}}
-    state BACKUP
+    state {{keepalive_role}}
     virtual_router_id {{virtual_router_id2 | default('207')}}
-    priority {{keepalive_priority | default('100')}}
+    priority {{keepalive_priority}}
     virtual_ipaddress {
         {{vip2}}
     }
