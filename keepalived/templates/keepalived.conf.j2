@@ -5,11 +5,7 @@ global_defs {
 }
 
 vrrp_script haproxy_container {
-<<<<<<< HEAD
     script "/usr/bin/docker container ls --filter name={{haproxy_service_name | default('haproxy_service')}} | /bin/grep {{haproxy_service_name | default('haproxy_service')}}"
-=======
-    script "/etc/keepalived/haproxy-container-check.sh"
->>>>>>> 7e85106103ec94e72306738e540312f6da6079ff
     interval 1
     weight -20
     fall 3
