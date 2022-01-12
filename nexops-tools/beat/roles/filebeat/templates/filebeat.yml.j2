@@ -1,17 +1,7 @@
 filebeat:
   # List of inputs.
 inputs:
-  #{{ filebeat_inputs | to_json }}
-  - type: log
-    paths:
-      - "/var/www/log_haproxy/haproxy-traffic.log"
-    tags: ["haproxy_access"]
-    exclude_lines: ['.png','.css','.gif','.jpg','.js','.ico','.json','.mp3','.ttf']
-  #
-  - type: log
-    paths:
-      - "/var/www/log_haproxy/haproxy-admin.log"
-    tags: ["haproxy_admin"]
+    {{ filebeat_inputs | to_json }}
 
 # Configure what outputs to use when sending the data collected by the beat.
 # Multiple outputs may be used.
