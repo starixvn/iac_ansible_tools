@@ -14,6 +14,7 @@
       win_template:
         src: 'templates/Clean/{{ item }}.j2'
         dest: "{{script_location}}/Tasks/Clean/{{ item }}"
+      ignore_errors: true
       with_items: 
         - del_iislogs.ps1
         - listip_web.txt
@@ -24,6 +25,7 @@
       win_shell: |
         $info = "clean IISlog task is running.."
         Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+      ignore_errors: true
       tags:
         - iislog
 
@@ -47,5 +49,6 @@
       win_shell: |
         $info = "{{env}} - clean IISlog task has finished"
         Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+      ignore_errors: true
       tags:
         - iislog
