@@ -45,20 +45,6 @@
   #   - not service_status.stat.exists or keepalived_configure.changed
   become: yes
 
-- name: Set keepalived variables for backup servers
-  set_fact:
-    keepalive_role: 'BACKUP'
-    keepalive_priority: '100'
-  when: inventory_hostname != groups['haproxy'][0]
-  become: yes
-
-- name: Set keepalived variables for master server
-  set_fact:
-    keepalive_role: 'MASTER'
-    keepalive_priority: '110'
-  when: inventory_hostname == groups['haproxy'][0]
-  become: yes
-
 - name: Create config directory
   file:
     path: '{{ keepalived_conf_dir }}'
