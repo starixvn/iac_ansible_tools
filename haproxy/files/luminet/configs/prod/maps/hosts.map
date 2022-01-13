@@ -10,6 +10,7 @@ intresult.v-gaming.net l2_game_round_result_nodes
 
 #VG2
 proxy.v-gaming.net l2_game_server_nodes_PROD
+proxy2.v-gaming.net l2_game_server_nodes_PROD
 www.v-gaming.net l2_game_client_nodes
 result.v-gaming.net l2_game_round_result_nodes
 api.v-gaming.net l2_api_nodes
