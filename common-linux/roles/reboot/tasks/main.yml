@@ -16,7 +16,7 @@
 
 - name: Unconditionally reboot the machine with all defaults
   reboot:
-    post_reboot_delay: 120
+    post_reboot_delay: 60
   become: yes
   ignore_errors: yes
     
