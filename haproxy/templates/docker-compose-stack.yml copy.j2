@@ -1,0 +1,76 @@
+version: '3.8'
+
+services:
+  service:
+    image: {{haproxy_image_name}}:{{haproxy_version}}
+    volumes:
+      - data:{{image_config_path}}
+{% if env == "local_test" or env == "local" %}
+      - log:/var/log/haproxy
+      - "/etc/localtime:/etc/localtime:ro"
+{% endif %}
+{% if enable_port is undefined or enable_port == true %}
+    ports:
+{% for port in lookup('vars', team + '_ports_' + env) %}
+      - published: {{port.published}}
+        target: {{port.target}}
+        mode: {{port.mode}}
+{% endfor %}
+{% endif %}
+    dns:
+      - 127.0.0.11
+    networks:
+{% for swarm_network in swarm_networks %}
+      - {{swarm_network}}
+{% endfor %}
+      - {{swarm_network_nexops}}
+    deploy:
+        update_config:
+          order: start-first
+          failure_action: rollback
+          delay: 10s
+        rollback_config:
+          parallelism: 0
+          order: stop-first
+        restart_policy:
+          condition: any
+          delay: 5s
+          max_attempts: 3
+          window: 120s
+        mode: global
+        placement:
+          constraints: 
+            - node.labels.HAPROXY == yes
+    healthcheck:
+{% if env == "local_test" or env == "local" or env == "uat" or env == "sit" %}
+      test: ['CMD', 'curl', '-f', "http://localhost:8001/checkstatus"]
+{% else %}
+      test: ['CMD', 'curl', '-f', "http://localhost:80/metrics"]
+{% endif %}
+      interval: 5s
+      timeout: 5s
+      retries: 100
+
+networks:
+{% for swarm_network in swarm_networks %}
+  {{swarm_network}}:
+    external: true
+{% endfor %}
+  {{swarm_network_nexops}}:
+    external: true
+
+volumes:
+  data:
+    driver: local
+    driver_opts:
+       o: bind
+       type: none
+       device: {{volume_path}}
+{% if env == "local_test" or env == "local" %}
+  log:
+    driver: local
+    driver_opts:
+       o: bind
+       type: none
+       device: /var/www/log_haproxy
+{% endif %}
