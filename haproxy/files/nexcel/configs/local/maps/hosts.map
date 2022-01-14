@@ -6,7 +6,6 @@ deploymentapi.nexdev.net nexops_deploymentapi_nodes
 sonarqube.nexdev.net nexops_sonar_nodes
 sentry.nexdev.net nexops_sentry_nodes
 zabbix.nexdev.net nexops_zabbix_webserver
-zabbixtest.nexdev.net nexops_zabbix_webserver_test
 grafana.nexdev.net nexops_grafana_nodes
 mon.nexdev.net nexops_grafana_nodes
 portainer.nexdev.net nexops_portainer_nodes
