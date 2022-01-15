@@ -1,4 +1,4 @@
-###keepalived
+###keepalived or cluster: run 3-5-7
 ip addr show | grep global
 cat /etc/keepalived/keepalived_status
 
