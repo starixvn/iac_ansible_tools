@@ -82,3 +82,8 @@ systemctl show docker --property Environment
 apt-cache madison docker-ce
 ####websocket 
 wscat -c "ws://l1-proxy1.lumigame.com/dragontiger/socket.io/?EIO=4&transport=websocket"
+######################3
+#docker swarm update --task-history-limit=1
+Which will only keep one previous task instead of the default 5. See the cli docs for more details: https://docs.docker.com/engine/reference/commandline/swarm_update/
+Instead this worked better to clear task history and show only the current running containers.
+#docker swarm update --task-history-limit 0
