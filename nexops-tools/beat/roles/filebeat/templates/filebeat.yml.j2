@@ -1,13 +1,9 @@
-filebeat:
-  # List of inputs.
-inputs:
+filebeat.inputs:
     {{ filebeat_inputs | to_json }}
 
 # Configure what outputs to use when sending the data collected by the beat.
 # Multiple outputs may be used.
-output:
-  ### Redis as output
-  redis:
+output.redis:
     hosts: {{ filebeat_output_redis_hosts | to_json }}
     key: "{{key | default('sbd_haproxy')}}"
     password: "{{redis_pass  | default ('foo1@bared')}}"
