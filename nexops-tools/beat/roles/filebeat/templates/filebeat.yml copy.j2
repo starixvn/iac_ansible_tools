@@ -1,23 +1,55 @@
+filebeat:
+  # List of inputs.
+inputs:
+    {{ filebeat_inputs | to_json }}
 
-filebeat.inputs:
+# Configure what outputs to use when sending the data collected by the beat.
+# Multiple outputs may be used.
+output:
+{% if filebeat_output_logstash_enabled %}
+  ### Logstash as output
+  logstash:
+    # The Logstash hosts
+    hosts: {{ filebeat_output_logstash_hosts | to_json }}
 
-# Each - is an input. Most options can be set at the input level, so
-# you can use different inputs for various configurations.
-# Below are the input specific configurations.
-- type: container
-  paths: 
-    - '/var/lib/docker/containers/*/*.log'
-processors:
-- add_docker_metadata:
-    host: "unix:///var/run/docker.sock"
+    # Number of workers per Logstash host.
+    #worker: 1
 
-- decode_json_fields:
-    fields: ["message"]
-    target: "json"
-    overwrite_keys: true
-tags: ["docker","container"]
-output.logstash:
-  hosts: ["{{logstash_server | default('elk_logstash:5000')}}"]
+    # Optional load balance the events between the Logstash hosts
+    #loadbalance: true
 
-logging.json: true
-logging.metrics.enabled: false
+    # Optional index name. The default index name depends on the each beat.
+    # For Packetbeat, the default is set to packetbeat, for Topbeat
+    # top topbeat and for Filebeat to filebeat.
+    #index: filebeat
+{% endif %}
+{% if filebeat_output_redis_enabled %}
+  ### Redis as output
+  redis:
+    hosts: {{ filebeat_output_redis_hosts | to_json }}
+    key: "{{key | default('sbd_haproxy')}}"
+    password: "{{redis_pass  | default ('foo1@bared')}}"
+    type: list
+{% endif %}
+filebeat.config.modules:
+  # Glob pattern for configuration loading
+  path: ${path.config}/modules.d/*.yml
+
+  # Set to true to enable config reloading
+  reload.enabled: false
+{% if filebeat_enable_logging %}
+logging:
+  ### Filebeat log
+  level: {{ filebeat_log_level }}
+
+  # Enable file rotation with default configuration
+  to_files: true
+
+  # Do not log to syslog
+  to_syslog: false
+
+  files:
+    path: {{ filebeat_log_dir }}
+    name: {{ filebeat_log_filename }}
+    keepfiles: 7
+{% endif %}

@@ -6,31 +6,12 @@ inputs:
 # Configure what outputs to use when sending the data collected by the beat.
 # Multiple outputs may be used.
 output:
-{% if filebeat_output_logstash_enabled %}
-  ### Logstash as output
-  logstash:
-    # The Logstash hosts
-    hosts: {{ filebeat_output_logstash_hosts | to_json }}
-
-    # Number of workers per Logstash host.
-    #worker: 1
-
-    # Optional load balance the events between the Logstash hosts
-    #loadbalance: true
-
-    # Optional index name. The default index name depends on the each beat.
-    # For Packetbeat, the default is set to packetbeat, for Topbeat
-    # top topbeat and for Filebeat to filebeat.
-    #index: filebeat
-{% endif %}
-{% if filebeat_output_redis_enabled %}
   ### Redis as output
   redis:
     hosts: {{ filebeat_output_redis_hosts | to_json }}
     key: "{{key | default('sbd_haproxy')}}"
     password: "{{redis_pass  | default ('foo1@bared')}}"
     type: list
-{% endif %}
 filebeat.config.modules:
   # Glob pattern for configuration loading
   path: ${path.config}/modules.d/*.yml
