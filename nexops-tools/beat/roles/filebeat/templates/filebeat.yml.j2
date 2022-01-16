@@ -23,6 +23,14 @@ output:
     # top topbeat and for Filebeat to filebeat.
     #index: filebeat
 {% endif %}
+{% if filebeat_output_redis_enabled %}
+  ### Redis as output
+  redis:
+    hosts: {{ filebeat_output_redis_hosts | to_json }}
+    key: "{{key | default('sbd_haproxy')}}"
+    password: "{{redis_pass  | default ('foo1@bared')}}"
+    type: list
+{% endif %}
 filebeat.config.modules:
   # Glob pattern for configuration loading
   path: ${path.config}/modules.d/*.yml

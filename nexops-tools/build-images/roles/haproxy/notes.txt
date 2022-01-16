@@ -2,3 +2,5 @@ docker build -t registry.nexdev.net:5050/docker/haproxy/haproxy-debian:2.4-log-t
 docker push registry.nexdev.net:5050/docker/haproxy/haproxy-debian:2.4-log-test
 #######
 chmod 755 -R ../log_haproxy
+
+logrotate -v -d -f /etc/logrotate.d/haprox
