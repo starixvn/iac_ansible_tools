@@ -1,5 +1,5 @@
 /var/log/haproxy/* {
-    weekly
+    daily
     rotate 7
     create 755 root root
     size 100M
