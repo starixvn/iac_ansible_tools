@@ -5,22 +5,22 @@
     src: /var/www/sonarqube
     es_folder: "{{src}}/sonar/data/es7"
     container_name: sonarqube-web
+  tasks:
+  - name: Stop Sonar
+    shell: docker stop {{container_name}}
 
-- name: Stop Sonar
-  shell: docker stop {{container_name}}
+  - name: Sleep for 30 seconds
+    wait_for:
+      timeout: 30
+    delegate_to: localhost
 
-- name: Sleep for 30 seconds
-  wait_for:
-    timeout: 30
-  delegate_to: localhost
+  - name: Delete es folder
+    file:
+      path: "{{es_folder}}"
+      state: absent
 
-- name: Delete es folder
-  file:
-    path: "{{es_folder}}"
-    state: absent
-
-- name: Start Sonar
-  docker_compose:
-    project_src: "{{src}}"
-    files:
-    - docker-compose.yml
+  - name: Start Sonar
+    docker_compose:
+      project_src: "{{src}}"
+      files:
+      - docker-compose.yml
