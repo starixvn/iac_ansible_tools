@@ -1,0 +1,29 @@
+---
+- name: Reset index of SonarQube
+  hosts: sonar
+  vars:
+    src: /var/www/sonarqube
+    es_folder: "{{src}}/sonar/data/es7"
+    container_name: sonarqube-web
+  tasks:
+  - name: Stop Sonar
+    shell: docker stop {{container_name}}
+
+  - name: Sleep for 30 seconds
+    wait_for:
+      timeout: 30
+    delegate_to: localhost
+
+  - name: Delete es folder
+    file:
+      path: "{{es_folder}}"
+      state: absent
+
+  - name: Create es folder
+    file:
+      path: '{{es_folder}}'
+      state: directory
+      mode: '777'
+
+  - name: Start Sonar
+    shell: docker start {{container_name}}
