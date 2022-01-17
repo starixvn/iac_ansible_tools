@@ -1,11 +1,10 @@
 ---
 - name: Reset index of SonarQube
-
+  hosts: sonar
   vars:
     src: /var/www/sonarqube
     es_folder: "{{src}}/sonar/data/es7"
     container_name: sonarqube-web
-    
 
 - name: Stop Sonar
   shell: docker stop {{container_name}}
