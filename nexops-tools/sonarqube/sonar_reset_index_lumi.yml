@@ -19,8 +19,11 @@
       path: "{{es_folder}}"
       state: absent
 
+  - name: Create es folder
+    file:
+      path: '{{es_folder}}'
+      state: directory
+      mode: '777'
+
   - name: Start Sonar
-    docker_compose:
-      project_src: "{{src}}"
-      files:
-      - docker-compose.yml
+    shell: docker start {{container_name}}
