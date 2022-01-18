@@ -52,7 +52,7 @@
     - nexcel.vn.pem
   ignore_errors: yes
 
-- name: Copy custom configuration {{ env }}
+- name: Copy custom configuration {{ env }} {{team}}
   when: env == "local" or env == "local_test" or env == "uat" or env == "aws"
   template:
     src: "files/{{team}}/configs/{{ env }}/maps/{{item}}"
@@ -62,7 +62,7 @@
   with_items:
     - "{{map_files}}"
 
-- name: Copy custom configuration {{ env }}
+- name: Copy custom configuration {{ env }} {{team}}
   when: env == "prod" and team == "luminet"
   template:
     src: "files/{{team}}/configs/{{ env }}/maps/{{item}}"
@@ -74,7 +74,7 @@
     - l2-game-proxy.map
     - l1-game-proxy.map
 
-- name: Copy custom configuration {{ env }}
+- name: Copy custom configuration {{ env }} {{team}}
   when: env == "prod" and team == "nexcel"
   template:
     src: "files/{{team}}/configs/{{ env }}/maps/{{item}}"
@@ -84,7 +84,7 @@
   with_items:
     - hosts.map
 
-- name: Copy custom configuration {{ env }}
+- name: Copy custom configuration {{ env }} {{team}}
   when: env == "prod-nex3" and team == "nexcel"
   template:
     src: "files/{{team}}/configs/{{ env }}/maps/{{item}}"
