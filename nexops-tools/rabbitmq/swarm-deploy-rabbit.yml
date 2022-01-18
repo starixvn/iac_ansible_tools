@@ -1,6 +1,6 @@
 ---
 - name: Deploy RabbitMQ to Docker Swarm
-  hosts: nexops_high_storage
+  hosts: rabbitmq
 
   vars:
     working_directory: "/var/www/gluster/nexops/rabbitmq"
@@ -11,4 +11,4 @@
     data_folder: "{{working_directory}}/data"
   roles:
     - role: deploy-rabbit
-      when: inventory_hostname in groups['gluster_leader']
+      when: inventory_hostname in groups['swarm_managers']
