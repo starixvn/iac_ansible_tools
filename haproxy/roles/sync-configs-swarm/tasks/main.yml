@@ -53,7 +53,7 @@
   ignore_errors: yes
 
 - name: Copy custom configuration {{ env }}
-  when: env == "local_test"
+  when: env == "local" or env == "local_test" or env == "uat" or env == "aws"
   template:
     src: "files/{{team}}/configs/{{ env }}/maps/{{item}}"
     dest: "{{ volume_path }}/{{item}}"
@@ -61,44 +61,6 @@
   ignore_errors: yes
   with_items:
     - "{{map_files}}"
-
-- name: Copy custom configuration {{ env }}
-  when: env == "local" and team == "luminet"
-  template:
-    src: "files/{{team}}/configs/{{ env }}/maps/{{item}}"
-    dest: "{{ volume_path }}/{{item}}"
-  become: yes
-  ignore_errors: yes
-  with_items:
-    - hosts.map
-    - l2-game-proxy.map
-    - l2-game-proxy1.map
-    - l1-game-proxy2.map
-    - l1-game-proxy1.map
-    - l1-game-proxy.map
-
-- name: Copy custom configuration {{ env }}
-  when: env == "local" and team == "nexcel"
-  template:
-    src: "files/{{team}}/configs/{{ env }}/maps/{{item}}"
-    dest: "{{ volume_path }}/{{item}}"
-  become: yes
-  ignore_errors: yes
-  with_items:
-    - hosts.map
-    - vg3-game-proxy.map
-
-- name: Copy custom configuration {{ env }}
-  when: env == "uat" and team == "luminet"
-  template:
-    src: "files/{{team}}/configs/{{ env }}/maps/{{item}}"
-    dest: "{{ volume_path }}/{{item}}"
-  become: yes
-  ignore_errors: yes
-  with_items:
-    - hosts.map
-    - l2-game-proxy.map
-    - l1-game-proxy.map
 
 - name: Copy custom configuration {{ env }}
   when: env == "prod" and team == "luminet"
@@ -113,28 +75,7 @@
     - l1-game-proxy.map
 
 - name: Copy custom configuration {{ env }}
-  when: env == "uat" and team == "nexcel"
-  template:
-    src: "files/{{team}}/configs/{{ env }}/maps/{{item}}"
-    dest: "{{ volume_path }}/{{item}}"
-  become: yes
-  ignore_errors: yes
-  with_items:
-    - hosts.map
-    - uat-vg3-game-proxy.map
-
-- name: Copy custom configuration {{ env }}
   when: env == "prod" and team == "nexcel"
-  template:
-    src: "files/{{team}}/configs/{{ env }}/maps/{{item}}"
-    dest: "{{ volume_path }}/{{item}}"
-  become: yes
-  ignore_errors: yes
-  with_items:
-    - hosts.map
-
-- name: Copy custom configuration {{ env }}
-  when: env == "aws" and team == "nexcel"
   template:
     src: "files/{{team}}/configs/{{ env }}/maps/{{item}}"
     dest: "{{ volume_path }}/{{item}}"
