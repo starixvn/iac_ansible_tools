@@ -60,9 +60,7 @@
   become: yes
   ignore_errors: yes
   with_items:
-    - dataplaneapi.hcl
-    - hosts.map
-    - l2-game-proxy.map
+    - "{{map_files}}"
 
 - name: Copy custom configuration {{ env }}
   when: env == "local" and team == "luminet"
