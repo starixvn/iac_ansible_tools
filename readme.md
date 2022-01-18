@@ -22,7 +22,7 @@ docker swarm leave -f
 docker node demote <node name>
 docker node promote <node name>
 docker node rm <node name> (id)
-docker node update --label-add SENTRY=yes ip-10-2-27-27
+docker node update --label-add LUMINET_LOW_STORAGE =yes ip-10-2-27-27
 docker node update --label-add SENTRY_NEW=yes ub-70-31
 
 #backup swarm data /var/lib/docker/swarm
