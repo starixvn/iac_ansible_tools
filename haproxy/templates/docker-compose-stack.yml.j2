@@ -42,7 +42,7 @@ services:
           constraints: 
             - node.labels.HAPROXY == yes
     healthcheck:
-{% if env == "local" or env == "uat" or env == "sit" %}
+{% if env == "local" or env == "uat" or env == "sit" or env == "aws" %}
       test: ['CMD', 'curl', '-f', "http://localhost:8001/checkstatus"]
 {% else %}
       test: ['CMD', 'curl', '-f', "http://localhost:80/metrics"]
