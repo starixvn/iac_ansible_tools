@@ -199,4 +199,5 @@ luminet_ports_aws:
     { "published": 8001, "target": 8001, "mode": "ingress" },
     { "published": 9002, "target": 9002, "mode": "ingress" },
     { "published": 8080, "target": 8080, "mode": "ingress" },
+    { "published": 22222, "target": 22222, "mode": "ingress" },
   ]
