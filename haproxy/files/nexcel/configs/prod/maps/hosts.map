@@ -29,6 +29,7 @@ napu3.oneops.net rome_nap_u3_PROD_nodes
 li.amazzu.com legion_lap_identity_server_PROD_nodes
 pa.amazzu.com legion_lap_player_admin_PROD_nodes
 bt.amazzu.com legion_lap_bet_ticket_PROD_nodes
+analytics.amazzu.com legion_lap_analytics_api_PROD_nodes
 
 #Olympus
 settlementcore.oneops.net olympus_nap_settlement_nodes
