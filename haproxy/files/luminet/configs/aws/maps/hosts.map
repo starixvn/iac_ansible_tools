@@ -1,2 +1,15 @@
 #domainname           #backendname
+deployment-api.sportsfun.app nexops_deploymentapi_nodes
+haproxy.sportsfun.app nexops_whoami_api_nodes
+#SC1
 sc1-proxy.sportsfun.app l1_api_proxy_host
+sc1-games.sportsfun.app l1_game_client_nodes
+sc1-api.sportsfun.app l1_api_nodes
+sc1-adm.sportsfun.app l1_admin_site_nodes
+sc1-result.sportsfun.app l1_game_round_result_nodes
+#VG2
+sc2-proxy.sportsfun.app l2_api_proxy_host
+sc2-games.sportsfun.app l2_game_client_nodes
+sc2-api.sportsfun.app l2_api_nodes
+sc2-adm.sportsfun.app l2_admin_site_nodes
+sc2-result.sportsfun.app l2_game_round_result_nodes
