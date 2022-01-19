@@ -18,6 +18,8 @@ rocketor-proxy.nexdev.net nexops_rocketor_proxy_backend
 gosql-api.nexdev.net nexops_gosql_api_backend
 gosql-proxy.nexdev.net nexops_gosql_proxy_backend
 ndict.nexdev.net nexops_ndict_backend
+ndict-api.nexdev.net nexops_ndict_api_backend
+nuget.nexdev.net nexops_nuget_backend
 
 ###VG3
 #Local
