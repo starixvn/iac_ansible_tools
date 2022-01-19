@@ -31,6 +31,6 @@
 
 - name: Set gitlab token
   set_fact:
-    gitlab_token: "yqeW-bpj43G6isyKA3tG"
+    gitlab_token: "juiiAcyhzLK5j7LLxc76"
   when: gitlab_url is undefined or gitlab_url == "git3.nexdev.net"
   become: yes
