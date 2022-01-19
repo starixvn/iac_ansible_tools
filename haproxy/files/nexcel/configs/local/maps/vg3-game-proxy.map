@@ -16,6 +16,7 @@
 /local1/game-api/ nex3_l3_game_api_nodes_local1
 /local1/game-admin-api/ nex3_l3_game_admin_api_nodes_local1
 /local1/components/	nex3_l3_game_components_nodes_local1
+/local1/dragontigerclient/	nex3_l3_dragon_tiger_client_nodes_local1
 #
 /local2/main/ nex3_l3_game_server_nodes_local2
 /local2/sicbo/ nex3_l3_sicbo_nodes_local2
@@ -35,6 +36,7 @@
 /local2/game-api/ nex3_l3_game_api_nodes_local2
 /local2/game-admin-api/ nex3_l3_game_admin_api_nodes_local2
 /local2/components/	nex3_l3_game_components_nodes_local2
+/local2/dragontigerclient/	nex3_l3_dragon_tiger_client_nodes_local2
 #
 /local3/main/ nex3_l3_game_server_nodes_local3
 /local3/sicbo/ nex3_l3_sicbo_nodes_local3
@@ -54,3 +56,4 @@
 /local3/game-api/ nex3_l3_game_api_nodes_local3
 /local3/game-admin-api/ nex3_l3_game_admin_api_nodes_local3
 /local3/components/	nex3_l3_game_components_nodes_local3
+/local3/dragontigerclient/	nex3_l3_dragon_tiger_client_nodes_local3
