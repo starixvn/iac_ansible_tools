@@ -66,7 +66,6 @@
           "cadence": "1d",
           "enabled": true,
           "keep_n": 10,
-          "older_than":,
           "name_regex": ".*",
           "name_regex_delete": ".*",
           "name_regex_keep": "(builder|((LOCAL|SIT|UAT|PROD|AWS)_?[123]?\-latest))"
