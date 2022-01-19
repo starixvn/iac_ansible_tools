@@ -11,6 +11,12 @@ mon.nexdev.net nexops_grafana_nodes
 portainer.nexdev.net nexops_portainer_nodes
 rabbitmq.nexdev.net nexops_rabbitmq_admin_nodes
 bot.nexdev.net nexops_bot_skynex_backend
+bot-api.nexdev.net nexops_bot_skynex_api_backend
+rocketor.nexdev.net nexops_rocketor_backend
+rocketor-api.nexdev.net nexops_rocketor_api_backend
+rocketor-proxy.nexdev.net nexops_rocketor_proxy_backend
+gosql-api.nexdev.net nexops_gosql_api_backend
+gosql-proxy.nexdev.net nexops_gosql_proxy_backend
 
 ###VG3
 #Local
