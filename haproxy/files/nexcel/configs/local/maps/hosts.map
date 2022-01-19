@@ -18,6 +18,8 @@ rocketor-proxy.nexdev.net nexops_rocketor_proxy_backend
 gosql-api.nexdev.net nexops_gosql_api_backend
 gosql-proxy.nexdev.net nexops_gosql_proxy_backend
 ndict.nexdev.net nexops_ndict_backend
+ndict-api.nexdev.net nexops_ndict_api_backend
+nuget.nexdev.net nexops_nuget_backend
 
 ###VG3
 #Local
@@ -199,6 +201,7 @@ fps-demo.nexdev.net spu_fps_dfp_demo_nodes
 fps-newapi.nexdev.net spu_fps_integration_api_nodes
 afc-api.nexdev.net spu_afc_api_nodes
 spu-fs-bsng-job.nexdev.net nap_spu_fs_bsng_job_service_LOCAL_nodes
+spu-fps-job-api.nexdev.net nap_spu_fps_fp_api_job_service_LOCAL_nodes
 cts-api.nexdev.net spu_cts_portal_api_nodes
 cts.nexdev.net spu_cts_nodes
 fs.nexdev.net spu_fraudsensor2_nodes
