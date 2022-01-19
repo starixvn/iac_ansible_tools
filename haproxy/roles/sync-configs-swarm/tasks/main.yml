@@ -53,7 +53,7 @@
   ignore_errors: yes
 
 - name: Copy custom configuration {{ env }} {{team}}
-  when: env == "local" or env == "local_test" or env == "uat" or env == "aws"
+  when: env == "local" or env == "local_test" or env == "uat" or env == "aws"  or env == "aws-nex3"
   template:
     src: "files/{{team}}/configs/{{ env }}/maps/{{item}}"
     dest: "{{ volume_path }}/{{item}}"
