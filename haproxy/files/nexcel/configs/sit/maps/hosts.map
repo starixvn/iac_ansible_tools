@@ -1,0 +1,4 @@
+#domainname           #backendname
+#Tools
+haproxy.playthefun.com default_backend_nodes
+napsettlement.playthefun.com default_backend_nodes
