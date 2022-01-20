@@ -2,16 +2,10 @@
 - name: APT - Add elastic.co key
   apt_key: url="https://artifacts.elastic.co/GPG-KEY-elasticsearch"
   become: yes
-  environment:
-    http_proxy: 'http://10.40.40.245:3128'
-    https_proxy: 'http://10.40.40.245:3128'
 
 - name: APT - Add elastic.co repository
   apt_repository: repo="deb https://artifacts.elastic.co/packages/{{version}}/apt stable main" filename="elastic-{{version}}" update_cache=yes
   become: yes
-  environment:
-    http_proxy: 'http://10.40.40.245:3128'
-    https_proxy: 'http://10.40.40.245:3128'
 
 - name: FILEBEAT - Install Filebeat
   apt: pkg=filebeat
