@@ -1,11 +1,13 @@
 ---
-#- name: Gathering services state...
-#  service_facts:
+- name: Gathering services state...
+  service_facts:
+  become: yes
 
-#- name: do facts module to get latest information
-  #setup:
-    #filter:
-      #- 'rsyslog'
+- name: do facts module to get latest information
+  setup:
+    filter:
+      - 'rsyslog'
+  become: yes
 
 - name: If Rsyslog installed, print rsyslog current status. else - move to OS based installation.
   debug:
