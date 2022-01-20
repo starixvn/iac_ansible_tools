@@ -8,7 +8,7 @@ luminet_network_version_uat: ''
 luminet_network_version_prod: ''
 luminet_network_version_aws: ''
 
-nexcel_network_version_local: ''
+nexcel_network_version_local: '1'
 nexcel_network_version_sit: ''
 nexcel_network_version_uat: ''
 nexcel_network_version_prod: ''
