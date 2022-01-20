@@ -63,6 +63,15 @@
   with_items:
     - haproxy.conf
 
+- name: Copying {{item}} configuration...
+  template:
+    src: "{{item}}.j2"
+    dest: "/etc/logrotate.d/{{item}}"
+  become: yes
+  #ignore_errors: true
+  with_items:
+    - haproxy
+
 - name: Start and enable rsyslog service
   service:
     name: rsyslog

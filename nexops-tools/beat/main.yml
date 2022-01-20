@@ -8,3 +8,8 @@
   roles:
     - role: filebeat
   tags: filebeat
+
+- hosts: all
+  roles:
+    - role: rsyslog
+  tags: rsyslog
