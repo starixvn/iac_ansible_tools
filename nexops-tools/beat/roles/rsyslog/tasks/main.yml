@@ -1,0 +1,74 @@
+---
+- name: Gathering services state...
+  service_facts:
+
+- name: do facts module to get latest information
+  setup:
+    filter:
+      - 'rsyslog'
+
+- name: If Rsyslog installed, print rsyslog current status. else - move to OS based installation.
+  debug:
+    var: ansible_facts.services["rsyslog.service"]
+
+- name: OS check
+  debug: msg="{{ ansible_distribution }}"
+  register: distro
+
+- name: The detected OS is CentOS. Installing rsyslog...
+  yum:
+    name: rsyslog
+  register: installedSuccess
+  when: ansible_facts['distribution'] == 'CentOS'
+
+- name: The detected OS is Ubuntu. Installing rsyslog...
+  apt:
+    name: rsyslog
+  register: installedSuccess
+  when: ansible_facts['distribution'] == "Ubuntu"
+
+- name: After success installation, replace config file.
+  copy:
+    src: /home/controller/Desktop/rsyslog.conf
+    dest: /etc/rsyslog.conf
+    force: yes
+  when: installedSuccess
+
+# update service data?
+
+- name: Rsyslog is installed but not running. restarts service now...
+  service:
+    name: rsyslog
+    state: started
+  when: ansible_facts.services["rsyslog.service"].state != "running"
+
+- name: Rsyslog is installed and running. Copying script to find forwrding address...
+- name: Copy Filebeat configuration.
+  template:
+    src: "{{item}}.j2"
+    dest: "/etc/filebeat/filebeat.yml"
+  notify: restart filebeat
+  become: yes
+  #ignore_errors: true
+  when: ansible_facts.services["rsyslog.service"].state == "running"
+  with_items:
+    - haproxy.conf
+    - rsyslog.conf
+
+- name: search rsyslog_conf for rsyslog server IP addresses
+  command: python listIP.py
+  register: IPaddress
+  when: ansible_facts.services["rsyslog.service"].state == "running"
+
+- name: Found forwarding address-
+  debug: msg="{{ IPaddress.stdout }}"
+
+- name: Clean Script From Remote Host
+  file:
+    state: absent
+    path: "listIP.py"
+  when: IPaddress
+
+- name: No forwarding address found. Replace conf file...
+  copy:
+    src: /home/controller/Desktop/rsyslog.conf
