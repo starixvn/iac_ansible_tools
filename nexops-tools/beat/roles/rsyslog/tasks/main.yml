@@ -1,31 +1,4 @@
 ---
-- name: Gathering services state...
-  service_facts:
-  become: yes
-
-- name: do facts module to get latest information
-  setup:
-    filter:
-      - 'rsyslog'
-  become: yes
-
-- name: If Rsyslog installed, print rsyslog current status. else - move to OS based installation.
-  debug:
-    var: ansible_facts.services["rsyslog.service"]
-  become: yes
-
-- name: OS check
-  debug: msg="{{ ansible_distribution }}"
-  register: distro
-  become: yes
-
-- name: The detected OS is CentOS. Installing rsyslog...
-  yum:
-    name: rsyslog
-  register: installedSuccess
-  when: ansible_facts['distribution'] == 'CentOS'
-  become: yes
-
 - name: The detected OS is Ubuntu. Installing rsyslog...
   apt:
     name: rsyslog
@@ -47,7 +20,6 @@
   service:
     name: rsyslog
     state: started
-  when: ansible_facts.services["rsyslog.service"].state != "running"
   become: yes
 
 - name: Rsyslog is installed and running. Copying {{item}} configuration...
@@ -56,8 +28,6 @@
     dest: "/etc/rsyslog.d/{{item}}"
   notify: restart rsyslog
   become: yes
-  #ignore_errors: true
-  when: ansible_facts.services["rsyslog.service"].state == "running"
   with_items:
     - haproxy.conf
 
@@ -66,7 +36,6 @@
     src: "{{item}}.j2"
     dest: "/etc/logrotate.d/{{item}}"
   become: yes
-  #ignore_errors: true
   with_items:
     - haproxy
 
