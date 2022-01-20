@@ -28,10 +28,11 @@
   when: ansible_facts['distribution'] == "Ubuntu"
 
 - name: After success installation, replace config file.
-  copy:
-    src: /home/controller/Desktop/rsyslog.conf
-    dest: /etc/rsyslog.conf
-    force: yes
+  template:
+    src: "rsyslog.conf.j2"
+    dest: "/etc/rsyslog.conf"
+  become: yes
+  #ignore_errors: true
   when: installedSuccess
 
 # update service data?
@@ -41,16 +42,6 @@
     name: rsyslog
     state: started
   when: ansible_facts.services["rsyslog.service"].state != "running"
-
-- name: Rsyslog is installed and running. Copying {{item}} configuration...
-  template:
-    src: "{{item}}.j2"
-    dest: "/etc/{{item}}"
-  become: yes
-  #ignore_errors: true
-  when: ansible_facts.services["rsyslog.service"].state == "running"
-  with_items:
-    - rsyslog.conf
 
 - name: Rsyslog is installed and running. Copying {{item}} configuration...
   template:
