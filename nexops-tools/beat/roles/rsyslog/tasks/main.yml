@@ -2,8 +2,8 @@
 - name: The detected OS is Ubuntu. Installing rsyslog...
   apt:
     name: rsyslog
-  register: installedSuccess
-  when: ansible_facts['distribution'] == "Ubuntu"
+  #register: installedSuccess
+  #when: ansible_facts['distribution'] == "Ubuntu"
   become: yes
 
 - name: After success installation, replace config file.
@@ -12,7 +12,7 @@
     dest: "/etc/rsyslog.conf"
   become: yes
   #ignore_errors: true
-  when: installedSuccess
+  #when: installedSuccess
 
 # update service data?
 
@@ -21,8 +21,16 @@
     name: rsyslog
     enabled: yes
     state: started
-  changed_when: False
+  #changed_when: False
   become: yes
+
+- name: Copying {{item}} configuration...
+  template:
+    src: "{{item}}.j2"
+    dest: "/etc/logrotate.d/{{item}}"
+  become: yes
+  with_items:
+    - haproxy
 
 - name: Rsyslog is installed and running. Copying {{item}} configuration...
   template:
@@ -32,11 +40,3 @@
   become: yes
   with_items:
     - haproxy.conf
-
-- name: Copying {{item}} configuration...
-  template:
-    src: "{{item}}.j2"
-    dest: "/etc/logrotate.d/{{item}}"
-  become: yes
-  with_items:
-    - haproxy
