@@ -11,4 +11,5 @@
     data_folder: "{{working_directory}}/data"
   roles:
     - role: deploy-rabbit
-      when: inventory_hostname == groups['swarm_managers'][0]
+      when: inventory_hostname in groups['swarm_managers']
+      run_once: true
