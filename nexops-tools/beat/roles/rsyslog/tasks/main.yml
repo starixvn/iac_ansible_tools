@@ -40,3 +40,9 @@
   become: yes
   with_items:
     - haproxy.conf
+
+- name: restart rsyslog
+  service:
+    name: rsyslog
+    state: restarted
+  become: yes

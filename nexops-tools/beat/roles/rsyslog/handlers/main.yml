@@ -3,5 +3,5 @@
   service:
     name: rsyslog
     state: restarted
-  become: true
+  become: yes
   #ignore_errors: true
