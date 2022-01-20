@@ -42,33 +42,31 @@
     state: started
   when: ansible_facts.services["rsyslog.service"].state != "running"
 
-- name: Rsyslog is installed and running. Copying script to find forwrding address...
-- name: Copy Filebeat configuration.
+- name: Rsyslog is installed and running. Copying {{item}} configuration...
   template:
     src: "{{item}}.j2"
-    dest: "/etc/filebeat/filebeat.yml"
-  notify: restart filebeat
+    dest: "/etc/{{item}}"
+  become: yes
+  #ignore_errors: true
+  when: ansible_facts.services["rsyslog.service"].state == "running"
+  with_items:
+    - rsyslog.conf
+
+- name: Rsyslog is installed and running. Copying {{item}} configuration...
+  template:
+    src: "{{item}}.j2"
+    dest: "/etc/rsyslog.d/{{item}}"
+  notify: restart rsyslog
   become: yes
   #ignore_errors: true
   when: ansible_facts.services["rsyslog.service"].state == "running"
   with_items:
     - haproxy.conf
-    - rsyslog.conf
 
-- name: search rsyslog_conf for rsyslog server IP addresses
-  command: python listIP.py
-  register: IPaddress
-  when: ansible_facts.services["rsyslog.service"].state == "running"
-
-- name: Found forwarding address-
-  debug: msg="{{ IPaddress.stdout }}"
-
-- name: Clean Script From Remote Host
-  file:
-    state: absent
-    path: "listIP.py"
-  when: IPaddress
-
-- name: No forwarding address found. Replace conf file...
-  copy:
-    src: /home/controller/Desktop/rsyslog.conf
+- name: Start and enable rsyslog service
+  service:
+    name: rsyslog
+    enabled: yes
+    state: started
+  changed_when: False
+  become: yes
