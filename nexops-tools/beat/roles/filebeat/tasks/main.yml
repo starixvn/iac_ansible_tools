@@ -1,6 +1,6 @@
 ---
 - include: debian.yml
-  when: ansible_os_family == 'Debian'
+  when: ansible_os_family == 'Debian' and proxy is not defined
 - include: debian_proxy.yml
   when: ansible_os_family == 'Debian' and proxy is defined
 
