@@ -10,22 +10,26 @@
 - name: If Rsyslog installed, print rsyslog current status. else - move to OS based installation.
   debug:
     var: ansible_facts.services["rsyslog.service"]
+  become: yes
 
 - name: OS check
   debug: msg="{{ ansible_distribution }}"
   register: distro
+  become: yes
 
 - name: The detected OS is CentOS. Installing rsyslog...
   yum:
     name: rsyslog
   register: installedSuccess
   when: ansible_facts['distribution'] == 'CentOS'
+  become: yes
 
 - name: The detected OS is Ubuntu. Installing rsyslog...
   apt:
     name: rsyslog
   register: installedSuccess
   when: ansible_facts['distribution'] == "Ubuntu"
+  become: yes
 
 - name: After success installation, replace config file.
   template:
@@ -42,6 +46,7 @@
     name: rsyslog
     state: started
   when: ansible_facts.services["rsyslog.service"].state != "running"
+  become: yes
 
 - name: Rsyslog is installed and running. Copying {{item}} configuration...
   template:
