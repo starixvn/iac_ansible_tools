@@ -1,0 +1,5 @@
+---
+- name: restart rsyslog
+  command: service rsyslog restart
+  become: true
+  ignore_errors: true
