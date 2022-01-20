@@ -1,13 +1,9 @@
-/var/www/log_haproxy/*.log {
+/var/log/haproxy/*.log {
     daily
+    copytruncate
     rotate 7
     create 777 root root
     size 100M
     missingok
     su root root
-    dateext
-    dateformat -%Y-%m-%d
-    postrotate
-        reload rsyslog >/dev/null 2>&1 || true
-    endscript
 }
