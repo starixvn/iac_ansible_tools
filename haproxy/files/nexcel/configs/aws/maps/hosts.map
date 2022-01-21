@@ -11,6 +11,10 @@ oddsfeedadmin.sportsfun.app nexus_odds_feed_admin_nodes
 oddsfeedwebservice.sportsfun.app nexus_odds_feed_service_nodes
 #Rome
 #Legion
+analytics.sportsfun.app legion_lap_analytics_api_nodes
+pa.sportsfun.app legion_lap_player_admin_nodes
+bt.sportsfun.app legion_lap_bet_ticket_nodes
+
 #Olympus
 settlementcore.sportsfun.app olympus_nap_settlement_nodes
 prmscore.sportsfun.app olympus_nap_prms_AWS_nodes
