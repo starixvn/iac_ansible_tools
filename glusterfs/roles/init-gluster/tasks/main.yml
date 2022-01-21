@@ -20,10 +20,10 @@
   become: yes
   ignore_errors: yes
 
-- name: Add apt repository gluster (2/2)
-  shell: dpkg --force-all -P glusterfs-server
-  become: yes
-  ignore_errors: yes
+#- name: Add apt repository gluster (2/2)
+#  shell: dpkg --force-all -P glusterfs-server
+#  become: yes
+#  ignore_errors: yes
 
 - name: Install GlusterFS
   #apt: name={{ item }} state=latest update_cache=yes
