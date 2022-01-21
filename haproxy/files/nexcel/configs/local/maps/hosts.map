@@ -113,6 +113,7 @@ lap-ext1.nexdev.net legion_lap_ext_nodes1
 lap-report1.nexdev.net legion_lap_report_nodes1
 lap-analytics1.nexdev.net legion_lap_analytics_nodes1
 n88.nexdev.net legion_aff_n88_nodes
+lbs.nexdev.net legion_la_licenseebillingsystem_LOCAL_nodes
 
 #ROME
 nap-u3.nexdev.net rome_nap_u3_nodes
