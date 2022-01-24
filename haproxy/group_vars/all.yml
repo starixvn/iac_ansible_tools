@@ -25,7 +25,7 @@ nexcel_ports_local:
     { "published": 1710, "target": 1710, "mode": "ingress" },
     { "published": 1711, "target": 1711, "mode": "ingress" },
     { "published": 6343, "target": 6343, "mode": "ingress" },
-    { "published": 7317, "target": 7317, "mode": "ingress" },
+    { "published": 8788, "target": 8788, "mode": "ingress" },
   ]
 
 nexcel_ports_sit: [
@@ -42,7 +42,7 @@ nexcel_ports_sit: [
     { "published": 6344, "target": 6344, "mode": "ingress" },
     { "published": 6345, "target": 6345, "mode": "ingress" },
     { "published": 16379, "target": 16379, "mode": "ingress" },
-    { "published": 7317, "target": 7317, "mode": "ingress" },
+    { "published": 8788, "target": 8788, "mode": "ingress" },
   ]
 
 nexcel_ports_uat:
@@ -96,6 +96,7 @@ nexcel_ports_prod:
     { "published": 6343, "target": 6343, "mode": "ingress" },
     { "published": 6345, "target": 6345, "mode": "ingress" },
     { "published": 8282, "target": 8282, "mode": "ingress" },
+    { "published": 8788, "target": 8788, "mode": "ingress" },
   ]
 
 nexcel_ports_aws:
