@@ -6,7 +6,6 @@ services:
     volumes:
       - data:{{image_config_path}}
 {% if env == "local_test" or env == "local" %}
-      - log:/var/log/haproxy
       - "/etc/localtime:/etc/localtime:ro"
 {% endif %}
 {% if enable_port is undefined or enable_port == true %}
@@ -66,11 +65,3 @@ volumes:
        o: bind
        type: none
        device: {{volume_path}}
-{% if env == "local_test" or env == "local" %}
-  log:
-    driver: local
-    driver_opts:
-       o: bind
-       type: none
-       device: /var/www/log_haproxy
-{% endif %}
