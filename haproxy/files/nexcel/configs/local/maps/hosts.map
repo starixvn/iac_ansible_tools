@@ -232,6 +232,7 @@ info.nexcel.vn nexus_nexcel_info_site
 qland.nexdev.net nexus_qland_nodes
 qland1.nexdev.net nexus_qland1_nodes
 thor-api1.nexdev.net nexus_thor_api_LOCAL_1
+thor-api2.nexdev.net nexus_thor_api_LOCAL_2
 thor-api.nexdev.net nexus_thor_api_LOCAL
 rm-bk.nexdev.net nexus_redmine_nodes_PROD_bk
 rm-old.nexdev.net nexus_redmine_nodes_PROD_OLD
