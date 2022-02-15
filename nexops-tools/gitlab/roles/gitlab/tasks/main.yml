@@ -7,6 +7,10 @@
   tags:
     - backup-git3
 
+- import_tasks: backup-gitlab-registry.yml
+  tags:
+    - backup-gitlab-registry.yml
+
 - import_tasks: restore-gitlab.yml
   tags:
     - restore-gitlab
