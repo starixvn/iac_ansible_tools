@@ -9,7 +9,7 @@
 
 - import_tasks: backup-gitlab-registry.yml
   tags:
-    - backup-gitlab-registry.yml
+    - backup-gitlab-registry
 
 - import_tasks: restore-gitlab.yml
   tags:
