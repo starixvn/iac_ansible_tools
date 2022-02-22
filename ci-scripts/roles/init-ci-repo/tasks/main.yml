@@ -40,7 +40,7 @@
           "cadence": "1d",
           "enabled": true,
           "keep_n": 10,
-          "older_than": "7d",
+          "older_than": null,
           "name_regex": ".*",
           "name_regex_delete": ".*",
           "name_regex_keep": "(builder|((LOCAL|SIT|UAT|PROD|AWS)_?[123]?\-latest))"
