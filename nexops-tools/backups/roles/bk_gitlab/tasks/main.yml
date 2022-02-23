@@ -1,1 +1,20 @@
 ---
+- import_tasks: backup-gitlab.yml
+  tags:
+    - backup-gitlab
+
+- import_tasks: backup-git3.yml
+  tags:
+    - backup-git3
+
+- import_tasks: backup-registry.yml
+  tags:
+    - backup-registry
+
+- import_tasks: restore.yml
+  tags:
+    - restore
+
+- import_tasks: rm_old_backup_file.yml
+  tags:
+    - rm_old_backup_file
