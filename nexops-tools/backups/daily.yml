@@ -28,3 +28,8 @@
   roles:
     - role: bk_portainer_prod
   tags: bk_portainer_prod
+
+- hosts: all
+  roles:
+    - role: bk_gitlab
+  tags: bk_gitlab
