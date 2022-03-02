@@ -33,3 +33,8 @@
   roles:
     - role: bk_gitlab
   tags: bk_gitlab
+
+- hosts: all
+  roles:
+    - role: bk_verdaccio
+  tags: bk_verdaccio
