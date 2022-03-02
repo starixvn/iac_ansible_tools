@@ -31,6 +31,11 @@
 
 - hosts: all
   roles:
+    - role: bk_portainer_local
+  tags: bk_portainer_local
+
+- hosts: all
+  roles:
     - role: bk_gitlab
   tags: bk_gitlab
 
