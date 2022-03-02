@@ -3,9 +3,12 @@
   shell: docker exec -t {{ container_name }} pg_dumpall -c -U {{ POSTGRES_USER }} > {{ backup_server_path }}/ansibledb_`date +%d-%m-%Y"_"%H_%M_%S`.sql
   become: yes
 
+- name: scp backup file
+  shell: scp -r -P{{ server_sshport }} {{ backup_server_path }} root@{{ restore_server }}:{{ restore_server_path }}
+  become: yes
+
 - name: remove old backup Ansible file
   shell: |
     find {{ backup_server_path }} -mtime +1 -exec rm {} \;
+    ssh -p{{ restore_server_sshport }} root@{{ restore_server }} "find {{ restore_server_path }} -mtime +1 -exec rm {} \;"
   become: yes
-  
-
