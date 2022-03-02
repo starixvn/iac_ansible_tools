@@ -4,7 +4,7 @@
   become: yes
 
 - name: scp backup file
-  shell: scp -r -P{{ server_sshport }} {{ backup_server_path }} root@{{ restore_server }}:{{ restore_server_path }}
+  shell: scp -r -P{{ restore_server_sshport }} {{ backup_server_path }} root@{{ restore_server }}:{{ restore_server_path }}
   become: yes
 
 - name: remove old backup Ansible file
