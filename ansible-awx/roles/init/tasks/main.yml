@@ -74,4 +74,5 @@
   shell: |
     cd {{gluster_path}}
     docker stack deploy --compose-file=docker-compose.yml awx --with-registry-auth
+    chmod 400 {{gluster_path}}/.ssh/id_rsa
   become: yes
