@@ -1,7 +1,7 @@
 - name: Prune images
   shell: |
-    docker image prune -f
-    docker builder prune -f
+    docker image prune --all -f
+    docker builder prune --all -f
   become: yes
   ignore_errors: yes
 
