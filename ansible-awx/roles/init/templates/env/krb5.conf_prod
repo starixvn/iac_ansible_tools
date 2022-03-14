@@ -1,0 +1,35 @@
+#winrm
+# BEGIN -- dynamic data
+[libdefaults]
+  default_realm = LUCKY777.LOCAL
+  # The following krb5.conf variables are only for MIT Kerberos.
+          krb4_config = /etc/krb.conf
+          krb4_realms = /etc/krb.realms
+          kdc_timesync = 1
+          ccache_type = 4
+          forwardable = true
+          proxiable = true
+  # The following libdefaults parameters are only for Heimdal Kerberos.
+          v4_instance_resolve = false
+          v4_name_convert = {
+                  host = {
+                          rcmd = host
+                          ftp = ftp
+                  }
+                  plain = {
+                          something = something-else
+                  }
+          }
+          fcc-mit-ticketflags = true
+  [realms]
+          SPVN.LOCAL = {
+          kdc = 486D22S.lucky777.local
+          admin_server = 486D22S.lucky777.local
+          }
+  [domain_realm]
+          .lucky777.local = LUCKY777.LOCAL
+           lucky777.local = LUCKY777.LOCAL
+  [login]
+          krb4_convert = true
+          krb4_get_tickets = false
+# END -- dynamic data
