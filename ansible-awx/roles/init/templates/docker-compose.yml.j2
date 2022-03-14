@@ -3,7 +3,7 @@ services:
   web:
     image: registry.nexdev.net:5050/docker/awx/web:11.2.0 #ansible/awx_web:11.0.0
     ports:
-      - '{{external_port | default('8089')}}:8052'
+      - '{{external_port | default('8002')}}:8052'
     user: root
     networks:
       - {{swarm_network_nexops}}
