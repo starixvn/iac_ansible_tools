@@ -11,13 +11,13 @@
     - projects
     - .ssh
 
-- name: Create network
-  docker_network:
-    name: '{{swarm_network_nexops}}'
-    driver: 'overlay'
-    attachable: true
-  ignore_errors: yes
-  become: yes
+#- name: Create network
+#  docker_network:
+#    name: '{{swarm_network_nexops}}'
+#    driver: 'overlay'
+#    attachable: true
+#  ignore_errors: yes
+#  become: yes
 
 - name: Copy docker-compose file
   when: inventory_hostname in groups['swarm_managers']
