@@ -32,13 +32,13 @@ services:
                 - node.labels.{{node_label | default ('NEXCEL_HIGH_STORAGE')}} == yes
         networks:
             - {{network | default('swarm_nexops')}}
+{%if team_name is defined %}
         labels:
 {% if env == "prod" or env == "aws" %}
       - "io.portainer.accesscontrol.teams={{team_name | upper}}_LEADERS"
 {% else %}
       - "io.portainer.accesscontrol.teams={{team_name | upper}}"
-
-    
+{% endif %}
     {{mysql_name}}_phpmyadmin:
         image: registry.nexdev.net:5050/docker/phpmyadmin:latest
         volumes:
@@ -58,11 +58,13 @@ services:
                 - node.labels.{{node_label | default ('NEXCEL_HIGH_STORAGE')}} == yes
         networks:
             - {{network | default('swarm_nexops')}}
+{%if team_name is defined %}
         labels:
 {% if env == "prod" or env == "aws" %}
       - "io.portainer.accesscontrol.teams={{team_name | upper}}_LEADERS"
 {% else %}
       - "io.portainer.accesscontrol.teams={{team_name | upper}}"
+{% endif %}
 
 networks:
   {{network | default('swarm_nexops')}}:
