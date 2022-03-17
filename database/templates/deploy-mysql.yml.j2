@@ -39,6 +39,7 @@ services:
 {% else %}
       - "io.portainer.accesscontrol.teams={{team_name | upper}}"
 {% endif %}
+{% endif %}
     {{mysql_name}}_phpmyadmin:
         image: registry.nexdev.net:5050/docker/phpmyadmin:latest
         volumes:
@@ -64,6 +65,7 @@ services:
       - "io.portainer.accesscontrol.teams={{team_name | upper}}_LEADERS"
 {% else %}
       - "io.portainer.accesscontrol.teams={{team_name | upper}}"
+{% endif %}
 {% endif %}
 
 networks:
