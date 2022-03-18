@@ -29,7 +29,7 @@
   become: yes
 
 - name: restart container
-  when: restart_container is defined and restart_container == "true"
+  when: restart_container is defined and restart_container == 'yes'
   shell: |
     cd {{gluster_path}}
     docker-compose restart
