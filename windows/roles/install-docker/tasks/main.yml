@@ -17,7 +17,7 @@
 - name: install the latest version of Docker
   win_shell: |
     if((Get-Package | Where{$_.Name -eq "docker"}) -eq $null){
-      Install-Package -Name docker -ProviderName DockerMsftProvider
+      Install-Package -Name docker -ProviderName DockerMsftProvider -Force
     }else{
         Write-Host "Version of docker = " (Get-Package -Name docker -ProviderName DockerMsftProvider).Version
     }
@@ -25,7 +25,7 @@
 - name: install docker-compose
   win_shell: |
     if((Test-Path -Path $Env:ProgramFiles\Docker\docker-compose.exe) -eq $false){
-      Invoke-WebRequest "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-Windows-x86_64.exe" -UseBasicParsing -OutFile $Env:ProgramFiles\Docker\docker-compose.exe
+      Invoke-WebRequest "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-Windows-x86_64.exe" -UseBasicParsing -OutFile $Env:ProgramFiles\Docker\docker-compose.exe -Force
     }else{
       Write-Host "Installed docker-compose already"
     }
