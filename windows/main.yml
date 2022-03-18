@@ -62,5 +62,10 @@
 - hosts: all
   roles:
     - role: install-docker
+  become: yes
+  become_method: runas
+  vars:
+    ansible_become_user: '{{ ansible_user }}'
+    ansible_become_pass: '{{ ansible_password }}'
   tags:
     - install-docker

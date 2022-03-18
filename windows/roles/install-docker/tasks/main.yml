@@ -1,8 +1,12 @@
 ---
 - name: install NuGet Provider
-  win_shell: Install-PackageProvider -Name NuGet -RequiredVersion 2.8.5.201 -Force
-  args:
-    executable: powershell
+  win_shell: |
+    if ((Get-PackageProvider -Name NuGet).version -lt 2.8.5.201 ) {
+      Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
+    }
+    else {
+        Write-Host "Version of NuGet installed = " (Get-PackageProvider -Name NuGet).version
+    }
 
 - name: install the Docker-Microsoft PackageManagement Provider
   win_psmodule:
@@ -11,18 +15,20 @@
     state: present
 
 - name: install the latest version of Docker
-  win_shell: Install-Package -Name docker -ProviderName DockerMsftProvider
-  args:
-    executable: powershell
+  win_shell: |
+    if((Get-Package -Name docker -ProviderName DockerMsftProvider).Version -eq $null){
+        Install-Package -Name docker -ProviderName DockerMsftProvider
+    }else{
+        Write-Host "Version of docker = " (Get-Package -Name docker -ProviderName DockerMsftProvider).Version
+    }
 
 - name: install docker-compose
-  win_shell: >
-      Invoke-WebRequest "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-Windows-x86_64.exe"
-         -UseBasicParsing -OutFile $Env:ProgramFiles\Docker\docker-compose.exe
-  args:
-    executable: powershell
+  win_shell: |
+    if(Test-Path -Path {{compose_path}} -eq $false){
+      Invoke-WebRequest "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-Windows-x86_64.exe" -OutFile {{compose_path}}
+    }
+  vars:
+    - compose_path: C:\ProgramFiles\Docker\docker-compose.exe
 
 - name: restart server
   win_shell: Restart-Computer -Force
-  args:
-    executable: powershell
