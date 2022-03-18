@@ -17,7 +17,7 @@ services:
       mode: global
       placement:
         constraints:
-          - node.labels.{{node_label | default ('NEXOPS_LOW_STORAGE')}} == yes
+          - node.labels.{{node_label | default ('NEXOPS_HIGH_STORAGE')}} == yes
     command: redis-server /etc/redis/redis.conf
     healthcheck:
       test: redis-cli -a {{masterauth | default('foo1@bared')}} -p {{internal_port | default ('6379')}} ping
