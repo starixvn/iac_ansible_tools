@@ -91,7 +91,7 @@ services:
     command:
       - '--config.file=/etc/prometheus/prometheus_custom.yml'
       - '--storage.tsdb.path=/prometheus'
-      - '--storage.tsdb.retention=24h'
+      - '--storage.tsdb.retention=7d'
     volumes:
       - prometheus_data:/prometheus
     configs:
