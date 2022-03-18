@@ -1,7 +1,8 @@
 ---
 - name: install NuGet Provider
-  win_shell: |
-      Install-PackageProvider -Name NuGet -RequiredVersion 2.8.5.201 -Force
+  win_shell: Install-PackageProvider -Name NuGet -RequiredVersion 2.8.5.201 -Force
+  args:
+    executable: powershell
 
 - name: install the Docker-Microsoft PackageManagement Provider
   win_psmodule:
@@ -10,14 +11,18 @@
     state: present
 
 - name: install the latest version of Docker
-  win_shell: |
-      Install-Package -Name docker -ProviderName DockerMsftProvider
+  win_shell: Install-Package -Name docker -ProviderName DockerMsftProvider
+  args:
+    executable: powershell
 
 - name: install docker-compose
   win_shell: >
       Invoke-WebRequest "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-Windows-x86_64.exe"
          -UseBasicParsing -OutFile $Env:ProgramFiles\Docker\docker-compose.exe
+  args:
+    executable: powershell
 
 - name: restart server
-  win_shell: |
-      Restart-Computer -Force
+  win_shell: Restart-Computer -Force
+  args:
+    executable: powershell
