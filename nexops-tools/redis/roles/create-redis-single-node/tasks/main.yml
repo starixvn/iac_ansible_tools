@@ -2,7 +2,7 @@
 - name: Verify stacks directory exists
   #when: inventory_hostname in groups['swarm_managers']
   file:
-    path: '{{gluster_path}}'
+    path: '{{gluster_path}}/{{item}}'
     mode: '0755'
     state: directory
   with_items:
@@ -24,5 +24,6 @@
   #when: inventory_hostname in groups['swarm_managers']
   shell: |
     cd {{gluster_path}}
-    docker-compose up -ds
+    chmod 777 -R {{gluster_path}}/logs
+    docker-compose up -d
   become: yes
