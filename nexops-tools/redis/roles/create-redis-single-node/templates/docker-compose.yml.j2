@@ -2,6 +2,8 @@ version: "3"
 services:
   {{redis_name | default ('redis')}}:
     image: registry.nexdev.net:5050/docker/database/redis:{{redis_version | default ('5')}}
+    container_name: {{redis_name | default ('redis')}}
+    hostname: {{redis_name | default ('redis')}}
 {% if external_port is defined%}
     ports:
       - "{{external_port | default ('13379')}}:{{internal_port | default ('6379')}}"
@@ -11,29 +13,12 @@ services:
       - ./data:/data
       - ./logs:/var/log/redis/
       - /etc/localtime:/etc/localtime:ro
-    #sysctls:
-    #  - net.core.somaxconn=65365
-    deploy:
-      mode: global
-      placement:
-        constraints:
-          - node.labels.{{node_label | default ('NEXOPS_HIGH_STORAGE')}} == yes
+    sysctls:
+      - net.core.somaxconn=65365
     command: redis-server /etc/redis/redis.conf
+    network_mode: bridge
     healthcheck:
       test: redis-cli -a {{masterauth | default('foo1@bared')}} -p {{internal_port | default ('6379')}} ping
       interval: 5s
       timeout: 5s
       retries: 5
-{% if network_mode is defined%}
-    networks:
-      - {{network_mode}}
-networks:
-  {{network_mode}}:
-     external: true
-{% else %}
-    networks:
-      - {{swarm_network_nexops}}
-networks:
-  {{swarm_network_nexops}}:
-     external: true
-{% endif %}
