@@ -1,0 +1,20 @@
+---
+- name: install NuGet Provider
+  ansible.windows.win_powershell:
+    script: |
+      Install-PackageProvider -Name NuGet -RequiredVersion 2.8.5.201 -Force
+
+- name: install the Docker-Microsoft PackageManagement Provider
+  ansible.windows.win_powershell:
+    script: |
+      Install-Module -Name DockerMsftProvider -Repository PSGallery -Force
+
+- name: install the latest version of Docker
+  ansible.windows.win_powershell:
+    script: |
+      Install-Package -Name docker -ProviderName DockerMsftProvider
+
+- name: restart server
+  ansible.windows.win_powershell:
+    script: |
+      Restart-Computer -Force

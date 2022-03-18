@@ -58,3 +58,9 @@
     - role: add_gzip
   tags:
     - add_gzip
+
+- hosts: all
+  roles:
+    - role: install-docker
+  tags:
+    - install-docker
