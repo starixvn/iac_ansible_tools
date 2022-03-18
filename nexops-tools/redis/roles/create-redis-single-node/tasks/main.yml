@@ -27,3 +27,10 @@
     chmod 777 -R {{gluster_path}}/logs
     docker-compose up -d
   become: yes
+
+- name: restart container
+  when: restart_container is defined and restart_container == "true"
+  shell: |
+    cd {{gluster_path}}
+    docker-compose restart
+  become: yes
