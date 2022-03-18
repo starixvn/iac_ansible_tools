@@ -1,7 +1,7 @@
 ---
 - name: install NuGet Provider
   win_shell: |
-    if ((Get-PackageProvider -Name NuGet).version -lt 2.8.5.201 ) {
+    if((Get-PackageProvider | Where{$_.Name -eq "NuGet"}) -eq $null){
       Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
     }
     else {
