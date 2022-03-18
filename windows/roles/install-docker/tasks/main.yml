@@ -25,10 +25,10 @@
 - name: install docker-compose
   win_shell: |
     if((Test-Path -Path "{{compose_path}}") -eq $false){
-      Invoke-WebRequest "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-Windows-x86_64.exe" -OutFile "{{compose_path}}"
+      Invoke-WebRequest "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-Windows-x86_64.exe" -UseBasicParsing -OutFile "{{compose_path}}"
     }
   vars:
-    compose_path: C:\ProgramFiles\Docker\docker-compose.exe
+    compose_path: "C:\\ProgramFiles\\Docker\\docker-compose.exe"
 
 - name: restart server
   win_shell: Restart-Computer -Force
