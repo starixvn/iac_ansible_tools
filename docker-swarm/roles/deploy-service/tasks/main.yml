@@ -1,0 +1,12 @@
+---
+- name: Create {{working_directory}}
+  file:
+    path: '{{working_directory}}'
+    state: directory
+    mode: '777'
+
+- name: Copy docker_compose.yml
+  ansible.builtin.template:
+    src: templates/docker-compose.yml.j2
+    dest: "{{working_directory}}/docker-compose.yml"
+    mode: 0777

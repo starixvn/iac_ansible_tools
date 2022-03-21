@@ -1,0 +1,43 @@
+########################################################################
+# File managed by Ansible - NexOps
+# Your changes will be overwritten.
+#######################################################################
+
+version: '3.4'
+
+services:
+  {{service_name}}_{{environment}}:
+    image: registry.nexdev.net:5050/{{image_name}}
+    hostname: "swarm-{{.Service.Name}}-{{.Task.Slot}}"
+
+    deploy:
+      mode: replicated
+      resources:
+        limits:
+          memory: {{max_memory | default('2048')}}M
+      replicas: {{replicas}}
+      endpoint_mode: dnsrr
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+      placement:
+        constraints:
+          - node.labels.NEXCEL_LOW_STORAGE == yes
+          - node.platform.os == windows
+    volumes:
+      - {{vol_source_path}}:{{vol_dest_path | default('C:\inetpub\wwwroot')}}
+    networks:
+      - {{network_name}}
+    healthcheck:
+      test: ['CMD', 'curl', '-f', "http://localhost:80"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    labels:
+      - "io.portainer.accesscontrol.teams={{team | upper}}"
+networks:
+  {{network_name}}:
+    external: true
+

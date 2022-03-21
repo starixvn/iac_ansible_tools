@@ -1,0 +1,18 @@
+- name: Deploy swarm service for Windows web/services
+  hosts: swarm_managers
+  vars:
+    team:
+    service_name: 
+    environment:
+    working_directory: /var/www/gluster/{{team}}/{{service_name}}/{{environment}}
+    image_name:
+    max_memory:
+    replicas:
+    network_name:
+    vol_source_path:
+    vol_dest_path:
+
+  roles:
+    - role: deploy-service
+      run_once: true
+      become: true
