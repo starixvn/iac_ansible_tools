@@ -24,8 +24,8 @@ services:
         window: 120s
       placement:
         constraints:
-          - node.labels.NEXCEL_WINDOWS == yes
-          - node.platform.os == windows
+          - "node.labels.NEXCEL_WINDOWS==yes"
+          - "node.platform.os==windows"
     volumes:
       - {{vol_source_path}}:{{vol_dest_path | default('C:\inetpub\wwwroot')}}
     networks:
