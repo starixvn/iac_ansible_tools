@@ -13,7 +13,7 @@ services:
       mode: replicated
       resources:
         limits:
-{% if max_memory is defined and max_memory > 100 %}
+{% if max_memory is defined and (max_memory | int) > 100 %}
           memory: {{max_memory}}M
 {% else %}
           memory: 2048M
