@@ -14,6 +14,6 @@
     vol_dest_path:
 
   roles:
-    - role: deploy-service
+    - role: deploy-windows-service
       run_once: true
       become: true
