@@ -30,7 +30,7 @@ services:
           - "node.labels.NEXCEL_WINDOWS==yes"
           - "node.platform.os==windows"
     volumes:
-      - "{{vol_source_path}}:{{vol_dest_path}}"
+      - {{vol_source_path}}:{{vol_dest_path}}
     networks:
       - {{swarm_networks[0]}}
     healthcheck:
