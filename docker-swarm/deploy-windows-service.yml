@@ -4,8 +4,8 @@
     team:
     stack:
     service_name: 
-    environment:
-    working_directory: /var/www/gluster/web/{{team}}/{{stack}}/{{service_name}}/{{environment}}
+    environment_name:
+    working_directory: /var/www/gluster/web/{{team}}/{{stack}}/{{service_name}}/{{environment_name}}
     image_name:
     max_memory:
     replicas:
