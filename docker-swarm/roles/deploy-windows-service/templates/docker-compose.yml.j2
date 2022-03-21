@@ -9,12 +9,15 @@ services:
   {{service_name}}_{{environment_name  | upper}}:
     image: "registry.nexdev.net:5050/{{image_name}}"
     hostname: "swarm-{{'{{'}}.Service.Name{{'}}'}}-{{'{{'}}.Task.Slot{{'}}'}}"
-
     deploy:
       mode: replicated
       resources:
         limits:
-          memory: "{{ max_memory | default('2048') }}M"
+{% if max_memory is defined and max_memory > 100 %}
+          memory: {{max_memory}}M
+{% else %}
+          memory: 2048M
+{% endif %}
       replicas: {{replicas}}
       endpoint_mode: dnsrr
       restart_policy:
@@ -27,7 +30,7 @@ services:
           - "node.labels.NEXCEL_WINDOWS==yes"
           - "node.platform.os==windows"
     volumes:
-      - "{{vol_source_path}}:{{ vol_dest_path | default('C:\inetpub\wwwroot') }}"
+      - "{{vol_source_path}}:{{vol_dest_path}}"
     networks:
       - {{swarm_networks[0]}}
     healthcheck:
