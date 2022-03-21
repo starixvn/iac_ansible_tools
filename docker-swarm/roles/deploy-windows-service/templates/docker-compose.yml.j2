@@ -7,7 +7,7 @@ version: '3.4'
 
 services:
   {{service_name}}_{{environment  | upper}}:
-    image: registry.nexdev.net:5050/{{image_name}}
+    image: "registry.nexdev.net:5050/{{image_name}}"
     hostname: "swarm-{{.Service.Name}}-{{.Task.Slot}}"
 
     deploy:
