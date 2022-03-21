@@ -11,3 +11,10 @@
     dest: "{{working_directory}}/docker-compose.yml"
     mode: 0777
   become: yes
+
+- name: Deploy Web/Service
+  docker_stack:
+    name: "{{stack}}"
+    state: present
+    compose: 
+      - "{{working_directory}}/docker-compose.yml"
