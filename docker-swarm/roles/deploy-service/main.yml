@@ -2,9 +2,10 @@
   hosts: swarm_managers
   vars:
     team:
+    stack:
     service_name: 
     environment:
-    working_directory: /var/www/gluster/{{team}}/{{service_name}}/{{environment}}
+    working_directory: /var/www/gluster/web/{{team}}/{{stack}}/{{service_name}}/{{environment}}
     image_name:
     max_memory:
     replicas:
