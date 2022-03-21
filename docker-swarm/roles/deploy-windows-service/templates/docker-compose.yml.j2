@@ -14,7 +14,7 @@ services:
       mode: replicated
       resources:
         limits:
-          memory: {{max_memory | default('2048')}}M
+          memory: "{{max_memory | default('2048')}}M"
       replicas: {{replicas}}
       endpoint_mode: dnsrr
       restart_policy:
@@ -27,7 +27,7 @@ services:
           - "node.labels.NEXCEL_WINDOWS==yes"
           - "node.platform.os==windows"
     volumes:
-      - {{vol_source_path}}:{{vol_dest_path | default('C:\inetpub\wwwroot')}}
+      - "{{vol_source_path}}:{{vol_dest_path | default('C:\inetpub\wwwroot')}}"
     networks:
       - {{swarm_networks[0]}}
     healthcheck:
