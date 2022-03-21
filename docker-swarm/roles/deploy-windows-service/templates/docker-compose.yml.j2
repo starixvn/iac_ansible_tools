@@ -29,7 +29,7 @@ services:
     volumes:
       - {{vol_source_path}}:{{vol_dest_path | default('C:\inetpub\wwwroot')}}
     networks:
-      - {{network_name}}
+      - {{swarm_networks[0]}}
     healthcheck:
       test: ['CMD', 'curl', '-f', "http://localhost:80"]
       interval: 5s
@@ -38,5 +38,5 @@ services:
     labels:
       - "io.portainer.accesscontrol.teams={{team | upper}}"
 networks:
-  {{network_name}}:
+  {{swarm_networks[0]}}:
     external: true

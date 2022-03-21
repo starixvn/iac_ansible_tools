@@ -1,5 +1,5 @@
 - name: Deploy swarm service for Windows web/services
-  hosts: swarm_managers
+  hosts: swarm_leader
   vars:
     team:
     stack:
@@ -9,7 +9,6 @@
     image_name:
     max_memory:
     replicas:
-    network_name:
     vol_source_path:
     vol_dest_path:
 
