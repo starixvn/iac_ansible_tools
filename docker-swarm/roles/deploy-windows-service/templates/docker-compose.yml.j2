@@ -6,9 +6,9 @@
 version: '3.4'
 
 services:
-  {{service_name}}_{{environment  | upper}}:
+  {{service_name}}_{{environment_name  | upper}}:
     image: "registry.nexdev.net:5050/{{image_name}}"
-    hostname: "swarm-{{.Service.Name}}-{{.Task.Slot}}"
+    hostname: "swarm-{{'{{'}}.Service.Name{{'}}'}}-{{'{{'}}.Task.Slot{{'}}'}}"
 
     deploy:
       mode: replicated
