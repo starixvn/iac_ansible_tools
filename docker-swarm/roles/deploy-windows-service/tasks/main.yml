@@ -6,7 +6,7 @@
     mode: '777'
 
 - name: Copy docker_compose.yml
-  ansible.builtin.template:
+  template:
     src: templates/docker-compose.yml.j2
     dest: "{{working_directory}}/docker-compose.yml"
     mode: 0777
