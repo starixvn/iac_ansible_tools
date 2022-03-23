@@ -12,16 +12,6 @@
     docker-compose pull
   become: yes
 
-- name: remove service and config
-  when: inventory_hostname in groups['swarm_managers']
-  shell: |
-    docker service rm monitoring_prometheus
-    docker service rm  monitoring_caddy
-    docker config rm monitoring_caddy_config
-    docker config rm monitoring_prometheus_config
-  become: yes
-  ignore_errors: yes
-
 - name: Copy tools' configs files
   copy:
     src: 'files/{{item}}/conf/'
@@ -41,6 +31,16 @@
   with_items:
     - prometheus
   #ignore_errors: yes
+
+- name: remove service and config
+  when: inventory_hostname in groups['swarm_managers']
+  shell: |
+    docker service rm monitoring_prometheus
+    docker service rm  monitoring_caddy
+    docker config rm monitoring_caddy_config
+    docker config rm monitoring_prometheus_config
+  become: yes
+  ignore_errors: yes
 
 #- name: Create network
 #  docker_network:
