@@ -36,15 +36,15 @@ scrape_configs:
           - 'tasks.node-exporter'
         type: 'A'
         port: 9100        
-{%if haproxy_url is defined%}
-{% for job in jobs %}
-  - job_name: '{{job.name}}'
+{%if haproxys is defined%}
+{% for haproxy in haproxys %}
+  - job_name: '{{haproxy.name}}'
     scrape_interval: '{{scrape_interval}}'
-    metrics_path: '{{job.metric}}'
+    metrics_path: '{{haproxy.metric}}'
     static_configs:
-      - targets: ['{{job.haproxy_url}}']
+      - targets: ['{{haproxy.url}}']
         labels:
-            service: '{{job.name}}'
+            service: '{{haproxy.name}}'
 {% endfor %}
 {%endif%}
 {%if jobs is defined%}
