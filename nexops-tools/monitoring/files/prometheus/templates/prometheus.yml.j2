@@ -44,7 +44,7 @@ scrape_configs:
     static_configs:
       - targets: ['{{job.haproxy_url}}']
         labels:
-            service: '{{ob.name}}'
+            service: '{{job.name}}'
 {% endfor %}
 {%endif%}
 {%if jobs is defined%}
