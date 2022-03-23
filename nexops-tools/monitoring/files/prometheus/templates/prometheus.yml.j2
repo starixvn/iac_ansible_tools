@@ -41,6 +41,7 @@ scrape_configs:
     static_configs:
       - targets: ['{{haproxy_url}}']
 {%endif%}
+{%if jobs is defined%}
 {% for job in jobs %}
   - job_name: '{{job.name}}'
     scrape_interval: '{{scrape_interval}}'
@@ -52,3 +53,4 @@ scrape_configs:
         labels:
             service: '{{job.name}}'
 {% endfor %}
+{%endif%}

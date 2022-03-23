@@ -1,0 +1,4 @@
+- name: Preparing for Step Change config of Zabbix
+  win_template:
+    src: templates/zabbix_agentd.conf.j2
+    dest: "{{ path_install }}/zabbix_agent/zabbix_agentd.conf"

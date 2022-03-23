@@ -13,7 +13,7 @@
   become: yes
 
 - name: remove service and config
-  when: inventory_hostname in groups['gluster_leader']
+  when: inventory_hostname in groups['swarm_managers']
   shell: |
     docker service rm monitoring_prometheus
     docker service rm  monitoring_caddy
@@ -40,7 +40,7 @@
   become: yes
   with_items:
     - prometheus
-  ignore_errors: yes
+  #ignore_errors: yes
 
 #- name: Create network
 #  docker_network:
@@ -52,7 +52,7 @@
 #  become: yes
   
 - name: Update Promethus
-  when: inventory_hostname in groups['gluster_leader']
+  when: inventory_hostname in groups['swarm_managers']
   shell: |
     cd {{ working_directory }}
     export ENV={{ENV}}

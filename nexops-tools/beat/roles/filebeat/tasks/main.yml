@@ -7,6 +7,9 @@
 - include: redhat.yml
   when: ansible_os_family == 'RedHat'
 
+- include: filebeat-windows.yml
+  when: ansible_os_family == 'Windows'
+
 - name: Copy Filebeat configuration.
   template:
     src: "filebeat.yml.j2"
@@ -14,6 +17,7 @@
   notify: restart filebeat
   become: yes
   ignore_errors: true
+  when: ansible_os_family == 'Debian'
 
 - name: Start and enable filebeat service
   service:
@@ -22,3 +26,4 @@
     state: started
   changed_when: False
   become: yes
+  when: ansible_os_family == 'Debian'
