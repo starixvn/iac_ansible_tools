@@ -37,13 +37,15 @@ scrape_configs:
         type: 'A'
         port: 9100        
 {%if haproxy_url is defined%}
-  - job_name: '{{job_name}}'
+{% for job in jobs %}
+  - job_name: '{{job.name}}'
     scrape_interval: '{{scrape_interval}}'
-    metrics_path: '{{metrics_path}}'
+    metrics_path: '{{job.metric}}'
     static_configs:
-      - targets: ['{{haproxy_url}}']
+      - targets: ['{{job.haproxy_url}}']
         labels:
-            service: '{{job_name}}'
+            service: '{{ob.name}}'
+{% endfor %}
 {%endif%}
 {%if jobs is defined%}
 {% for job in jobs %}
