@@ -15,10 +15,11 @@ services:
       - jaeger_vol:/usr/share/elasticsearch/data
     deploy:
       mode: replicated
-      replicas: {{replicas | default (1)}}
+      replicas: 1
+      #endpoint_mode: dnsrr
       placement:
         constraints:
-          - node.labels.{{label_node | default ('NEXOPS_HIGH_STORAGE')}} == yes
+          - node.labels.{{label_node | default ('NEXOPS')}} == yes
 
   jaeger-collector:
     image: registry.nexdev.net:5050/docker/jaeger/jaeger-collector:latest
@@ -33,10 +34,11 @@ services:
       - SPAN_STORAGE_TYPE=elasticsearch
     deploy:
       mode: replicated
-      replicas: {{replicas | default (1)}}
+      replicas: 1
+      #endpoint_mode: dnsrr
       placement:
         constraints:
-          - node.labels.{{label_node | default ('NEXOPS_HIGH_STORAGE')}} == yes
+          - node.labels.{{label_node | default ('NEXOPS')}} == yes
     command: [
       "--es.server-urls=http://elasticsearch:9200",
       "--es.num-shards=1",
@@ -59,10 +61,11 @@ services:
       - '{{swarm_network_nexops}}'
     deploy:
       mode: replicated
-      replicas: {{replicas | default (1)}}
+      replicas: 1
+      #endpoint_mode: dnsrr
       placement:
         constraints:
-          - node.labels.{{label_node | default ('NEXOPS_HIGH_STORAGE')}} == yes
+          - node.labels.{{label_node | default ('NEXOPS')}} == yes
     environment:
       - SPAN_STORAGE_TYPE=elasticsearch
     depends_on:
@@ -75,10 +78,11 @@ services:
       - no_proxy=localhost
     deploy:
       mode: replicated
-      replicas: {{replicas | default (1)}}
+      replicas: 1
+      #endpoint_mode: dnsrr
       placement:
         constraints:
-          - node.labels.{{label_node | default ('NEXOPS_HIGH_STORAGE')}} == yes
+          - node.labels.{{label_node | default ('NEXOPS')}} == yes
     ports:
       - "16686:16686"
       - "16687:16687"
