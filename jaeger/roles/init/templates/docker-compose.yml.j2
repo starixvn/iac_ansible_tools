@@ -19,7 +19,7 @@ services:
       #endpoint_mode: dnsrr
       placement:
         constraints:
-          - node.labels.{{label_node | default ('NEXOPS')}} == yes
+          - node.labels.{{label_node | default ('NEXOPS_HIGH_STORAGE')}} == yes
 
   jaeger-collector:
     image: registry.nexdev.net:5050/docker/jaeger/jaeger-collector:latest
@@ -38,7 +38,7 @@ services:
       #endpoint_mode: dnsrr
       placement:
         constraints:
-          - node.labels.{{label_node | default ('NEXOPS')}} == yes
+          - node.labels.{{label_node | default ('NEXOPS_HIGH_STORAGE')}} == yes
     command: [
       "--es.server-urls=http://elasticsearch:9200",
       "--es.num-shards=1",
@@ -65,7 +65,7 @@ services:
       #endpoint_mode: dnsrr
       placement:
         constraints:
-          - node.labels.{{label_node | default ('NEXOPS')}} == yes
+          - node.labels.{{label_node | default ('NEXOPS_HIGH_STORAGE')}} == yes
     environment:
       - SPAN_STORAGE_TYPE=elasticsearch
     depends_on:
@@ -82,7 +82,7 @@ services:
       #endpoint_mode: dnsrr
       placement:
         constraints:
-          - node.labels.{{label_node | default ('NEXOPS')}} == yes
+          - node.labels.{{label_node | default ('NEXOPS_HIGH_STORAGE')}} == yes
     ports:
       - "16686:16686"
       - "16687:16687"
