@@ -9,7 +9,7 @@
     name: libssl-dev
   become: yes
 
-- name: Copy keepalived setup file
+- name: Copy keepalived setup file - {{keepalived_version}}.tar.gz
   copy:
     src: files/keepalived-{{keepalived_version}}.tar.gz
     dest: '/tmp/keepalived.tar.gz'
@@ -84,3 +84,12 @@
     state: started
     enabled: yes
   become: yes
+
+- name: "check current version of keepalived"
+  shell: echo "$(keepalived -v)"
+  become: yes
+  args:
+    executable: /bin/bash
+  register: keepalived_v
+- debug:
+    var: keepalived_v
