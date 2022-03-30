@@ -43,3 +43,8 @@
   roles:
     - role: bk_verdaccio
   tags: bk_verdaccio
+
+- hosts: all
+  roles:
+    - role: bk_sonarqube_local
+  tags: bk_sonarqube_local
