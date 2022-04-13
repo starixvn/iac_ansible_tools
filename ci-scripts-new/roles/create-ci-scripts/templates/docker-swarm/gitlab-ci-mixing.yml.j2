@@ -1,0 +1,17 @@
+include:
+{% for service in services %}
+  - .gitlab-ci/{{service.name | replace('-','_') }}/build.gitlab-ci.yml
+{% if service.framework is defined and service.framework == "cocos" %}
+  - .gitlab-ci/{{service.name | replace('-','_') }}/build-cocos-web.gitlab-ci.yml
+{%endif%}
+{% if transform_config is defined and transform_config == true %}
+  - .gitlab-ci/{{service.name | replace('-','_') }}/transform-configs.gitlab-ci.yml
+{%endif%}
+  - .gitlab-ci/{{service.name | replace('-','_') }}/deploy-vars.gitlab-ci.yml
+  - .gitlab-ci/{{service.name | replace('-','_') }}/rules.gitlab-ci.yml
+  - .gitlab-ci/{{service.name | replace('-','_') }}/deploy-local.gitlab-ci.yml
+  - .gitlab-ci/{{service.name | replace('-','_') }}/deploy-sit.gitlab-ci.yml
+  - .gitlab-ci/{{service.name | replace('-','_') }}/deploy-uat.gitlab-ci.yml
+  - .gitlab-ci/{{service.name | replace('-','_') }}/deploy-prod.gitlab-ci.yml
+  - .gitlab-ci/{{service.name | replace('-','_') }}/deploy-aws.gitlab-ci.yml
+{% endfor %}

@@ -1,0 +1,183 @@
+{% set service_name = item.name | replace('-','_') %}
+
+{% if item.multiple_image_env is undefined or item.multiple_image_env == false %}  
+
+build_image_{{ service_name }}:
+  extends:
+    - .deploy_vars_{{ service_name }}
+{% if item.multi_stage is undefined or item.multi_stage == false %}  
+    - .build:default:image:noenv
+{% else %}
+    - .build:default:image:noenv:multistage
+{% endif %}
+    - .build:image:{{ service_name }}:rules
+{% if item.framework is defined and item.framework == "cocos" %}  
+  needs: ['build_cocos_web']
+  dependencies:
+    - build_cocos_web
+{% endif %}
+{% if transform_config is defined and transform_config == true %}  
+  needs: ['transform_config_local']
+  dependencies:
+    - transform_config_local
+{% endif %}
+{% else %}
+
+{% for version in versions %}
+{% set version_number = '' if version == 0 else version %}
+build_image_{{ service_name }}_local{{ version_number }}:
+  extends:
+    - .deploy_vars_{{ service_name }}
+{% if item.multi_stage is undefined or item.multi_stage == false %}
+    - .build:default:image
+{% else %}
+    - .build:default:image:multistage
+{% endif %}
+    - .deploy:local{{ version_number }}
+    - .deploy:local{{ version_number }}:{{service_name}}:rules
+{% if item.framework is defined and item.framework == "cocos" %}  
+  needs: ['build_cocos_web_local{{ version_number }}']
+  dependencies:
+    - build_cocos_web_local{{ version_number }}
+{% endif %}
+{% if transform_config is defined and transform_config == true %}  
+  needs: ['transform_config_local{{ version_number }}']
+  dependencies:
+    - transform_config_local{{ version_number }}
+{% endif %}
+
+build_image_{{ service_name }}_sit{{ version_number }}:
+  extends:
+    - .deploy_vars_{{ service_name }}
+{% if item.multi_stage is undefined or item.multi_stage == false %}
+    - .build:default:image
+{% else %}
+    - .build:default:image:multistage
+{% endif %}
+    - .deploy:sit{{ version_number }}
+    - .deploy:sit{{ version_number }}:{{service_name}}:rules
+{% if item.framework is defined and item.framework == "cocos" %}
+  needs: ['build_cocos_web_sit{{ version_number }}']
+  dependencies:
+    - build_cocos_web_sit{{ version_number }}
+{% endif %}
+{% if transform_config is defined and transform_config == true %}  
+  needs: ['transform_config_sit{{ version_number }}']
+  dependencies:
+    - transform_config_sit{{ version_number }}
+{% endif %}
+
+build_image_{{ service_name }}_uat{{ version_number }}:
+  extends:
+    - .deploy_vars_{{ service_name }}
+{% if item.multi_stage is undefined or item.multi_stage == false %}
+    - .build:default:image
+{% else %}
+    - .build:default:image:multistage
+{% endif %}
+    - .deploy:uat{{ version_number }}
+    - .deploy:uat{{ version_number }}:{{service_name}}:rules
+{% if item.framework is defined and item.framework == "cocos" %}
+  needs: ['build_cocos_web_uat{{ version_number }}']
+  dependencies:
+    - build_cocos_web_uat{{ version_number }}
+{% endif %}
+{% if transform_config is defined and transform_config == true %}  
+  needs: ['transform_config_uat{{ version_number }}']
+  dependencies:
+    - transform_config_uat{{ version_number }}
+{% endif %}
+
+{% if org_name != 'luminet' %}
+build_image_{{ service_name }}_prod{{ version_number }}:
+  extends:
+    - .deploy_vars_{{ service_name }}
+{% if item.multi_stage is undefined or item.multi_stage == false %}
+    - .build:default:image
+{% else %}
+    - .build:default:image:multistage
+{% endif %}
+    - .deploy:prod{{ version_number }}
+    - .deploy:prod{{ version_number }}:{{service_name}}:rules
+{% if item.framework is defined and item.framework == "cocos" %}
+  needs: ['build_cocos_web_prod{{ version_number }}']
+  dependencies:
+    - build_cocos_web_prod{{ version_number }}
+{% endif %}
+{% if transform_config is defined and transform_config == true %}  
+  needs: ['transform_config_prod{{ version_number }}']
+  dependencies:
+    - transform_config_prod{{ version_number }}
+{% endif %}
+
+build_image_{{ service_name }}_aws{{ version_number }}:
+  extends:
+    - .deploy_vars_{{ service_name }}
+{% if item.multi_stage is undefined or item.multi_stage == false %}
+    - .build:default:image
+{% else %}
+    - .build:default:image:multistage
+{% endif %}
+    - .deploy:aws{{ version_number }}
+    - .deploy:aws{{ version_number }}:{{service_name}}:rules
+{% if item.framework is defined and item.framework == "cocos" %}
+  needs: ['build_cocos_web_aws{{ version_number }}']
+  dependencies:
+    - build_cocos_web_aws{{ version_number }}
+{% endif %}
+{% if transform_config is defined and transform_config == true %}  
+  needs: ['transform_config_aws{{ version_number }}']
+  dependencies:
+    - transform_config_aws{{ version_number }}
+{% endif %}
+
+{% endif %}
+{% endfor %}
+
+{% if org_name == 'luminet' %}
+build_image_{{ service_name }}_prod:
+  extends:
+    - .deploy_vars_{{ service_name }}
+{% if item.multi_stage is undefined or item.multi_stage == false %}
+    - .build:default:image
+{% else %}
+    - .build:default:image:multistage
+{% endif %}
+    - .deploy:prod
+    - .deploy:prod:{{service_name}}:rules
+{% if item.framework is defined and item.framework == "cocos" %}
+  needs: ['build_cocos_web_prod']
+  dependencies:
+    - build_cocos_web_prod
+{% endif %}
+{% if transform_config is defined and transform_config == true %}  
+  needs: ['transform_config_prod']
+  dependencies:
+    - transform_config_prod
+{% endif %}
+
+
+build_image_{{ service_name }}_aws:
+  extends:
+    - .deploy_vars_{{ service_name }}
+{% if item.multi_stage is undefined or item.multi_stage == false %}
+    - .build:default:image
+{% else %}
+    - .build:default:image:multistage
+{% endif %}
+    - .deploy:aws
+    - .deploy:aws:{{service_name}}:rules
+{% if item.framework is defined and item.framework == "cocos" %}
+  needs: ['build_cocos_web_aws']
+  dependencies:
+    - build_cocos_web_aws
+{% endif %}
+{% if transform_config is defined and transform_config == true %}  
+  needs: ['transform_config_aws']
+  dependencies:
+    - transform_config_aws
+{% endif %}
+
+{% endif %}
+
+{% endif %}

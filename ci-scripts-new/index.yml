@@ -1,0 +1,5 @@
+- hosts: swarm_leader
+  roles:
+    - role: set-facts
+    - role: init-ci-repo
+    - role: create-ci-scripts

@@ -1,0 +1,29 @@
+- name: Clean ci directory
+  file:
+    state: absent
+    path: '/var/ci-scripts/{{repo_name}}'
+  become: yes
+
+- name: Create ci directory
+  file:
+    path: "{{ folder_path | default('/var/ci-scripts')}}"
+    state: directory
+    mode: '0755'
+  become: yes
+
+- name: Install git
+  apt:
+    name: git
+    state: present
+    update_cache: yes
+  become: yes
+  ignore_errors: true
+
+- name: Clone ci repo
+  shell: |
+    cd /var/ci-scripts
+    eval "$(ssh-agent -s)"
+    chmod 400 /home/{{ansible_user}}/.ssh/private_key
+    ssh-add /home/{{ansible_user}}/.ssh/private_key
+    GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" git clone git@{{gitlab_url | default("git3.nexdev.net")}}:ci/repos-ci/{{repo_name}}.git
+  become: yes

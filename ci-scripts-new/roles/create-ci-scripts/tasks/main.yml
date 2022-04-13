@@ -1,0 +1,24 @@
+- name: Init CI repo
+  include: init-repo.yml
+  become: true
+
+- name: Build gitlab ci scripts
+  include: build-gitlab-ci.yml
+  become: true
+
+- name: Build docker compose scripts
+  include: build-docker-compose.yml
+  become: true
+
+- name: Push CI repo
+  shell: |
+    cd /var/ci-scripts/{{repo_name}}
+    eval "$(ssh-agent -s)"
+    chmod 400 /home/{{ansible_user}}/.ssh/private_key
+    ssh-add /home/{{ansible_user}}/.ssh/private_key
+    git config --global user.email "ansible@nexdev.net"
+    git config --global user.name "ansible"
+    git add .
+    git commit -m "ci: update"
+    git push origin master
+  become: yes

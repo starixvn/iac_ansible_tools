@@ -1,0 +1,107 @@
+{% set smoke_test = services[0].smoke_test | default (true) %}
+
+stages:
+{% if sonarqube_enabled is defined and sonarqube_enabled == true %}
+{% if unit_test is undefined or unit_test == true %}
+  - test
+  - post-test
+{% else %}
+  - test
+{%endif%}
+{%endif%}
+{% if transform_config is defined and transform_config == true %}
+  - transform-config
+{%endif%}
+{% if frameworks is defined and "cocos" in frameworks %}
+  - build-cocos-web
+{%endif%}
+  - build
+  - post-build
+  - deploy
+{% if org_name == 'luminet' and smoke_test == true %}
+  - post-deploy
+{%endif%}
+
+{% if sonarqube_enabled is defined and sonarqube_enabled == true %}
+variables:
+  PROJECT_NAME: {{sonarqube_project_name}}
+{% if team_name == "nex3" or team_name == "pentagon"  %}
+  SONAR_PROJECT_NAME: {{sonarqube_project_name}}
+{% else %}
+  SONAR_PROJECT_NAME: "{{team_name | upper}} / {{sonarqube_project_name}}"
+{%endif%}
+  SRC_PATH: {{ sonarqube_src_path | default ("./src") }}
+  TEST_PATH: {{ sonarqube_test_path | default ("./src") }}
+{%endif%}
+
+include:
+{% if sonarqube_enabled is defined and sonarqube_enabled == true %}
+{% if frameworks is defined and "dotnet" in frameworks %}
+
+{% if unit_test is undefined or unit_test == true %}
+  - project: "ci/common-ci"
+    ref: rocketor
+    file: "unit-test/dotnet-unit-test.gitlab-ci.yml"
+  - project: "ci/common-ci"
+    ref: rocketor
+    file: "sonarqube/sonarqube-dotnet-unittest.gitlab-ci.yml"  
+{% else %}
+  - project: 'ci/common-ci'
+    ref: rocketor
+    file: 'sonarqube/sonarqube-dotnet.gitlab-ci.yml'
+{% endif %}
+
+{% else %}
+
+{% if unit_test is undefined or unit_test == true %}
+  - project: "ci/common-ci"
+    ref: rocketor
+    file: "unit-test/js-unit-test.gitlab-ci.yml"
+  - project: "ci/common-ci"
+    ref: rocketor
+    file: "sonarqube/sonarqube.js-unittest.gitlab-ci.yml"  
+{% else %}
+  - project: "ci/common-ci"
+    ref: rocketor
+    file: "sonarqube/sonarqube.gitlab-ci.yml"  
+{%endif%}
+
+{%endif%}
+{%endif%}
+  - project: 'ci/common-ci'
+    ref: rocketor
+    file: 'rocketor-integration/rules/index.gitlab-ci.yml'
+  - project: 'ci/common-ci'
+    ref: rocketor
+    file: 'docker/base/build-docker-image.gitlab-ci.yml'
+  - project: 'ci/common-ci'
+    ref: rocketor
+    file: 'docker/base/post-build-docker-image.gitlab-ci.yml'
+  - project: 'ci/common-ci'
+    ref: rocketor
+    file: '_teams/{{org_name}}/{{ci_group_name}}/deploy-docker-swarm-stack/index.gitlab-ci.yml'
+{% if org_name == 'luminet' and smoke_test == true %}
+  - project: 'ci/common-ci'
+    ref: rocketor
+{% if project_name == 'l1' %}
+    file: 'smoke-test/smoke-test-sc1.gitlab-ci.yml'
+{% else %}
+    file: 'smoke-test/smoke-test-sc2.gitlab-ci.yml'
+{%endif%}
+{%endif%}
+{% for service in services %}
+  - .gitlab-ci/{{service.name | replace('-','_') }}/build.gitlab-ci.yml
+{% if service.framework is defined and service.framework == "cocos" %}
+  - .gitlab-ci/{{service.name | replace('-','_') }}/build-cocos-web.gitlab-ci.yml
+{%endif%}
+{% if transform_config is defined and transform_config == true %}
+  - .gitlab-ci/{{service.name | replace('-','_') }}/transform-configs.gitlab-ci.yml
+{%endif%}
+  - .gitlab-ci/{{service.name | replace('-','_') }}/deploy-vars.gitlab-ci.yml
+  - .gitlab-ci/{{service.name | replace('-','_') }}/rules.gitlab-ci.yml
+  - .gitlab-ci/{{service.name | replace('-','_') }}/deploy-local.gitlab-ci.yml
+  - .gitlab-ci/{{service.name | replace('-','_') }}/deploy-sit.gitlab-ci.yml
+  - .gitlab-ci/{{service.name | replace('-','_') }}/deploy-uat.gitlab-ci.yml
+  - .gitlab-ci/{{service.name | replace('-','_') }}/deploy-prod.gitlab-ci.yml
+  - .gitlab-ci/{{service.name | replace('-','_') }}/deploy-aws.gitlab-ci.yml
+{% endfor %}

@@ -1,0 +1,79 @@
+- name: Create CI repo {{repo_group_path}}/{{repo_name}}
+  uri:
+    url: https://{{gitlab_url | default("git3.nexdev.net")}}/api/v4/projects/
+    headers:
+      PRIVATE-TOKEN: '{{gitlab_token}}'
+      Content-Type: 'application/json'
+    body: '{"namespace_id": "{{repo_ci_group_id}}", "path": "{{repo_name}}",  "repository_access_level": "enabled", "visibility": "public"}'
+    body_format: json
+    method: POST
+    status_code: 201
+  register: result
+  until:
+  ignore_errors: yes
+
+- name: Init commit
+  uri:
+    url: https://{{gitlab_url | default("git3.nexdev.net")}}/api/v4/projects/{{result.json.id}}/repository/commits
+    headers:
+      PRIVATE-TOKEN: '{{gitlab_token}}'
+      Content-Type: 'application/json'
+    body: '{"branch": "master", "commit_message": "initial commit", "actions": [{"action": "create", "file_path": "file", "content": "init"}]}'
+    body_format: json
+    method: POST
+    status_code: 201
+  ignore_errors: yes
+
+- name: Create Built Image Repo {{services[0].docker_image_registry_path}}
+  uri:
+    url: https://{{registry_url}}/api/v4/projects/
+    headers:
+      PRIVATE-TOKEN: '{{registry_token}}'
+      Content-Type: 'application/json'
+    body: >
+      {
+        "namespace_id": "{{registry_group_id}}", 
+        "path": "{{registry_project}}",  
+        "repository_access_level": "enabled", 
+        "visibility": "public",
+        "container_expiration_policy_attributes": {
+          "cadence": "1d",
+          "enabled": true,
+          "keep_n": 10,
+          "older_than": null,
+          "name_regex": ".*",
+          "name_regex_delete": ".*",
+          "name_regex_keep": "(builder|((LOCAL|SIT|UAT|PROD|AWS)_?[123]?\-latest))"
+        }
+      }
+    body_format: json
+    method: POST
+    status_code: 201
+  register: result
+  until:
+  ignore_errors: yes
+  when: team_name != "nex3" and team_name != "pentagon"
+
+- name: Update Built Image Repo {{services[0].docker_image_registry_path}}
+  uri:
+    url: https://{{gitlab_url}}/api/v4/projects/{{services[0].docker_image_registry_path | replace('/','%2F')}}
+    headers:
+      PRIVATE-TOKEN: '{{gitlab_token}}'
+      Content-Type: 'application/json'
+    body: >
+      {
+        "container_expiration_policy_attributes": {
+          "cadence": "1d",
+          "enabled": true,
+          "keep_n": 10,
+          "older_than": null,
+          "name_regex": ".*",
+          "name_regex_delete": ".*",
+          "name_regex_keep": "(builder|((LOCAL|SIT|UAT|PROD|AWS)_?[123]?\-latest))"
+        }
+      }
+    body_format: json
+    method: PUT
+    status_code: 200
+  ignore_errors: yes
+  when: team_name == "nex3" or team_name == "pentagon"

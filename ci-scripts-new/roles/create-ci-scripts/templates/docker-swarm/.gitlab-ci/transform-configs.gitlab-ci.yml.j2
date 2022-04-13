@@ -1,0 +1,54 @@
+{% if item.config_file_name is defined %}
+{% set config_file = item.config_file_name ~ '.' ~ item.config_file_ext %}
+{% endif %}
+{% set config_file_path = item.config_file_path | default(".") %}
+{% set config_dest_file_path = item.config_dest_file_path | default(".") %}
+{% set service_name = item.name | replace('-','_') %}
+
+.base_transform_config:
+  stage: transform-config
+  extends:
+    - .build:image:{{item.name | replace('-','_') }}:rules
+  script:
+    - echo "====== Build NextJS ======"
+    - echo $DEPLOY_ENV
+    - cp {{config_file_path}}/{{item.config_file_name}}.$DEPLOY_ENV.{{item.config_file_ext}} {{config_dest_file_path}}/{{config_file}}
+  tags:
+    - docker
+  artifacts:
+    paths:
+      - ./{{config_dest_file_path}}/{{config_file}}
+    expire_in: 1 day
+
+{% for version in versions %}
+{% set version_number = '' if version == 0 else version %}
+transform_config_local{{ version_number }}:
+  extends: 
+    - .base_transform_config
+    - .deploy:local{{ version_number }}
+    - .deploy:local{{ version_number }}:{{service_name}}:rules
+
+transform_config_sit{{ version_number }}:
+  extends: 
+    - .base_transform_config
+    - .deploy:sit{{ version_number }}
+    - .deploy:sit{{ version_number }}:{{service_name}}:rules
+
+transform_config_uat{{ version_number }}:
+  extends: 
+    - .base_transform_config
+    - .deploy:uat{{ version_number }}
+    - .deploy:uat{{ version_number }}:{{service_name}}:rules
+
+transform_config_prod{{ version_number }}:
+  extends: 
+    - .base_transform_config
+    - .deploy:prod{{ version_number }}
+    - .deploy:prod{{ version_number }}:{{service_name}}:rules
+
+transform_config_aws{{ version_number }}:
+  extends: 
+    - .base_transform_config
+    - .deploy:aws{{ version_number }}
+    - .deploy:aws{{ version_number }}:{{service_name}}:rules
+{% endfor %}
