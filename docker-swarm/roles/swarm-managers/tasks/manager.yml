@@ -11,8 +11,8 @@
   become: true
   ignore_errors: true
 
-- name: Check and create docker volume {{volume_name | default('haproxy')}} if not existed...
-  shell: |
-    docker volume ls|grep {{volume_name | default('haproxy')}} > /dev/null || docker volume create {{volume_name | default('haproxy')}}
-    docker network ls|grep nexdev > /dev/null || docker network create --attachable --driver overlay nexdev
-  become: yes
+#- name: Check and create docker volume {{volume_name | default('haproxy')}} if not existed...
+#  shell: |
+#    docker volume ls|grep {{volume_name | default('haproxy')}} > /dev/null || docker volume create {{volume_name | default('haproxy')}}
+#    docker network ls|grep nexdev > /dev/null || docker network create --attachable --driver overlay nexdev
+#  become: yes
