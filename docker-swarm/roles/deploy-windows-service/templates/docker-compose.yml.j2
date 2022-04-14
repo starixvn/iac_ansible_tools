@@ -8,7 +8,7 @@ version: '3.4'
 services:
   {{service_name}}_{{environment_name  | upper}}:
     image: "registry.nexdev.net:5050/{{image_name}}"
-    hostname: "{{'{{'}}.Task.Slot{{'}}'}}-{{team}}-{{service_name}}"
+    hostname: "{{'{{'}}.Task.Slot{{'}}'}}-{{environment_name}}-{{stack}}-{{service_name}}"
     deploy:
       mode: replicated
       resources:
