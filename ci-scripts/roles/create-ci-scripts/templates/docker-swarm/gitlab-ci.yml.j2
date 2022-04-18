@@ -76,6 +76,9 @@ include:
     file: 'docker/base/build-docker-image.gitlab-ci.yml'
   - project: 'ci/common-ci'
     ref: trivy
+    file: 'docker/base/scan-docker-image.gitlab-ci.yml'
+  - project: 'ci/common-ci'
+    ref: trivy
     file: 'docker/base/post-build-docker-image.gitlab-ci.yml'
   - project: 'ci/common-ci'
     ref: trivy
