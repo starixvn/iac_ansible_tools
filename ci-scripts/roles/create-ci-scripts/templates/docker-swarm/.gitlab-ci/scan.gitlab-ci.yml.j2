@@ -2,7 +2,7 @@
 
 {% if item.multiple_image_env is undefined or item.multiple_image_env == false %}  
 
-scan_{{ service_name }}:
+scan_image{{ service_name }}:
   extends:
     - .deploy_vars_{{ service_name }}
 {% if item.multi_stage is undefined or item.multi_stage == false %}  
@@ -15,7 +15,7 @@ scan_{{ service_name }}:
 {% else %}
 {% for version in versions %}
 {% set version_number = '' if version == 0 else version %}
-scan_{{ service_name }}_local{{ version_number }}:
+scan_image{{ service_name }}_local{{ version_number }}:
   extends:
     - .deploy_vars_{{ service_name }}
 {% if item.multi_stage is undefined or item.multi_stage == false %}
@@ -26,7 +26,7 @@ scan_{{ service_name }}_local{{ version_number }}:
     - .deploy:local{{ version_number }}
     - .deploy:local{{ version_number }}:{{service_name}}:rules
 
-scan_{{ service_name }}_sit{{ version_number }}:
+scan_image{{ service_name }}_sit{{ version_number }}:
   extends:
     - .deploy_vars_{{ service_name }}
 {% if item.multi_stage is undefined or item.multi_stage == false %}
@@ -37,7 +37,7 @@ scan_{{ service_name }}_sit{{ version_number }}:
     - .deploy:sit{{ version_number }}
     - .deploy:sit{{ version_number }}:{{service_name}}:rules
 
-scan_{{ service_name }}_uat{{ version_number }}:
+scan_image{{ service_name }}_uat{{ version_number }}:
   extends:
     - .deploy_vars_{{ service_name }}
 {% if item.multi_stage is undefined or item.multi_stage == false %}
@@ -49,7 +49,7 @@ scan_{{ service_name }}_uat{{ version_number }}:
     - .deploy:uat{{ version_number }}:{{service_name}}:rules
 
 {% if org_name != 'luminet' %}
-scan_{{ service_name }}_prod{{ version_number }}:
+scan_image{{ service_name }}_prod{{ version_number }}:
   extends:
     - .deploy_vars_{{ service_name }}
 {% if item.multi_stage is undefined or item.multi_stage == false %}
@@ -60,7 +60,7 @@ scan_{{ service_name }}_prod{{ version_number }}:
     - .deploy:prod{{ version_number }}
     - .deploy:prod{{ version_number }}:{{service_name}}:rules
 
-scan_{{ service_name }}_aws{{ version_number }}:
+scan_image{{ service_name }}_aws{{ version_number }}:
   extends:
     - .deploy_vars_{{ service_name }}
 {% if item.multi_stage is undefined or item.multi_stage == false %}
@@ -75,7 +75,7 @@ scan_{{ service_name }}_aws{{ version_number }}:
 {% endfor %}
 
 {% if org_name == 'luminet' %}
-scan_{{ service_name }}_prod:
+scan_image{{ service_name }}_prod:
   extends:
     - .deploy_vars_{{ service_name }}
 {% if item.multi_stage is undefined or item.multi_stage == false %}
@@ -86,7 +86,7 @@ scan_{{ service_name }}_prod:
     - .deploy:prod
     - .deploy:prod:{{service_name}}:rules
 
-scan_{{ service_name }}_aws:
+scan_image{{ service_name }}_aws:
   extends:
     - .deploy_vars_{{ service_name }}
 {% if item.multi_stage is undefined or item.multi_stage == false %}
