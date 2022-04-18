@@ -40,14 +40,14 @@ include:
 
 {% if unit_test is undefined or unit_test == true %}
   - project: "ci/common-ci"
-    ref: rocketor
+    ref: trivy
     file: "unit-test/dotnet-unit-test.gitlab-ci.yml"
   - project: "ci/common-ci"
-    ref: rocketor
+    ref: trivy
     file: "sonarqube/sonarqube-dotnet-unittest.gitlab-ci.yml"  
 {% else %}
   - project: 'ci/common-ci'
-    ref: rocketor
+    ref: trivy
     file: 'sonarqube/sonarqube-dotnet.gitlab-ci.yml'
 {% endif %}
 
@@ -55,34 +55,34 @@ include:
 
 {% if unit_test is undefined or unit_test == true %}
   - project: "ci/common-ci"
-    ref: rocketor
+    ref: trivy
     file: "unit-test/js-unit-test.gitlab-ci.yml"
   - project: "ci/common-ci"
-    ref: rocketor
+    ref: trivy
     file: "sonarqube/sonarqube.js-unittest.gitlab-ci.yml"  
 {% else %}
   - project: "ci/common-ci"
-    ref: rocketor
+    ref: trivy
     file: "sonarqube/sonarqube.gitlab-ci.yml"  
 {%endif%}
 
 {%endif%}
 {%endif%}
   - project: 'ci/common-ci'
-    ref: rocketor
+    ref: trivy
     file: 'rocketor-integration/rules/index.gitlab-ci.yml'
   - project: 'ci/common-ci'
-    ref: rocketor
+    ref: trivy
     file: 'docker/base/build-docker-image.gitlab-ci.yml'
   - project: 'ci/common-ci'
-    ref: rocketor
+    ref: trivy
     file: 'docker/base/post-build-docker-image.gitlab-ci.yml'
   - project: 'ci/common-ci'
-    ref: rocketor
+    ref: trivy
     file: '_teams/{{org_name}}/{{ci_group_name}}/deploy-docker-swarm-stack/index.gitlab-ci.yml'
 {% if org_name == 'luminet' and smoke_test == true %}
   - project: 'ci/common-ci'
-    ref: rocketor
+    ref: trivy
 {% if project_name == 'l1' %}
     file: 'smoke-test/smoke-test-sc1.gitlab-ci.yml'
 {% else %}
