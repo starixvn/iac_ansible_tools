@@ -92,3 +92,8 @@
   roles:
     - reboot
   tags: reboot
+
+- hosts: all
+  roles:
+    - docker-system-prune-local-macos
+  tags: docker-system-prune-macos
