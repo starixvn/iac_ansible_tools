@@ -16,6 +16,7 @@ stages:
   - build-cocos-web
 {%endif%}
   - build
+  - scan-image
   - post-build
   - deploy
 {% if org_name == 'luminet' and smoke_test == true %}
