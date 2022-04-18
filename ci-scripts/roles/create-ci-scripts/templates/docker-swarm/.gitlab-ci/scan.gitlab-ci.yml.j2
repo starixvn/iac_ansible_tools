@@ -10,9 +10,9 @@ scan_image_{{ service_name }}:
 {% else %}
     - .scan_image:default:image:noenv:multistage
 {% endif %}
-    - .scan_image:image:{{ service_name }}:rules
-{% else %}
+    - .build:image:{{ service_name }}:rules
   needs: ['build_image_{{service_name}}']
+{% else %}
 {% for version in versions %}
 {% set version_number = '' if version == 0 else version %}
 scan_image_{{ service_name }}_local{{ version_number }}:
