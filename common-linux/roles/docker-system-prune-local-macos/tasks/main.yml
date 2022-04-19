@@ -1,4 +1,4 @@
 - name: Prune images MacOs
-  shell: docker images -f “dangling=true” -q | xargs -r docker rmi -f
+  shell: docker image prune --all --force
   become: yes
   ignore_errors: yes
