@@ -1,4 +1,4 @@
 - name: Prune images MacOs
   shell: docker image prune --all --force
-  become: yes
+  #become: yes
   ignore_errors: yes
