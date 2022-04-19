@@ -1,4 +1,7 @@
 - name: Prune images MacOs
-  shell: docker image prune --all --force
-  #become: yes
+  community.docker.docker_prune:
+     images: yes
+     images_filters:
+       dangling: yes
+  become: yes
   ignore_errors: yes
