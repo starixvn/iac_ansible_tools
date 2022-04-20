@@ -12,9 +12,9 @@ build_image_{{ service_name }}:
 {% endif %}
     - .build:image:{{ service_name }}:rules
 {% if item.framework is defined and item.framework == "cocos" %}  
-  needs: ['build_cocos_web']
+  needs: ['build_cocos_web_{{ service_name }}']
   dependencies:
-    - build_cocos_web
+    - build_cocos_web_{{ service_name }}
 {% endif %}
 {% if transform_config is defined and transform_config == true %}  
   needs: ['transform_config_local']
@@ -36,9 +36,9 @@ build_image_{{ service_name }}_local{{ version_number }}:
     - .deploy:local{{ version_number }}
     - .deploy:local{{ version_number }}:{{service_name}}:rules
 {% if item.framework is defined and item.framework == "cocos" %}  
-  needs: ['build_cocos_web_local{{ version_number }}']
+  needs: ['build_cocos_web_{{ service_name }}_local{{ version_number }}']
   dependencies:
-    - build_cocos_web_local{{ version_number }}
+    - build_cocos_web_{{ service_name }}_local{{ version_number }}
 {% endif %}
 {% if transform_config is defined and transform_config == true %}  
   needs: ['transform_config_local{{ version_number }}']
@@ -57,9 +57,9 @@ build_image_{{ service_name }}_sit{{ version_number }}:
     - .deploy:sit{{ version_number }}
     - .deploy:sit{{ version_number }}:{{service_name}}:rules
 {% if item.framework is defined and item.framework == "cocos" %}
-  needs: ['build_cocos_web_sit{{ version_number }}']
+  needs: ['build_cocos_web_{{ service_name }}_sit{{ version_number }}']
   dependencies:
-    - build_cocos_web_sit{{ version_number }}
+    - build_cocos_web_{{ service_name }}_sit{{ version_number }}
 {% endif %}
 {% if transform_config is defined and transform_config == true %}  
   needs: ['transform_config_sit{{ version_number }}']
@@ -78,9 +78,9 @@ build_image_{{ service_name }}_uat{{ version_number }}:
     - .deploy:uat{{ version_number }}
     - .deploy:uat{{ version_number }}:{{service_name}}:rules
 {% if item.framework is defined and item.framework == "cocos" %}
-  needs: ['build_cocos_web_uat{{ version_number }}']
+  needs: ['build_cocos_web_{{ service_name }}_uat{{ version_number }}']
   dependencies:
-    - build_cocos_web_uat{{ version_number }}
+    - build_cocos_web_{{ service_name }}_uat{{ version_number }}
 {% endif %}
 {% if transform_config is defined and transform_config == true %}  
   needs: ['transform_config_uat{{ version_number }}']
@@ -100,9 +100,9 @@ build_image_{{ service_name }}_prod{{ version_number }}:
     - .deploy:prod{{ version_number }}
     - .deploy:prod{{ version_number }}:{{service_name}}:rules
 {% if item.framework is defined and item.framework == "cocos" %}
-  needs: ['build_cocos_web_prod{{ version_number }}']
+  needs: ['build_cocos_web_{{ service_name }}_prod{{ version_number }}']
   dependencies:
-    - build_cocos_web_prod{{ version_number }}
+    - build_cocos_web_{{ service_name }}_prod{{ version_number }}
 {% endif %}
 {% if transform_config is defined and transform_config == true %}  
   needs: ['transform_config_prod{{ version_number }}']
@@ -121,9 +121,9 @@ build_image_{{ service_name }}_aws{{ version_number }}:
     - .deploy:aws{{ version_number }}
     - .deploy:aws{{ version_number }}:{{service_name}}:rules
 {% if item.framework is defined and item.framework == "cocos" %}
-  needs: ['build_cocos_web_aws{{ version_number }}']
+  needs: ['build_cocos_web_{{ service_name }}_aws{{ version_number }}']
   dependencies:
-    - build_cocos_web_aws{{ version_number }}
+    - build_cocos_web_{{ service_name }}_aws{{ version_number }}
 {% endif %}
 {% if transform_config is defined and transform_config == true %}  
   needs: ['transform_config_aws{{ version_number }}']
@@ -146,9 +146,9 @@ build_image_{{ service_name }}_prod:
     - .deploy:prod
     - .deploy:prod:{{service_name}}:rules
 {% if item.framework is defined and item.framework == "cocos" %}
-  needs: ['build_cocos_web_prod']
+  needs: ['build_cocos_web_{{ service_name }}_prod']
   dependencies:
-    - build_cocos_web_prod
+    - build_cocos_web_{{ service_name }}_prod
 {% endif %}
 {% if transform_config is defined and transform_config == true %}  
   needs: ['transform_config_prod']
@@ -168,9 +168,9 @@ build_image_{{ service_name }}_aws:
     - .deploy:aws
     - .deploy:aws:{{service_name}}:rules
 {% if item.framework is defined and item.framework == "cocos" %}
-  needs: ['build_cocos_web_aws']
+  needs: ['build_cocos_web_{{ service_name }}_aws']
   dependencies:
-    - build_cocos_web_aws
+    - build_cocos_web_{{ service_name }}_aws
 {% endif %}
 {% if transform_config is defined and transform_config == true %}  
   needs: ['transform_config_aws']
