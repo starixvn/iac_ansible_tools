@@ -1,7 +1,7 @@
 - name: Prune images MacOs
   docker_prune:
      images: yes
-     #images_filters:
-       #dangling: true
+     images_filters:
+       dangling: false
   become: yes
   #ignore_errors: yes
