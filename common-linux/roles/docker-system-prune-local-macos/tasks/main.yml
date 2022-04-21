@@ -3,4 +3,5 @@
      images: yes
      images_filters:
        dangling: false
+       label: not latest
      timeout: 120
