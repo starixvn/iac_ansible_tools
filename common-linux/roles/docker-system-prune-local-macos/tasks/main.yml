@@ -3,4 +3,4 @@
      images: yes
      images_filters:
        dangling: false
-  timeout: 120
+     timeout: 120
