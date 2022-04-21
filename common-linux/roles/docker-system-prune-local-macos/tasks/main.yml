@@ -3,5 +3,4 @@
      images: yes
      images_filters:
        dangling: false
-  become: yes
-  #ignore_errors: yes
+  timeout: 120
