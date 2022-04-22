@@ -1,6 +1,5 @@
 - name: Prune images
   shell: |
-    docker image prune --all -f --filter "until=360h"
-    docker builder prune --all -f
+    docker image prune --all -f --filter "until=1440h"
   become: yes
   ignore_errors: yes
