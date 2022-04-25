@@ -33,7 +33,7 @@
   run_once: true
 
 - name: Build up and run container
-  #when: inventory_hostname in groups['swarm_managers']
+  when: inventory_hostname in groups['swarm_managers']
   shell: |
     cd {{gluster_path}}
     docker stack deploy --compose-file=docker-compose.yml scan --with-registry-auth
