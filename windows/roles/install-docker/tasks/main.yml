@@ -30,6 +30,11 @@
       Write-Host "Installed docker-compose already"
     }
 
+- name: Copy daemon.json
+  win_copy:
+    src: "daemon.json"
+    dest: "C:\\ProgramData\\Docker\\config\\daemon.json"
+
 - name: Ensure that docker is started when the system has settled
   win_service:
     name: docker
