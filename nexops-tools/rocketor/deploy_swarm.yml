@@ -4,7 +4,6 @@
   vars:
     stack: nexops
     service_name: rocketor
-    environment_name:
     working_directory: /var/www/gluster/nexops/{{service_name}}
   tasks:
     - name: Create {{working_directory}}
@@ -20,7 +19,7 @@
         mode: 0777
       become: yes
 
-    - name: Deploy Web/Service
+    - name: Deploy Rocketor
       docker_stack:
         name: "{{stack}}"
         state: present
