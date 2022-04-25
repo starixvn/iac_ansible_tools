@@ -1,0 +1,28 @@
+---
+- name: Deploy Rocketor to Docker Swarm
+  hosts: swarm_leader
+  vars:
+    stack: nexops
+    service_name: rocketor
+    environment_name:
+    working_directory: /var/www/gluster/nexops/{{service_name}}
+  tasks:
+    - name: Create {{working_directory}}
+      file:
+        path: '{{working_directory}}'
+        state: directory
+        mode: '777'
+
+    - name: Copy docker_compose.yml
+      template:
+        src: docker-compose.yml
+        dest: "{{working_directory}}/docker-compose.yml"
+        mode: 0777
+      become: yes
+
+    - name: Deploy Web/Service
+      docker_stack:
+        name: "{{stack}}"
+        state: present
+        compose: 
+          - "{{working_directory}}/docker-compose.yml"

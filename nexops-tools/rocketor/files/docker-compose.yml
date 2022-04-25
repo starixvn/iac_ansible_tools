@@ -1,0 +1,96 @@
+version: '3.8'
+
+services:
+  rocketor_site:
+    image: registry.nexdev.net:5050/nexcel/nexops/rocketor/site
+    hostname: "rocketor_site{{.Task.Slot}}"
+    healthcheck:
+      test: curl -f http://localhost:80 && curl -f http://localhost:80/goSQL
+      interval: 5s
+      timeout: 10s
+      retries: 5
+    ports:
+      - target: 80
+        published: 9999
+        protocol: tcp
+        mode: ingress
+    deploy:
+      mode: global
+      update_config:
+        order: start-first
+        failure_action: rollback
+        delay: 10s
+      rollback_config:
+        parallelism: 0
+        order: stop-first
+      placement:
+        constraints:
+          - "node.platform.os==windows"
+          - "node.labels.NEXOPS_WIN_WEB==yes"
+    volumes:
+      - D:\WWW\Rocketor.Site:C:\inetpub\wwwroot
+      - D:\WWW\Up.Site:C:\goSQL
+      - D:\Builds:C:\Builds
+      - D:\UpBuilds:C:\UpBuilds
+      - C:\Users\rocketor.vn\.ssh:C:\Users\rocketor.vn\.ssh
+    networks:
+      - swarm_nexops
+
+  rocketor_api:
+    image: registry.nexdev.net:5050/nexcel/nexops/rocketor/api
+    hostname: "rocketor_api{{.Task.Slot}}"
+    healthcheck:
+      test: curl -f http://localhost:80
+      interval: 5s
+      timeout: 10s
+      retries: 5
+    ports:
+      - target: 80
+        published: 7801
+        protocol: tcp
+        mode: ingress
+    deploy:
+      mode: global
+      update_config:
+        order: start-first
+        failure_action: rollback
+        delay: 10s
+      rollback_config:
+        parallelism: 0
+        order: stop-first
+      placement:
+        constraints:
+          - "node.platform.os==windows"
+          - "node.labels.NEXOPS_WIN_WEB==yes"
+    volumes:
+      - D:\WWW\Rocketor.Api:C:\inetpub\wwwroot
+      - D:\Builds:C:\Builds
+      - C:\Users\rocketor.vn\.ssh:C:\Users\rocketor.vn\.ssh
+    networks:
+      - swarm_nexops
+
+  rocketor_build_service:
+    image: registry.nexdev.net:5050/nexcel/nexops/rocketor/buildservice
+    hostname: "rocket_build{{.Task.Slot}}"
+    deploy:
+      mode: global
+      update_config:
+        order: start-first
+        failure_action: rollback
+        delay: 10s
+      rollback_config:
+        parallelism: 0
+        order: stop-first
+      placement:
+        constraints:
+          - "node.platform.os==windows"
+          - "node.labels.NEXOPS_WIN_SERVICE==yes"
+    volumes:
+      - D:\Builds:C:\Builds
+      - C:\Users\rocketor.vn\.ssh:C:\Users\ContainerAdministrator\.ssh
+    networks:
+      - swarm_nexops
+
+networks:
+  swarm_nexops:
+    external: true
