@@ -6,9 +6,29 @@ scan_config_{{ service_name }}:
     - .build:image:{{ service_name }}:rules
 {% if item.multiple_image_env is undefined or item.multiple_image_env == false %}  
 
+scan_image_{{ service_name }}:
+  extends:
+    - .deploy_vars_{{ service_name }}
+{% if item.multi_stage is undefined or item.multi_stage == false %}  
+    - .scan:default:image:noenv
+{% else %}
+    - .scan:default:image:noenv:multistage
+{% endif %}
+    - .build:image:{{ service_name }}:rules
+  needs: ['build_image_{{service_name}}']
 {% else %}
 {% for version in versions %}
 {% set version_number = '' if version == 0 else version %}
+scan_image_{{ service_name }}_local{{ version_number }}:
+  extends:
+    - .deploy_vars_{{ service_name }}
+{% if item.multi_stage is undefined or item.multi_stage == false %}
+    - .scan:default:image
+{% else %}
+    - .scan:default:image:multistage
+{% endif %}
+    - .deploy:local{{ version_number }}
+    - .deploy:local{{ version_number }}:{{service_name}}:rules
 ####
 scan_config_{{ service_name }}_sit{{ version_number }}:
   extends:
