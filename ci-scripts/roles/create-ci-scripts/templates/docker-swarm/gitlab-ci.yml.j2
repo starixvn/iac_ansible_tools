@@ -17,7 +17,7 @@ stages:
 {%endif%}
   - scan-config
   - build
-  - scan-image
+  #- scan-image
   - post-build
   - deploy
 {% if org_name == 'luminet' and smoke_test == true %}
