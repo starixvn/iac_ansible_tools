@@ -30,6 +30,11 @@
       Write-Host "Installed docker-compose already"
     }
 
+- name: Create config folder
+  win_file:
+    path: C:\ProgramData\Docker\config
+    state: directory
+
 - name: Copy daemon.json
   win_copy:
     src: "daemon.json"
