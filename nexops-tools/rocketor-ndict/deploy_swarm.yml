@@ -13,7 +13,7 @@
         mode: '777'
 
     - name: Copy docker_compose.yml
-      template:
+      copy:
         src: docker-compose-{{service_name}}.yml
         dest: "{{working_directory}}/docker-compose.yml"
         mode: 0777
