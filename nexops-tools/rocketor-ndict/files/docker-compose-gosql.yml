@@ -1,0 +1,93 @@
+version: '3.8'
+
+services:
+  gosql_proxy:
+    image: registry.nexdev.net:5050/nexcel/nexops/gosql/proxy
+    hostname: "gosql_proxy{{.Task.Slot}}"
+    healthcheck:
+      test: curl -f http://localhost:80
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    ports:
+      - target: 80
+        published: 8802
+        protocol: tcp
+        mode: ingress
+    deploy:
+      mode: global
+      update_config:
+        order: start-first
+        failure_action: rollback
+        delay: 10s
+      rollback_config:
+        parallelism: 0
+        order: stop-first
+      placement:
+        constraints:
+          - "node.platform.os==windows"
+          - "node.labels.NEXOPS_WIN_WEB==yes"
+    volumes:
+      - D:\WWW\Up.Proxy:C:\inetpub\wwwroot
+      - D:\UpBuilds:C:\Builds
+    networks:
+      - swarm_nexops
+
+  gosql_api:
+    image: registry.nexdev.net:5050/docker/dotnet/framework/aspnet:4.7.2-windowsservercore-ltsc2019-utc7
+    hostname: "gosql_api{{.Task.Slot}}"
+    healthcheck:
+      test: curl -f http://localhost:80
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    ports:
+      - target: 80
+        published: 8801
+        protocol: tcp
+        mode: ingress
+    deploy:
+      mode: replicated
+      replicas: 2
+      endpoint_mode: vip
+      update_config:
+        order: start-first
+        failure_action: rollback
+        delay: 10s
+      rollback_config:
+        parallelism: 0
+        order: stop-first
+      placement:
+        constraints:
+          - "node.platform.os==windows"
+          - "node.labels.NEXOPS_WIN_WEB==yes"
+    volumes:
+      - D:\WWW\Up.Api:C:\inetpub\wwwroot
+    networks:
+      - swarm_nexops
+
+  gosql_package_builder:
+    image: registry.nexdev.net:5050/nexcel/nexops/gosql/package-builder
+    hostname: "gosql_builder{{.Task.Slot}}"
+    deploy:
+      mode: global
+      update_config:
+        order: start-first
+        failure_action: rollback
+        delay: 10s
+      rollback_config:
+        parallelism: 0
+        order: stop-first
+      endpoint_mode: dnsrr
+      placement:
+        constraints:
+          - "node.platform.os==windows"
+          - "node.labels.NEXOPS_WIN_SERVICE==yes"
+    volumes:
+      - D:\UpBuilds:C:\Builds
+    networks:
+      - swarm_nexops
+
+networks:
+  swarm_nexops:
+    external: true

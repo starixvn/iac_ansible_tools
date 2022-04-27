@@ -1,9 +1,9 @@
 ---
-- name: Deploy Rocketor to Docker Swarm
+- name: Deploy NexOps Nex-PROD tools to Docker Swarm
   hosts: swarm_leader
   vars:
     stack: nexops
-    service_name: rocketor
+    service_name: rocketor # gosql/ndict
     working_directory: /var/www/gluster/nexops/{{service_name}}
   tasks:
     - name: Create {{working_directory}}
@@ -14,12 +14,12 @@
 
     - name: Copy docker_compose.yml
       template:
-        src: docker-compose.yml
+        src: docker-compose-{{service_name}}.yml
         dest: "{{working_directory}}/docker-compose.yml"
         mode: 0777
       become: yes
 
-    - name: Deploy Rocketor
+    - name: Deploy Service
       docker_stack:
         name: "{{stack}}"
         state: present
