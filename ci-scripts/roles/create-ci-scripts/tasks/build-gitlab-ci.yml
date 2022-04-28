@@ -25,6 +25,13 @@
   with_items: '{{ services }}'
   become: yes
 
+- name: Build scan.gitlab-ci.yml for each service
+  template:
+    src: templates/docker-swarm/.gitlab-ci/scan.gitlab-ci.yml.j2
+    dest: /var/ci-scripts/{{repo_name}}/.gitlab-ci/{{item.name | replace('-','_')}}/scan.gitlab-ci.yml
+  with_items: '{{ services }}'
+  become: yes
+
 - name: Build transform-configs.gitlab-ci.yml for each service
   template:
     src: templates/docker-swarm/.gitlab-ci/transform-configs.gitlab-ci.yml.j2

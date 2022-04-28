@@ -1,0 +1,22 @@
+version: '3.5'
+services:
+  trivy:
+    image: registry.nexdev.net:5050/docker/tools/trivy:{{version | default ('0.22.0')}}
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    ports:
+      - {{port | default ('1115')}}:{{port | default ('1115')}}
+    command: -d server --cache-backend {{redis_trivy}} --skip-update --listen 0.0.0.0:{{port | default ('1115')}} --token H5nF5ywy262wt881ZWpq
+    deploy:
+      mode: replicated
+      replicas: {{replicas | default (1)}}
+      placement:
+        constraints:
+          - node.labels.{{label_node | default ('NEXOPS_HIGH_STORAGE')}} == yes
+    networks:
+      - {{swarm_network_nexops}}
+
+networks:
+  {{swarm_network_nexops}}:
+     external: true

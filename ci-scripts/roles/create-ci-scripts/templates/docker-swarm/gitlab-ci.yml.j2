@@ -15,7 +15,9 @@ stages:
 {% if frameworks is defined and "cocos" in frameworks %}
   - build-cocos-web
 {%endif%}
+  - scan-config
   - build
+  - scan-image
   - post-build
   - deploy
 {% if org_name == 'luminet' and smoke_test == true %}
@@ -72,8 +74,11 @@ include:
     ref: rocketor
     file: 'rocketor-integration/rules/index.gitlab-ci.yml'
   - project: 'ci/common-ci'
-    ref: rocketor
+    ref: trivy
     file: 'docker/base/build-docker-image.gitlab-ci.yml'
+  - project: 'ci/common-ci'
+    ref: trivy
+    file: 'docker/base/scan-docker-image.gitlab-ci.yml'
   - project: 'ci/common-ci'
     ref: rocketor
     file: 'docker/base/post-build-docker-image.gitlab-ci.yml'
@@ -91,8 +96,10 @@ include:
 {%endif%}
 {% for service in services %}
   - .gitlab-ci/{{service.name | replace('-','_') }}/build.gitlab-ci.yml
+  - .gitlab-ci/{{service.name | replace('-','_') }}/scan.gitlab-ci.yml
 {% if service.framework is defined and service.framework == "cocos" %}
   - .gitlab-ci/{{service.name | replace('-','_') }}/build-cocos-web.gitlab-ci.yml
+  - .gitlab-ci/{{service.name | replace('-','_') }}/scan.gitlab-ci.yml
 {%endif%}
 {% if transform_config is defined and transform_config == true %}
   - .gitlab-ci/{{service.name | replace('-','_') }}/transform-configs.gitlab-ci.yml
