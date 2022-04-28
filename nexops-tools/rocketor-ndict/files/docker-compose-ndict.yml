@@ -1,0 +1,72 @@
+version: '3.8'
+
+services:
+  ndict_site:
+    image: registry.nexdev.net:5050/docker/dotnet/framework/aspnet:4.7.2-windowsservercore-ltsc2019-utc7
+    hostname: "ndict_site{{.Task.Slot}}"
+    healthcheck:
+      test: curl -f http://localhost:80
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    ports:
+      - target: 80
+        published: 7803
+        protocol: tcp
+        mode: ingress
+    deploy:
+      mode: replicated
+      replicas: 2
+      endpoint_mode: vip
+      update_config:
+        order: start-first
+        failure_action: rollback
+        delay: 10s
+      rollback_config:
+        parallelism: 0
+        order: stop-first
+      placement:
+        constraints:
+          - "node.platform.os==windows"
+          - "node.labels.NEXOPS_WIN_WEB==yes"
+    volumes:
+      - D:\WWW\NDict.Site:C:\inetpub\wwwroot
+    networks:
+      - swarm_nexops
+
+  ndict_api:
+    image: registry.nexdev.net:5050/docker/dotnet/framework/aspnet:4.7.2-windowsservercore-ltsc2019-utc7
+    hostname: "ndict_api{{.Task.Slot}}"
+    healthcheck:
+      test: curl -f http://localhost:80
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    ports:
+      - target: 80
+        published: 7804
+        protocol: tcp
+        mode: ingress
+    deploy:
+      mode: replicated
+      replicas: 2
+      endpoint_mode: vip
+      update_config:
+        order: start-first
+        failure_action: rollback
+        delay: 10s
+      rollback_config:
+        parallelism: 0
+        order: stop-first
+      placement:
+        constraints:
+          - "node.platform.os==windows"
+          - "node.labels.NEXOPS_WIN_WEB==yes"
+    volumes:
+      - D:\WWW\NDict.Api:C:\inetpub\wwwroot
+    networks:
+      - swarm_nexops
+
+networks:
+  swarm_nexops:
+    external: true
