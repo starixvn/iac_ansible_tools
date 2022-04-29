@@ -1,12 +1,13 @@
 - name: prepare working path
   file:
-    path: "{{ gluster_path }}" #/{{ item }}"
+    path: "{{ gluster_path }}/{{ item }}"
     state: directory
     mode: "0655"
   become: yes
   run_once: true
-  #with_items:
-  #  - trivy
+  with_items:
+    - redis
+    - logs
 
 - name: Copy configs
   #when: inventory_hostname in groups['swarm_managers']
