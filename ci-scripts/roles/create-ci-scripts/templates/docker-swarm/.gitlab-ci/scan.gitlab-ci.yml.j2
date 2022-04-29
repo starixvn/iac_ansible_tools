@@ -14,7 +14,7 @@ scan_image_{{ service_name }}:
 {% else %}
     - .scan:default:image:noenv:multistage
 {% endif %}
-    - .build:image:{{ service_name }}:rules
+    - .scan:image:{{ service_name }}:rules
   needs: ['build_image_{{service_name}}']
 {% else %}
 {% for version in versions %}
