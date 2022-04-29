@@ -8,7 +8,7 @@
   #with_items:
   #  - trivy
 
-- name: Copy docker-compose file
+- name: Copy configs
   #when: inventory_hostname in groups['swarm_managers']
   template:
     src: 'templates/{{ item }}.j2'
