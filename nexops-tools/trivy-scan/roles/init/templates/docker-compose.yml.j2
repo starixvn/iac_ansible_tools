@@ -7,7 +7,7 @@ services:
       dockerfile: ./Dockerfile
     ports:
       - {{port | default ('1115')}}:{{port | default ('1115')}}
-    command: -d server --cache-backend {{redis_trivy | default ('redis://:foo1@bared@redis:6379'}} --skip-update --listen 0.0.0.0:{{port | default ('1115')}} --token H5nF5ywy262wt881ZWpq
+    command: -d server --cache-backend {{redis_trivy | default ('redis://:foo1@bared@redis:6379')}} --skip-update --listen 0.0.0.0:{{port | default ('1115')}} --token H5nF5ywy262wt881ZWpq
     deploy:
       mode: replicated
       replicas: {{replicas | default (1)}}
