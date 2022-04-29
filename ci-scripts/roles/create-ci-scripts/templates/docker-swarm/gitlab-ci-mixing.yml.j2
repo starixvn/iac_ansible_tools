@@ -1,6 +1,7 @@
 include:
 {% for service in services %}
   - .gitlab-ci/{{service.name | replace('-','_') }}/build.gitlab-ci.yml
+  - .gitlab-ci/{{service.name | replace('-','_') }}/scan.gitlab-ci.yml
 {% if service.framework is defined and service.framework == "cocos" %}
   - .gitlab-ci/{{service.name | replace('-','_') }}/build-cocos-web.gitlab-ci.yml
 {%endif%}
