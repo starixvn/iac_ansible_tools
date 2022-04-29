@@ -2,7 +2,7 @@
   file:
     path: "{{ gluster_path }}/{{ item }}"
     state: directory
-    mode: "0655"
+    mode: "0777"
   become: yes
   run_once: true
   with_items:
