@@ -17,6 +17,7 @@
   with_items:
     - docker-compose.yml
     - Dockerfile
+    - redis.conf
   run_once: true
 
 - name: Install wget
