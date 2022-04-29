@@ -22,9 +22,9 @@ services:
     ports:
       - "{{external_port | default ('13379')}}:6379"
     volumes:
-      - {{gluster_path}}/redis.conf:/etc/redis/redis.conf
-      - {{gluster_path}}/redis:/data
-      - {{gluster_path}}/logs:/var/log/redis/
+      - ./redis.conf:/etc/redis/redis.conf
+      - ./redis:/data
+      - ./logs:/var/log/redis/
       - /etc/localtime:/etc/localtime:ro
     deploy:
       #mode: global
