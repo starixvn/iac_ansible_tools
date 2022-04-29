@@ -83,7 +83,7 @@ include:
     ref: rocketor
     file: 'docker/base/post-build-docker-image.gitlab-ci.yml'
   - project: 'ci/common-ci'
-    ref: trivy
+    ref: rocketor
     file: '_teams/{{org_name}}/{{ci_group_name}}/deploy-docker-swarm-stack/index.gitlab-ci.yml'
 {% if org_name == 'luminet' and smoke_test == true %}
   - project: 'ci/common-ci'
