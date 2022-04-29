@@ -1,14 +1,15 @@
 - name: prepare working path
   file:
-    path: "{{ gluster_path }}" #/{{ item }}"
+    path: "{{ gluster_path }}/{{ item }}"
     state: directory
-    mode: "0655"
+    mode: "0777"
   become: yes
   run_once: true
-  #with_items:
-  #  - trivy
+  with_items:
+    - redis
+    - logs
 
-- name: Copy docker-compose file
+- name: Copy configs
   #when: inventory_hostname in groups['swarm_managers']
   template:
     src: 'templates/{{ item }}.j2'
@@ -17,6 +18,7 @@
   with_items:
     - docker-compose.yml
     - Dockerfile
+    - redis.conf
   run_once: true
 
 - name: Install wget
@@ -36,6 +38,6 @@
   when: inventory_hostname in groups['swarm_managers']
   shell: |
     cd {{gluster_path}}
-    docker stack deploy --compose-file=docker-compose.yml scan --with-registry-auth
+    docker stack deploy --compose-file=docker-compose.yml trivy --with-registry-auth
   become: yes
   run_once: true

@@ -71,8 +71,8 @@
       when: on_success
     - <<: *if-deploy-{{rule_name}}-aws{{ version_number }}
       when: on_success
-    - when: never
 {% endfor %}
+    - when: never
 
 {% for version in versions %}
 {% set version_number = '' if version == 0 else version %}

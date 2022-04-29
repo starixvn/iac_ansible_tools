@@ -1,19 +1,44 @@
 version: '3.5'
 services:
-  trivy:
+  server:
     image: registry.nexdev.net:5050/docker/tools/trivy:{{version | default ('0.22.0')}}
     build:
       context: ./
       dockerfile: ./Dockerfile
     ports:
       - {{port | default ('1115')}}:{{port | default ('1115')}}
-    command: -d server --cache-backend {{redis_trivy}} --skip-update --listen 0.0.0.0:{{port | default ('1115')}} --token H5nF5ywy262wt881ZWpq
+    command: -d server --cache-backend {{redis_trivy | default ('redis://:foo1@bared@redis:6379')}} --skip-update --listen 0.0.0.0:{{port | default ('1115')}} --token H5nF5ywy262wt881ZWpq
     deploy:
       mode: replicated
       replicas: {{replicas | default (1)}}
       placement:
         constraints:
           - node.labels.{{label_node | default ('NEXOPS_HIGH_STORAGE')}} == yes
+    networks:
+      - {{swarm_network_nexops}}
+#
+  {{redis_name | default ('redis')}}:
+    image: registry.nexdev.net:5050/docker/database/redis:{{redis_version | default ('5')}}
+    ports:
+      - "{{external_port | default ('13379')}}:6379"
+    volumes:
+      - ./redis.conf:/etc/redis/redis.conf
+      - ./redis:/data
+      - ./logs:/var/log/redis/
+      - /etc/localtime:/etc/localtime:ro
+    deploy:
+      #mode: global
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.{{node_label | default ('NEXOPS_HIGH_STORAGE')}} == yes
+    command: redis-server /etc/redis/redis.conf
+    healthcheck:
+      test: ["CMD", "redis-cli","ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     networks:
       - {{swarm_network_nexops}}
 
