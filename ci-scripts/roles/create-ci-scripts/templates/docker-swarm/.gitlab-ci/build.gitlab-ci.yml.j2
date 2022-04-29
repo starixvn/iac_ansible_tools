@@ -11,7 +11,7 @@ build_image_{{ service_name }}:
     - .build:default:image:noenv:multistage
 {% endif %}
     - .build:image:{{ service_name }}:rules
-  needs: ['scan_config_{{service_name}}']
+  #needs: ['scan_config_{{service_name}}']
 {% if item.framework is defined and item.framework == "cocos" %}  
   needs: ['build_cocos_web']
   dependencies:
