@@ -43,5 +43,8 @@ services:
     labels:
       - "io.portainer.accesscontrol.teams={{team | upper}}"
 networks:
+  ingress:
+    external: true
+
   {{swarm_networks[0]}}:
     external: true
