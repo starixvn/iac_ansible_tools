@@ -33,6 +33,7 @@ services:
     volumes:
       - {{vol_source_path}}:{{vol_dest_path}}
     networks:
+      - ingress
       - {{swarm_networks[0]}}
     healthcheck:
       test: ['CMD', 'curl', '-f', "http://localhost:80"]
