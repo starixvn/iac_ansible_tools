@@ -11,6 +11,10 @@
   tags:
     - backup-registry
 
+- import_tasks: backup-registry-full.yml
+  tags:
+    - backup-registry-full
+
 - import_tasks: restore.yml
   tags:
     - restore
