@@ -1,4 +1,8 @@
 ---
+- name: Remove old_backup_file
+  shell: rm -rf {{ restore_server_path }}
+  become: yes
+
 - name: Backup database Registry
   shell: |
     docker exec -i {{ container_name }} gitlab-backup create
@@ -9,4 +13,3 @@
     latest_file=$(ls -t {{ backup_server_path }}| head -n 1)
     mv {{ backup_server_path }}/$latest_file {{ restore_server_path }}
   become: yes
-  
