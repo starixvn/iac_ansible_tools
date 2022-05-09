@@ -72,6 +72,11 @@ services:
   rocketor_build_service:
     image: registry.nexdev.net:5050/nexcel/nexops/rocketor/buildservice
     hostname: "rocket_build{{.Task.Slot}}"
+    healthcheck:
+      test: c:\tcping ha.nexdev.net 5679
+      interval: 5s
+      timeout: 10s
+      retries: 5
     deploy:
       mode: global
       update_config:

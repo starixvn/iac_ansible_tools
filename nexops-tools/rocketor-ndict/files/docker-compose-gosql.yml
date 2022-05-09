@@ -69,6 +69,11 @@ services:
   gosql_package_builder:
     image: registry.nexdev.net:5050/nexcel/nexops/gosql/package-builder
     hostname: "gosql_builder{{.Task.Slot}}"
+    healthcheck:
+      test: c:\tcping ha.nexdev.net 5679
+      interval: 5s
+      timeout: 10s
+      retries: 5
     deploy:
       mode: global
       update_config:
