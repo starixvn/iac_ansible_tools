@@ -96,6 +96,30 @@ services:
     networks:
       - swarm_nexops
 
+  rocketor_connection_scanner:
+    image: registry.nexdev.net:5050/nexcel/nexops/rocketor/connectionscanner
+    hostname: "rocket_scan{{.Task.Slot}}"
+    healthcheck:
+      test: c:\tcping ha.nexdev.net 5679
+      interval: 5s
+      timeout: 10s
+      retries: 5
+    deploy:
+      mode: global
+      update_config:
+        order: start-first
+        failure_action: rollback
+        delay: 10s
+      rollback_config:
+        parallelism: 0
+        order: stop-first
+      placement:
+        constraints:
+          - "node.platform.os==windows"
+          - "node.labels.NEXOPS_WIN_SERVICE==yes"
+    networks:
+      - swarm_nexops
+
 networks:
   swarm_nexops:
     external: true
