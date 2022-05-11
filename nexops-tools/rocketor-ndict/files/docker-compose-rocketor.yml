@@ -34,7 +34,7 @@ services:
       - D:\UpBuilds:C:\UpBuilds
       - C:\Users\rocketor.vn\.ssh:C:\Users\rocketor.vn\.ssh
     networks:
-      - swarm_nexops
+      - swarm_nexops2
 
   rocketor_api:
     image: registry.nexdev.net:5050/nexcel/nexops/rocketor/api
@@ -67,7 +67,7 @@ services:
       - D:\Builds:C:\Builds
       - C:\Users\rocketor.vn\.ssh:C:\Users\rocketor.vn\.ssh
     networks:
-      - swarm_nexops
+      - swarm_nexops2
 
   rocketor_build_service:
     image: registry.nexdev.net:5050/nexcel/nexops/rocketor/buildservice
@@ -94,7 +94,7 @@ services:
       - D:\Builds:C:\Builds
       - C:\Users\rocketor.vn\.ssh:C:\Users\ContainerAdministrator\.ssh
     networks:
-      - swarm_nexops
+      - swarm_nexops2
 
   rocketor_connection_scanner:
     image: registry.nexdev.net:5050/nexcel/nexops/rocketor/connectionscanner
@@ -105,7 +105,9 @@ services:
       timeout: 10s
       retries: 5
     deploy:
-      mode: global
+      mode: replicated
+      replicas: 2
+      endpoint_mode: vip
       update_config:
         order: start-first
         failure_action: rollback
@@ -118,8 +120,34 @@ services:
           - "node.platform.os==windows"
           - "node.labels.NEXOPS_WIN_SERVICE==yes"
     networks:
-      - swarm_nexops
+      - swarm_nexops2
+
+  rocketor_import_sp:
+    image: registry.nexdev.net:5050/nexcel/nexops/rocketor/importspdata
+    hostname: "rocket_im_sp{{.Task.Slot}}"
+    healthcheck:
+      test: c:\tcping ha.nexdev.net 5679
+      interval: 5s
+      timeout: 10s
+      retries: 5
+    deploy:
+      mode: replicated
+      replicas: 2
+      endpoint_mode: vip
+      update_config:
+        order: start-first
+        failure_action: rollback
+        delay: 10s
+      rollback_config:
+        parallelism: 0
+        order: stop-first
+      placement:
+        constraints:
+          - "node.platform.os==windows"
+          - "node.labels.NEXOPS_WIN_SERVICE==yes"
+    networks:
+      - swarm_nexops2
 
 networks:
-  swarm_nexops:
+  swarm_nexops2:
     external: true

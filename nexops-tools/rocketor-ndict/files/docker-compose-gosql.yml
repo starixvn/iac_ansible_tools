@@ -31,7 +31,7 @@ services:
       - D:\WWW\Up.Proxy:C:\inetpub\wwwroot
       - D:\UpBuilds:C:\Builds
     networks:
-      - swarm_nexops
+      - swarm_nexops2
 
   gosql_api:
     image: registry.nexdev.net:5050/docker/dotnet/framework/aspnet:4.7.2-windowsservercore-ltsc2019-utc7
@@ -64,7 +64,7 @@ services:
     volumes:
       - D:\WWW\Up.Api:C:\inetpub\wwwroot
     networks:
-      - swarm_nexops
+      - swarm_nexops2
 
   gosql_package_builder:
     image: registry.nexdev.net:5050/nexcel/nexops/gosql/package-builder
@@ -91,8 +91,8 @@ services:
     volumes:
       - D:\UpBuilds:C:\Builds
     networks:
-      - swarm_nexops
+      - swarm_nexops2
 
 networks:
-  swarm_nexops:
+  swarm_nexops2:
     external: true
