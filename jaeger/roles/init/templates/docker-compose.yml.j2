@@ -2,6 +2,8 @@ version: "3.8"
 services:
   elasticsearch:
     image: registry.nexdev.net:5050/docker/jaeger/elasticsearch:7.17.0
+    ports:
+      - "9400:9400"
     networks:
       - '{{swarm_network_nexops}}'   
     environment:
@@ -40,7 +42,7 @@ services:
         constraints:
           - node.labels.{{label_node | default ('NEXOPS_HIGH_STORAGE')}} == yes
     command: [
-      "--es.server-urls=http://elasticsearch:9200",
+      "--es.server-urls=http://elasticsearch:9400",
       "--es.num-shards=1",
       "--es.num-replicas=0",
       "--log-level=error"
@@ -89,7 +91,7 @@ services:
     networks:
       - '{{swarm_network_nexops}}'
     command: [
-      "--es.server-urls=http://elasticsearch:9200",
+      "--es.server-urls=http://elasticsearch:9400",
       "--span-storage.type=elasticsearch",
       "--log-level=debug"
     ]
