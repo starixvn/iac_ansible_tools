@@ -37,7 +37,7 @@ services:
       - ./data/registry:/storage:z
       - ./common/config/registry/:/etc/registry/:z
       - type: bind
-        source: /data/secret/registry/root.crt
+        source: {{ working_path }}/data/secret/registry/root.crt
         target: /etc/registry/root.crt
       - type: bind
         source: ./common/config/shared/trust-certificates
@@ -125,10 +125,10 @@ services:
         source: ./common/config/core/app.conf
         target: /etc/core/app.conf
       - type: bind
-        source: /data/secret/core/private_key.pem
+        source: {{ working_path }}/data/secret/core/private_key.pem
         target: /etc/core/private_key.pem
       - type: bind
-        source: /data/secret/keys/secretkey
+        source: {{ working_path }}/data/secret/keys/secretkey
         target: /etc/core/key
       - type: bind
         source: ./common/config/shared/trust-certificates
@@ -269,10 +269,10 @@ services:
       - harbor
     volumes:
       - type: bind
-        source: /data/trivy-adapter/trivy
+        source: {{ working_path }}/data/trivy-adapter/trivy
         target: /home/scanner/.cache/trivy
       - type: bind
-        source: /data/trivy-adapter/reports
+        source: {{ working_path }}/data/trivy-adapter/reports
         target: /home/scanner/.cache/reports
       - type: bind
         source: ./common/config/shared/trust-certificates
