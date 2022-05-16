@@ -1,0 +1,43 @@
+- name: prepare working path
+  file:
+    path: "{{ gluster_path }}/{{ item }}"
+    state: directory
+    mode: "0777"
+  become: yes
+  run_once: true
+  with_items:
+    - matomo/db
+
+- name: Copy configs
+  #when: inventory_hostname in groups['swarm_managers']
+  template:
+    src: 'templates/{{ item }}.j2'
+    dest: '{{gluster_path}}/{{ item }}'
+  become: yes
+  with_items:
+    - docker-compose.yml
+    - Dockerfile
+    - custom-mysql.cnf
+    - default.conf
+  run_once: true
+
+- name: Install wget
+  apt: pkg=wget
+  become: yes
+
+- name: copy trivy data
+  #when: inventory_hostname in groups['swarm_managers']
+  shell: |
+    cd {{gluster_path}}
+    wget --no-verbose https://registry.nexdev.net/docker/docker-engine/docker/-/raw/master/trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz?inline=false -O - | tar -zxvf -
+    wget --no-verbose https://registry.nexdev.net/docker/docker-engine/docker/-/raw/master/trivy-offline.db.v1-2022040800.tgz?inline=false -O - | tar -zxvf -
+  become: yes
+  run_once: true
+
+- name: Build up and run container
+  when: inventory_hostname in groups['swarm_managers']
+  shell: |
+    cd {{gluster_path}}
+    docker stack deploy --compose-file=docker-compose.yml trivy --with-registry-auth
+  become: yes
+  run_once: true
