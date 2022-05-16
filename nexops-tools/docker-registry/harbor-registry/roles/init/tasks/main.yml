@@ -9,7 +9,7 @@
     - data
     - common
 
-- name: Copy configs
+- name: Copy docker cfg
   #when: inventory_hostname in groups['swarm_managers']
   template:
     src: 'templates/{{ item }}.j2'
@@ -18,6 +18,12 @@
   with_items:
     - docker-compose.yml
   #run_once: true
+
+- name: Copy configs
+  copy:
+    src: "files/config"
+    dest: "{{working_path}}/common/"
+  become: yes
 
 - name: Build up and run container
   #when: inventory_hostname in groups['swarm_managers']
