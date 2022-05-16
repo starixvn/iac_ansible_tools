@@ -1,0 +1,59 @@
+[client]
+default-character-set       = utf8mb4
+
+[mysql]
+default-character-set       = utf8mb4
+
+[mysqld]
+character-set-server        = utf8mb4
+collation-server            = utf8mb4_unicode_ci
+
+key_buffer_size             = 16M
+max_allowed_packet          = 32M
+thread_stack                = 192K
+thread_cache_size           = 8
+
+#query_cache_limit          = 1M
+#query_cache_size           = 16M
+#expire_logs_days           = 10
+
+# --------------------------
+# Binary Log Configuration
+# --------------------------
+log-bin
+binlog_expire_logs_seconds  = 691200 #8days
+max_binlog_size             = 512M
+
+#log_error                  = /var/log/mysql/error.log
+
+# --------------------------
+# SQL Mode Configuration
+# --------------------------
+#sql_mode                   = "ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION,NO_BACKSLASH_ESCAPES"
+
+# --------------------------
+# Transaction Isolation Level Configuration
+# --------------------------
+transaction_isolation       = "READ-COMMITTED"
+
+# --------------------------
+# Debugging Configuration
+# --------------------------
+log_output                  = TABLE
+slow_query_log              = 1
+long_query_time             = 10000 #10secs
+
+# --------------------------
+# Extend Group Concat limitation
+# --------------------------
+group_concat_max_len        = 1048576
+
+# --------------------------
+# Security Configuration
+# --------------------------
+activate_all_roles_on_login = 1
+
+# --------------------------
+# Authenticate Method
+# --------------------------
+default_authentication_plugin = mysql_native_password

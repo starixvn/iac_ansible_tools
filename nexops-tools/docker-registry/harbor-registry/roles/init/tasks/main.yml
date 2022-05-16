@@ -1,0 +1,28 @@
+- name: prepare working path
+  file:
+    path: "{{ working_path }}/{{ item }}"
+    state: directory
+    mode: "0777"
+  become: yes
+  run_once: true
+  with_items:
+    - data
+    - common
+
+- name: Copy configs
+  #when: inventory_hostname in groups['swarm_managers']
+  template:
+    src: 'templates/{{ item }}.j2'
+    dest: '{{working_path}}/{{ item }}'
+  become: yes
+  with_items:
+    - docker-compose.yml
+  run_once: true
+
+- name: Build up and run container
+  #when: inventory_hostname in groups['swarm_managers']
+  shell: |
+    cd {{working_path}}
+    docker-compose pull && docker-compose up -d
+  become: yes
+  run_once: true

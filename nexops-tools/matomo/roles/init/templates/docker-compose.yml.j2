@@ -1,0 +1,94 @@
+version: '2.0'
+volumes:
+  matomo_db:
+   external: true
+services:
+  db:
+    image: registry.nexdev.net:5050/docker/database/mysql:8.0
+    build:
+      context: ./
+    restart: always
+    networks:
+      - internal_tools
+    environment:
+      TZ: "GMT+4"
+      MYSQL_DATABASE: "matomo"
+      MYSQL_USER: 'matomo_user'
+      MYSQL_PASSWORD: "1234aa"
+      MYSQL_ROOT_PASSWORD: "1234AA@PASS"
+    ports:
+      - '3309:3306'
+    expose:
+      - '3306'
+    logging:
+      options:
+        max-size: 100m
+    volumes:
+      - matomo_db:/var/lib/mysql
+      - ./custom-mysql.cnf:/etc/mysql/conf.d/custom-mysql.cnf
+  phpmyadmin:
+    image: registry.nexdev.net:5050/docker/phpmyadmin:latest
+    networks:
+      - internal_tools
+    links:
+      - db:mysql
+    ports:
+      - 8182:80
+    logging:
+      options:
+        max-size: 100m
+    environment:
+      MYSQL_USERNAME: root
+      MYSQL_ROOT_PASSWORD: 1234AA@PASS
+
+  app:
+    image: registry.nexdev.net:5050/docker/tools/matomo:3.12
+    build:
+      context: .
+      dockerfile: matomo_Dockerfile
+    container_name: matomo_app
+    hostname: matomo
+    restart: always
+    logging:
+      options:
+        max-size: 100m
+    links:
+      - db:mysql
+    networks:
+      - internal_tools
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./config:/var/www/html/config:rw
+      - ./logs:/var/www/html/logs
+    depends_on:
+      - db
+
+  web:
+    image: registry.nexdev.net:5050/docker/nginx:1.19.5
+    container_name: matomo_web
+    restart: always
+    logging:
+      options:
+        max-size: 100m
+    links:
+      - db:mysql
+    ports:
+      - '8089:80'
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - internal_tools
+      - traefik_proxy
+    volumes_from:
+      - app
+    depends_on:
+      - db
+      - app
+
+networks:
+  internal_tools:
+    external:
+      name: internal_tools
+  traefik_proxy:
+    external:
+      name: traefik_proxy
