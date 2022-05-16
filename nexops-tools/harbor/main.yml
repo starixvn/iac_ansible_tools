@@ -1,5 +1,0 @@
----
-- hosts: all
-  roles:
-    - role: pull-images
-  tags: pull-images
