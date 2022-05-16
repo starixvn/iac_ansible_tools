@@ -6,8 +6,10 @@
   become: yes
   #run_once: true
   with_items:
-    - data
-    - common
+    - data/trivy-adapter/reports
+    - data/trivy-adapter/trivy
+    - common/config/shared/trust-certificates
+    - data/secret/registry
 
 - name: Copy docker cfg
   #when: inventory_hostname in groups['swarm_managers']
