@@ -4,7 +4,7 @@
     state: directory
     mode: "0777"
   become: yes
-  run_once: true
+  #run_once: true
   with_items:
     - data
     - common
@@ -17,7 +17,7 @@
   become: yes
   with_items:
     - docker-compose.yml
-  run_once: true
+  #run_once: true
 
 - name: Build up and run container
   #when: inventory_hostname in groups['swarm_managers']
@@ -25,4 +25,4 @@
     cd {{working_path}}
     docker-compose pull && docker-compose up -d
   become: yes
-  run_once: true
+  #run_once: true
