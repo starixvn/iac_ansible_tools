@@ -17,7 +17,7 @@
 - name: install the latest version of Docker
   win_shell: |
     if((Test-Path -Path $Env:ProgramFiles\Docker\docker.exe) -eq $false){
-      Install-Package -Name docker -ProviderName DockerMsftProvider -Force
+      Install-Package -Name docker -ProviderName DockerMsftProvider -Force -RequiredVersion {{ docker_version }}
     }else{
         Write-Host "Version of docker = " (Get-Package -Name docker -ProviderName DockerMsftProvider).Version
     }
