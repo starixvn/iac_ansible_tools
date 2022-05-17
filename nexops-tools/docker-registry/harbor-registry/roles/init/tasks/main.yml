@@ -8,7 +8,7 @@
   with_items:
     - data/trivy-adapter/reports
     - data/database
-    -data/registry/docker/registry
+    - data/registry/docker/registry
     - data/redis
     - data/trivy-adapter/trivy
     - common/config/shared/trust-certificates
