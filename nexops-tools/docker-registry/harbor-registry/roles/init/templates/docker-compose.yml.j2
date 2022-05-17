@@ -204,7 +204,7 @@ services:
         tag: "jobservice"
   redis:
     image: registry.nexdev.net:5050/docker/goharbor/redis-photon:{{version | default ('v2.5.0')}}
-    container_name: redis
+    container_name: harbor-redis
     restart: always
     cap_drop:
       - ALL
@@ -228,7 +228,7 @@ services:
         tag: "redis"
   proxy:
     image: registry.nexdev.net:5050/docker/goharbor/nginx-photon:{{version | default ('v2.5.0')}}
-    container_name: nginx
+    container_name: harbor-nginx
     restart: always
     cap_drop:
       - ALL
