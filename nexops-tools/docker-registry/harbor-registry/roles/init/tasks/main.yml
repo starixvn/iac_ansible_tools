@@ -10,7 +10,8 @@
     - data/database
     - data/registry/docker/registry
     - data/redis
-    - data/trivy-adapter/trivy
+    - data/trivy-adapter/trivy/db
+    - data/trivy-adapter/trivy/fanal
     - common/config/shared/trust-certificates
     - data/secret/registry
 
