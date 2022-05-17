@@ -29,6 +29,12 @@
     dest: "{{working_path}}/common/"
   become: yes
 
+- name: Copy data
+  copy:
+    src: "files/data/secret"
+    dest: "{{working_path}}/data/"
+  become: yes
+
 - name: Build up and run container
   #when: inventory_hostname in groups['swarm_managers']
   shell: |

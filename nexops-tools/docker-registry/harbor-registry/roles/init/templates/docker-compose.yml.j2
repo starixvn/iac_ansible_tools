@@ -36,9 +36,9 @@ services:
     volumes:
       - ./data/registry:/storage:z
       - ./common/config/registry/:/etc/registry/:z
-      #- type: bind
-      #  source: {{ working_path }}/data/secret/registry/root.crt
-      #  target: /etc/registry/root.crt
+      - type: bind
+        source: {{ working_path }}/data/secret/registry/root.crt
+        target: /etc/registry/root.crt
       - type: bind
         source: ./common/config/shared/trust-certificates
         target: /harbor_cust_cert
@@ -124,12 +124,12 @@ services:
       - type: bind
         source: ./common/config/core/app.conf
         target: /etc/core/app.conf
-      #- type: bind
-      #  source: {{ working_path }}/data/secret/core/private_key.pem
-      #  target: /etc/core/private_key.pem
-      #- type: bind
-      #  source: {{ working_path }}/data/secret/keys/secretkey
-      #  target: /etc/core/key
+      - type: bind
+        source: {{ working_path }}/data/secret/core/private_key.pem
+        target: /etc/core/private_key.pem
+      - type: bind
+        source: {{ working_path }}/data/secret/keys/secretkey
+        target: /etc/core/key
       - type: bind
         source: ./common/config/shared/trust-certificates
         target: /harbor_cust_cert
