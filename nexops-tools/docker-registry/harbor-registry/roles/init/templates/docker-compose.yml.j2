@@ -36,9 +36,9 @@ services:
     volumes:
       - ./data/registry:/storage:z
       - ./common/config/registry/:/etc/registry/:z
-      - type: bind
-        source: {{ working_path }}/data/secret/registry/root.crt
-        target: /etc/registry/root.crt
+      #- type: bind
+      #  source: {{ working_path }}/data/secret/registry/root.crt
+      #  target: /etc/registry/root.crt
       - type: bind
         source: ./common/config/shared/trust-certificates
         target: /harbor_cust_cert
