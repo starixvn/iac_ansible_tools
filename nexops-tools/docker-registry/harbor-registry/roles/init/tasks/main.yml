@@ -1,4 +1,4 @@
-- name: prepare working path
+- name: prepare working path ...
   file:
     path: "{{ working_path }}/{{ item }}"
     state: directory
