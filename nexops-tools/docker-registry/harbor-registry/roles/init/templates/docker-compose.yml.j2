@@ -12,7 +12,7 @@ services:
       - SETGID
       - SETUID
     volumes:
-      - /var/log/harbor/:/var/log/docker/:z
+      - ./log/harbor/:/var/log/docker/:z
       - type: bind
         source: ./common/config/log/logrotate.conf
         target: /etc/logrotate.d/logrotate.conf
