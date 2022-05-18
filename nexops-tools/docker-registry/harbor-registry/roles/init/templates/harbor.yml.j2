@@ -2,12 +2,12 @@
 
 # The IP address or hostname to access admin UI and registry service.
 # DO NOT use localhost or 127.0.0.1, because Harbor needs to be accessed by external clients.
-hostname: reg2.nexdev.net
+hostname: "{{harbor_domain}}"
 
 # http related config
 http:
   # port for http, default is 80. If https enabled, this port will redirect to https port
-  port: 5055
+  port: "{{harbor_port | default ('5055')}}"
 
 # https related config
 #https:
@@ -31,12 +31,12 @@ http:
 # The initial password of Harbor admin
 # It only works in first time to install harbor
 # Remember Change the admin password from UI after launching Harbor.
-harbor_admin_password: Harbor12345
+harbor_admin_password: "{{harbor_admin_password | default ('Harbor12345')}}"
 
 # Harbor DB configuration
 database:
   # The password for the root user of Harbor DB. Change this before any production use.
-  password: root123
+  password: "{{harbor_db_password | default ('root123')}}"
   # The maximum number of connections in the idle connection pool. If it <=0, no idle connections are retained.
   max_idle_conns: 100
   # The maximum number of open connections to the database. If it <= 0, then there is no limit on the number of open connections.
@@ -44,7 +44,7 @@ database:
   max_open_conns: 900
 
 # The default data volume
-data_volume: /var/www/nexops/harbor/data
+data_volume: "{{harbor_data_volume | default ('/var/www/nexops/harbor/data')}}"
 #/data
 
 # Harbor Storage settings by default is using /data dir on local filesystem
@@ -71,14 +71,14 @@ data_volume: /var/www/nexops/harbor/data
 # 12 hours and published as a new release to GitHub.
 trivy:
   # ignoreUnfixed The flag to display only fixed vulnerabilities
-  ignore_unfixed: true
+  ignore_unfixed: "{{trivy_ignore_unfixed | default ('true')}}"
   #false
   # skipUpdate The flag to enable or disable Trivy DB downloads from GitHub
   #
   # You might want to enable this flag in test or CI/CD environments to avoid GitHub rate limiting issues.
   # If the flag is enabled you have to download the `trivy-offline.tar.gz` archive manually, extract `trivy.db` and
   # `metadata.json` files and mount them in the `/home/scanner/.cache/trivy/db` path.
-  skip_update: true
+  skip_update: "{{trivy_skip_update | default ('false')}}"
   #false
   #
   # The offline_scan option prevents Trivy from sending API requests to identify dependencies.
