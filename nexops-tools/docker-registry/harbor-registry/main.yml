@@ -1,6 +1,10 @@
+---
 - hosts: all
   roles:
     - role: init
-      tags: init
+  tags: init
+
+- hosts: all
+  roles:
     - role: update
-      tags: update
+  tags: update
