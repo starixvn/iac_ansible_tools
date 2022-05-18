@@ -239,7 +239,7 @@ services:
     networks:
       - harbor
     ports:
-      - "{{harbor_port | default ('5050')}}":8080
+      - "{{harbor_port | default ('5050')}}:8080"
     depends_on:
       - registry
       - core
