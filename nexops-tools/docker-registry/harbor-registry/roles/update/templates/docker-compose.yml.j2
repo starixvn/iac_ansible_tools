@@ -34,10 +34,10 @@ services:
       - SETGID
       - SETUID
     volumes:
-      - /var/www/nexops/harbor/data/registry:/storage:z
+      - {{harbor_data_volume | default ('/var/www/nexops/harbor/data')}}/registry:/storage:z
       - ./common/config/registry/:/etc/registry/:z
       - type: bind
-        source: /var/www/nexops/harbor/data/secret/registry/root.crt
+        source: {{harbor_data_volume | default ('/var/www/nexops/harbor/data')}}/secret/registry/root.crt
         target: /etc/registry/root.crt
       - type: bind
         source: ./common/config/shared/trust-certificates
@@ -64,7 +64,7 @@ services:
       - SETGID
       - SETUID
     volumes:
-      - /var/www/nexops/harbor/data/registry:/storage:z
+      - {{harbor_data_volume | default ('/var/www/nexops/harbor/data')}}/registry:/storage:z
       - ./common/config/registry/:/etc/registry/:z
       - type: bind
         source: ./common/config/registryctl/config.yml
@@ -93,7 +93,7 @@ services:
       - SETGID
       - SETUID
     volumes:
-      - /var/www/nexops/harbor/data/database:/var/lib/postgresql/data:z
+      - {{harbor_data_volume | default ('/var/www/nexops/harbor/data')}}/database:/var/lib/postgresql/data:z
     networks:
       harbor:
     env_file:
@@ -118,17 +118,17 @@ services:
       - SETGID
       - SETUID
     volumes:
-      - /var/www/nexops/harbor/data/ca_download/:/etc/core/ca/:z
-      - /var/www/nexops/harbor/data/:/data/:z
+      - {{harbor_data_volume | default ('/var/www/nexops/harbor/data')}}/ca_download/:/etc/core/ca/:z
+      - {{harbor_data_volume | default ('/var/www/nexops/harbor/data')}}/:/data/:z
       - ./common/config/core/certificates/:/etc/core/certificates/:z
       - type: bind
         source: ./common/config/core/app.conf
         target: /etc/core/app.conf
       - type: bind
-        source: /var/www/nexops/harbor/data/secret/core/private_key.pem
+        source: {{harbor_data_volume | default ('/var/www/nexops/harbor/data')}}/secret/core/private_key.pem
         target: /etc/core/private_key.pem
       - type: bind
-        source: /var/www/nexops/harbor/data/secret/keys/secretkey
+        source: {{harbor_data_volume | default ('/var/www/nexops/harbor/data')}}/secret/keys/secretkey
         target: /etc/core/key
       - type: bind
         source: ./common/config/shared/trust-certificates
@@ -183,7 +183,7 @@ services:
       - SETGID
       - SETUID
     volumes:
-      - /var/www/nexops/harbor/data/job_logs:/var/log/jobs:z
+      - {{harbor_data_volume | default ('/var/www/nexops/harbor/data')}}/job_logs:/var/log/jobs:z
       - type: bind
         source: ./common/config/jobservice/config.yml
         target: /etc/jobservice/config.yml
@@ -210,7 +210,7 @@ services:
       - SETGID
       - SETUID
     volumes:
-      - /var/www/nexops/harbor/data/redis:/var/lib/redis
+      - {{harbor_data_volume | default ('/var/www/nexops/harbor/data')}}/redis:/var/lib/redis
     networks:
       harbor:
     depends_on:
@@ -263,10 +263,10 @@ services:
       - harbor
     volumes:
       - type: bind
-        source: /var/www/nexops/harbor/data/trivy-adapter/trivy
+        source: {{harbor_data_volume | default ('/var/www/nexops/harbor/data')}}/trivy-adapter/trivy
         target: /home/scanner/.cache/trivy
       - type: bind
-        source: /var/www/nexops/harbor/data/trivy-adapter/reports
+        source: {{harbor_data_volume | default ('/var/www/nexops/harbor/data')}}/trivy-adapter/reports
         target: /home/scanner/.cache/reports
       - type: bind
         source: ./common/config/shared/trust-certificates
