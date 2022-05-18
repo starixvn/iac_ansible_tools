@@ -6,6 +6,12 @@
   with_items:
     - docker-compose.yml
 
+- name: Copy trivy configs
+  copy:
+    src: "files/config/trivy-adapter"
+    dest: "{{working_path}}/common/config/"
+  become: yes
+
 - name: Build up and run container
   shell: |
     cd {{working_path}}
