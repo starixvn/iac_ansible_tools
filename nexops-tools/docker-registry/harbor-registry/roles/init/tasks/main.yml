@@ -33,7 +33,7 @@
     cd {{working_path}} && chmod 777 common.sh install.sh prepare
   become: yes
 
-- name: Execute the script Init database - cd {{ working_directory }} && /bin/bash first-deployment.sh 
+- name: Execute the script Init install.sh
   shell: cd {{ working_path }} && /bin/bash install.sh --with-trivy
   register: console
   become: yes
