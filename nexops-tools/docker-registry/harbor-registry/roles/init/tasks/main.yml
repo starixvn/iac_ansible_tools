@@ -30,8 +30,14 @@
 - name: Build up and run container
   #when: inventory_hostname in groups['swarm_managers']
   shell: |
-    cd {{working_path}}
-    chmod 777 common.sh install.sh prepare
-    ./install.sh
+    cd {{working_path}} && chmod 777 common.sh install.sh prepare
   become: yes
-  #run_once: true
+
+- name: Execute the script Init database - cd {{ working_directory }} && /bin/bash first-deployment.sh 
+  shell: cd {{ working_path }} && /bin/bash install.sh
+  register: console
+  become: yes
+
+- debug: msg="{{ console.stdout }}"
+
+- debug: msg="{{ console.stderr }}" 
