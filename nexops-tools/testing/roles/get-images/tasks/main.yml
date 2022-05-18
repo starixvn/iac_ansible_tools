@@ -1,0 +1,8 @@
+---
+- name: login registry
+  shell: docker login -u {{ user_name }} -p {{ password }} registry.nexdev.net
+  become: yes
+
+- name: pull base image registry
+  shell: docker image pull registry.nexdev.net:5050{{ path_base_images }}
+  become: yes

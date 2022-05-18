@@ -1,6 +1,6 @@
 - name: Prune container
   shell: |
-    docker container prune -f --filter "until=48h"
+    docker container prune -f
   become: yes
   ignore_errors: yes
 
