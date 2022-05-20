@@ -15,11 +15,11 @@ stages:
 {% if frameworks is defined and "cocos" in frameworks %}
   - build-cocos-web
 {%endif%}
-{% if item.platform is undefined or item.platform == "linux" %}
+{% if platform is undefined or platform == "linux" %}
   - scan-config
 {%endif%}
   - build
-{% if item.platform is undefined or item.platform == "linux" %}
+{% if platform is undefined or platform == "linux" %}
   - scan-image
   - post-build
 {%endif%}
@@ -77,7 +77,7 @@ include:
   - project: 'ci/common-ci'
     ref: rocketor
     file: 'rocketor-integration/rules/index.gitlab-ci.yml'
-{% if item.platform is undefined or item.platform == "linux" %}
+{% if platform is undefined or platform == "linux" %}
   - project: 'ci/common-ci'
     ref: trivy
     file: 'docker/base/build-docker-image.gitlab-ci.yml'
@@ -106,7 +106,7 @@ include:
 {%endif%}
 {% for service in services %}
   - .gitlab-ci/{{service.name | replace('-','_') }}/build.gitlab-ci.yml
-{% if item.platform is undefined or item.platform == "linux" %}
+{% if service.platform is undefined or service.platform == "linux" %}
   - .gitlab-ci/{{service.name | replace('-','_') }}/scan.gitlab-ci.yml
 {%endif%}
 {% if service.framework is defined and service.framework == "cocos" %}

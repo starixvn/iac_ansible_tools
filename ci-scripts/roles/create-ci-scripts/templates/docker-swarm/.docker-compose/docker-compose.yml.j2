@@ -22,7 +22,7 @@
 {% set sp_container_path = item.0.sp_container_path | default ('App_Data') %}
 {% endif %}
 {% set storage_label = '_LOW_STORAGE' if high_storage is undefined or high_storage == false else '_HIGH_STORAGE'%}
-{% set org_node_label = org_name ~ storage_label %}
+{% set org_node_label = org_name ~ storage_label if item.0.platform is undefined or item.0.platform == "linux" else org_name ~ "_WINDOWS" %}
 {% set network = org_name | lower ~ '_' ~ env | lower ~ lookup('vars', org_name + '_network_version_' + env) %}
 
 {% if env == "sit"%}
