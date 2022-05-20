@@ -3,6 +3,7 @@
 {% for version in versions %}
 {% set version_number = '' if version == 0 else version %}
 {% if org_name != 'luminet' %}
+{% if item.platform is undefined or item.platform == "linux" %}
 post_build_{{service_name}}_aws{{ version_number }}:
   extends:
     - .deploy_vars_{{service_name}}
@@ -14,18 +15,24 @@ post_build_{{service_name}}_aws{{ version_number }}:
 {% else %}
   needs: ['scan_image_{{service_name}}_aws{{ version_number }}']
 {% endif %}
+{% endif %}
 
 deploy_{{service_name}}_aws{{ version_number }}:
   extends:
     - .deploy_vars_{{service_name}}
     - .deploy:aws{{ version_number }}:base:swarm:stack
     - .deploy:aws{{ version_number }}:{{service_name}}:rules
+{% if item.platform is undefined or item.platform == "linux" %}
   needs: ['post_build_{{service_name}}_aws{{ version_number }}']
+{% else %}
+  needs: ['build_image_{{service_name}}']
+{% endif %}
 
 {% endif %}
 {% endfor %}
 
 {% if org_name == 'luminet' %}
+{% if item.platform is undefined or item.platform == "linux" %}
 post_build_{{service_name}}_aws:
   extends:
     - .deploy_vars_{{service_name}}
@@ -37,12 +44,17 @@ post_build_{{service_name}}_aws:
 {% else %}
   needs: ['scan_image_{{service_name}}_aws']
 {% endif %}
+{% endif %}
 
 deploy_{{service_name}}_aws:
   extends:
     - .deploy_vars_{{service_name}}
     - .deploy:aws:base:swarm:stack
     - .deploy:aws:{{service_name}}:rules
+{% if item.platform is undefined or item.platform == "linux" %}
   needs: ['post_build_{{service_name}}_aws']
+{% else %}
+  needs: ['build_image_{{service_name}}']
+{% endif %}
 
 {% endif %}

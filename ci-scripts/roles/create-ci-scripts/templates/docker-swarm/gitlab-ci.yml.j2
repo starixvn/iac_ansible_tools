@@ -15,10 +15,14 @@ stages:
 {% if frameworks is defined and "cocos" in frameworks %}
   - build-cocos-web
 {%endif%}
+{% if item.platform is undefined or item.platform == "linux" %}
   - scan-config
+{%endif%}
   - build
+{% if item.platform is undefined or item.platform == "linux" %}
   - scan-image
   - post-build
+{%endif%}
   - deploy
 {% if org_name == 'luminet' and smoke_test == true %}
   - post-deploy
@@ -73,6 +77,7 @@ include:
   - project: 'ci/common-ci'
     ref: rocketor
     file: 'rocketor-integration/rules/index.gitlab-ci.yml'
+{% if item.platform is undefined or item.platform == "linux" %}
   - project: 'ci/common-ci'
     ref: trivy
     file: 'docker/base/build-docker-image.gitlab-ci.yml'
@@ -82,6 +87,11 @@ include:
   - project: 'ci/common-ci'
     ref: rocketor
     file: 'docker/base/post-build-docker-image.gitlab-ci.yml'
+{% else %}
+  - project: 'ci/common-ci'
+    ref: rocketor
+    file: 'docker/base/build-docker-windows-image.gitlab-ci.yml'
+{%endif%}
   - project: 'ci/common-ci'
     ref: rocketor
     file: '_teams/{{org_name}}/{{ci_group_name}}/deploy-docker-swarm-stack/index.gitlab-ci.yml'
@@ -96,7 +106,9 @@ include:
 {%endif%}
 {% for service in services %}
   - .gitlab-ci/{{service.name | replace('-','_') }}/build.gitlab-ci.yml
+{% if item.platform is undefined or item.platform == "linux" %}
   - .gitlab-ci/{{service.name | replace('-','_') }}/scan.gitlab-ci.yml
+{%endif%}
 {% if service.framework is defined and service.framework == "cocos" %}
   - .gitlab-ci/{{service.name | replace('-','_') }}/build-cocos-web.gitlab-ci.yml
 {%endif%}

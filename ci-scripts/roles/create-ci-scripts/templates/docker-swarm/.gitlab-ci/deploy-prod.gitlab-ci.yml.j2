@@ -3,6 +3,7 @@
 {% for version in versions %}
 {% set version_number = '' if version == 0 else version %}
 {% if org_name != 'luminet' %}
+{% if item.platform is undefined or item.platform == "linux" %}
 post_build_{{service_name}}_prod{{ version_number }}:
   extends:
     - .deploy_vars_{{service_name}}
@@ -14,18 +15,24 @@ post_build_{{service_name}}_prod{{ version_number }}:
 {% else %}
   needs: ['scan_image_{{service_name}}_prod{{ version_number }}']
 {% endif %}
+{% endif %}
 
 deploy_{{service_name}}_prod{{ version_number }}:
   extends:
     - .deploy_vars_{{service_name}}
     - .deploy:prod{{ version_number }}:base:swarm:stack
     - .deploy:prod{{ version_number }}:{{service_name}}:rules
+{% if item.platform is undefined or item.platform == "linux" %}
   needs: ['post_build_{{service_name}}_prod{{ version_number }}']
+{% else %}
+  needs: ['build_image_{{service_name}}']
+{% endif %}
 
 {% endif %}
 {% endfor %}
 
 {% if org_name == 'luminet' %}
+{% if item.platform is undefined or item.platform == "linux" %}
 post_build_{{service_name}}_prod:
   extends:
     - .deploy_vars_{{service_name}}
@@ -37,12 +44,17 @@ post_build_{{service_name}}_prod:
 {% else %}
   needs: ['scan_image_{{service_name}}_prod']
 {% endif %}
+{% endif %}
 
 deploy_{{service_name}}_prod:
   extends:
     - .deploy_vars_{{service_name}}
     - .deploy:prod:base:swarm:stack
     - .deploy:prod:{{service_name}}:rules
+{% if item.platform is undefined or item.platform == "linux" %}
   needs: ['post_build_{{service_name}}_prod']
+{% else %}
+  needs: ['build_image_{{service_name}}']
+{% endif %}
 
 {% endif %}

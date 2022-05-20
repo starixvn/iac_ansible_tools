@@ -2,6 +2,7 @@
 
 {% for version in versions %}
 {% set version_number = '' if version == 0 else version %}
+{% if item.platform is undefined or item.platform == "linux" %}
 post_build_{{service_name}}_uat{{ version_number }}:
   extends:
     - .deploy_vars_{{service_name}}
@@ -13,12 +14,17 @@ post_build_{{service_name}}_uat{{ version_number }}:
 {% else %}
   needs: ['scan_image_{{service_name}}_uat{{ version_number }}']
 {% endif %}
+{% endif %}
 
 deploy_{{service_name}}_uat{{ version_number }}:
   extends:
     - .deploy_vars_{{service_name}}
     - .deploy:uat{{ version_number }}:base:swarm:stack
     - .deploy:uat{{ version_number }}:{{service_name}}:rules
+{% if item.platform is undefined or item.platform == "linux" %}
   needs: ['post_build_{{service_name}}_uat{{ version_number }}']
+{% else %}
+  needs: ['build_image_{{service_name}}']
+{% endif %}
 
 {% endfor %}
