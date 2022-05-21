@@ -6,31 +6,38 @@
   become: yes
   #run_once: true
   with_items:
-    - data/trivy-adapter/reports
-    - data/trivy-adapter/trivy
-    - common/config/shared/trust-certificates
-    - data/secret/registry
+    - data
+    - common
 
-- name: Copy docker cfg
-  #when: inventory_hostname in groups['swarm_managers']
+- name: Copy harbor jinja cfg
   template:
     src: 'templates/{{ item }}.j2'
     dest: '{{working_path}}/{{ item }}'
   become: yes
   with_items:
-    - docker-compose.yml
-  #run_once: true
+    - harbor.yml
 
-- name: Copy configs
-  copy:
-    src: "files/config"
-    dest: "{{working_path}}/common/"
+- name: Copy harbor template cfg
+  template:
+    src: 'templates/{{ item }}'
+    dest: '{{working_path}}/{{ item }}'
   become: yes
+  with_items:
+    - common.sh
+    - install.sh
+    - prepare
 
 - name: Build up and run container
   #when: inventory_hostname in groups['swarm_managers']
   shell: |
-    cd {{working_path}}
-    docker-compose pull && docker-compose up -d
+    cd {{working_path}} && chmod 777 common.sh install.sh prepare
   become: yes
-  #run_once: true
+
+- name: Execute the script Init install.sh
+  shell: cd {{ working_path }} && /bin/bash install.sh --with-trivy
+  register: console
+  become: yes
+
+- debug: msg="{{ console.stdout }}"
+
+- debug: msg="{{ console.stderr }}" 

@@ -1,0 +1,20 @@
+- name: Copy docker-compose cfg
+  template:
+    src: 'templates/{{ item }}.j2'
+    dest: '{{working_path}}/{{ item }}'
+  become: yes
+  with_items:
+    - docker-compose.yml
+
+- name: Copy trivy configs
+  copy:
+    src: "files/config/trivy-adapter"
+    dest: "{{working_path}}/common/config/"
+  become: yes
+
+- name: Build up and run container
+  shell: |
+    cd {{working_path}}
+    docker-compose pull && docker-compose up -d
+  become: yes
+  #run_once: true
