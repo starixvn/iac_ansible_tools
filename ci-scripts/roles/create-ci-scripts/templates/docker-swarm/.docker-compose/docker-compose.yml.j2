@@ -3,6 +3,7 @@
 # Your changes will be overwritten.
 #######################################################################
 {% set service_name = item.0.name | replace('-','_') %}
+{% set platform = item.0.platform | default('linux') %}
 {% set underscore = '' if item.1 == 0  else '_' %}
 {% set environment_version = '' if item.1 == 0  else item.1 %}
 {% set environment = env | upper ~ underscore ~ environment_version %}
@@ -22,8 +23,9 @@
 {% set sp_container_path = item.0.sp_container_path | default ('App_Data') %}
 {% endif %}
 {% set storage_label = '_LOW_STORAGE' if high_storage is undefined or high_storage == false else '_HIGH_STORAGE'%}
-{% set org_node_label = org_name ~ storage_label if item.0.platform is undefined or item.0.platform == "linux" else org_name ~ "_WINDOWS" %}
+{% set org_node_label = org_name ~ storage_label if platform == "linux" else org_name ~ "_WINDOWS" %}
 {% set network = org_name | lower ~ '_' ~ env | lower ~ lookup('vars', org_name + '_network_version_' + env) %}
+{% set separator_char = / if platform == "linux" else \ %}
 
 {% if env == "sit"%}
 version: '3.4'
@@ -60,15 +62,19 @@ services:
 {% else %}
     image: registry.nexdev.net:5050/{{item.0.docker_image_registry_path}}:{{environment}}-latest
 {% endif %}
+{% if platform == "linux" %}
     hostname: "swarm-{{'{{'}}.Service.Name{{'}}'}}-{{'{{'}}.Task.Slot{{'}}'}}"
+{% else %}
+    hostname: "{{service_name | regex_search('\w{3,9}')}}-{{'{{'}}.Task.ID{{'}}'}}"
+{% endif %}
 
 {% if config_file is defined %}
     configs:
       - source: {{service_name}}_{{ environment }}_config_@CONFIG_VERSION
-        target: {{container_root_path}}/{{config_container_path}}/{{config_file}}
+        target: {{container_root_path}}{{separator_char}}{{config_container_path}}{{separator_char}}{{config_file}}
 {% if sp_file is defined %}
       - source: {{service_name}}_{{ environment }}_sp_config_@CONFIG_VERSION
-        target: {{container_root_path}}/{{sp_container_path}}/{{sp_file}}
+        target: {{container_root_path}}{{separator_char}}{{sp_container_path}}{{separator_char}}{{sp_file}}
 {% endif %}
 {% endif %}
 {% if item.0.volumes is defined %}
