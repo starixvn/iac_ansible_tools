@@ -170,23 +170,23 @@ services:
 {% endif %}
     networks:
       - swarm_{{ network }}
-{% if env == "local" and item.0.port_local is defined %}
+{% if item.0.port_local is defined and env == "local" %}
     ports:
       - {{item.0.port_local}}:{{item.0.port | default('5000')}}
 {% endif %}
-{% if env == "uat" and item.0.port_uat is defined %}
+{% if item.0.port_uat is defined and env == "uat" %}
     ports:
       - {{item.0.port_uat}}:{{item.0.port | default('5000')}}
 {% endif %}
-{% if env == "sit" and item.0.port_sit is defined %}
+{% if item.0.port_sit is defined and env == "sit" %}
     ports:
       - {{item.0.port_sit}}:{{item.0.port | default('5000')}}
 {% endif %}
-{% if env == "prod" and item.0.port_prod is defined %}
+{% if item.0.port_prod is defined and env == "prod" %}
     ports:
       - {{item.0.port_prod}}:{{item.0.port | default('5000')}}
 {% endif %}
-{% if env == "aws" and item.0.port_aws is defined %}
+{% if item.0.port_aws is defined and env == "aws" %}
     ports:
       - {{item.0.port_aws}}:{{item.0.port | default('5000')}}
 {% endif %}
