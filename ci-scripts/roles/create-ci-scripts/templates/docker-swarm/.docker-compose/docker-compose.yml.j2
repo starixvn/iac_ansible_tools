@@ -180,35 +180,25 @@ services:
 {% endif %}
     networks:
       - swarm_{{ network }}
-{% if env == "local"%}
-{% if item.0.port_local is defined %}
+{% if env == "local" and item.0.port_local is defined %}
     ports:
-      - {{item.0.port_local}}:5000
+      - {{item.0.port_local}}:{{item.0.port | default('5000')}}
 {% endif %}
-{% endif %}
-{% if env == "uat"%}
-{% if item.0.port_uat is defined %}
+{% if env == "uat" and item.0.port_uat is defined %}
     ports:
-      - {{item.0.port_uat}}:5000
+      - {{item.0.port_uat}}:{{item.0.port | default('5000')}}
 {% endif %}
-{% endif %}
-{% if env == "sit"%}
-{% if item.0.port_sit is defined %}
+{% if env == "sit" and item.0.port_sit is defined %}
     ports:
-      - {{item.0.port_sit}}:5000
+      - {{item.0.port_sit}}:{{item.0.port | default('5000')}}
 {% endif %}
-{% endif %}
-{% if env == "prod"%}
-{% if item.0.port_prod is defined %}
+{% if env == "prod" and item.0.port_prod is defined %}
     ports:
-      - {{item.0.port_prod}}:5000
+      - {{item.0.port_prod}}:{{item.0.port | default('5000')}}
 {% endif %}
-{% endif %}
-{% if env == "aws"%}
-{% if item.0.port_aws is defined %}
+{% if env == "aws" and item.0.port_aws is defined %}
     ports:
-      - {{item.0.port_aws}}:5000
-{% endif %}
+      - {{item.0.port_aws}}:{{item.0.port | default('5000')}}
 {% endif %}
 {% if item.0.disable_health_check is undefined or item.0.disable_health_check == false %}
 {% if item.0.framework is defined and item.0.framework == "dotnet" %}
