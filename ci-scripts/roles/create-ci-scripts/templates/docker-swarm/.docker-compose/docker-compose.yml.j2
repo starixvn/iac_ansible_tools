@@ -188,23 +188,17 @@ services:
     ports:
       - {{item.0.port_uat}}:5000
 {% endif %}
-{% if env == "sit"%}
-{% if item.0.port_sit is defined %}
+{% if env == "sit" and item.0.port_sit is defined %}
     ports:
       - {{item.0.port_sit}}:5000
 {% endif %}
-{% endif %}
-{% if env == "prod"%}
-{% if item.0.port_prod is defined %}
+{% if env == "prod" and item.0.port_prod is defined %}
     ports:
       - {{item.0.port_prod}}:5000
 {% endif %}
-{% endif %}
-{% if env == "aws"%}
-{% if item.0.port_aws is defined %}
+{% if env == "aws" and item.0.port_aws is defined %}
     ports:
       - {{item.0.port_aws}}:5000
-{% endif %}
 {% endif %}
 {% if item.0.disable_health_check is undefined or item.0.disable_health_check == false %}
 {% if item.0.framework is defined and item.0.framework == "dotnet" %}
