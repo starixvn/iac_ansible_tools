@@ -180,17 +180,13 @@ services:
 {% endif %}
     networks:
       - swarm_{{ network }}
-{% if env == "local"%}
-{% if item.0.port_local is defined %}
+{% if env == "local" and item.0.port_local is defined %}
     ports:
       - {{item.0.port_local}}:5000
 {% endif %}
-{% endif %}
-{% if env == "uat"%}
-{% if item.0.port_uat is defined %}
+{% if env == "uat" and item.0.port_uat is defined %}
     ports:
       - {{item.0.port_uat}}:5000
-{% endif %}
 {% endif %}
 {% if env == "sit"%}
 {% if item.0.port_sit is defined %}
