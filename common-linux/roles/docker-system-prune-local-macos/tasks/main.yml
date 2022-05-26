@@ -4,4 +4,4 @@
      images_filters:
        dangling: false
        until: 48h
-     timeout: 120
+     timeout: 240
