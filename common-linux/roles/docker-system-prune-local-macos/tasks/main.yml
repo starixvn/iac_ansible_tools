@@ -2,5 +2,6 @@
   docker_prune:
      images: yes
      images_filters:
+       dangling: false
        until: 48h
      timeout: 120
