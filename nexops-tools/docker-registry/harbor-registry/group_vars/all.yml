@@ -1,1 +1,3 @@
 #
+working_path: "/var/www/gluster/nexops/harbor"
+harbor_data_volume: "{{working_path}}/data"
