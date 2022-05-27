@@ -25,7 +25,7 @@ deploy_{{service_name}}_prod{{ version_number }}:
 {% if item.platform is undefined or item.platform == "linux" %}
   needs: ['post_build_{{service_name}}_prod{{ version_number }}']
 {% else %}
-  needs: ['build_image_{{service_name}}']
+  needs: ['build_image_{{service_name}}_prod{{ version_number }}']
 {% endif %}
 
 {% endif %}
@@ -54,7 +54,7 @@ deploy_{{service_name}}_prod:
 {% if item.platform is undefined or item.platform == "linux" %}
   needs: ['post_build_{{service_name}}_prod']
 {% else %}
-  needs: ['build_image_{{service_name}}']
+  needs: ['build_image_{{service_name}}_prod']
 {% endif %}
 
 {% endif %}
