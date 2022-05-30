@@ -2,7 +2,7 @@
 vars:
   workingDirectory: D:\GitLab-Runner
 
-- name: Create '{{workingDirectory}}' folder
+- name: Create "{{workingDirectory}}" folder
   win_file:
     path: {{workingDirectory}}
     state: directory
