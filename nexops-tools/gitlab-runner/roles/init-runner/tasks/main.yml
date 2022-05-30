@@ -11,42 +11,10 @@
   with_items:
     - "/var/www/gitlab-runner/config"
 
-- name: Deploy Gitlab Runner {{team}}
+- name: create Container Runner {{team}}
   when: team == "luminet"
   shell: |
     docker run -d --name gitlab-runner --restart always \
       -v /var/www/gitlab-runner/config:/etc/gitlab-runner \
       -v /var/run/docker.sock:/var/run/docker.sock \
       registry.nexdev.net:5050/docker/gitlab-runner:latest
-
-- name: Deploy Gitlab Runner {{team}}
-  when: team == "nexcel"
-  shell: |
-    docker run --rm -v /var/www/gitlab-runner/config:/etc/gitlab-runner registry.nexdev.net:5050/docker/gitlab-runner:latest register \
-    --non-interactive \
-    --executor "docker" \
-    --docker-image registry.nexdev.net:5050/docker/docker-engine/docker:20.10.7 \
-    --docker-privileged \
-    --url "https://gitlab.nexdev.net/" \
-    --registration-token "VscxAqFvRVcXgpyoBDD_" \
-    --description "docker-runner" \
-    --tag-list "docker" \
-    --run-untagged="true" \
-    --locked="false" \
-    --docker-volumes /var/run/docker.sock:/var/run/docker.sock
-
-- name: Deploy Gitlab Runner {{team}}
-  when: team == "luminet"
-  shell: |
-    docker run --rm -v /var/www/gitlab-runner/config:/etc/gitlab-runner registry.nexdev.net:5050/docker/gitlab-runner:latest register \
-    --non-interactive \
-    --executor "docker" \
-    --docker-image registry.nexdev.net:5050/docker/docker-engine/docker:20.10.7 \
-    --docker-privileged \
-    --url "https://git3.nexdev.net/" \
-    --registration-token "9JzG2oJKAmYBHzgygxfW" \
-    --description "docker-runner" \
-    --tag-list "docker" \
-    --run-untagged="true" \
-    --locked="false" \
-    --docker-volumes /var/run/docker.sock:/var/run/docker.sock

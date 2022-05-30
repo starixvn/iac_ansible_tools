@@ -1,7 +1,4 @@
 ---
-- name: Login registry
-  shell: docker login --username={{docker_registry_username}} --password={{docker_registry_password}} {{docker_registry_url}}
-
 - name: Registry Runner {{team}}
   when: team == "nexcel"
   shell: |
@@ -12,7 +9,7 @@
     --docker-privileged \
     --url "https://gitlab.nexdev.net/" \
     --registration-token "VscxAqFvRVcXgpyoBDD_" \
-    --description "docker-runner" \
+    --description "{{inventory_hostname}}" \
     --tag-list "docker" \
     --run-untagged="true" \
     --locked="false" \
@@ -30,7 +27,7 @@
     --docker-privileged \
     --url "https://git3.nexdev.net/" \
     --registration-token "9JzG2oJKAmYBHzgygxfW" \
-    --description "docker-runner" \
+    --description "{{inventory_hostname}}" \
     --tag-list "docker" \
     --run-untagged="true" \
     --locked="false" \
