@@ -70,7 +70,7 @@
   tags:
     - install-docker
 
-- hosts: all
+- hosts: gitlab-runner
   roles:
     - role: install-gitlab-runner
   become: yes
