@@ -2,14 +2,14 @@
 vars:
   workingDirectory: D:\GitLab-Runner
 
-- name: Create {{workingDirectory}} folder
+- name: Create '{{workingDirectory}}' folder
   win_file:
     path: {{workingDirectory}}
     state: directory
 
 - name: Download gitlab-runner-windows-amd64.exe
   win_shell: |
-    cd {{workingDirectory}};
+    cd "{{workingDirectory}}";
     Invoke-WebRequest -Uri "https://gitlab-runner-downloads.s3.amazonaws.com/latest/binaries/gitlab-runner-windows-amd64.exe" -OutFile "gitlab-runner.exe"
     .\gitlab-runner.exe register `
         --url https://gitlab.nexdev.net/ `
