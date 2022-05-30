@@ -1,0 +1,27 @@
+---
+vars:
+  workingDirectory: D:\GitLab-Runner
+
+- name: Create {{workingDirectory}} folder
+  win_file:
+    path: {{workingDirectory}}
+    state: directory
+
+- name: Download gitlab-runner-windows-amd64.exe
+  win_shell: |
+    cd {{workingDirectory}};
+    Invoke-WebRequest -Uri "https://gitlab-runner-downloads.s3.amazonaws.com/latest/binaries/gitlab-runner-windows-amd64.exe" -OutFile "gitlab-runner.exe"
+    .\gitlab-runner.exe register `
+        --url https://gitlab.nexdev.net/ `
+        --registration-token VscxAqFvRVcXgpyoBDD_ `
+        --executor shell `
+        --tag-list windows `
+        --shell powershell `
+        --description "windows-runner";
+    .\gitlab-runner.exe install --user '{{ user }}' --password '{{ password }}'
+    .\gitlab-runner.exe start
+
+- name: Ensure that gitlab-runner is started when the system has settled
+  win_service:
+    name: gitlab-runner
+    start_mode: delayed

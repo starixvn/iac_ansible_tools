@@ -69,3 +69,14 @@
     ansible_become_pass: '{{ password }}'
   tags:
     - install-docker
+
+- hosts: all
+  roles:
+    - role: install-gitlab-runner
+  become: yes
+  become_method: runas
+  vars:
+    ansible_become_user: '{{ user }}'
+    ansible_become_pass: '{{ password }}'
+  tags:
+    - install-gitlab-runner
