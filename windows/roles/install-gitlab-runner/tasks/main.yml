@@ -1,10 +1,7 @@
 ---
-vars:
-  workingDirectory: D:\GitLab-Runner
-
-- name: Create "{{workingDirectory}}" folder
+- name: Create "{{ workingDirectory }}" folder
   win_file:
-    path: {{workingDirectory}}
+    path: '{{ workingDirectory }}'
     state: directory
 
 - name: Download gitlab-runner-windows-amd64.exe
@@ -18,7 +15,7 @@ vars:
         --tag-list windows `
         --shell powershell `
         --description "windows-runner";
-    .\gitlab-runner.exe install --user '{{ user }}' --password '{{ password }}'
+    .\gitlab-runner.exe install --user "{{ user }}" --password "{{ password }}"
     .\gitlab-runner.exe start
 
 - name: Ensure that gitlab-runner is started when the system has settled

@@ -78,5 +78,6 @@
   vars:
     ansible_become_user: '{{ user }}'
     ansible_become_pass: '{{ password }}'
+    workingDirectory: 'D:\GitLab-Runner'
   tags:
     - install-gitlab-runner
