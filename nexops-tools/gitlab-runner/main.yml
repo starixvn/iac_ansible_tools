@@ -4,12 +4,12 @@
     - role: init
   tags: init-runner
 
-- hosts: all
-  roles:
-    - role: update
-  tags: update-runner
+#- hosts: all
+#  roles:
+#    - role: update
+#  tags: update-runner
 
 - hosts: all
   roles:
-    - role: add-runner
-  tags: add-runner
+    - role: register-runner
+  tags: register-runner

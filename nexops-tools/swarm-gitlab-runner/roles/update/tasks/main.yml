@@ -1,0 +1,11 @@
+---
+- name: cp docker-compose file
+  template:
+    src: "templates/{{ item }}.j2"
+    dest: "{{ working_directory }}/{{ item }}"
+  with_items:
+    - docker-compose.yml
+
+- name: Deploy FTPD
+  shell: |
+    docker stack deploy -c {{working_directory}}/docker-compose.yml {{stack}} --with-registry-auth
