@@ -9,7 +9,7 @@
     --docker-privileged \
     --url "https://gitlab.nexdev.net/" \
     --registration-token "VscxAqFvRVcXgpyoBDD_" \
-    --description "{{inventory_hostname}}" \
+    --description "docker-{{inventory_hostname}}" \
     --tag-list "docker" \
     --run-untagged="true" \
     --locked="false" \
@@ -27,7 +27,7 @@
     --docker-privileged \
     --url "https://git3.nexdev.net/" \
     --registration-token "9JzG2oJKAmYBHzgygxfW" \
-    --description "{{inventory_hostname}}" \
+    --description "docker-{{inventory_hostname}}" \
     --tag-list "docker" \
     --run-untagged="true" \
     --locked="false" \
