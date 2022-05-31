@@ -25,7 +25,7 @@
         --tag-list windows `
         --shell powershell `
         --description "windows-runner-{{item}}"
-  with_items: '[1,2,3,4,5]'
+  with_items: '{{ [1,2,3,4,5] }}'
 
 - name: Install gitlab-runner
   win_shell: |
