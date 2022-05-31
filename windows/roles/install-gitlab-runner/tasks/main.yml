@@ -20,7 +20,7 @@
     .\gitlab-runner.exe register --non-interactive --url https://gitlab.nexdev.net/ --registration-token VscxAqFvRVcXgpyoBDD_ --executor shell --tag-list windows --shell powershell --description "windows-runner"
 
 - name: Install gitlab-runner
-  win_shell: "{{workingDirectory}}\gitlab-runner.exe install"
+  win_shell: '{{workingDirectory}}\gitlab-runner.exe install'
   ignore_errors: yes
 
 - name: Ensure that gitlab-runner is started when the system has settled
@@ -31,4 +31,4 @@
     password: '{{ password }}'
 
 - name: Start gitlab-runner
-  win_shell: "{{workingDirectory}}\gitlab-runner.exe start"
+  win_shell: '{{workingDirectory}}\gitlab-runner.exe start'
