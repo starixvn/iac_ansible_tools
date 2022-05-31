@@ -17,9 +17,9 @@
     DOCKER_IMAGE_PATH: {{item.docker_image_registry_path}}
     DOCKER_FILE_PATH: {{item.docker_file_path | default(".")}}
     DOCKER_FILE_NAME: {{item.docker_file_name | default("Dockerfile")}}
-    CONFIG_FILE_PATH: {{item.config_file_path | default(".")}}
+    CONFIG_FILE_PATH: {{item.config_file_path | default(".") | replace(separator_char,'/') }}
 {% if item.sp_mapper is defined and item.sp_mapper == true %}
-    SP_FILE_PATH: {{item.sp_file_path | default("./App_Data")}}
+    SP_FILE_PATH: {{item.sp_file_path | default("./App_Data") | replace(separator_char,'/') }}
     SP_FILE_NAME: {{item.sp_file_name | default("SpNames")}}
     SP_FILE_EXTENSION: {{item.sp_file_extension | default("xml")}}
     SP_FILE_COMPOSE: {{item.sp_file_compose | default("disabled")}}
@@ -33,4 +33,3 @@
     STACK_NAME: {{project_name}}
     DOCKER_COMPOSE_FILE_PATH: {{item.docker_compose_file_path | default(".")}}
     DOCKER_COMPOSE_REPO_PATH: .docker-compose/{{ item.name | replace('-','_') }}
-    SEPARATOR_CHAR: {{separator_char}}
