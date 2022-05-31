@@ -15,6 +15,7 @@
 - name: Build up and run container
   shell: |
     cd {{working_path}}
+    docker login --username=gitlab-ci --password=Vv3AQX-aaSZ3M6PtvyD4 registry.nexdev.net:5050
     docker-compose pull && docker-compose up -d
   become: yes
   #run_once: true
