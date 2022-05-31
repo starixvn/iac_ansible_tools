@@ -15,15 +15,15 @@
     state: absent
 
 - name: Register gitlab-runner
-  win_shell: >
+  win_shell: |
     cd "{{workingDirectory}}";
-    .\gitlab-runner.exe register 
-        --non-interactive 
-        --url https://gitlab.nexdev.net/ 
-        --registration-token VscxAqFvRVcXgpyoBDD_ 
-        --executor shell 
-        --tag-list windows 
-        --shell powershell 
+    .\gitlab-runner.exe register `
+        --non-interactive `
+        --url https://gitlab.nexdev.net/ `
+        --registration-token VscxAqFvRVcXgpyoBDD_ `
+        --executor shell `
+        --tag-list windows `
+        --shell powershell `
         --description "windows-runner"
 
 - name: Install gitlab-runner
