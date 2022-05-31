@@ -37,7 +37,7 @@
     name: gitlab-runner
     start_mode: delayed
     username: '{{ user }}'
-    password: '{{ password }}'
+    password: '"{{ password }}"'
 
 - name: Start gitlab-runner
   win_shell: |
