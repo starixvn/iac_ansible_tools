@@ -35,11 +35,15 @@
 {% set version_number = '' if version == 0 else version %}
     - <<: *if-deploy-local{{ version_number }}
       when: always
+    - <<: *if-deploy-nexprod{{ version_number }}
+      when: always
     - <<: *if-deploy-sit{{ version_number }}
       when: always
     - <<: *if-deploy-uat{{ version_number }}
       when: always
     - <<: *if-deploy-{{rule_name}}-local{{ version_number }}
+      when: always
+    - <<: *if-deploy-{{rule_name}}-nexprod{{ version_number }}
       when: always
     - <<: *if-deploy-{{rule_name}}-sit{{ version_number }}
       when: always
@@ -81,6 +85,14 @@
     - <<: *if-deploy-local{{ version_number }}
       when: on_success
     - <<: *if-deploy-{{rule_name}}-local{{ version_number }}
+      when: on_success
+    - when: never
+
+.deploy:nexprod{{ version_number }}:{{service_name}}:rules:
+  rules:
+    - <<: *if-deploy-nexprod{{ version_number }}
+      when: on_success
+    - <<: *if-deploy-{{rule_name}}-nexprod{{ version_number }}
       when: on_success
     - when: never
 
