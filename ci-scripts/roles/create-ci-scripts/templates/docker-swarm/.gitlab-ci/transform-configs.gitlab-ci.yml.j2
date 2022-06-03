@@ -28,6 +28,12 @@ transform_config_local{{ version_number }}:
     - .deploy:local{{ version_number }}
     - .deploy:local{{ version_number }}:{{service_name}}:rules
 
+transform_config_nexprod{{ version_number }}:
+  extends: 
+    - .base_transform_config
+    - .deploy:nexprod{{ version_number }}
+    - .deploy:nexprod{{ version_number }}:{{service_name}}:rules
+
 transform_config_sit{{ version_number }}:
   extends: 
     - .base_transform_config
