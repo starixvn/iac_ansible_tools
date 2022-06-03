@@ -1,0 +1,30 @@
+{% set service_name = item.name | replace('-','_') %}
+
+{% for version in versions %}
+{% set version_number = '' if version == 0 else version %}
+{% if item.platform is undefined or item.platform == "linux" %}
+post_build_{{service_name}}_nexprod{{ version_number }}:
+  extends:
+    - .deploy_vars_{{service_name}}
+    - .post_build
+    - .deploy:nexprod{{ version_number }}
+    - .deploy:nexprod{{ version_number }}:{{service_name}}:rules
+{% if item.multiple_image_env is undefined or item.multiple_image_env == false %}
+  needs: ['scan_image_{{service_name}}']
+{% else %}
+  needs: ['scan_image_{{service_name}}_nexprod{{ version_number }}']
+{% endif %}
+{% endif %}
+
+deploy_{{service_name}}_nexprod{{ version_number }}:
+  extends:
+    - .deploy_vars_{{service_name}}
+    - .deploy:nexprod{{ version_number }}:base:swarm:stack
+    - .deploy:nexprod{{ version_number }}:{{service_name}}:rules
+{% if item.platform is undefined or item.platform == "linux" %}
+  needs: ['post_build_{{service_name}}_nexprod{{ version_number }}']
+{% else %}
+  needs: ['build_image_{{service_name}}_nexprod{{ version_number }}']
+{% endif %}
+
+{% endfor %}
