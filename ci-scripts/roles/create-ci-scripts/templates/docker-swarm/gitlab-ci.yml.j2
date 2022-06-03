@@ -80,17 +80,17 @@ include:
     file: 'rocketor-integration/rules/index.gitlab-ci.yml'
 {% if platform is undefined or platform == "linux" %}
   - project: 'ci/common-ci'
-    ref: rocketor
+    ref: nex-prod
     file: 'docker/base/build-docker-image-service.gitlab-ci.yml'
   - project: 'ci/common-ci'
-    ref: rocketor
+    ref: nex-prod
     file: 'docker/base/scan-docker-image.gitlab-ci.yml'
   - project: 'ci/common-ci'
-    ref: rocketor
+    ref: nex-prod
     file: 'docker/base/post-build-docker-image.gitlab-ci.yml'
 {% else %}
   - project: 'ci/common-ci'
-    ref: rocketor
+    ref: nex-prod
     file: 'docker/base/build-docker-windows-image.gitlab-ci.yml'
 {%endif%}
   - project: 'ci/common-ci'
@@ -98,7 +98,7 @@ include:
     file: '_teams/{{org_name}}/{{ci_group_name}}/deploy-docker-swarm-stack/index.gitlab-ci.yml'
 {% if org_name == 'luminet' and smoke_test == true %}
   - project: 'ci/common-ci'
-    ref: rocketor
+    ref: nex-prod
 {% if project_name == 'l1' %}
     file: 'smoke-test/smoke-test-sc1.gitlab-ci.yml'
 {% else %}
