@@ -86,8 +86,8 @@
     update_cache: yes
   vars:
     packages:
-    #- docker-ce={{docker_engine_version}}
-    - docker-ce
+    - docker-ce={{docker_engine_version}}
+    #- docker-ce
     - docker-ce-cli 
     - containerd.io
 
