@@ -8,7 +8,7 @@
     body: >
       {
         "container_expiration_policy_attributes": {
-          "enabled": true,
+          "enabled": false,
           "cadence": "{{cadence}}",
           "keep_n": "{{keep_tags}}",
           "name_regex": ".*",
