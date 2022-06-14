@@ -1,0 +1,33 @@
+---
+- name: Verify stacks directory exists (on first swarm node)
+  file:
+    path: '{{gluster_path}}/baget/baget-data'
+    mode: '0755'
+    state: directory
+  become: yes
+
+- name: Create network
+  docker_network:
+    name: '{{swarm_network_nexops}}'
+    driver: 'overlay'
+    attachable: true
+  ignore_errors: yes
+  become: yes
+
+- name: Copy docker-compose file
+  template:
+    src: 'templates/docker-compose.yml.j2'
+    dest: '{{gluster_path}}/baget/baget.yml'
+  become: yes
+
+- name: Copy env file
+  template:
+    src: 'templates/baget.env'
+    dest: '{{gluster_path}}/baget/baget.env'
+  become: yes
+
+- name: Build up and run container
+  shell: |
+    cd {{gluster_path}}/baget
+    docker stack deploy --compose-file=baget.yml {{stack}} --with-registry-auth
+  become: yes
