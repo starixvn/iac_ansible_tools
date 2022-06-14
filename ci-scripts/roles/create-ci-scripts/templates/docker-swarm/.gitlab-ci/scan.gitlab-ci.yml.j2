@@ -3,7 +3,7 @@ scan_config_{{ service_name }}:
   extends:
     - .deploy_vars_{{ service_name }}
     - .scan_config
-    - .build:image:{{ service_name }}:rules
+    - .scan:config:{{ service_name }}:rules
 {% if item.multiple_image_env is undefined or item.multiple_image_env == false %}  
 
 scan_image_{{ service_name }}:
@@ -35,7 +35,7 @@ scan_config_{{ service_name }}_nexprod{{ version_number }}:
   extends:
     - .deploy_vars_{{ service_name }}
     - .scan_config
-    - .deploy:nexprod{{ version_number }}:{{service_name}}:rules
+    - .scan:config:{{ service_name }}:rules
 ####
 scan_image_{{ service_name }}_nexprod{{ version_number }}:
   extends:
@@ -52,7 +52,7 @@ scan_config_{{ service_name }}_sit{{ version_number }}:
   extends:
     - .deploy_vars_{{ service_name }}
     - .scan_config
-    - .deploy:sit{{ version_number }}:{{service_name}}:rules
+    - .scan:config:{{ service_name }}:rules
 ####
 scan_image_{{ service_name }}_sit{{ version_number }}:
   extends:
@@ -69,7 +69,7 @@ scan_config_{{ service_name }}_uat{{ version_number }}:
   extends:
     - .deploy_vars_{{ service_name }}
     - .scan_config
-    - .deploy:uat{{ version_number }}:{{service_name}}:rules
+    - .scan:config:{{ service_name }}:rules
 ####
 scan_image_{{ service_name }}_uat{{ version_number }}:
   extends:

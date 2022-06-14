@@ -34,6 +34,15 @@
   if: '$CI_COMMIT_TAG =~ /^deploy-{{rule_name}}-aws{{ version_number }}- */'
 
 {% endfor %}
+.scan:config:{{service_name}}:rules:
+  rules:
+    - if: '$CI_COMMIT_TAG =~ /^deploy- */'
+      when: never
+    - changes:
+        - "Dockerfile"
+        - "*/Dockerfile"
+        - "*/*ockerfile"
+        - "*ockerfile"
 
 .build:image:{{service_name}}:rules:
   rules:
