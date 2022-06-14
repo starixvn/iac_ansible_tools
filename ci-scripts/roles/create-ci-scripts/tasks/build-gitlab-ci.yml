@@ -69,6 +69,13 @@
   with_items: '{{ services }}'
   become: yes
 
+- name: Build deploy-nexprod.gitlab-ci.yml for each service
+  template:
+    src: templates/docker-swarm/.gitlab-ci/deploy-nexprod.gitlab-ci.yml.j2
+    dest: /var/ci-scripts/{{repo_name}}/.gitlab-ci/{{item.name | replace('-','_')}}/deploy-nexprod.gitlab-ci.yml
+  with_items: '{{ services }}'
+  become: yes
+
 - name: Build deploy-sit.gitlab-ci.yml for each service
   template:
     src: templates/docker-swarm/.gitlab-ci/deploy-sit.gitlab-ci.yml.j2
