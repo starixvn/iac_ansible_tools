@@ -1,6 +1,5 @@
 ---
 - name: Verify stacks directory exists (on first swarm node)
-  #when: inventory_hostname in groups['swarm_managers']
   file:
     path: '{{gluster_path}}/jaeger/storage'
     mode: '0755'
@@ -16,10 +15,15 @@
   become: yes
 
 - name: Copy docker-compose file
-  #when: inventory_hostname in groups['swarm_managers']
   template:
     src: 'templates/docker-compose.yml.j2'
     dest: '{{gluster_path}}/jaeger/jaeger.yml'
+  become: yes
+
+- name: Copy env file
+  template:
+    src: 'templates/otel-config.yaml'
+    dest: '{{gluster_path}}/jaeger/otel-config.yaml'
   become: yes
 
 - name: Build up and run container

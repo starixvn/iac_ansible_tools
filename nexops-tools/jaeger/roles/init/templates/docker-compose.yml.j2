@@ -18,12 +18,11 @@ services:
     deploy:
       mode: replicated
       replicas: 1
-      #endpoint_mode: dnsrr
       placement:
         constraints:
           - node.labels.{{label_node | default ('NEXOPS_HIGH_STORAGE')}} == yes
 
-  jaeger-collector:
+  jaeger_collector:
     image: registry.nexdev.net:5050/docker/jaeger/jaeger-collector:latest
     ports:
       - "14269:14269"
@@ -37,7 +36,6 @@ services:
     deploy:
       mode: replicated
       replicas: 1
-      #endpoint_mode: dnsrr
       placement:
         constraints:
           - node.labels.{{label_node | default ('NEXOPS_HIGH_STORAGE')}} == yes
@@ -50,7 +48,7 @@ services:
     depends_on:
       - elasticsearch
 
-  jaeger-agent:
+  jaeger_agent:
     image: registry.nexdev.net:5050/docker/jaeger/jaeger-agent:latest
     hostname: jaeger-agent
     command: ["--reporter.grpc.host-port=jaeger-collector:14250"]
@@ -64,7 +62,6 @@ services:
     deploy:
       mode: replicated
       replicas: 1
-      #endpoint_mode: dnsrr
       placement:
         constraints:
           - node.labels.{{label_node | default ('NEXOPS_HIGH_STORAGE')}} == yes
@@ -73,7 +70,7 @@ services:
     depends_on:
       - jaeger-collector
 
-  jaeger-query:
+  jaeger_query:
     image: registry.nexdev.net:5050/docker/jaeger/jaeger-query:latest
     environment:
       - SPAN_STORAGE_TYPE=elasticsearch
@@ -81,7 +78,6 @@ services:
     deploy:
       mode: replicated
       replicas: 1
-      #endpoint_mode: dnsrr
       placement:
         constraints:
           - node.labels.{{label_node | default ('NEXOPS_HIGH_STORAGE')}} == yes
@@ -97,6 +93,25 @@ services:
     ]
     depends_on:
       - jaeger-agent
+
+  opentelemetry_collector:
+    image: registry.nexdev.net:5050/docker/jaeger/opentelemetry-collector:0.53.0
+    command: ["/otelcol", "--config=/conf/collector-config.yaml"]
+    volumes:
+      - ./otel-config.yaml:/conf/collector-config.yaml
+    ports:
+      - "4317:4317"
+      - "4318:4318"
+    networks:
+      - '{{swarm_network_nexops}}'
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.{{label_node | default ('NEXOPS_HIGH_STORAGE')}} == yes
+    depends_on:
+      - jaeger_collector
 
 volumes:
   jaeger_vol:
