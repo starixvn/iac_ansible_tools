@@ -169,7 +169,7 @@ services:
       endpoint_mode: dnsrr
 {% endif %}
 {% endif %}
-{% if env == "prod"%}
+{% if env == "prod" or env == "nexprod" %}
       update_config:
         order: start-first
         failure_action: rollback
@@ -185,8 +185,8 @@ services:
         window: 120s
       placement:
         constraints:
-{% if item.0.node_label is defined %}
-          - node.labels.{{ item.0.node_label | upper }} == yes
+{% if item.0.node_labels is defined %}
+          - node.labels.{{ item.0.node_labels[0] | upper }} == yes
 {% else %}
           - node.labels.{{ org_node_label | upper }} == yes
 {% endif %}
