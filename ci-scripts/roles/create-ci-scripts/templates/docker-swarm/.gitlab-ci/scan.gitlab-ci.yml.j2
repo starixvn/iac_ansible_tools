@@ -30,6 +30,7 @@ scan_image_{{ service_name }}_local{{ version_number }}:
     - .deploy:local{{ version_number }}
     - .deploy:local{{ version_number }}:{{service_name}}:rules
 ####
+{% if org_name == 'nexcel' %}
 ####
 scan_config_{{ service_name }}_nexprod{{ version_number }}:
   extends:
@@ -48,6 +49,7 @@ scan_image_{{ service_name }}_nexprod{{ version_number }}:
     - .deploy:nexprod{{ version_number }}
     - .deploy:nexprod{{ version_number }}:{{service_name}}:rules
 ####
+{% endif %}
 scan_config_{{ service_name }}_sit{{ version_number }}:
   extends:
     - .deploy_vars_{{ service_name }}

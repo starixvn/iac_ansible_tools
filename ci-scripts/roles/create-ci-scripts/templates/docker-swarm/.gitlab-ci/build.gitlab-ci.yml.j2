@@ -47,7 +47,8 @@ build_image_{{ service_name }}_local{{ version_number }}:
   dependencies:
     - transform_config_local{{ version_number }}
 {% endif %}
-
+#
+{% if org_name == 'nexcel' %}
 build_image_{{ service_name }}_nexprod{{ version_number }}:
   extends:
     - .deploy_vars_{{ service_name }}
@@ -68,7 +69,8 @@ build_image_{{ service_name }}_nexprod{{ version_number }}:
   dependencies:
     - transform_config_nexprod{{ version_number }}
 {% endif %}
-
+{% endif %}
+#
 build_image_{{ service_name }}_sit{{ version_number }}:
   extends:
     - .deploy_vars_{{ service_name }}

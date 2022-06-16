@@ -27,13 +27,13 @@ transform_config_local{{ version_number }}:
     - .base_transform_config
     - .deploy:local{{ version_number }}
     - .deploy:local{{ version_number }}:{{service_name}}:rules
-
+{% if org_name == 'nexcel' %}
 transform_config_nexprod{{ version_number }}:
   extends: 
     - .base_transform_config
     - .deploy:nexprod{{ version_number }}
     - .deploy:nexprod{{ version_number }}:{{service_name}}:rules
-
+{% endif %}
 transform_config_sit{{ version_number }}:
   extends: 
     - .base_transform_config
