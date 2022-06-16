@@ -28,3 +28,11 @@ kbt_registry_login:
 - url: "lumhub.starixplay.com"
   user: "gitlab-ci"
   pass: "H5nF5ywy262wt881ZWpq"
+
+- url: "registry.nexdev.net:5050"
+  user: "gitlab-ci"
+  pass: "Vv3AQX-aaSZ3M6PtvyD4"
+
+- url: "git3.nexdev.net:5050"
+  user: "gitlab-ci"
+  pass: "H5nF5ywy262wt881ZWpq"
