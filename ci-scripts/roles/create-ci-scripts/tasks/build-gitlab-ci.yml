@@ -75,7 +75,7 @@
     dest: /var/ci-scripts/{{repo_name}}/.gitlab-ci/{{item.name | replace('-','_')}}/deploy-nexprod.gitlab-ci.yml
   with_items: '{{ services }}'
   become: yes
-  #when: org_name == "nexcel"
+  when: org_name == 'nexcel'
 
 - name: Build deploy-sit.gitlab-ci.yml for each service
   template:
