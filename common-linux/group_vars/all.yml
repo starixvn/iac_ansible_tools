@@ -3,3 +3,28 @@
 docker_registry_url: registry.nexdev.net:5050
 docker_registry_username: gitlab-ci
 docker_registry_password: Vv3AQX-aaSZ3M6PtvyD4
+local_registry_login:
+- url: "registry.nexdev.net:5050"
+  user: "gitlab-ci"
+  pass: "Vv3AQX-aaSZ3M6PtvyD4"
+
+- url: "git3.nexdev.net:5050"
+  user: "gitlab-ci"
+  pass: "H5nF5ywy262wt881ZWpq"
+
+- url: "hub.nexdev.net"
+  user: "gitlab-ci"
+  pass: "H5nF5ywy262wt881ZWpq"
+
+- url: "hub.lumigame.com"
+  user: "gitlab-ci"
+  pass: "H5nF5ywy262wt881ZWpq"
+
+kbt_registry_login:
+- url: "nexhub.starixplay.com"
+  user: "gitlab-ci"
+  pass: "Vv3AQX-aaSZ3M6PtvyD4"
+
+- url: "lumhub.starixplay.com"
+  user: "gitlab-ci"
+  pass: "H5nF5ywy262wt881ZWpq"
