@@ -3,6 +3,7 @@
 versions: [0, 1, 2, 3]
 gluster_path: '/var/www/gluster/web/'
 luminet_network_version_local: '1'
+luminet_network_version_nexprod: ''
 luminet_network_version_sit: ''
 luminet_network_version_uat: ''
 luminet_network_version_prod: ''
