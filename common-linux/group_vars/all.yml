@@ -23,7 +23,7 @@ local_registry_login:
 kbt_registry_login:
 - url: "nexhub.starixplay.com"
   user: "gitlab-ci"
-  pass: "Vv3AQX-aaSZ3M6PtvyD4"
+  pass: "H5nF5ywy262wt881ZWpq"
 
 - url: "lumhub.starixplay.com"
   user: "gitlab-ci"
