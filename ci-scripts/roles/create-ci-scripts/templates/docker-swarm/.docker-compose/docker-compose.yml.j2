@@ -64,8 +64,8 @@ services:
 {% if env == "local" or env == "uat" %}
     image: hub.nexdev.net/{{team_name}}/{{service_name}}:{{environment}}-latest
 {% else %}
-{% endif %}
     image: registry.nexdev.net:5050/{{item.0.docker_image_registry_path}}:{{environment}}-latest
+{% endif %}
 {% endif %}
 {% if platform == "linux" %}
     hostname: "swarm-{{'{{'}}.Service.Name{{'}}'}}-{{'{{'}}.Task.Slot{{'}}'}}"
