@@ -1,8 +1,7 @@
 ---
 - name: Verify stacks directory exists (on first swarm node)
-  #when: inventory_hostname in groups['swarm_managers']
   file:
-    path: '{{gluster_path}}/jaeger/storage'
+    path: '{{gluster_path}}/baget/baget-data'
     mode: '0755'
     state: directory
   become: yes
@@ -16,15 +15,19 @@
   become: yes
 
 - name: Copy docker-compose file
-  #when: inventory_hostname in groups['swarm_managers']
   template:
     src: 'templates/docker-compose.yml.j2'
-    dest: '{{gluster_path}}/jaeger/jaeger.yml'
+    dest: '{{gluster_path}}/baget/baget.yml'
+  become: yes
+
+- name: Copy env file
+  template:
+    src: 'templates/baget.env'
+    dest: '{{gluster_path}}/baget/baget.env'
   become: yes
 
 - name: Build up and run container
-  #when: inventory_hostname in groups['swarm_managers']
   shell: |
-    cd {{gluster_path}}/jaeger
-    docker stack deploy --compose-file=jaeger.yml {{stack}} --with-registry-auth
+    cd {{gluster_path}}/baget
+    docker stack deploy --compose-file=baget.yml {{stack}} --with-registry-auth
   become: yes

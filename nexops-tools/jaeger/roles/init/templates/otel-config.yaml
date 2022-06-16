@@ -1,0 +1,37 @@
+extensions:
+  memory_ballast:
+    size_mib: 512
+
+receivers:
+  otlp:
+    protocols:
+      grpc:
+      http:
+        cors:
+          allowed_origins:
+            - http://localhost:7456
+            - https://games.lumigame.com
+            - https://l1-games.lumigame.com
+            - https://l2-games.lumigame.com
+            - https://l3-games.lumigame.com
+
+processors:
+  batch:
+  memory_limiter:
+    limit_mib: 1536
+    spike_limit_mib: 512
+    check_interval: 5s
+
+exporters:
+  jaeger:
+    endpoint: 10.10.50.69:14250
+    tls:
+      insecure: true
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [memory_limiter, batch]
+      exporters: [jaeger]
+  extensions: [memory_ballast]

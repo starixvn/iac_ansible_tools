@@ -1,6 +1,6 @@
 ---
 - name: Remove old_backup_file
-  shell: rm -rf {{ restore_server_path }}
+  shell: rm -rf {{ remove_server_path }}
   become: yes
 
 - name: Backup database Registry

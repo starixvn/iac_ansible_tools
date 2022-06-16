@@ -1,8 +1,24 @@
 ---
-- name: login registry
-  shell: docker login -u {{ user_name }} -p {{ password }} registry.nexdev.net
-  become: yes
-
-- name: pull base image registry
-  shell: docker image pull registry.nexdev.net:5050{{ path_base_images }}
-  become: yes
+- name: Get Image Repo
+  uri:
+    url: https://{{registry_url}}/api/v4/registry/repositories/{{item.id}}?tags=true&tags_count=true&size=true
+    headers:
+      PRIVATE-TOKEN: '{{registry_token}}'
+      Content-Type: 'application/json'
+    body: >
+      {
+        "container_expiration_policy_attributes": {
+          "enabled": true,
+          "cadence": "{{cadence}}",
+          "keep_n": "{{keep_tags}}",
+          "name_regex": ".*",
+          "older_than": null,
+          "name_regex_delete": "{{remove_tags_matching}}",
+          "name_regex_keep" : "{{keep_tags_matching}}"
+        }
+      }
+    body_format: json
+    method: GET
+    status_code: 200
+  register: result
+  with_items: "{{projects}}"

@@ -1,0 +1,34 @@
+---
+- name: Verify stacks directory exists (on first swarm node)
+  file:
+    path: '{{gluster_path}}/jaeger/storage'
+    mode: '0755'
+    state: directory
+  become: yes
+
+- name: Create network
+  docker_network:
+    name: '{{swarm_network_nexops}}'
+    driver: 'overlay'
+    attachable: true
+  ignore_errors: yes
+  become: yes
+
+- name: Copy docker-compose file
+  template:
+    src: 'templates/docker-compose.yml.j2'
+    dest: '{{gluster_path}}/jaeger/jaeger.yml'
+  become: yes
+
+- name: Copy env file
+  template:
+    src: 'templates/otel-config.yaml'
+    dest: '{{gluster_path}}/jaeger/otel-config.yaml'
+  become: yes
+
+- name: Build up and run container
+  #when: inventory_hostname in groups['swarm_managers']
+  shell: |
+    cd {{gluster_path}}/jaeger
+    docker stack deploy --compose-file=jaeger.yml {{stack}} --with-registry-auth
+  become: yes

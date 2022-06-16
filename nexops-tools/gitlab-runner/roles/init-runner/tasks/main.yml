@@ -18,3 +18,11 @@
       -v /var/www/gitlab-runner/config:/etc/gitlab-runner \
       -v /var/run/docker.sock:/var/run/docker.sock \
       registry.nexdev.net:5050/docker/gitlab-runner:latest
+
+- name: create Container Runner {{team}}
+  when: team == "nexcel"
+  shell: |
+    docker run -d --name gitlab-runner --restart always \
+      -v /var/www/gitlab-runner/config:/etc/gitlab-runner \
+      -v /var/run/docker.sock:/var/run/docker.sock \
+      registry.nexdev.net:5050/docker/gitlab-runner:latest
