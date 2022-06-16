@@ -57,10 +57,15 @@ configs:
 
 services:
   {{service_name}}_{{environment}}:
-{% if gitlab_url == "git3.nexdev.net" %}
+{% if org_name == 'luminet' %}
     image: git3.nexdev.net:5050/{{item.0.docker_image_registry_path}}:{{environment}}-latest
+{% endif %}
+{% if org_name == 'nexcel' %}
+{% if env == "local" or env == "nexprod" %}
+    image: hub.nexdev.net/{{team_name}}/{{project_name}}_{{service_name}}:{{environment}}-latest
 {% else %}
     image: registry.nexdev.net:5050/{{item.0.docker_image_registry_path}}:{{environment}}-latest
+{% endif %}
 {% endif %}
 {% if platform == "linux" %}
     hostname: "swarm-{{'{{'}}.Service.Name{{'}}'}}-{{'{{'}}.Task.Slot{{'}}'}}"
