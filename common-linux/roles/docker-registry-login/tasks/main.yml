@@ -35,13 +35,13 @@
     msg: '{{ proxy_cfg.stdout }}'
 
 - name: Login registry
-  shell: docker login --username={{local_registry_login.user}} --password={{local_registry_login.pass}} {{local_registry_login.url}}
+  shell: docker login --username={{item.user}} --password={{item.pass}} {{item.url}}
   with_items:
     - "{{local_registry_login}}"
   when: env == "local" or env == "nexprod"
 
 - name: Login registry
-  shell: docker login --username={{kbt_registry_login.user}} --password={{kbt_registry_login.pass}} {{kbt_registry_login.url}}
+  shell: docker login --username={{item.user}} --password={{item.pass}} {{item.url}}
   with_items:
     - "{{kbt_registry_login}}"
   when: env == "prod" or env == "uat"
