@@ -31,7 +31,7 @@ services:
         constraints:
           - node.labels.{{system}}_redis_node_1 == yes
     volumes:
-      - ./redis_node1:/data
+      - ./data:/data
     networks:
       - host
 
@@ -50,7 +50,7 @@ services:
         constraints:
           - node.labels.{{system}}_redis_node_2 == yes
     volumes:
-      - ./redis_node2:/data
+      - ./data:/data
     #  - /proc/:/wproc/
       #- alpha_redis_conf:/etc/redis
     #privileged: true
@@ -72,7 +72,7 @@ services:
         constraints:
           - node.labels.{{system}}_redis_node_3 == yes
     volumes:
-      - ./redis_node3:/data
+      - ./data:/data
     networks:
       - host
   
