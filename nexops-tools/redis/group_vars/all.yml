@@ -20,7 +20,6 @@ alpha_redis_uat:
   sentinel_port: "26112"
   python_port: "33005"
   redis_version: "5"
-  redis_stack: "NAP"
   redis_stack: "ALPHA"
 
 alpha_redis_sit:
@@ -36,7 +35,6 @@ alpha_redis_prod:
   sentinel_port: "26112"
   python_port: "33005"
   redis_version: "5"
-  redis_stack: "NAP"
   redis_stack: "ALPHA"
 
 ####  NAP & Other System
