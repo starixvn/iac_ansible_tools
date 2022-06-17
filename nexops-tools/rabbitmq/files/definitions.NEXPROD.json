@@ -1,0 +1,121 @@
+{
+  "rabbit_version": "3.10.1",
+  "rabbitmq_version": "3.10.1",
+  "product_name": "RabbitMQ",
+  "product_version": "3.10.1",
+  "users": [
+    {
+      "name": "admin",
+      "password_hash": "pS2PP+FocpiYH4KTvOTXeIbrqgVeRTQ7Uuf4pKtHqdQTfv4j",
+      "hashing_algorithm": "rabbit_password_hashing_sha256",
+      "tags": [ "administrator" ],
+      "limits": {}
+    },
+    {
+      "name": "guest",
+      "password_hash": "s88t3j9Q17Isr2gJNHoA9dytelxswBwdC8HWPfiMXPiqUSNp",
+      "hashing_algorithm": "rabbit_password_hashing_sha256",
+      "tags": [ "administrator" ],
+      "limits": {}
+    }
+  ],
+  "vhosts": [
+    { "name": "/" },
+    { "name": "/UpHost" },
+    { "name": "/RocketorHost" }
+  ],
+  "permissions": [
+    {
+      "user": "admin",
+      "vhost": "/UpHost",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "guest",
+      "vhost": "/RocketorHost",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "admin",
+      "vhost": "/",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "admin",
+      "vhost": "/RocketorHost",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "guest",
+      "vhost": "/UpHost",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "guest",
+      "vhost": "/",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    }
+  ],
+  "topic_permissions": [],
+  "parameters": [],
+  "global_parameters": [
+    {
+      "name": "cluster_name",
+      "value": "rabbit@SV-008D.spvn.local"
+    },
+    {
+      "name": "internal_cluster_id",
+      "value": "rabbitmq-cluster-id-O_obARvccmKh9Znc-UGGiQ"
+    }
+  ],
+  "policies": [
+    {
+      "vhost": "/",
+      "name": "ha-all",
+      "pattern": ".*",
+      "apply-to": "all",
+      "definition": {
+        "ha-mode": "all",
+        "ha-sync-mode": "automatic"
+      },
+      "priority": 0
+    },
+    {
+      "vhost": "/RocketorHost",
+      "name": "ha-all",
+      "pattern": ".*",
+      "apply-to": "all",
+      "definition": {
+        "ha-mode": "all",
+        "ha-sync-mode": "automatic"
+      },
+      "priority": 0
+    },
+    {
+      "vhost": "/UpHost",
+      "name": "ha-all",
+      "pattern": ".*",
+      "apply-to": "all",
+      "definition": {
+        "ha-mode": "all",
+        "ha-sync-mode": "automatic"
+      },
+      "priority": 0
+    }
+  ],
+  "queues": [],
+  "exchanges": [],
+  "bindings": []
+}

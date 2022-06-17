@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   rabbit:
-    image: registry.nexdev.net:5050/docker/nexops-tools/rabbitmq:3.8.11-management-alpine
+    image: hub.nexdev.net/base/nexops-tools/rabbitmq:{{rabbitmq_version | default('3.8.11')}}-management-alpine
     hostname: "rabbit{{'{{'}}.Task.Slot{{'}}'}}"
     healthcheck:
       test: rabbitmq-diagnostics ping

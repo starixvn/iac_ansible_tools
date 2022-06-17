@@ -5,10 +5,11 @@
   vars:
     working_directory: "/var/www/gluster/nexops/rabbitmq"
     node_label: "NEXOPS_HIGH_STORAGE"
-    environment_name: "Local" # Local, UAT, SIT, PRO, AWS, LUMI
+    environment_name: "Local" # Local, UAT, SIT, PRO, AWS, LUMI, NEXPROD
     swarm_network: "swarm_nexcel_local"
     config_folder: "{{working_directory}}/config"
     data_folder: "{{working_directory}}/data"
+    rabbitmq_version: 3.8.11
   roles:
     - role: deploy-rabbit
       when: inventory_hostname in groups['swarm_managers']
