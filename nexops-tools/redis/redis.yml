@@ -7,9 +7,9 @@
 
 - hosts: all
   roles:
-    - role: create-redis-single-swarm
-    - role: redis-tuning
-  tags:  create-redis-single-swarm
+    - role: create-redis-cluster-swarm
+#    - role: redis-tuning
+  tags:  redis-cluster-swarm
 
 - hosts: all
   roles:

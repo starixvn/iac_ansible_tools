@@ -1,0 +1,103 @@
+version: "3.3"
+services:
+
+  node_sentinel:
+    image: registry.nexdev.net:5050/docker/nexops-tools/redis-sentinel:{{item.0.redis_stack}}_{{item.0.redis_version}}
+    deploy:
+      mode: replicated
+      replicas: 3
+      placement:
+        constraints:
+          - node.labels.REDIS_SENTINAL == yes
+    environment:
+      - REDIS_MASTER_HOST={{item.0.master}}
+    #  - SENTINEL_DOWN_AFTER=5000 #5000
+    #  - SENTINEL_FAILOVER=30000 #15000
+    #volumes:
+    #  - alpha_redis_sentinel_conf:/etc/redis
+    networks:
+      - host
+
+  node1:
+    image: registry.nexdev.net:5050/docker/nexops-tools/redis:{{item.0.redis_stack}}_{{item.0.redis_version}}
+    healthcheck:
+      test: ["CMD", "redis-cli", "-p", "6312", "-a", "foo1@bared", "ping"]
+      interval: 3s
+      timeout: 5s
+      retries: 10
+    deploy:
+      mode: global
+      placement:
+        constraints:
+          - node.labels.{{system}}_redis_node_1 == yes
+    volumes:
+      - alpha_redis_data:/data
+      #- alpha_redis_conf:/etc/redis
+    networks:
+      - host
+
+  node2:
+    image: registry.nexdev.net:5050/docker/nexops-tools/redis:{{item.0.redis_stack}}_{{item.0.redis_version}}
+    healthcheck:
+      test: ["CMD", "redis-cli", "-p", "6312", "-a", "foo1@bared", "ping"]
+      interval: 3s
+      timeout: 5s
+      retries: 10
+    environment:
+      - REDIS_MASTER_HOST={{item.0.master}}
+    deploy:
+      mode: global
+      placement:
+        constraints:
+          - node.labels.{{system}}_redis_node_2 == yes
+    volumes:
+      - alpha_redis_data:/data
+    #  - /proc/:/wproc/
+      #- alpha_redis_conf:/etc/redis
+    #privileged: true
+    networks:
+      - host
+
+  node3:
+    image: registry.nexdev.net:5050/docker/nexops-tools/redis:{{item.0.redis_stack}}_{{item.0.redis_version}}
+    healthcheck:
+      test: ["CMD", "redis-cli", "-p", "6312", "-a", "foo1@bared", "ping"]
+      interval: 3s
+      timeout: 5s
+      retries: 10
+    environment:
+      - REDIS_MASTER_HOST={{item.0.master}}
+    deploy:
+      mode: global
+      placement:
+        constraints:
+          - node.labels.{{system}}_redis_node_3 == yes
+    volumes:
+      - alpha_redis_data:/data
+    #  - /proc/:/wproc/
+      #- alpha_redis_conf:/etc/redis
+    #privileged: true
+    networks:
+      - host
+  
+  heathcheck:
+    image: registry.nexdev.net:5050/docker/nexops-tools/redis-healthcheck:{{item.0.redis_stack}}_{{item.0.redis_version}}
+    ports:
+      - "{{item.0.sentinel_port}}:611"
+    deploy:
+      mode: replicated
+      replicas: 1
+      #mode: global
+      placement:
+        constraints:
+          - node.labels.REDIS_SENTINAL == yes
+    environment:
+      - SENTINEL_HOST={{item.0.master}}
+
+volumes:
+  alpha_redis_data:
+  #alpha_redis_conf:
+  #alpha_redis_sentinel_conf:
+networks:
+  host:
+    external: true
