@@ -27,11 +27,12 @@
 #  become: yes
 - name: Copy docker-compose file
   template:
-    src: "templates/docker-compose.yml.j2"
+    src: templates/docker-compose.yml.j2
     dest: "{{gluster_path}}/docker-compose.yml"
   become: yes
   with_items:
-    - "{{system}}_redis_{{env}}"
+    - nap_redis_nexprod
+#"{{system}}_redis_{{env}}"
 
 - name: Copy cfg files
   template:
