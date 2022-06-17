@@ -19,7 +19,7 @@ services:
       - host
 
   node1:
-    image: registry.nexdev.net:5050/docker/nexops-tools/redis:{{item.redis_stack}}_{{item.redis_version}}
+    image: registry.nexdev.net:5050/base/database/redis:{{item.redis_stack}}_{{item.redis_version}}
     healthcheck:
       test: ["CMD", "redis-cli", "-p", "6312", "-a", "foo1@bared", "ping"]
       interval: 3s
@@ -31,13 +31,13 @@ services:
         constraints:
           - node.labels.{{system}}_redis_node_1 == yes
     volumes:
-      - alpha_redis_data:/data
+      - "{{system}}_redis_data":/data
       #- alpha_redis_conf:/etc/redis
     networks:
       - host
 
   node2:
-    image: registry.nexdev.net:5050/docker/nexops-tools/redis:{{item.redis_stack}}_{{item.redis_version}}
+    image: registry.nexdev.net:5050/base/database/redis:{{item.redis_stack}}_{{item.redis_version}}
     healthcheck:
       test: ["CMD", "redis-cli", "-p", "6312", "-a", "foo1@bared", "ping"]
       interval: 3s
@@ -51,7 +51,7 @@ services:
         constraints:
           - node.labels.{{system}}_redis_node_2 == yes
     volumes:
-      - alpha_redis_data:/data
+      - "{{system}}_redis_data":/data
     #  - /proc/:/wproc/
       #- alpha_redis_conf:/etc/redis
     #privileged: true
@@ -59,7 +59,7 @@ services:
       - host
 
   node3:
-    image: registry.nexdev.net:5050/docker/nexops-tools/redis:{{item.redis_stack}}_{{item.redis_version}}
+    image: registry.nexdev.net:5050/base/database/redis:{{item.redis_stack}}_{{item.redis_version}}
     healthcheck:
       test: ["CMD", "redis-cli", "-p", "6312", "-a", "foo1@bared", "ping"]
       interval: 3s
@@ -73,7 +73,7 @@ services:
         constraints:
           - node.labels.{{system}}_redis_node_3 == yes
     volumes:
-      - alpha_redis_data:/data
+      - "{{system}}_redis_data":/data
     #  - /proc/:/wproc/
       #- alpha_redis_conf:/etc/redis
     #privileged: true
@@ -95,7 +95,7 @@ services:
       - SENTINEL_HOST={{item.master}}
 
 volumes:
-  alpha_redis_data:
+  "{{system}}_redis_data":
   #alpha_redis_conf:
   #alpha_redis_sentinel_conf:
 networks:

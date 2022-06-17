@@ -18,22 +18,61 @@
     - logs
   become: yes
 
-#- name: Create network
-#  docker_network:
-#    name: '{{swarm_network_nexops}}'
-#    driver: 'overlay'
-#    attachable: true
-#  ignore_errors: yes
-#  become: yes
-- name: Copy docker-compose file {{item.redis_stack}}_{{item.redis_version}}
+######NEXPROD
+- name: Copy docker-compose file {{system}} NEXPROD
+  template:
+    src: templates/docker-compose.yml.j2
+    dest: "{{gluster_path}}/docker-compose.yml"
+  become: yes
+  with_items:
+    - "{{alpha_redis_nexprod}}"
+  when: system == "alpha" and env == "nexprod"
+
+- name: Copy docker-compose file {{system}} NEXPROD
   template:
     src: templates/docker-compose.yml.j2
     dest: "{{gluster_path}}/docker-compose.yml"
   become: yes
   with_items:
     - "{{nap_redis_nexprod}}"
-#"{{system}}_redis_{{env}}"
+  when: system == "nap" and env == "nexprod"
+######LOCAL
+- name: Copy docker-compose file {{system}} LOCAL
+  template:
+    src: templates/docker-compose.yml.j2
+    dest: "{{gluster_path}}/docker-compose.yml"
+  become: yes
+  with_items:
+    - "{{alpha_redis_local}}"
+  when: system == "alpha" and env == "local"
 
+- name: Copy docker-compose file {{system}} LOCAL
+  template:
+    src: templates/docker-compose.yml.j2
+    dest: "{{gluster_path}}/docker-compose.yml"
+  become: yes
+  with_items:
+    - "{{nap_redis_local}}"
+  when: system == "nap" and env == "local"
+######UAT
+- name: Copy docker-compose file {{system}} UAT
+  template:
+    src: templates/docker-compose.yml.j2
+    dest: "{{gluster_path}}/docker-compose.yml"
+  become: yes
+  with_items:
+    - "{{alpha_redis_uat}}"
+  when: system == "alpha" and env == "uat"
+
+- name: Copy docker-compose file {{system}} UAT
+  template:
+    src: templates/docker-compose.yml.j2
+    dest: "{{gluster_path}}/docker-compose.yml"
+  become: yes
+  with_items:
+    - "{{nap_redis_uat}}"
+  when: system == "nap" and env == "uat"
+###
 - name: Copy cfg files
   template:
     src: "templates/{{item}}.j2"
@@ -42,8 +81,8 @@
   with_items:
     - redis.conf
 
-#- name: Deploy stack service REDIS
-#  shell: |
-#    cd {{gluster_path}}
-#    docker stack deploy -c docker-compose.yml {{stack_name}}-redis --with-registry-auth
-#  become: yes
+- name: Deploy stack service REDIS
+  shell: |
+    cd {{gluster_path}}
+    docker stack deploy -c docker-compose.yml {{system}}-redis --with-registry-auth
+  become: yes
