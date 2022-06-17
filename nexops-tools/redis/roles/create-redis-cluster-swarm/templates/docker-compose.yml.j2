@@ -21,7 +21,7 @@ services:
   node1:
     image: hub.nexdev.net/base/database/redis:{{item.redis_stack}}_{{item.redis_version}}
     healthcheck:
-      test: ["CMD", "redis-cli", "-p", "6312", "-a", "foo1@bared", "ping"]
+      test: ["CMD", "redis-cli", "-p", "{{item.redis_port}}", "-a", "foo1@bared", "ping"]
       interval: 3s
       timeout: 5s
       retries: 10
@@ -38,7 +38,7 @@ services:
   node2:
     image: hub.nexdev.net/base/database/redis:{{item.redis_stack}}_{{item.redis_version}}
     healthcheck:
-      test: ["CMD", "redis-cli", "-p", "6312", "-a", "foo1@bared", "ping"]
+      test: ["CMD", "redis-cli", "-p", "{{item.redis_port}}", "-a", "foo1@bared", "ping"]
       interval: 3s
       timeout: 5s
       retries: 10
@@ -60,7 +60,7 @@ services:
   node3:
     image: hub.nexdev.net/base/database/redis:{{item.redis_stack}}_{{item.redis_version}}
     healthcheck:
-      test: ["CMD", "redis-cli", "-p", "6312", "-a", "foo1@bared", "ping"]
+      test: ["CMD", "redis-cli", "-p", "{{item.redis_port}}", "-a", "foo1@bared", "ping"]
       interval: 3s
       timeout: 5s
       retries: 10
@@ -82,7 +82,7 @@ services:
       - "{{item.sentinel_port}}:611"
     deploy:
       mode: replicated
-      replicas: 1
+      replicas: 1s
       #mode: global
       placement:
         constraints:
