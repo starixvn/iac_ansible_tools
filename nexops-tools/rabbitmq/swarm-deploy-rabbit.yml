@@ -14,3 +14,4 @@
     - role: deploy-rabbit
       when: inventory_hostname in groups['swarm_managers']
       become: true
+      run_once: true
