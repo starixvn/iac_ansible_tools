@@ -25,7 +25,7 @@
 #    attachable: true
 #  ignore_errors: yes
 #  become: yes
-- name: Copy docker-compose file
+- name: Copy docker-compose file {{item.redis_stack}}_{{item.redis_version}}
   template:
     src: templates/docker-compose.yml.j2
     dest: "{{gluster_path}}/docker-compose.yml"
