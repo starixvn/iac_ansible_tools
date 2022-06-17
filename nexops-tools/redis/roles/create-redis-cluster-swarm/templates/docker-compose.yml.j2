@@ -2,7 +2,7 @@ version: "3.3"
 services:
 
   node_sentinel:
-    image: registry.nexdev.net:5050/docker/nexops-tools/redis-sentinel:{{item.redis_stack}}_{{item.redis_version}}
+    image: hub.nexdev.net/base/nexops-tools/redis-sentinel:{{item.redis_stack}}_{{item.redis_version}}
     deploy:
       mode: replicated
       replicas: 3
@@ -19,7 +19,7 @@ services:
       - host
 
   node1:
-    image: registry.nexdev.net:5050/base/database/redis:{{item.redis_stack}}_{{item.redis_version}}
+    image: hub.nexdev.net/base/database/redis:{{item.redis_stack}}_{{item.redis_version}}
     healthcheck:
       test: ["CMD", "redis-cli", "-p", "6312", "-a", "foo1@bared", "ping"]
       interval: 3s
@@ -37,7 +37,7 @@ services:
       - host
 
   node2:
-    image: registry.nexdev.net:5050/base/database/redis:{{item.redis_stack}}_{{item.redis_version}}
+    image: hub.nexdev.net/base/database/redis:{{item.redis_stack}}_{{item.redis_version}}
     healthcheck:
       test: ["CMD", "redis-cli", "-p", "6312", "-a", "foo1@bared", "ping"]
       interval: 3s
@@ -59,7 +59,7 @@ services:
       - host
 
   node3:
-    image: registry.nexdev.net:5050/base/database/redis:{{item.redis_stack}}_{{item.redis_version}}
+    image: hub.nexdev.net/base/database/redis:{{item.redis_stack}}_{{item.redis_version}}
     healthcheck:
       test: ["CMD", "redis-cli", "-p", "6312", "-a", "foo1@bared", "ping"]
       interval: 3s
@@ -81,7 +81,7 @@ services:
       - host
   
   heathcheck:
-    image: registry.nexdev.net:5050/docker/nexops-tools/redis-healthcheck:{{item.redis_stack}}_{{item.redis_version}}
+    image: hub.nexdev.net/base/nexops-tools/redis-healthcheck:{{item.redis_stack}}_{{item.redis_version}}
     ports:
       - "{{item.sentinel_port}}:611"
     deploy:
