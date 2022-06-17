@@ -1,6 +1,6 @@
 ---
 # Variables here are applicable to all host groups
-gluster_path: "/var/www/gluster/nexops/redis/{{env}}"
+gluster_path: "/var/www/redis/{{env}}/{{system}}"
 ####  ALPHA
 alpha_redis_local:
 - master: "10.18.200.109"

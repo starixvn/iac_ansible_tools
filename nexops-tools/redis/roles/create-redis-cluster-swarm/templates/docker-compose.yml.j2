@@ -30,9 +30,8 @@ services:
       placement:
         constraints:
           - node.labels.{{system}}_redis_node_1 == yes
-    #volumes:
-    #  - "{{system}}_redis_data":/data
-      #- alpha_redis_conf:/etc/redis
+    volumes:
+      - ./redis_node1:/data
     networks:
       - host
 
@@ -50,8 +49,8 @@ services:
       placement:
         constraints:
           - node.labels.{{system}}_redis_node_2 == yes
-    #volumes:
-    #  - "{{system}}_redis_data":/data
+    volumes:
+      - ./redis_node2:/data
     #  - /proc/:/wproc/
       #- alpha_redis_conf:/etc/redis
     #privileged: true
@@ -72,11 +71,8 @@ services:
       placement:
         constraints:
           - node.labels.{{system}}_redis_node_3 == yes
-    #volumes:
-    #  - "{{system}}_redis_data":/data
-    #  - /proc/:/wproc/
-      #- alpha_redis_conf:/etc/redis
-    #privileged: true
+    volumes:
+      - ./redis_node3:/data
     networks:
       - host
   

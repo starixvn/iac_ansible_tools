@@ -1,5 +1,5 @@
 ---
-- name: Verify stacks directory exists (on first swarm node)
+- name: creating working path
   #when: inventory_hostname in groups['swarm_managers']
   file:
     path: '{{gluster_path}}'
@@ -7,8 +7,7 @@
     state: directory
   become: yes
 
-- name: Verify stacks directory exists (on first swarm node)
-  #when: inventory_hostname in groups['swarm_managers']
+- name: ceate folders data logs
   file:
     path: '{{gluster_path}}/{{item}}'
     mode: '0777'
@@ -86,3 +85,4 @@
     cd {{gluster_path}}
     docker stack deploy -c docker-compose.yml {{system}}-redis --with-registry-auth
   become: yes
+  run_once: true
