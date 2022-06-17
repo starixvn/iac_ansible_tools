@@ -9,7 +9,7 @@
   roles:
     - role: create-redis-cluster-swarm
 #    - role: redis-tuning
-  tags:  redis-cluster-swarm
+  tags:  create-redis-cluster-swarm
 
 - hosts: all
   roles:
