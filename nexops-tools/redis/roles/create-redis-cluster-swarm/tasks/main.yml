@@ -31,7 +31,7 @@
     dest: "{{gluster_path}}/docker-compose.yml"
   become: yes
   with_items:
-    - nap_redis_nexprod
+    - "{{nap_redis_nexprod}}"
 #"{{system}}_redis_{{env}}"
 
 - name: Copy cfg files
