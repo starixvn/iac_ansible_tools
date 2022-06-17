@@ -82,7 +82,7 @@ services:
       - "{{item.sentinel_port}}:611"
     deploy:
       mode: replicated
-      replicas: 1s
+      replicas: 1
       #mode: global
       placement:
         constraints:
