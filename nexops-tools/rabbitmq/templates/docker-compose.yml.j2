@@ -13,10 +13,10 @@ services:
       - 15672:15672
       - 5672:5672
     networks:
-      - {{swarm_network}}
+      - {{swarm_networks[0]}}
     deploy:
       mode: replicated
-      replicas: 2
+      replicas: {{replicas | default('2')}}
       #endpoint_mode: dnsrr
       update_config:
         parallelism: 1
@@ -32,7 +32,7 @@ services:
       - data:/var/lib/rabbitmq/
 
 networks:
-  {{swarm_network}}:
+  {{swarm_networks[0]}}:
     external: true
 
 volumes:
