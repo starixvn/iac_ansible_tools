@@ -2,7 +2,7 @@ version: "3.3"
 services:
 
   node_sentinel:
-    image: registry.nexdev.net:5050/docker/nexops-tools/redis-sentinel:{{redis_stack}}_{{redis_version}}
+    image: registry.nexdev.net:5050/docker/nexops-tools/redis-sentinel:{{item.redis_stack}}_{{item.redis_version}}
     deploy:
       mode: replicated
       replicas: 3
@@ -10,7 +10,7 @@ services:
         constraints:
           - node.labels.REDIS_SENTINAL == yes
     environment:
-      - REDIS_MASTER_HOST={{master}}
+      - REDIS_MASTER_HOST={{item.master}}
     #  - SENTINEL_DOWN_AFTER=5000 #5000
     #  - SENTINEL_FAILOVER=30000 #15000
     #volumes:
@@ -19,7 +19,7 @@ services:
       - host
 
   node1:
-    image: registry.nexdev.net:5050/docker/nexops-tools/redis:{{redis_stack}}_{{redis_version}}
+    image: registry.nexdev.net:5050/docker/nexops-tools/redis:{{item.redis_stack}}_{{item.redis_version}}
     healthcheck:
       test: ["CMD", "redis-cli", "-p", "6312", "-a", "foo1@bared", "ping"]
       interval: 3s
@@ -37,14 +37,14 @@ services:
       - host
 
   node2:
-    image: registry.nexdev.net:5050/docker/nexops-tools/redis:{{redis_stack}}_{{redis_version}}
+    image: registry.nexdev.net:5050/docker/nexops-tools/redis:{{item.redis_stack}}_{{item.redis_version}}
     healthcheck:
       test: ["CMD", "redis-cli", "-p", "6312", "-a", "foo1@bared", "ping"]
       interval: 3s
       timeout: 5s
       retries: 10
     environment:
-      - REDIS_MASTER_HOST={{master}}
+      - REDIS_MASTER_HOST={{item.master}}
     deploy:
       mode: global
       placement:
@@ -59,14 +59,14 @@ services:
       - host
 
   node3:
-    image: registry.nexdev.net:5050/docker/nexops-tools/redis:{{redis_stack}}_{{redis_version}}
+    image: registry.nexdev.net:5050/docker/nexops-tools/redis:{{item.redis_stack}}_{{item.redis_version}}
     healthcheck:
       test: ["CMD", "redis-cli", "-p", "6312", "-a", "foo1@bared", "ping"]
       interval: 3s
       timeout: 5s
       retries: 10
     environment:
-      - REDIS_MASTER_HOST={{master}}
+      - REDIS_MASTER_HOST={{item.master}}
     deploy:
       mode: global
       placement:
@@ -81,9 +81,9 @@ services:
       - host
   
   heathcheck:
-    image: registry.nexdev.net:5050/docker/nexops-tools/redis-healthcheck:{{redis_stack}}_{{redis_version}}
+    image: registry.nexdev.net:5050/docker/nexops-tools/redis-healthcheck:{{item.redis_stack}}_{{item.redis_version}}
     ports:
-      - "{{sentinel_port}}:611"
+      - "{{item.sentinel_port}}:611"
     deploy:
       mode: replicated
       replicas: 1
@@ -92,7 +92,7 @@ services:
         constraints:
           - node.labels.REDIS_SENTINAL == yes
     environment:
-      - SENTINEL_HOST={{master}}
+      - SENTINEL_HOST={{item.master}}
 
 volumes:
   alpha_redis_data:
