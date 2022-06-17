@@ -6,9 +6,9 @@ services:
     hostname: "rabbit{{'{{'}}.Task.Slot{{'}}'}}"
     healthcheck:
       test: rabbitmq-diagnostics ping
-      interval: 1s
-      timeout: 2s
-      retries: 120
+      interval: 5s
+      timeout: 5s
+      retries: 20
     ports:
       - 15672:15672
       - 5672:5672
