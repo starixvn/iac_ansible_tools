@@ -3,8 +3,8 @@
   tasks:
     - name: print info
       debug:
-        msg: "{{ lookup('nap_redis_nexprod', 'master')}}"
-        
+        msg: "{{ lookup('system')}}"
+
 - hosts: all
   roles:
     - role: create-redis-single-node
