@@ -1,7 +1,9 @@
 version: "3.8"
 configs:
-  "{{redis_config}}":
-    file: "{{gluster_path}}/redis.conf"
+  "{{redis_config_master}}":
+    file: "{{gluster_path}}/master/redis.conf"
+  "{{redis_config_slave}}":
+    file: "{{gluster_path}}/slave/redis.conf"
 services:
 
   node_sentinel:
@@ -33,7 +35,7 @@ services:
       #- ./redis.conf:/etc/redis/redis.conf
       - ./data:/data
     configs:
-      - source: "{{redis_config}}"
+      - source: "{{redis_config_master}}"
         target: /etc/redis/redis.conf
     networks:
       - host
@@ -56,7 +58,7 @@ services:
       #- ./redis.conf:/etc/redis/redis.conf
       - ./data:/data
     configs:
-      - source: "{{redis_config}}"
+      - source: "{{redis_config_slave}}"
         target: /etc/redis/redis.conf
     networks:
       - host
@@ -79,7 +81,7 @@ services:
       #- ./redis.conf:/etc/redis/redis.conf
       - ./data:/data
     configs:
-      - source: "{{redis_config}}"
+      - source: "{{redis_config_slave}}"
         target: /etc/redis/redis.conf
     networks:
       - host
