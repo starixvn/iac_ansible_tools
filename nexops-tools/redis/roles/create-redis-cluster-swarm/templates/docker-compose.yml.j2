@@ -11,10 +11,6 @@ services:
           - node.labels.REDIS_SENTINAL == yes
     environment:
       - REDIS_MASTER_HOST={{item.master}}
-    #  - SENTINEL_DOWN_AFTER=5000 #5000
-    #  - SENTINEL_FAILOVER=30000 #15000
-    #volumes:
-    #  - alpha_redis_sentinel_conf:/etc/redis
     networks:
       - host
 
@@ -31,6 +27,7 @@ services:
         constraints:
           - node.labels.{{system}}_redis_node_1 == yes
     volumes:
+      - ./redis.conf:/etc/redis/redis.conf
       - ./data:/data
     networks:
       - host
@@ -50,10 +47,8 @@ services:
         constraints:
           - node.labels.{{system}}_redis_node_2 == yes
     volumes:
+      - ./redis.conf:/etc/redis/redis.conf
       - ./data:/data
-    #  - /proc/:/wproc/
-      #- alpha_redis_conf:/etc/redis
-    #privileged: true
     networks:
       - host
 
@@ -72,6 +67,7 @@ services:
         constraints:
           - node.labels.{{system}}_redis_node_3 == yes
     volumes:
+      - ./redis.conf:/etc/redis/redis.conf
       - ./data:/data
     networks:
       - host
@@ -90,10 +86,6 @@ services:
     environment:
       - SENTINEL_HOST={{item.master}}
 
-#volumes:
-#  "{{system}}_redis_data":
-  #alpha_redis_conf:
-  #alpha_redis_sentinel_conf:
 networks:
   host:
     external: true

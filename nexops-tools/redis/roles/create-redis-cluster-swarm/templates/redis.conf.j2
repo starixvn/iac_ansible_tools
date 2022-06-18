@@ -1,12 +1,12 @@
 protected-mode no
-#port
+port {{item.redis_port}}
 tcp-backlog 65536
 timeout 300
 tcp-keepalive 0
 daemonize no
 supervised no
 loglevel notice
-logfile "/var/log/redis/redis-server.log"
+#logfile "/var/log/redis/redis-server.log"
 databases 16
 always-show-logo yes
 stop-writes-on-bgsave-error yes
@@ -20,9 +20,9 @@ repl-diskless-sync no
 repl-diskless-sync-delay 5
 repl-disable-tcp-nodelay no
 slave-priority 100
-requirepass {{requirepass | default('foo1@bared')}}
-masterauth {{masterauth | default('foo1@bared')}}
-maxmemory {{maxmemory | default('2g')}}
+requirepass foo1@bared
+masterauth foo1@bared
+maxmemory {{maxmemory | default ('4g')}}
 lazyfree-lazy-eviction no
 lazyfree-lazy-expire no
 lazyfree-lazy-server-del no
@@ -54,6 +54,6 @@ client-output-buffer-limit slave 256mb 64mb 60
 client-output-buffer-limit pubsub 32mb 8mb 60
 hz 10
 aof-rewrite-incremental-fsync yes
-#save 900 1
-#save 300 10
-#save 60 10000
+save 900 1
+save 300 10
+save 60 10000
