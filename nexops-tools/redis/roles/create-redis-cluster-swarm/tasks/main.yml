@@ -87,7 +87,7 @@
     dest: "{{gluster_path}}/redis.conf"
   become: yes
   with_items:
-    - "{{nap_redis_local}"
+    - "{{nap_redis_local}}"
   when: system == "nap" and env == "local"
 ######UAT
 - name: Copy docker-compose file {{system}} UAT
@@ -123,7 +123,7 @@
     dest: "{{gluster_path}}/redis.conf"
   become: yes
   with_items:
-    - "{{nap_redis_uat}"
+    - "{{nap_redis_uat}}"
   when: system == "nap" and env == "uat"
 
 ######PROD
@@ -160,7 +160,7 @@
     dest: "{{gluster_path}}/redis.conf"
   become: yes
   with_items:
-    - "{{nap_redis_prod}"
+    - "{{nap_redis_prod}}"
   when: system == "nap" and env == "prod"
 ###
 - name: Deploy stack service REDIS
