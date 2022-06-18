@@ -45,6 +45,7 @@
   become: yes
   with_items:
     - "{{alpha_redis_nexprod}}"
+  ignore_errors: yes
   when: system == "alpha" and env == "nexprod" and inventory_hostname == {{ lookup('vars', 'alpha_redis_nexprod').master }}
 
 - name: Copy redis file {{system}} NEXPROD
@@ -54,6 +55,7 @@
   become: yes
   with_items:
     - "{{alpha_redis_nexprod}}"
+  ignore_errors: yes
   when: system == "alpha" and env == "nexprod" and inventory_hostname == {{ lookup('vars', 'alpha_redis_nexprod').slave }}
 
 - name: Copy redis file {{system}} NEXPROD
@@ -63,6 +65,7 @@
   become: yes
   with_items:
     - "{{nap_redis_nexprod}}"
+  ignore_errors: yes
   when: system == "nap" and env == "nexprod" and inventory_hostname == {{ lookup('vars', 'nap_redis_nexprod').master }}
 
 - name: Copy redis file {{system}} NEXPROD
@@ -72,6 +75,7 @@
   become: yes
   with_items:
     - "{{nap_redis_nexprod}}"
+  ignore_errors: yes
   when: system == "nap" and env == "nexprod" and inventory_hostname == {{ lookup('vars', 'nap_redis_nexprod').slave }}
 
 ######LOCAL
