@@ -4,7 +4,7 @@ gluster_path: "/var/www/redis/{{env}}/{{system}}"
 redis_config: "redis_{{env}}_{{ ansible_date_time.iso8601_basic_short }}"
 ####  ALPHA
 alpha_redis_local:
-- master: "10.18.200.109"
+  master: "10.18.200.109"
   slave1: "10.18.200.121"
   slave2: "10.18.200.144"
   redis_port: "6312"
@@ -15,7 +15,7 @@ alpha_redis_local:
   redis_stack: "ALPHA"
 
 alpha_redis_uat:
-- master: "10.40.40.135"
+  master: "10.40.40.135"
   slave1: "10.2.190.79"
   slave2: "10.2.190.68"
   redis_port: "6312"
@@ -26,12 +26,12 @@ alpha_redis_uat:
   redis_stack: "ALPHA"
 
 alpha_redis_sit:
-- master: "10."
+  master: "10."
   slave1: "10."
   slave2: "10."
 
 alpha_redis_prod:
-- master: "10.2.27.126"
+  master: "10.2.27.126"
   slave1: "10.2.27.125"
   slave2: "10.99.99.210"
   redis_port: "6312"
@@ -43,7 +43,7 @@ alpha_redis_prod:
 
 ####  NAP & Other System
 nap_redis_local:
-- master: "10.18.200.121"
+  master: "10.18.200.121"
   slave1: "10.18.200.109"
   slave2: "10.18.200.144"
   redis_port: "6311"
@@ -65,7 +65,7 @@ nap_redis_nexprod:
   redis_stack: NAP
 
 nap_redis_uat:
-- master: "10.2.190.68"
+  master: "10.2.190.68"
   slave1: "10.2.190.79"
   slave2: "10.40.40.135"
   redis_port: "6311"
@@ -76,12 +76,12 @@ nap_redis_uat:
   redis_stack: "NAP"
 
 nap_redis_sit:
-- master: "10."
+  master: "10."
   slave1: "10."
   slave2: "10."
 
 nap_redis_prod:
-- master: "10.2.27.125"
+  master: "10.2.27.125"
   slave1: "10.2.27.126"
   slave2: "10.99.99.210"
   redis_port: "6311"
