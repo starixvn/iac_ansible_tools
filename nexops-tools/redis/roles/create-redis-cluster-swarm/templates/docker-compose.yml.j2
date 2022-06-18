@@ -1,4 +1,7 @@
 version: "3.3"
+configs:
+  redis_config_@CONFIG_VERSION:
+    file: "{{gluster_path}}/redis.conf"
 services:
 
   node_sentinel:
@@ -27,8 +30,11 @@ services:
         constraints:
           - node.labels.{{system}}_redis_node_1 == yes
     volumes:
-      - ./redis.conf:/etc/redis/redis.conf
+      #- ./redis.conf:/etc/redis/redis.conf
       - ./data:/data
+    configs:
+      - source: redis_config_@CONFIG_VERSION
+        target: /etc/redis/redis.conf
     networks:
       - host
 
@@ -47,8 +53,11 @@ services:
         constraints:
           - node.labels.{{system}}_redis_node_2 == yes
     volumes:
-      - ./redis.conf:/etc/redis/redis.conf
+      #- ./redis.conf:/etc/redis/redis.conf
       - ./data:/data
+    configs:
+      - source: redis_config_@CONFIG_VERSION
+        target: /etc/redis/redis.conf
     networks:
       - host
 
@@ -67,8 +76,11 @@ services:
         constraints:
           - node.labels.{{system}}_redis_node_3 == yes
     volumes:
-      - ./redis.conf:/etc/redis/redis.conf
+      #- ./redis.conf:/etc/redis/redis.conf
       - ./data:/data
+    configs:
+      - source: redis_config_@CONFIG_VERSION
+        target: /etc/redis/redis.conf
     networks:
       - host
   
