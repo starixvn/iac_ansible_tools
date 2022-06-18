@@ -1,7 +1,7 @@
 ---
 # Variables here are applicable to all host groups
 gluster_path: "/var/www/redis/{{env}}/{{system}}"
-redis_config: "redis_config_{{ ansible_date_time.iso8601_basic_short }}"
+redis_config: "redis_{{env}}_{{ ansible_date_time.iso8601_basic_short }}"
 ####  ALPHA
 alpha_redis_local:
 - master: "10.18.200.109"

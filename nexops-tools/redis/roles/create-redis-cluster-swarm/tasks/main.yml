@@ -170,3 +170,12 @@
   become: yes
   when: inventory_hostname in groups['swarm_managers']
   run_once: true
+
+- name: Deploy stack service REDIS
+  shell: |
+    cd {{gluster_path}}
+    docker config rm $(docker config ls | grep -e {{system}}-redis_redis_{{env}}_*)
+  become: yes
+  when: inventory_hostname in groups['swarm_managers']
+  run_once: true
+  ignore_errors: yes
