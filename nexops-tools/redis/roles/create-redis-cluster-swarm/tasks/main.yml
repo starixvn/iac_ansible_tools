@@ -35,6 +35,24 @@
   with_items:
     - "{{nap_redis_nexprod}}"
   when: system == "nap" and env == "nexprod"
+
+- name: Copy redis file {{system}} NEXPROD
+  template:
+    src: templates/redis.conf.j2
+    dest: "{{gluster_path}}/redis.conf"
+  become: yes
+  with_items:
+    - "{{alpha_redis_nexprod}}"
+  when: system == "alpha" and env == "nexprod"
+
+- name: Copy redis file {{system}} NEXPROD
+  template:
+    src: templates/redis.conf.j2
+    dest: "{{gluster_path}}/redis.conf"
+  become: yes
+  with_items:
+    - "{{nap_redis_nexprod}}"
+  when: system == "nap" and env == "nexprod"
 ######LOCAL
 - name: Copy docker-compose file {{system}} LOCAL
   template:
@@ -52,6 +70,24 @@
   become: yes
   with_items:
     - "{{nap_redis_local}}"
+  when: system == "nap" and env == "local"
+
+- name: Copy redis file {{system}} LOCAL
+  template:
+    src: templates/redis.conf.j2
+    dest: "{{gluster_path}}/redis.conf"
+  become: yes
+  with_items:
+    - "{{alpha_redis_local}}"
+  when: system == "alpha" and env == "local"
+
+- name: Copy redis file {{system}} LOCAL
+  template:
+    src: templates/redis.conf.j2
+    dest: "{{gluster_path}}/redis.conf"
+  become: yes
+  with_items:
+    - "{{nap_redis_local}"
   when: system == "nap" and env == "local"
 ######UAT
 - name: Copy docker-compose file {{system}} UAT
@@ -71,15 +107,62 @@
   with_items:
     - "{{nap_redis_uat}}"
   when: system == "nap" and env == "uat"
-###
-- name: Copy cfg files
+
+- name: Copy redis file {{system}} UAT
   template:
-    src: "templates/{{item}}.j2"
-    dest: "{{gluster_path}}/{{item}}"
+    src: templates/redis.conf.j2
+    dest: "{{gluster_path}}/redis.conf"
   become: yes
   with_items:
-    - redis.conf
+    - "{{alpha_redis_uat}}"
+  when: system == "alpha" and env == "uat"
 
+- name: Copy redis file {{system}} UAT
+  template:
+    src: templates/redis.conf.j2
+    dest: "{{gluster_path}}/redis.conf"
+  become: yes
+  with_items:
+    - "{{nap_redis_uat}"
+  when: system == "nap" and env == "uat"
+
+######PROD
+- name: Copy docker-compose file {{system}} PROD
+  template:
+    src: templates/docker-compose.yml.j2
+    dest: "{{gluster_path}}/docker-compose.yml"
+  become: yes
+  with_items:
+    - "{{alpha_redis_prod}}"
+  when: system == "alpha" and env == "prod"
+
+- name: Copy docker-compose file {{system}} PROD
+  template:
+    src: templates/docker-compose.yml.j2
+    dest: "{{gluster_path}}/docker-compose.yml"
+  become: yes
+  with_items:
+    - "{{nap_redis_prod}}"
+  when: system == "nap" and env == "prod"
+
+- name: Copy redis file {{system}} PROD
+  template:
+    src: templates/redis.conf.j2
+    dest: "{{gluster_path}}/redis.conf"
+  become: yes
+  with_items:
+    - "{{alpha_redis_prod}}"
+  when: system == "alpha" and env == "prod"
+
+- name: Copy redis file {{system}} PROD
+  template:
+    src: templates/redis.conf.j2
+    dest: "{{gluster_path}}/redis.conf"
+  become: yes
+  with_items:
+    - "{{nap_redis_prod}"
+  when: system == "nap" and env == "prod"
+###
 - name: Deploy stack service REDIS
   shell: |
     cd {{gluster_path}}

@@ -10,6 +10,7 @@ alpha_redis_local:
   sentinel_port: "26112"
   python_port: "33005"
   redis_version: "5"
+  maxmemory: "4g"
   redis_stack: "ALPHA"
 
 alpha_redis_uat:
@@ -20,6 +21,7 @@ alpha_redis_uat:
   sentinel_port: "26112"
   python_port: "33005"
   redis_version: "5"
+  maxmemory: "4g"
   redis_stack: "ALPHA"
 
 alpha_redis_sit:
@@ -35,6 +37,7 @@ alpha_redis_prod:
   sentinel_port: "26112"
   python_port: "33005"
   redis_version: "5"
+  maxmemory: "4g"
   redis_stack: "ALPHA"
 
 ####  NAP & Other System
@@ -46,16 +49,18 @@ nap_redis_local:
   sentinel_port: "26111"
   python_port: "33003"
   redis_version: "5"
+  maxmemory: "4g"
   redis_stack: "NAP"
 
 nap_redis_nexprod:
-- master: 10.18.200.151
-  slave1: 10.18.200.152
-  slave2: 10.18.200.153
-  redis_port: 6311
-  sentinel_port: 26111
-  python_port: 33003
-  redis_version: 5
+- master: "10.18.200.151"
+  slave1: "10.18.200.152"
+  slave2: "10.18.200.153"
+  redis_port: "6311"
+  sentinel_port: "26111"
+  python_port: "33003"
+  redis_version: "5"
+  maxmemory: "6g"
   redis_stack: NAP
 
 nap_redis_uat:
@@ -66,6 +71,7 @@ nap_redis_uat:
   sentinel_port: "26111"
   python_port: "33003"
   redis_version: "5"
+  maxmemory: "4g"
   redis_stack: "NAP"
 
 nap_redis_sit:
@@ -81,4 +87,5 @@ nap_redis_prod:
   sentinel_port: "26111"
   python_port: "33003"
   redis_version: "5"
+  maxmemory: "4g"
   redis_stack: "NAP"
