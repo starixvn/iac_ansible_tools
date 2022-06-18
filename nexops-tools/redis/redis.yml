@@ -12,6 +12,16 @@
       tags: testing
       ignore_errors: yes
 
+    - name: Access nested variables
+      debug: msg="{{ lookup('vars', 'variabl' + myvar).sub_var }}"
+      ignore_errors: True
+      vars:
+        variablename:
+            sub_var: 12
+        myvar: ename
+      tags: testing
+      ignore_errors: yes
+
 - hosts: all
   roles:
     - role: create-redis-single-node
