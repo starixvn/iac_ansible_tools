@@ -37,6 +37,7 @@
     - "{{nap_redis_nexprod}}"
   when: system == "nap" and env == "nexprod" 
 
+###REDIS
 - name: Copy redis file {{system}} NEXPROD
   template:
     src: templates/redis.conf.j2
@@ -44,7 +45,25 @@
   become: yes
   with_items:
     - "{{alpha_redis_nexprod}}"
-  when: system == "alpha" and env == "nexprod" and inventory_hostname == {{ lookup('vars', 'nap_redis_nexprod').slave }}
+  when: system == "alpha" and env == "nexprod" and inventory_hostname == {{ lookup('vars', 'alpha_redis_nexprod').master }}
+
+- name: Copy redis file {{system}} NEXPROD
+  template:
+    src: templates/redis.conf.j2
+    dest: "{{gluster_path}}/slave/redis.conf"
+  become: yes
+  with_items:
+    - "{{alpha_redis_nexprod}}"
+  when: system == "alpha" and env == "nexprod" and inventory_hostname == {{ lookup('vars', 'alpha_redis_nexprod').slave }}
+
+- name: Copy redis file {{system}} NEXPROD
+  template:
+    src: templates/redis.conf.j2
+    dest: "{{gluster_path}}/master/redis.conf"
+  become: yes
+  with_items:
+    - "{{nap_redis_nexprod}}"
+  when: system == "nap" and env == "nexprod" and inventory_hostname == {{ lookup('vars', 'nap_redis_nexprod').master }}
 
 - name: Copy redis file {{system}} NEXPROD
   template:
