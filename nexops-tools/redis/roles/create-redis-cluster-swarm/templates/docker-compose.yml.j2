@@ -1,6 +1,6 @@
 version: "3.8"
 configs:
-  redis_config:
+  "{{redis_config}}":
     file: "{{gluster_path}}/redis.conf"
 services:
 
@@ -33,7 +33,7 @@ services:
       #- ./redis.conf:/etc/redis/redis.conf
       - ./data:/data
     configs:
-      - source: redis_config
+      - source: "{{redis_config}}"
         target: /etc/redis/redis.conf
     networks:
       - host
@@ -56,7 +56,7 @@ services:
       #- ./redis.conf:/etc/redis/redis.conf
       - ./data:/data
     configs:
-      - source: redis_config
+      - source: "{{redis_config}}"
         target: /etc/redis/redis.conf
     networks:
       - host
@@ -79,7 +79,7 @@ services:
       #- ./redis.conf:/etc/redis/redis.conf
       - ./data:/data
     configs:
-      - source: redis_config
+      - source: "{{redis_config}}"
         target: /etc/redis/redis.conf
     networks:
       - host
