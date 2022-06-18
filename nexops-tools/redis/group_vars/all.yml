@@ -54,7 +54,7 @@ nap_redis_local:
   redis_stack: "NAP"
 
 nap_redis_nexprod:
-- master: "10.18.200.151"
+  master: "10.18.200.151"
   slave1: "10.18.200.152"
   slave2: "10.18.200.153"
   redis_port: "6311"
