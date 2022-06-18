@@ -1,9 +1,24 @@
 ---
 - hosts: all
   tasks:
-    - name: print info
-      debug:
-        msg: "{{ lookup('system')}}"
+    - name: Show value of 'variablename'
+      debug: msg="{{ lookup('vars', 'variabl' + myvar) }}"
+      vars:
+        variablename: hello
+        myvar: ename
+
+    - name: Show default empty since i dont have 'variablnotename'
+      debug: msg="{{ lookup('vars', 'variabl' + myvar, default='')}}"
+      vars:
+        variablename: hello
+        myvar: notename
+
+    - name: Produce an error since i dont have 'variablnotename'
+      debug: msg="{{ lookup('vars', 'variabl' + myvar)}}"
+      ignore_errors: True
+      vars:
+        variablename: hello
+        myvar: notename
 
 - hosts: all
   roles:
