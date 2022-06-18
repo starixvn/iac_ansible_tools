@@ -35,7 +35,7 @@
   become: yes
   with_items:
     - "{{nap_redis_nexprod}}"
-  when: system == "nap" and env == "nexprod" and inventory_hostname == {{ lookup('vars', 'nap_redis_nexprod').master }}
+  when: system == "nap" and env == "nexprod" 
 
 - name: Copy redis file {{system}} NEXPROD
   template:
@@ -44,7 +44,7 @@
   become: yes
   with_items:
     - "{{alpha_redis_nexprod}}"
-  when: system == "alpha" and env == "nexprod" and inventory_hostname == {{ lookup('vars', 'nap_redis_nexprod').master }}
+  when: system == "alpha" and env == "nexprod" and {{ lookup('vars', 'nap_redis_nexprod').master }} == inventory_hostname
 
 - name: Copy redis file {{system}} NEXPROD
   template:
@@ -53,7 +53,7 @@
   become: yes
   with_items:
     - "{{alpha_redis_nexprod}}"
-  when: system == "alpha" and env == "nexprod" and inventory_hostname != {{ lookup('vars', 'nap_redis_nexprod').master }}
+  when: system == "alpha" and env == "nexprod" and {{ lookup('vars', 'nap_redis_nexprod').slave }} == inventory_hostname
 
 - name: Copy redis file {{system}} NEXPROD
   template:
