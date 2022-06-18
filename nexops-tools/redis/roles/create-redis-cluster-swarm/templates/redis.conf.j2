@@ -57,7 +57,6 @@ aof-rewrite-incremental-fsync yes
 save 900 1
 save 300 10
 save 60 10000
-{%if {{ inventory_hostname }} }
 {% if inventory_hostname != item.master %}
 slaveof {{item.master}} {{item.redis_port}}
 {% endif %}
