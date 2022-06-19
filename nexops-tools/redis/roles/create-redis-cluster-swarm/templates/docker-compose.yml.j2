@@ -1,3 +1,9 @@
+{% if env == "local" or env == "nexprod" %}
+{% set hub_url = "hub.nexdev.net" %}
+{% else %}
+{% set hub_url = "nexhub.starixplay.com/kbt" %}
+{% endif %}
+
 version: "3.8"
 configs:
   "{{redis_config_master}}":
@@ -7,7 +13,7 @@ configs:
 services:
 
   node_sentinel:
-    image: hub.nexdev.net/base/nexops-tools/redis-sentinel:{{ lookup('vars', system + '_redis_' + env).redis_stack}}_{{ lookup('vars', system + '_redis_' + env).redis_version}}
+    image: {{hub_url}}/base/nexops-tools/redis-sentinel:{{ lookup('vars', system + '_redis_' + env).redis_stack}}_{{ lookup('vars', system + '_redis_' + env).redis_version}}
     deploy:
       mode: replicated
       replicas: 3
@@ -20,7 +26,7 @@ services:
       - host
 
   node1:
-    image: hub.nexdev.net/base/database/redis:{{ lookup('vars', system + '_redis_' + env).redis_stack}}_{{ lookup('vars', system + '_redis_' + env).redis_version}}
+    image: {{hub_url}}/base/database/redis:{{ lookup('vars', system + '_redis_' + env).redis_stack}}_{{ lookup('vars', system + '_redis_' + env).redis_version}}
     healthcheck:
       test: ["CMD", "redis-cli", "-p", "{{ lookup('vars', system + '_redis_' + env).redis_port}}", "-a", "foo1@bared", "ping"]
       interval: 3s
@@ -40,7 +46,7 @@ services:
       - host
 
   node2:
-    image: hub.nexdev.net/base/database/redis:{{ lookup('vars', system + '_redis_' + env).redis_stack}}_{{ lookup('vars', system + '_redis_' + env).redis_version}}
+    image: {{hub_url}}/base/database/redis:{{ lookup('vars', system + '_redis_' + env).redis_stack}}_{{ lookup('vars', system + '_redis_' + env).redis_version}}
     healthcheck:
       test: ["CMD", "redis-cli", "-p", "{{ lookup('vars', system + '_redis_' + env).redis_port}}", "-a", "foo1@bared", "ping"]
       interval: 3s
@@ -60,7 +66,7 @@ services:
       - host
 
   node3:
-    image: hub.nexdev.net/base/database/redis:{{ lookup('vars', system + '_redis_' + env).redis_stack}}_{{ lookup('vars', system + '_redis_' + env).redis_version}}
+    image: {{hub_url}}/base/database/redis:{{ lookup('vars', system + '_redis_' + env).redis_stack}}_{{ lookup('vars', system + '_redis_' + env).redis_version}}
     healthcheck:
       test: ["CMD", "redis-cli", "-p", "{{ lookup('vars', system + '_redis_' + env).redis_port}}", "-a", "foo1@bared", "ping"]
       interval: 3s
@@ -83,7 +89,7 @@ services:
       - host
   
   heathcheck:
-    image: hub.nexdev.net/base/nexops-tools/redis-healthcheck:{{ lookup('vars', system + '_redis_' + env).redis_stack}}_{{ lookup('vars', system + '_redis_' + env).redis_version}}
+    image: {{hub_url}}/base/nexops-tools/redis-healthcheck:{{ lookup('vars', system + '_redis_' + env).redis_stack}}_{{ lookup('vars', system + '_redis_' + env).redis_version}}
     ports:
       - "{{ lookup('vars', system + '_redis_' + env).python_port}}:611"
     deploy:
