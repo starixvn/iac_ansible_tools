@@ -18,80 +18,14 @@
     - conf/slave
   become: yes
 
-######NEXPROD
-- name: Copy docker-compose file {{system}} NEXPROD
+### COPY docker-compose 
+- name: Copy docker-compose file {{system}} {{env}}
   template:
     src: templates/docker-compose.yml.j2
     dest: "{{gluster_path}}/docker-compose.yml"
   become: yes
-  with_items:
-    - "{{alpha_redis_nexprod}}"
-  when: system == "alpha" and env == "nexprod"
-
-- name: Copy docker-compose file {{system}} NEXPROD
-  template:
-    src: templates/docker-compose.yml.j2
-    dest: "{{gluster_path}}/docker-compose.yml"
-  become: yes
-  with_items:
-    - "{{nap_redis_nexprod}}"
-  when: system == "nap" and env == "nexprod" 
-
-######LOCAL
-- name: Copy docker-compose file {{system}} LOCAL
-  template:
-    src: templates/docker-compose.yml.j2
-    dest: "{{gluster_path}}/docker-compose.yml"
-  become: yes
-  with_items:
-    - "{{alpha_redis_local}}"
-  when: system == "alpha" and env == "local"
-
-- name: Copy docker-compose file {{system}} LOCAL
-  template:
-    src: templates/docker-compose.yml.j2
-    dest: "{{gluster_path}}/docker-compose.yml"
-  become: yes
-  with_items:
-    - "{{nap_redis_local}}"
-  when: system == "nap" and env == "local"
-######UAT
-- name: Copy docker-compose file {{system}} UAT
-  template:
-    src: templates/docker-compose.yml.j2
-    dest: "{{gluster_path}}/docker-compose.yml"
-  become: yes
-  with_items:
-    - "{{alpha_redis_uat}}"
-  when: system == "alpha" and env == "uat"
-
-- name: Copy docker-compose file {{system}} UAT
-  template:
-    src: templates/docker-compose.yml.j2
-    dest: "{{gluster_path}}/docker-compose.yml"
-  become: yes
-  with_items:
-    - "{{nap_redis_uat}}"
-  when: system == "nap" and env == "uat"
-
-######PROD
-- name: Copy docker-compose file {{system}} PROD
-  template:
-    src: templates/docker-compose.yml.j2
-    dest: "{{gluster_path}}/docker-compose.yml"
-  become: yes
-  with_items:
-    - "{{alpha_redis_prod}}"
-  when: system == "alpha" and env == "prod"
-
-- name: Copy docker-compose file {{system}} PROD
-  template:
-    src: templates/docker-compose.yml.j2
-    dest: "{{gluster_path}}/docker-compose.yml"
-  become: yes
-  with_items:
-    - "{{nap_redis_prod}}"
-  when: system == "nap" and env == "prod"
+  when: inventory_hostname in groups['swarm_managers']
+  run_once: true
 
 ###NAP REDIS CFG 
 - name: Copy redis MASTER file {{env}}
