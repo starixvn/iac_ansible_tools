@@ -1,6 +1,16 @@
 ---
 - hosts: all
   tasks:
+    - name: Testing 
+      debug: msg="{{ lookup('vars', system '_redis_' + env').master }}"
+      tags: testing
+      ignore_errors: yes
+    
+    - name: Testing
+      debug: msg="{{ lookup('vars', system '_redis_' + env').redis_port }}"
+      tags: testing
+      ignore_errors: yes
+
     - name: Show value of 'variablename'
       debug: msg="{{ lookup('vars', 'nap_redis_nexprod').master }}"
       tags: testing

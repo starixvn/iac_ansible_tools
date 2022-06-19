@@ -37,47 +37,6 @@
     - "{{nap_redis_nexprod}}"
   when: system == "nap" and env == "nexprod" 
 
-###REDIS
-- name: Copy redis file {{system}} NEXPROD
-  template:
-    src: templates/redis.conf.j2
-    dest: "{{gluster_path}}/master/redis.conf"
-  become: yes
-  with_items:
-    - "{{alpha_redis_nexprod}}"
-  ignore_errors: yes
-  when: system == "alpha" and env == "nexprod" and inventory_hostname == {{ lookup('vars', 'alpha_redis_nexprod').master }}
-
-- name: Copy redis file {{system}} NEXPROD
-  template:
-    src: templates/redis.conf.j2
-    dest: "{{gluster_path}}/slave/redis.conf"
-  become: yes
-  with_items:
-    - "{{alpha_redis_nexprod}}"
-  ignore_errors: yes
-  when: system == "alpha" and env == "nexprod" and inventory_hostname == {{ lookup('vars', 'alpha_redis_nexprod').slave }}
-
-- name: Copy redis file {{system}} NEXPROD
-  template:
-    src: templates/redis.conf.j2
-    dest: "{{gluster_path}}/master/redis.conf"
-  become: yes
-  with_items:
-    - "{{nap_redis_nexprod}}"
-  ignore_errors: yes
-  when: system == "nap" and env == "nexprod" and inventory_hostname == {{ lookup('vars', 'nap_redis_nexprod').master }}
-
-- name: Copy redis file {{system}} NEXPROD
-  template:
-    src: templates/redis.conf.j2
-    dest: "{{gluster_path}}/slave/redis.conf"
-  become: yes
-  with_items:
-    - "{{nap_redis_nexprod}}"
-  ignore_errors: yes
-  when: system == "nap" and env == "nexprod" and inventory_hostname == {{ lookup('vars', 'nap_redis_nexprod').slave }}
-
 ######LOCAL
 - name: Copy docker-compose file {{system}} LOCAL
   template:
@@ -96,24 +55,6 @@
   with_items:
     - "{{nap_redis_local}}"
   when: system == "nap" and env == "local"
-
-- name: Copy redis file {{system}} LOCAL
-  template:
-    src: templates/redis.conf.j2
-    dest: "{{gluster_path}}/redis.conf"
-  become: yes
-  with_items:
-    - "{{alpha_redis_local}}"
-  when: system == "alpha" and env == "local"
-
-- name: Copy redis file {{system}} LOCAL
-  template:
-    src: templates/redis.conf.j2
-    dest: "{{gluster_path}}/redis.conf"
-  become: yes
-  with_items:
-    - "{{nap_redis_local}}"
-  when: system == "nap" and env == "local"
 ######UAT
 - name: Copy docker-compose file {{system}} UAT
   template:
@@ -128,24 +69,6 @@
   template:
     src: templates/docker-compose.yml.j2
     dest: "{{gluster_path}}/docker-compose.yml"
-  become: yes
-  with_items:
-    - "{{nap_redis_uat}}"
-  when: system == "nap" and env == "uat"
-
-- name: Copy redis file {{system}} UAT
-  template:
-    src: templates/redis.conf.j2
-    dest: "{{gluster_path}}/redis.conf"
-  become: yes
-  with_items:
-    - "{{alpha_redis_uat}}"
-  when: system == "alpha" and env == "uat"
-
-- name: Copy redis file {{system}} UAT
-  template:
-    src: templates/redis.conf.j2
-    dest: "{{gluster_path}}/redis.conf"
   become: yes
   with_items:
     - "{{nap_redis_uat}}"
@@ -170,23 +93,57 @@
     - "{{nap_redis_prod}}"
   when: system == "nap" and env == "prod"
 
-- name: Copy redis file {{system}} PROD
+###NAP REDIS CFG 
+- name: Copy redis MASTER file NAP {{env}}
   template:
-    src: templates/redis.conf.j2
-    dest: "{{gluster_path}}/redis.conf"
+    src: templates/master_redis.conf.j2
+    dest: "{{gluster_path}}/master/redis.conf"
+  vars:
+    redis_port: 6311
+    redis_master: "{{ lookup('vars', system '_redis_' + env').master }}"
   become: yes
-  with_items:
-    - "{{alpha_redis_prod}}"
-  when: system == "alpha" and env == "prod"
+  when: system == "nap" and inventory_hsostname in groups['swarm_managers']
+  run_once: true
 
-- name: Copy redis file {{system}} PROD
+- name: Copy redis SLAVE file NAP {{env}}
   template:
-    src: templates/redis.conf.j2
-    dest: "{{gluster_path}}/redis.conf"
+    src: templates/slave_redis.conf.j2
+    dest: "{{gluster_path}}/slave/redis.conf"
+  vars:
+    redis_master_port: 6311
   become: yes
-  with_items:
-    - "{{nap_redis_prod}}"
-  when: system == "nap" and env == "prod"
+  when: system == "nap" and inventory_hostname in groups['swarm_managers']
+  run_once: true
+###ALPHA REDIS CFG 
+- name: Copy redis MASTER file ALPHA {{env}}
+  template:
+    src: templates/master_redis.conf.j2
+    dest: "{{gluster_path}}/master/redis.conf"
+  vars:
+    redis_master_port: 6312
+  become: yes
+  when: system == "alpha" and inventory_hostname in groups['swarm_managers']
+  run_once: true
+
+- name: Copy redis SLAVE file ALPHA {{env}}
+  template:
+    src: templates/slave_redis.conf.j2
+    dest: "{{gluster_path}}/slave/redis.conf"
+  vars:
+    redis_master_port: 6312
+  become: yes
+  when: system == "nap" and inventory_hostname in groups['swarm_managers']
+  run_once: true
+
+- name: Copy redis file {{system}} {{env}}
+  template:
+    src: templates/slave_redis.conf.j2
+    dest: "{{gluster_path}}/slave/redis.conf"
+  vars:
+    redis_master_port: 6312
+  become: yes
+  when: system == "alpha" and inventory_hostname in groups['swarm_managers']
+  run_once: true
 ###
 - name: Deploy stack service REDIS
   shell: |
