@@ -17,8 +17,6 @@
     - conf/slave
   become: yes
   when: inventory_hostname in groups['swarm_managers']
-  run_once: true
-  skip_reason: Conditional result was False
 
 ### COPY docker-compose 
 - name: Copy docker-compose file {{system}} {{env}}
