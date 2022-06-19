@@ -19,4 +19,4 @@
   #when: inventory_hostname in groups['swarm_managers']
 
 - import_tasks: 'deploy.yml'
-  when: inventory_hostname in groups['swarm_managers']
+  when: inventory_hostname in groups['swarm_managers2']
