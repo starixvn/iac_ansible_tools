@@ -3,8 +3,8 @@
 gluster_path: "/var/www/redis/{{env}}/{{system}}"
 redis_config_master: "redis_master_{{env}}_{{ ansible_date_time.iso8601_basic_short }}"
 redis_config_slave: "redis_slave_{{env}}_{{ ansible_date_time.iso8601_basic_short }}"
-node1_redis: "{{redis_config_slave}}"
-node2_redis: "{{redis_config_master}}"
+node1_redis: "{{redis_config_master}}"
+node2_redis: "{{redis_config_slave}}"
 node3_redis: "{{redis_config_slave}}"
 ####  ALPHA
 alpha_redis_local:
