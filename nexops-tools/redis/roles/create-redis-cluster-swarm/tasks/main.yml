@@ -99,7 +99,7 @@
     src: templates/master_redis.conf.j2
     dest: "{{gluster_path}}/conf/master/redis.conf"
   become: yes
-  when: system == "nap" and inventory_hsostname in groups['swarm_managers']
+  when: inventory_hostname in groups['swarm_managers']
   run_once: true
 
 - name: Copy redis SLAVE file {{env}}
