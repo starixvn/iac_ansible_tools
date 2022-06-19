@@ -24,7 +24,7 @@
     src: templates/docker-compose.yml.j2
     dest: "{{gluster_path}}/docker-compose.yml"
   become: yes
-  when: inventory_hostname in groups['swarm_managers']
+  #when: inventory_hostname in groups['swarm_managers']
   run_once: true
   skip_reason: Conditional result was False
 
@@ -34,7 +34,7 @@
     src: templates/master_redis.conf.j2
     dest: "{{gluster_path}}/conf/master/redis.conf"
   become: yes
-  when: inventory_hostname in groups['swarm_managers']
+  #when: inventory_hostname in groups['swarm_managers']
   run_once: true
   skip_reason: Conditional result was False
 
@@ -43,7 +43,7 @@
     src: templates/slave_redis.conf.j2
     dest: "{{gluster_path}}/conf/slave/redis.conf"
   become: yes
-  when: inventory_hostname in groups['swarm_managers']
+  #when: inventory_hostname in groups['swarm_managers']
   run_once: true
   skip_reason: Conditional result was False
 ###
@@ -52,7 +52,7 @@
     cd {{gluster_path}}
     docker stack deploy -c docker-compose.yml {{system}}-redis --with-registry-auth
   become: yes
-  when: inventory_hostname in groups['swarm_managers']
+  #when: inventory_hostname in groups['swarm_managers']
   run_once: true
   skip_reason: Conditional result was False
 
@@ -61,7 +61,7 @@
     cd {{gluster_path}}
     docker config rm $(docker config ls | grep -e {{system}}-redis_redis_*)
   become: yes
-  when: inventory_hostname in groups['swarm_managers']
+  #when: inventory_hostname in groups['swarm_managers']
   run_once: true
   skip_reason: Conditional result was False
   ignore_errors: yes
