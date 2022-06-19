@@ -56,7 +56,7 @@
   shell: |
     cd {{gluster_path}}
     docker config rm $(docker config ls | grep -e {{system}}-redis_redis_*)
-  become: yes nap-redis_redis
+  become: yes
   when: inventory_hostname in groups['swarm_managers']
   run_once: true
   ignore_errors: yes
