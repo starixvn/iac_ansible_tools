@@ -3,11 +3,14 @@
 gluster_path: "/var/www/redis/{{env}}/{{system}}"
 redis_config_master: "redis_master_{{env}}_{{ ansible_date_time.iso8601_basic_short }}"
 redis_config_slave: "redis_slave_{{env}}_{{ ansible_date_time.iso8601_basic_short }}"
+node1_redis: "{{redis_config_master}}"
+node2_redis: "{{redis_config_slave}}"
+node3_redis: "{{redis_config_slave}}"
 ####  ALPHA
 alpha_redis_local:
   master: "10.18.200.109"
-  slave1: "10.18.200.121"
-  slave2: "10.18.200.144"
+  #slave1: "10.18.200.121"
+  #slave2: "10.18.200.144"
   redis_port: "6312"
   sentinel_port: "26112"
   python_port: "33005"
@@ -17,8 +20,8 @@ alpha_redis_local:
 
 alpha_redis_uat:
   master: "10.40.40.135"
-  slave1: "10.2.190.79"
-  slave2: "10.2.190.68"
+  #slave1: "10.2.190.79"
+  #slave2: "10.2.190.68"
   redis_port: "6312"
   sentinel_port: "26112"
   python_port: "33005"
@@ -28,13 +31,13 @@ alpha_redis_uat:
 
 alpha_redis_sit:
   master: "10."
-  slave1: "10."
-  slave2: "10."
+  #slave1: "10."
+  #slave2: "10."
 
 alpha_redis_prod:
   master: "10.2.27.126"
-  slave1: "10.2.27.125"
-  slave2: "10.99.99.210"
+  #slave1: "10.2.27.125"
+  #slave2: "10.99.99.210"
   redis_port: "6312"
   sentinel_port: "26112"
   python_port: "33005"
@@ -45,8 +48,8 @@ alpha_redis_prod:
 ####  NAP & Other System
 nap_redis_local:
   master: "10.18.200.121"
-  slave1: "10.18.200.109"
-  slave2: "10.18.200.144"
+  #slave1: "10.18.200.109"
+  #slave2: "10.18.200.144"
   redis_port: "6311"
   sentinel_port: "26111"
   python_port: "33003"
@@ -56,8 +59,8 @@ nap_redis_local:
 
 nap_redis_nexprod:
   master: "10.18.200.151"
-  slave1: "10.18.200.152"
-  slave2: "10.18.200.153"
+  #slave1: "10.18.200.152"
+  #slave2: "10.18.200.153"
   redis_port: "6311"
   sentinel_port: "26111"
   python_port: "33003"
@@ -67,8 +70,8 @@ nap_redis_nexprod:
 
 nap_redis_uat:
   master: "10.2.190.68"
-  slave1: "10.2.190.79"
-  slave2: "10.40.40.135"
+  #slave1: "10.2.190.79"
+  #slave2: "10.40.40.135"
   redis_port: "6311"
   sentinel_port: "26111"
   python_port: "33003"
@@ -78,13 +81,13 @@ nap_redis_uat:
 
 nap_redis_sit:
   master: "10."
-  slave1: "10."
-  slave2: "10."
+  #slave1: "10."
+  #slave2: "10."
 
 nap_redis_prod:
   master: "10.2.27.125"
-  slave1: "10.2.27.126"
-  slave2: "10.99.99.210"
+  #slave1: "10.2.27.126"
+  #slave2: "10.99.99.210"
   redis_port: "6311"
   sentinel_port: "26111"
   python_port: "33003"
