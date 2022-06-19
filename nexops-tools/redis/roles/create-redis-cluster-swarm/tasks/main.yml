@@ -16,8 +16,6 @@
     - conf/master
     - conf/slave
   become: yes
-  run_once: true
-  delegate_to: localhost
 
 ### COPY docker-compose 
 - name: Copy docker-compose file {{system}} {{env}}
@@ -25,9 +23,8 @@
     src: templates/docker-compose.yml.j2
     dest: "{{gluster_path}}/docker-compose.yml"
   become: yes
-  #when: inventory_hostname in groups['swarm_managers']
+  when: inventory_hostname in groups['swarm_managers']
   run_once: true
-  delegate_to: localhost
 
 ###NAP REDIS CFG 
 - name: Copy redis MASTER file {{env}}
@@ -35,34 +32,30 @@
     src: templates/master_redis.conf.j2
     dest: "{{gluster_path}}/conf/master/redis.conf"
   become: yes
-  #when: inventory_hostname in groups['swarm_managers']
+  when: inventory_hostname in groups['swarm_managers']
   run_once: true
-  delegate_to: localhost
 
 - name: Copy redis SLAVE file {{env}}
   template:
     src: templates/slave_redis.conf.j2
     dest: "{{gluster_path}}/conf/slave/redis.conf"
   become: yes
-  #when: inventory_hostname in groups['swarm_managers']
+  when: inventory_hostname in groups['swarm_managers']
   run_once: true
-  delegate_to: localhost
 ###
 - name: Deploy stack service REDIS
   shell: |
     cd {{gluster_path}}
     docker stack deploy -c docker-compose.yml {{system}}-redis --with-registry-auth
   become: yes
-  #when: inventory_hostname in groups['swarm_managers']
+  when: inventory_hostname in groups['swarm_managers']
   run_once: true
-  delegate_to: localhost
 
 - name: remove old swarn config REDIS
   shell: |
     cd {{gluster_path}}
     docker config rm $(docker config ls | grep -e {{system}}-redis_redis_*)
   become: yes
-  #when: inventory_hostname in groups['swarm_managers']
+  when: inventory_hostname in groups['swarm_managers']
   run_once: true
-  delegate_to: localhost
   ignore_errors: yes
