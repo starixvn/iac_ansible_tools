@@ -1,0 +1,21 @@
+---
+- name: creating working path
+  #when: inventory_hostname in groups['swarm_managers']
+  file:
+    path: '{{gluster_path}}/data'
+    mode: '0755'
+    state: directory
+  become: yes
+
+- name: ceate folders data logs
+  file:
+    path: '{{gluster_path}}/{{item}}'
+    mode: '0777'
+    state: directory
+  with_items:
+    - conf/master
+    - conf/slave
+  become: yes
+  #when: inventory_hostname in groups['swarm_managers']
+- include_tasks: deploy.yml
+  when: inventory_hostname in groups['swarm_managers']

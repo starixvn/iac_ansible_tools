@@ -1,0 +1,107 @@
+{% if env == "local" or env == "nexprod" %}
+{% set hub_url = "hub.nexdev.net" %}
+{% else %}
+{% set hub_url = "nexhub.starixplay.com/kbt" %}
+{% endif %}
+
+version: "3.8"
+configs:
+  "{{redis_config_master}}":
+    file: "{{gluster_path}}/conf/master/redis.conf"
+  "{{redis_config_slave}}":
+    file: "{{gluster_path}}/conf/slave/redis.conf"
+services:
+
+  node_sentinel:
+    image: {{hub_url}}/base/nexops-tools/redis-sentinel:{{ lookup('vars', system + '_redis_' + env).redis_stack}}_{{ lookup('vars', system + '_redis_' + env).redis_version}}
+    deploy:
+      mode: replicated
+      replicas: 3
+      placement:
+        constraints:
+          - node.labels.REDIS_SENTINAL == yes
+    environment:
+      - REDIS_MASTER_HOST={{ lookup('vars', system + '_redis_' + env).master }}
+    networks:
+      - host
+
+  node1:
+    image: {{hub_url}}/base/database/redis:{{ lookup('vars', system + '_redis_' + env).redis_stack}}_{{ lookup('vars', system + '_redis_' + env).redis_version}}
+    healthcheck:
+      test: ["CMD", "redis-cli", "-p", "{{ lookup('vars', system + '_redis_' + env).redis_port}}", "-a", "foo1@bared", "ping"]
+      interval: 3s
+      timeout: 5s
+      retries: 10
+    deploy:
+      mode: global
+      placement:
+        constraints:
+          - node.labels.{{system}}_redis_node_1 == yes
+    volumes:
+      - ./data:/data
+    configs:
+      - source: "{{ lookup('vars', system + '_redis_' + env).node1}}"
+        target: /etc/redis/redis.conf
+    networks:
+      - host
+
+  node2:
+    image: {{hub_url}}/base/database/redis:{{ lookup('vars', system + '_redis_' + env).redis_stack}}_{{ lookup('vars', system + '_redis_' + env).redis_version}}
+    healthcheck:
+      test: ["CMD", "redis-cli", "-p", "{{ lookup('vars', system + '_redis_' + env).redis_port}}", "-a", "foo1@bared", "ping"]
+      interval: 3s
+      timeout: 5s
+      retries: 10
+    deploy:
+      mode: global
+      placement:
+        constraints:
+          - node.labels.{{system}}_redis_node_2 == yes
+    volumes:
+      - ./data:/data
+    configs:
+      - source: "{{ lookup('vars', system + '_redis_' + env).node2}}"
+        target: /etc/redis/redis.conf
+    networks:
+      - host
+
+  node3:
+    image: {{hub_url}}/base/database/redis:{{ lookup('vars', system + '_redis_' + env).redis_stack}}_{{ lookup('vars', system + '_redis_' + env).redis_version}}
+    healthcheck:
+      test: ["CMD", "redis-cli", "-p", "{{ lookup('vars', system + '_redis_' + env).redis_port}}", "-a", "foo1@bared", "ping"]
+      interval: 3s
+      timeout: 5s
+      retries: 10
+    #environment:
+    #  - REDIS_MASTER_HOST={{ lookup('vars', system + '_redis_' + env).master}}
+    deploy:
+      mode: global
+      placement:
+        constraints:
+          - node.labels.{{system}}_redis_node_3 == yes
+    volumes:
+      #- ./redis.conf:/etc/redis/redis.conf
+      - ./data:/data
+    configs:
+      - source: "{{ lookup('vars', system + '_redis_' + env).node3}}"
+        target: /etc/redis/redis.conf
+    networks:
+      - host
+  
+  heathcheck:
+    image: {{hub_url}}/base/nexops-tools/redis-healthcheck:{{ lookup('vars', system + '_redis_' + env).redis_stack}}_{{ lookup('vars', system + '_redis_' + env).redis_version}}
+    ports:
+      - "{{ lookup('vars', system + '_redis_' + env).python_port}}:611"
+    deploy:
+      mode: replicated
+      replicas: 1
+      #mode: global
+      placement:
+        constraints:
+          - node.labels.REDIS_SENTINAL == yes
+    environment:
+      - SENTINEL_HOST={{ lookup('vars', system + '_redis_' + env).master}}
+
+networks:
+  host:
+    external: true
