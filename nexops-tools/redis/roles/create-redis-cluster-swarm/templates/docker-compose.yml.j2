@@ -1,9 +1,9 @@
 version: "3.8"
 configs:
   "{{redis_config_master}}":
-    file: "{{gluster_path}}/master/redis.conf"
+    file: "{{gluster_path}}/conf/master/redis.conf"
   "{{redis_config_slave}}":
-    file: "{{gluster_path}}/slave/redis.conf"
+    file: "{{gluster_path}}/conf/slave/redis.conf"
 services:
 
   node_sentinel:
