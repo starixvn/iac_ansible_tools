@@ -47,7 +47,7 @@
 - name: Deploy stack service REDIS
   shell: |
     cd {{gluster_path}}
-    docker stack deploy -c docker-composes.yml {{system}}-redis --with-registry-auth
+    docker stack deploy -c docker-compose.yml {{system}}-redis --with-registry-auth
   become: yes
   when: inventory_hostname in groups['swarm_managers']
   run_once: true
