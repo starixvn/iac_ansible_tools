@@ -22,7 +22,7 @@ repl-disable-tcp-nodelay no
 slave-priority 100
 requirepass foo1@bared
 masterauth foo1@bared
-maxmemory {{item.maxmemory | default ('4g')}}
+maxmemory {{ lookup('vars', system + '_redis_' + env).maxmemory | default ('4g')}}
 lazyfree-lazy-eviction no
 lazyfree-lazy-expire no
 lazyfree-lazy-server-del no
