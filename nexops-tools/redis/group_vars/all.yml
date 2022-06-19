@@ -62,7 +62,7 @@ nap_redis_nexprod:
   sentinel_port: "26111"
   python_port: "33003"
   redis_version: "5"
-  maxmemory: "4g"
+  maxmemory: "2g"
   redis_stack: NAP
 
 nap_redis_uat:
