@@ -32,14 +32,20 @@ services:
         constraints:
           - node.labels.{{system}}_redis_node_1 == yes
     volumes:
-      #- ./redis.conf:/etc/redis/redis.conf
       - ./data:/data
     configs:
+{% if inventory_hostname == lookup('vars', system + '_redis_' + env).master %}
       - source: "{{redis_config_master}}"
+{% endif %}
+{% if inventory_hostname == lookup('vars', system + '_redis_' + env).slave1 %}
+      - source: "{{redis_config_slave}}"
+{% endif %}
+{% if inventory_hostname == lookup('vars', system + '_redis_' + env).slave2 %}
+      - source: "{{redis_config_slave}}"
+{% endif %}
         target: /etc/redis/redis.conf
     networks:
       - host
-
   node2:
     image: hub.nexdev.net/base/database/redis:{{ lookup('vars', system + '_redis_' + env).redis_stack}}_{{ lookup('vars', system + '_redis_' + env).redis_version}}
     healthcheck:
@@ -58,7 +64,15 @@ services:
       #- ./redis.conf:/etc/redis/redis.conf
       - ./data:/data
     configs:
+{% if inventory_hostname == lookup('vars', system + '_redis_' + env).master %}
+      - source: "{{redis_config_master}}"
+{% endif %}
+{% if inventory_hostname == lookup('vars', system + '_redis_' + env).slave1 %}
       - source: "{{redis_config_slave}}"
+{% endif %}
+{% if inventory_hostname == lookup('vars', system + '_redis_' + env).slave2 %}
+      - source: "{{redis_config_slave}}"
+{% endif %}
         target: /etc/redis/redis.conf
     networks:
       - host
@@ -81,7 +95,15 @@ services:
       #- ./redis.conf:/etc/redis/redis.conf
       - ./data:/data
     configs:
+{% if inventory_hostname == lookup('vars', system + '_redis_' + env).master %}
+      - source: "{{redis_config_master}}"
+{% endif %}
+{% if inventory_hostname == lookup('vars', system + '_redis_' + env).slave1 %}
       - source: "{{redis_config_slave}}"
+{% endif %}
+{% if inventory_hostname == lookup('vars', system + '_redis_' + env).slave2 %}
+      - source: "{{redis_config_slave}}"
+{% endif %}
         target: /etc/redis/redis.conf
     networks:
       - host
