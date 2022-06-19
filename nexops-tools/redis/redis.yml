@@ -2,12 +2,12 @@
 - hosts: all
   tasks:
     - name: Testing 
-      debug: msg="{{ lookup('vars', system + '_redis_' + env').master }}"
+      debug: msg="{{ lookup('vars', system + 'system_redis_' + env).master }}"
       tags: testing
       ignore_errors: yes
     
     - name: Testing
-      debug: msg="{{ lookup('vars', system + '_redis_' + env').redis_port }}"
+      debug: msg="{{ lookup('vars', system + '_redis_' + env).redis_port }}"
       tags: testing
       ignore_errors: yes
 
