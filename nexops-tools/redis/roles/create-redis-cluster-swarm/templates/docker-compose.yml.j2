@@ -34,7 +34,7 @@ services:
     volumes:
       - ./data:/data
     configs:
-      - source: "{{node1_redis}}"
+      - source: "{{ lookup('vars', system + '_redis_' + env).node1}}"
         target: /etc/redis/redis.conf
     networks:
       - host
@@ -54,7 +54,7 @@ services:
     volumes:
       - ./data:/data
     configs:
-      - source: "{{node2_redis}}"
+      - source: "{{ lookup('vars', system + '_redis_' + env).node2}}"
         target: /etc/redis/redis.conf
     networks:
       - host
@@ -77,7 +77,7 @@ services:
       #- ./redis.conf:/etc/redis/redis.conf
       - ./data:/data
     configs:
-      - source: "{{node3_redis}}"
+      - source: "{{ lookup('vars', system + '_redis_' + env).node3}}"
         target: /etc/redis/redis.conf
     networks:
       - host
