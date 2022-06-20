@@ -38,22 +38,22 @@
   shell: docker login --username={{item.user}} --password={{item.pass}} {{item.url}}
   with_items:
     - "{{nexcel_local_registry_login}}"
-  when: org == nexcel and env == "local" or org == nexcel and env == "nexprod"
+  when: org == "nexcel" and env == "local" or org == "nexcel" and env == "nexprod"
 
 - name: Login registry
   shell: docker login --username={{item.user}} --password={{item.pass}} {{item.url}}
   with_items:
     - "{{nexcel_kbt_registry_login}}"
-  when: org == nexcel and env == "prod" or org == nexcel and env == "uat" or org == nexcel and env == "sit"
+  when: org == "nexcel" and env == "prod" or org == "nexcel" and env == "uat" or org == "nexcel" and env == "sit"
 ### LUMI
 - name: Login registry
   shell: docker login --username={{item.user}} --password={{item.pass}} {{item.url}}
   with_items:
     - "{{luminet_local_registry_login}}"
-  when: org == luminet and env == "local"
+  when: org == "luminet" and env == "local"
 
 - name: Login registry
   shell: docker login --username={{item.user}} --password={{item.pass}} {{item.url}}
   with_items:
     - "{{luminet_kbt_registry_login}}"
-  when: org == luminet and env == "prod" or org == luminet and env == "uat" or org == luminet and env == "sit"
+  when: org == "luminet" and env == "prod" or org == "luminet" and env == "uat" or org == "luminet" and env == "sit"
