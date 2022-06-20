@@ -63,10 +63,8 @@ services:
 {% if org_name == 'nexcel' %}
 {% if env == "local" or env == "nexprod" %}
     image: hub.nexdev.net/{{team_name}}/{{project_name}}_{{service_name}}:{{environment}}-latest
-{% elif env == "uat"%}
-    image: nexhub.starixplay.com/kbt/{{team_name}}/{{project_name}}_{{service_name}}:{{environment}}-latest
 {% else %}
-    image: registry.nexdev.net:5050/{{item.0.docker_image_registry_path}}:{{environment}}-latest
+    image: nexhub.starixplay.com/kbt/{{team_name}}/{{project_name}}_{{service_name}}:{{environment}}-latest
 {% endif %}
 {% endif %}
 {% if platform == "linux" %}
