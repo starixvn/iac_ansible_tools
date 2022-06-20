@@ -2,7 +2,7 @@
 # Variables here are applicable to all host groups
 local_dir: D
 nexprod_dir: D
-uat_dir: D
+uat_dir: E
 sit_dir: D
 prod_dir: E
 aws_dir: C
