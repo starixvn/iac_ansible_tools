@@ -1,0 +1,5 @@
+---
+- name: Create volume(s)
+  include: create-volumes.yml
+  when: glusterfs_volumes
+  become: true

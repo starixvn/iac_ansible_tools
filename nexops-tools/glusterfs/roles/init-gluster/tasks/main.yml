@@ -1,0 +1,64 @@
+---
+- name: Create gluster directory
+  file:
+    path: '/var/libs/gluster'
+    state: directory
+    mode: '0777'
+  become: yes
+
+- name: Add a key from a file on the Ansible server
+  apt_key:
+    url: https://download.gluster.org/pub/gluster/glusterfs/7/rsa.pub
+    state: present
+  become: yes
+  ignore_errors: yes
+
+- name: Add apt repository gluster (1/2)
+  apt_repository:
+    repo: ppa:gluster/glusterfs-7
+    state: present
+  become: yes
+  ignore_errors: yes
+
+#- name: Add apt repository gluster (2/2)
+#  shell: dpkg --force-all -P glusterfs-server
+#  become: yes
+#  ignore_errors: yes
+
+- name: Install GlusterFS
+  #apt: name={{ item }} state=latest update_cache=yes
+  apt: name={{ item }} state=latest update_cache=no
+  with_items:
+    - glusterfs-server
+    - glusterfs-common
+  become: true
+  ignore_errors: yes
+
+- name: Enable GlusterFS on boot
+  service: 'name=glusterd state=started enabled=yes'
+  become: true
+
+- name: Configure glusterfs peers
+  gluster_peer:
+    state: present
+    nodes: '{{ play_hosts }}'
+  delegate_to: '{{ play_hosts | first }}'
+  become: true
+
+- name: Get existing volumes list
+  shell: 'gluster volume list'
+  changed_when: false
+  register: glusterfs_volume_list
+  delegate_to: '{{ play_hosts | first }}'
+  become: true
+
+- name: Install Docker Python library
+  become: true
+  apt:
+    state: present
+    update_cache: no
+    #update_cache: yes
+    #upgrade: yes
+    pkg:
+      - python3-pip
+      - curl

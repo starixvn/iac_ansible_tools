@@ -1,0 +1,50 @@
+---
+- name: Ensure bricks directories presence (1/2)
+  file:
+    name: '{{ glusterfs_default_bricks_dir }}'
+    state: directory
+  delegate_to: '{{ item[1] }}'
+  with_nested:
+    - '{{ glusterfs_volumes }}'
+    - '{{ cluster | default(play_hosts) }}'
+  when: >
+    (item[0].state is not defined or item[0].state == 'present') and
+    (item[0].nodes is undefined or item[1] in item[0].nodes) and
+    item[0].bricks is undefined
+
+- name: Ensure bricks directories presence (2/2)
+  file:
+    name: '{{ item.1 }}'
+    state: directory
+  with_subelements:
+    - '{{ glusterfs_volumes }}'
+    - bricks
+    - skip_missing: True
+  when: item.0.state is not defined or item.0.state == 'present'
+
+- name: Create and configure volumes
+  gluster_volume:
+    name: '{{ item.volume }}'
+    cluster: '{{ cluster | default(play_hosts) }}'
+    force: "{{ item.force | default('yes') }}"
+    transport: "{{ item.transport | default('tcp') }}"
+    state: present
+    replicas: '{{ replica | default(play_hosts | length) }}'
+    stripes: '{{ item.stripe | default(omit) }}'
+    disperses: '{{ item.disperse | default(omit) }}'
+    redundancies: '{{ item.redundancy | default(omit) }}'
+    options: '{{ item.options | default(omit) }}'
+    brick: "{% if item.bricks is defined %}{{ item.bricks | join(',') }}{% else %}{{ glusterfs_default_bricks_dir }}/{{ item.volume }}{% endif %}"
+  delegate_to: '{{ cluster | default(play_hosts) | first }}'
+  run_once: True
+  with_items: '{{ glusterfs_volumes }}'
+  when: (item.state is not defined or item.state == 'present')
+
+- name: Start volume(s)
+  gluster_volume:
+    name: '{{ item.volume }}'
+    state: started
+  delegate_to: '{{ play_hosts | first }}'
+  run_once: true
+  with_items: '{{ glusterfs_volumes }}'
+  when: item.state is not defined or item.state == 'present'
