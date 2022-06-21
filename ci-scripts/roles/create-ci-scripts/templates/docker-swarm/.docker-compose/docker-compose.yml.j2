@@ -224,7 +224,7 @@ services:
 {% if item.0.disable_health_check is undefined or item.0.disable_health_check == false %}
 {% if item.0.framework is defined and item.0.framework == "dotnet" %}
     healthcheck:
-      test: ['CMD', 'curl', '-f', "http://localhost:{{item.0.port | default('5000')}}{{item.0.healthcheck_path | default('')}}"]
+      test: ['CMD', 'curl', '-f', "http://{{item.0.healthcheck_domain | default('localhost')}}:{{item.0.port | default('5000')}}{{item.0.healthcheck_path | default('')}}"]
       interval: {{item.0.healthcheck_interval | default('5s')}}
       timeout: {{item.0.healthcheck_timeout | default('5s')}}
       retries: {{item.0.healthcheck_retries | default('5')}}
