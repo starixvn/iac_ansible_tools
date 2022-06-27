@@ -1,6 +1,6 @@
 ---
-- name: Login registry
-  shell: docker login --username={{docker_registry_username}} --password={{docker_registry_password}} {{docker_registry_url}}
+#- name: Login registry
+#  shell: docker login --username={{docker_registry_username}} --password={{docker_registry_password}} {{docker_registry_url}}
 
 - name: Create Deployment directory
   file:
@@ -17,7 +17,8 @@
     docker run -d --name gitlab-runner --restart always \
       -v /var/www/gitlab-runner/config:/etc/gitlab-runner \
       -v /var/run/docker.sock:/var/run/docker.sock \
-      registry.nexdev.net:5050/docker/gitlab-runner:latest
+      hub.lumigame.com/base/gitlab-runner:latest
+#registry.nexdev.net:5050/docker/gitlab-runner:latest
 
 - name: create Container Runner {{team}}
   when: team == "nexcel"
@@ -25,4 +26,5 @@
     docker run -d --name gitlab-runner --restart always \
       -v /var/www/gitlab-runner/config:/etc/gitlab-runner \
       -v /var/run/docker.sock:/var/run/docker.sock \
-      registry.nexdev.net:5050/docker/gitlab-runner:latest
+      hub.nexdev.net/base/gitlab-runner:latest
+#registry.nexdev.net:5050/docker/gitlab-runner:latest
