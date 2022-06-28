@@ -3,3 +3,8 @@
   include: create-volumes.yml
   when: glusterfs_volumes
   become: true
+
+- name: Remove volume(s)
+  include: remove-volumes.yml
+  when: glusterfs_volumes
+  become: true

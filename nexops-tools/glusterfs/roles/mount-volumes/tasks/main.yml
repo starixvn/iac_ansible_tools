@@ -1,0 +1,10 @@
+---
+- name: Unmount volume(s)
+  include: unmount-volumes.yml
+  when: glusterfs_volumes
+  become: true
+
+- name: Mount volume(s)
+  include: mount-volumes.yml
+  when: glusterfs_volumes
+  become: true
