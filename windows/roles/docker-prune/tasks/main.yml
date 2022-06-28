@@ -1,0 +1,15 @@
+- name: Prune container
+  win_shell: |
+    docker container prune -f
+  ignore_errors: yes
+
+- name: Prune volume
+  win_shell: |
+    docker volume prune -f
+  ignore_errors: yes
+
+- name: Prune images
+  win_shell: |
+    docker image prune -f
+    docker builder prune --all -f
+  ignore_errors: yes
