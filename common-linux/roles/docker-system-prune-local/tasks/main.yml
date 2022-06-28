@@ -1,18 +1,15 @@
 - name: Prune container
   shell: |
     docker container prune -f
-  become: yes
   ignore_errors: yes
 
 - name: Prune volume
   shell: |
     docker volume prune -f
-  become: yes
   ignore_errors: yes
 
 - name: Prune images
   shell: |
     docker image prune -f {{option}}
     docker builder prune --all -f
-  become: yes
   ignore_errors: yes
