@@ -82,3 +82,9 @@
     id_list: [1,2,3,4,5]
   tags:
     - install-gitlab-runner
+
+- hosts: all
+  roles:
+    - role: docker-prune
+  tags:
+    - docker-prune
