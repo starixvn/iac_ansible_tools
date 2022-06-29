@@ -1,7 +1,7 @@
 version: "3"
 services:
   {{redis_name | default ('redis')}}:
-    image: registry.nexdev.net:5050/docker/database/redis:{{redis_version | default ('5')}}
+    image: hub.nexdev.net/base/database/redis:{{redis_version | default ('5')}}
     container_name: {{redis_name | default ('redis')}}
     hostname: {{redis_name | default ('redis')}}
 {% if external_port is defined%}
