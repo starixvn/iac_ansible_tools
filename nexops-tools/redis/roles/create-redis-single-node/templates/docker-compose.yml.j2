@@ -1,7 +1,12 @@
+{% if env == "local" or env == "nexprod" %}
+{% set hub_url = "{{hub_url}}" %}
+{% else %}
+{% set hub_url = "nexhub.starixplay.com/kbt" %}
+{% endif %}
 version: "3"
 services:
   {{redis_name | default ('redis')}}:
-    image: hub.nexdev.net/base/database/redis:{{redis_version | default ('5')}}
+    image: {{hub_url}}/base/database/redis:{{redis_version | default ('5')}}
     container_name: {{redis_name | default ('redis')}}
     hostname: {{redis_name | default ('redis')}}
 {% if external_port is defined%}
