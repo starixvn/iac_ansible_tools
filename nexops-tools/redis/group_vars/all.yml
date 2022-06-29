@@ -19,8 +19,8 @@ alpha_redis_local:
   redis_stack: "ALPHA"
 
 alpha_redis_uat:
-  master: "10.40.40.135"
-  #slave1: "10.2.190.79"
+  master: "10.2.190.79"
+  #slave1: "10.40.40.135"
   #slave2: "10.2.190.68"
   node1: "{{redis_config_master}}"
   node2: "{{redis_config_slave}}"
