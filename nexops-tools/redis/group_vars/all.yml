@@ -38,7 +38,7 @@ alpha_redis_sit:
   #slave2: "10."
 
 alpha_redis_prod:
-  master: "10.2.27.126"
+  master: "10.2.27.130"
   #slave1: "10.2.27.125"
   #slave2: "10.99.99.210"
   node1: "{{redis_config_master}}"
@@ -100,7 +100,7 @@ nap_redis_sit:
   #slave2: "10."
 
 nap_redis_prod:
-  master: "10.2.27.125"
+  master: "10.2.27.124"
   #slave1: "10.2.27.126"
   #slave2: "10.99.99.210"
   node1: "{{redis_config_master}}"
