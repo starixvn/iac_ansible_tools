@@ -100,8 +100,8 @@ nap_redis_sit:
   #slave2: "10."
 
 nap_redis_prod:
-  master: "10.2.27.124"
-  #slave1: "10.2.27.126"
+  master: "10.2.27.125"
+  #slave1: "10.2.27.130"
   #slave2: "10.99.99.210"
   node1: "{{redis_config_master}}"
   node2: "{{redis_config_slave}}"
