@@ -180,12 +180,25 @@ services:
 {% endif %}
 {% if env == "prod" or env == "nexprod" %}
       update_config:
+{% if item.0.update_order is defined and item.0.update_order == 'stop-first' %}
+        order: stop-first
+{% else %}
         order: start-first
         failure_action: rollback
         delay: 10s
       rollback_config:
         parallelism: 0
         order: stop-first
+{% endif %}
+{% else %}
+{% if item.0.update_order is defined and item.0.update_order == 'start-first' %}
+        order: start-first
+        failure_action: rollback
+        delay: 10s
+      rollback_config:
+        parallelism: 0
+        order: stop-first
+{% endif %}
 {% endif %}
       restart_policy:
         condition: any
