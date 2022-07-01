@@ -192,6 +192,7 @@ services:
 {% endif %}
 {% else %}
 {% if item.0.update_order is defined and item.0.update_order == 'start-first' %}
+      update_config:
         order: start-first
         failure_action: rollback
         delay: 10s
