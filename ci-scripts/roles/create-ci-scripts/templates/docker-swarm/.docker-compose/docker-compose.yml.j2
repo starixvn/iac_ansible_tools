@@ -58,7 +58,11 @@ configs:
 services:
   {{service_name}}_{{environment}}:
 {% if org_name == 'luminet' %}
+{% if env == "local" %}
+    image: hub.lumigame.com/{{team_name}}/{{project_name}}_{{service_name}}:{{environment}}-latest
+{% else %}
     image: git3.nexdev.net:5050/{{item.0.docker_image_registry_path}}:{{environment}}-latest
+{% endif %}
 {% endif %}
 {% if org_name == 'nexcel' %}
 {% if env == "local" or env == "nexprod" %}
