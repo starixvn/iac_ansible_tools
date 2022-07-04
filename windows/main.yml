@@ -88,3 +88,9 @@
     - role: docker-prune
   tags:
     - docker-prune
+
+- hosts: all
+  roles:
+    - role: docker-prune-runner
+  tags:
+    - docker-prune-runner
