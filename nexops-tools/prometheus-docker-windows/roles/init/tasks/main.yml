@@ -1,0 +1,34 @@
+---
+- name: Verify stacks directory exists (on first swarm node)
+  file:
+    path: '{{gluster_path}}/prometheus-windows'
+    mode: '0755'
+    state: directory
+  become: yes
+
+- name: Create network
+  docker_network:
+    name: '{{swarm_network_nexops}}'
+    driver: 'overlay'
+    attachable: true
+  ignore_errors: yes
+  become: yes
+
+- name: Copy docker-compose file
+  template:
+    src: 'templates/docker-compose.yml.j2'
+    dest: '{{gluster_path}}/prometheus-windows/prometheus-windows.yml'
+  become: yes
+
+- name: Copy config file
+  template:
+    src: 'templates/prometheus.yml'
+    dest: '{{gluster_path}}/prometheus-windows/prometheus.yml'
+  become: yes
+
+- name: Build up and run container
+  #when: inventory_hostname in groups['swarm_managers']
+  shell: |
+    cd {{gluster_path}}/prometheus-windows
+    docker stack deploy --compose-file=prometheus-windows.yml {{stack}} --with-registry-auth
+  become: yes
