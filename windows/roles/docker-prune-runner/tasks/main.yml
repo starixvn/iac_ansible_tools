@@ -10,6 +10,6 @@
 
 - name: Prune images
   win_shell: |
-    docker image prune --all -f --filter "until={{time}}"
+    docker image prune --all -f --filter "until={{time}}" --filter="label!=builder=rocketor"
     docker builder prune --all -f
   ignore_errors: yes
