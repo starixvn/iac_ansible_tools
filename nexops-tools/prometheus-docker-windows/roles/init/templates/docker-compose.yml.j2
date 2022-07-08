@@ -13,7 +13,7 @@ services:
       replicas: 1
       placement:
         constraints:
-          - node.labels.{{label_node | default ('prometheus-windows')}} == yes
+          - node.labels.prometheus-windows == dummy
 
 networks:
   {{ swarm_network_nexops }}:
