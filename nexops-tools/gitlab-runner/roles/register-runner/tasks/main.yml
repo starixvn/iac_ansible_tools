@@ -13,7 +13,7 @@
     --tag-list "docker" \
     --cache-type "s3" \
     --cache-shared \
-    --cache-s3-server-address "minio.nexdev.net" \
+    --cache-s3-server-address "https://minio.nexdev.net" \
     --cache-s3-access-key "gitlab-ci" \
     --cache-s3-secret-key "H5nF5ywy262wt881ZWpq" \
     --cache-s3-bucket-name "gitlab" \
