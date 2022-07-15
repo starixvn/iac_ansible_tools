@@ -4,18 +4,22 @@
 
 - name: Create Deployment directory
   file:
-    path: "{{item}}"
+    path: "{{runner_config_path}}"
     state: directory
     mode: "0755"
   become: yes
-  with_items:
-    - "/var/www/gitlab-runner/config"
+
+- name: Copy Gitlab-runner configs
+  template:
+    src: "templates/config.toml.j2"
+    dest: "{{runner_config_path}}/config.toml"
+  become: yes
 
 - name: create Container Runner {{team}}
   when: team == "luminet"
   shell: |
     docker run -d --name gitlab-runner --restart always \
-      -v /var/www/gitlab-runner/config:/etc/gitlab-runner \
+      -v {{runner_config_path}}:/etc/gitlab-runner \
       -v /var/run/docker.sock:/var/run/docker.sock \
       hub.lumigame.com/base/gitlab-runner:latest
 #registry.nexdev.net:5050/docker/gitlab-runner:latest
@@ -24,7 +28,7 @@
   when: team == "nexcel"
   shell: |
     docker run -d --name gitlab-runner --restart always \
-      -v /var/www/gitlab-runner/config:/etc/gitlab-runner \
+      -v {{runner_config_path}}:/etc/gitlab-runner \
       -v /var/run/docker.sock:/var/run/docker.sock \
       hub.nexdev.net/base/gitlab-runner:latest
 #registry.nexdev.net:5050/docker/gitlab-runner:latest
