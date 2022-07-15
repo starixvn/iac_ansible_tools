@@ -1,3 +1,10 @@
+- name: Delete .docker-compose directory for each service
+  file:
+    path: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.name | replace('-','_')}}
+    state: absent    
+  become: yes
+  with_items: "{{services}}"
+
 - name: Create .docker-compose directory for each service
   file:
     path: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.name | replace('-','_')}}
@@ -9,7 +16,7 @@
 - name: Build docker-compose for {{env}}
   template:
     src: templates/docker-swarm/.docker-compose/dynamic/docker-compose.yml.j2
-    dest: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.0.name | replace('-','_')}}/{{env | upper}}.docker-compose.yml
+    dest: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.name | replace('-','_')}}/{{env | upper}}.docker-compose.yml
   vars:
     env: local
   with_items: "{{services}}"
@@ -18,7 +25,7 @@
 - name: Build docker-compose for {{env}}
   template:
     src: templates/docker-swarm/.docker-compose/dynamic/docker-compose.yml.j2
-    dest: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.0.name | replace('-','_')}}/{{env | upper}}.docker-compose.yml
+    dest: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.name | replace('-','_')}}/{{env | upper}}.docker-compose.yml
   vars:
     env: nexprod
   with_items: "{{services}}"
@@ -28,7 +35,7 @@
 - name: Build docker-compose for {{env}}
   template:
     src: templates/docker-swarm/.docker-compose/dynamic/docker-compose.yml.j2
-    dest: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.0.name | replace('-','_')}}/{{env | upper}}.docker-compose.yml
+    dest: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.name | replace('-','_')}}/{{env | upper}}.docker-compose.yml
   vars:
     env: sit
   with_items: "{{services}}"
@@ -37,7 +44,7 @@
 - name: Build docker-compose for {{env}}
   template:
     src: templates/docker-swarm/.docker-compose/dynamic/docker-compose.yml.j2
-    dest: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.0.name | replace('-','_')}}/{{env | upper}}.docker-compose.yml
+    dest: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.name | replace('-','_')}}/{{env | upper}}.docker-compose.yml
   vars:
     env: uat
   with_items: "{{services}}"
@@ -46,7 +53,7 @@
 - name: Build docker-compose for {{env}}
   template:
     src: templates/docker-swarm/.docker-compose/dynamic/docker-compose.yml.j2
-    dest: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.0.name | replace('-','_')}}/{{env | upper}}.docker-compose.yml
+    dest: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.name | replace('-','_')}}/{{env | upper}}.docker-compose.yml
   vars:
     env: prod
   with_items: "{{services}}"
@@ -55,7 +62,7 @@
 - name: Build docker-compose for {{env}}
   template:
     src: templates/docker-swarm/.docker-compose/dynamic/docker-compose.yml.j2
-    dest: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.0.name | replace('-','_')}}/{{env | upper}}.docker-compose.yml
+    dest: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.name | replace('-','_')}}/{{env | upper}}.docker-compose.yml
   vars:
     env: aws
   with_items: "{{services}}"
