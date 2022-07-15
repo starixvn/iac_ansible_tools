@@ -15,7 +15,7 @@
     dest: "{{runner_config_path}}/config.toml"
   become: yes
 
-- name: create Container Runner {{team}}
+- name: create Container Runner luminet
   when: team == "luminet"
   shell: |
     docker run -d --name gitlab-runner --restart always \
@@ -24,7 +24,7 @@
       hub.lumigame.com/base/gitlab-runner:latest
 #registry.nexdev.net:5050/docker/gitlab-runner:latest
 
-- name: create Container Runner {{team}}
+- name: create Container Runner nexcel
   when: team == "nexcel"
   shell: |
     docker run -d --name gitlab-runner --restart always \
