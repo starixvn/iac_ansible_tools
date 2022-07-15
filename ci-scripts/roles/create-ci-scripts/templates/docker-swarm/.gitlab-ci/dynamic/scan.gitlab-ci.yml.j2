@@ -1,0 +1,121 @@
+{% set service_name = item.name | replace('-','_') %}
+scan_config_{{ service_name }}:
+  extends:
+    - .deploy_vars_{{ service_name }}
+    - .scan_config
+    - .scan:config:{{ service_name }}:rules
+{% if item.multiple_image_env is undefined or item.multiple_image_env == false %}  
+
+scan_image_{{ service_name }}:
+  extends:
+    - .deploy_vars_{{ service_name }}
+{% if item.multi_stage is undefined or item.multi_stage == false %}  
+    - .scan:default:image:noenv
+{% else %}
+    - .scan:default:image:noenv:multistage
+{% endif %}
+    - .scan:image:{{ service_name }}:rules
+  needs: ['build_image_{{service_name}}']
+{% else %}
+
+scan_image_{{ service_name }}_local:
+  extends:
+    - .deploy_vars_{{ service_name }}
+{% if item.multi_stage is undefined or item.multi_stage == false %}
+    - .scan:default:image
+{% else %}
+    - .scan:default:image:multistage
+{% endif %}
+    - .env:local
+    - .deploy:local:{{service_name}}:rules
+####
+{% if org_name == 'nexcel' %}
+####
+scan_config_{{ service_name }}_nexprod:
+  extends:
+    - .deploy_vars_{{ service_name }}
+    - .scan_config
+    - .scan:config:{{ service_name }}:rules
+####
+scan_image_{{ service_name }}_nexprod:
+  extends:
+    - .deploy_vars_{{ service_name }}
+{% if item.multi_stage is undefined or item.multi_stage == false %}
+    - .scan:default:image
+{% else %}
+    - .scan:default:image:multistage
+{% endif %}
+    - .env:nexprod
+    - .deploy:nexprod:{{service_name}}:rules
+####
+{% endif %}
+scan_config_{{ service_name }}_sit:
+  extends:
+    - .deploy_vars_{{ service_name }}
+    - .scan_config
+    - .scan:config:{{ service_name }}:rules
+####
+scan_image_{{ service_name }}_sit:
+  extends:
+    - .deploy_vars_{{ service_name }}
+{% if item.multi_stage is undefined or item.multi_stage == false %}
+    - .scan:default:image
+{% else %}
+    - .scan:default:image:multistage
+{% endif %}
+    - .env:sit
+    - .deploy:sit:{{service_name}}:rules
+####
+scan_config_{{ service_name }}_uat:
+  extends:
+    - .deploy_vars_{{ service_name }}
+    - .scan_config
+    - .scan:config:{{ service_name }}:rules
+####
+scan_image_{{ service_name }}_uat:
+  extends:
+    - .deploy_vars_{{ service_name }}
+{% if item.multi_stage is undefined or item.multi_stage == false %}
+    - .scan:default:image
+{% else %}
+    - .scan:default:image:multistage
+{% endif %}
+    - .env:uat
+    - .deploy:uat:{{service_name}}:rules
+
+scan_config_{{ service_name }}_prod:
+  extends:
+    - .deploy_vars_{{ service_name }}
+    - .scan_config
+    - .deploy:prod:{{service_name}}:rules
+####
+scan_image_{{ service_name }}_prod:
+  extends:
+    - .deploy_vars_{{ service_name }}
+{% if item.multi_stage is undefined or item.multi_stage == false %}
+    - .scan:default:image
+{% else %}
+    - .scan:default:image:multistage
+{% endif %}
+    - .env:prod
+    - .deploy:prod:{{service_name}}:rules
+
+####
+scan_config_{{ service_name }}_aws:
+  extends:
+    - .deploy_vars_{{ service_name }}
+    - .scan_config
+    - .deploy:aws:{{service_name}}:rules
+####
+scan_image_{{ service_name }}_aws:
+  extends:
+    - .deploy_vars_{{ service_name }}
+{% if item.multi_stage is undefined or item.multi_stage == false %}
+    - .scan:default:image
+{% else %}
+    - .scan:default:image:multistage
+{% endif %}
+    - .env:aws
+    - .deploy:aws:{{service_name}}:rules
+
+{% endif %}

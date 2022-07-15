@@ -1,0 +1,109 @@
+{% set service_name = item.name | replace('-','_') %}
+{% set rule_name = project_name | replace('_','-') ~ '-' ~ item.name | replace('_','-') %}
+
+.if-deploy-{{rule_name}}-local: &if-deploy-{{rule_name}}-local
+  if: '$CI_COMMIT_TAG =~ /^deploy-{{rule_name}}-local\d*- */ && $DEPLOY_BY == "rocketor"'
+
+.if-deploy-{{rule_name}}-nexprod: &if-deploy-{{rule_name}}-nexprod
+  if: '$CI_COMMIT_TAG =~ /^deploy-{{rule_name}}-nexprod\d*- */ && $DEPLOY_BY == "rocketor"'
+
+.if-deploy-{{rule_name}}-sit: &if-deploy-{{rule_name}}-sit
+  if: '$CI_COMMIT_TAG =~ /^deploy-{{rule_name}}-sit\d*- */ && $DEPLOY_BY == "rocketor"'
+
+.if-deploy-{{rule_name}}-uat: &if-deploy-{{rule_name}}-uat
+  if: '$CI_COMMIT_TAG =~ /^deploy-{{rule_name}}-uat\d*- */ && $DEPLOY_BY == "rocketor"'
+
+.if-deploy-{{rule_name}}-prod: &if-deploy-{{rule_name}}-prod
+  if: '$CI_COMMIT_TAG =~ /^deploy-{{rule_name}}-prod\d*- */ && $DEPLOY_BY == "rocketor"'
+
+.if-deploy-{{rule_name}}-aws: &if-deploy-{{rule_name}}-aws
+  if: '$CI_COMMIT_TAG =~ /^deploy-{{rule_name}}-aws\d*- */ && $DEPLOY_BY == "rocketor"'
+
+.scan:config:{{service_name}}:rules:
+  rules:
+    - if: '$CI_COMMIT_TAG =~ /^deploy- */'
+      when: never
+    - changes:
+        - "Dockerfile"
+        - "*/Dockerfile"
+        - "*/*ockerfile"
+        - "*ockerfile"
+
+.build:image:{{service_name}}:rules:
+  rules:
+    - <<: *if-deploy-{{rule_name}}-local
+      when: always
+    - <<: *if-deploy-{{rule_name}}-nexprod
+      when: always
+    - <<: *if-deploy-{{rule_name}}-sit
+      when: always
+    - <<: *if-deploy-{{rule_name}}-uat
+      when: always
+    - <<: *if-deploy-{{rule_name}}-prod
+      when: always
+    - <<: *if-deploy-{{rule_name}}-aws
+      when: always
+
+.scan:image:{{service_name}}:rules:
+  rules:
+    - <<: *if-deploy-{{rule_name}}-local
+      when: on_success
+    - <<: *if-deploy-{{rule_name}}-nexprod
+      when: on_success
+    - <<: *if-deploy-{{rule_name}}-sit
+      when: on_success
+    - <<: *if-deploy-{{rule_name}}-uat
+      when: on_success
+    - <<: *if-deploy-{{rule_name}}-prod
+      when: on_success
+    - <<: *if-deploy-{{rule_name}}-aws
+      when: on_success
+    - when: never
+
+.deploy:local:{{service_name}}:rules:
+  rules:
+    - <<: *if-deploy-{{rule_name}}-local
+      when: on_success
+    - when: never
+
+.deploy:nexprod:{{service_name}}:rules:
+  rules:
+    - <<: *if-deploy-{{rule_name}}-nexprod
+      when: on_success
+    - when: never
+
+.deploy:sit:{{service_name}}:rules:
+  rules:
+    - <<: *if-deploy-{{rule_name}}-sit
+      when: on_success
+    - when: never
+
+.deploy:uat:{{service_name}}:rules:
+  rules:
+    - <<: *if-deploy-{{rule_name}}-uat
+      when: on_success
+    - when: never
+
+.deploy:prod:{{service_name}}:rules:
+  rules:
+    - <<: *if-deploy-{{rule_name}}-prod
+      when: on_success
+    - when: never
+
+.deploy:prod:{{service_name}}:manual:rules:
+  rules:
+    - <<: *if-deploy-{{rule_name}}-prod
+      when: manual
+    - when: never
+    
+.deploy:aws:{{service_name}}:rules:
+  rules:
+    - <<: *if-deploy-{{rule_name}}-aws
+      when: on_success
+    - when: never
+
+.deploy:aws:{{service_name}}:manual:rules:
+  rules:
+    - <<: *if-deploy-{{rule_name}}-aws
+      when: manual
+    - when: never

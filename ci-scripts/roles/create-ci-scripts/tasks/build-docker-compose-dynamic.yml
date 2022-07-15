@@ -1,0 +1,68 @@
+- name: Create .docker-compose directory for each service
+  file:
+    path: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.name | replace('-','_')}}
+    state: directory
+    mode: '0755'
+  become: yes
+  with_items: '{{services}}'
+
+- name: Build docker-compose for {{env}}
+  template:
+    src: templates/docker-swarm/.docker-compose/dynamic/docker-compose.yml.j2
+    dest: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.0.name | replace('-','_')}}/{{env | upper}}.docker-compose.yml
+  vars:
+    env: local
+  with_nested:
+    - '{{ services }}'
+  become: yes
+
+- name: Build docker-compose for {{env}}
+  template:
+    src: templates/docker-swarm/.docker-compose/dynamic/docker-compose.yml.j2
+    dest: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.0.name | replace('-','_')}}/{{env | upper}}.docker-compose.yml
+  vars:
+    env: nexprod
+  with_nested:
+    - '{{ services }}'
+  become: yes
+  when: org_name == 'nexcel'
+
+- name: Build docker-compose for {{env}}
+  template:
+    src: templates/docker-swarm/.docker-compose/dynamic/docker-compose.yml.j2
+    dest: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.0.name | replace('-','_')}}/{{env | upper}}.docker-compose.yml
+  vars:
+    env: sit
+  with_nested:
+    - '{{ services }}'
+  become: yes
+
+- name: Build docker-compose for {{env}}
+  template:
+    src: templates/docker-swarm/.docker-compose/dynamic/docker-compose.yml.j2
+    dest: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.0.name | replace('-','_')}}/{{env | upper}}.docker-compose.yml
+  vars:
+    env: uat
+  with_nested:
+    - '{{ services }}'
+  become: yes
+
+- name: Build docker-compose for {{env}}
+  template:
+    src: templates/docker-swarm/.docker-compose/dynamic/docker-compose.yml.j2
+    dest: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.0.name | replace('-','_')}}/{{env | upper}}.docker-compose.yml
+  vars:
+    env: prod
+  with_nested:
+    - '{{ services }}'
+  become: yes
+
+- name: Build docker-compose for {{env}}
+  template:
+    src: templates/docker-swarm/.docker-compose/dynamic/docker-compose.yml.j2
+    dest: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.0.name | replace('-','_')}}/{{env | upper}}.docker-compose.yml
+  vars:
+    env: aws
+  with_nested:
+    - '{{ services }}'
+  become: yes

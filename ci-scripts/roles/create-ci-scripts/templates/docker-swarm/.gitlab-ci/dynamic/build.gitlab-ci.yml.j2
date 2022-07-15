@@ -1,0 +1,155 @@
+{% set service_name = item.name | replace('-','_') %}
+{% set base_image = "image" if item.platform is undefined or item.platform == "linux" else "windowsimage" %}
+
+{% if (item.multiple_image_env is undefined or item.multiple_image_env == false) and (item.platform is undefined or item.platform == "linux") %}
+
+build_image_{{ service_name }}:
+  extends:
+    - .deploy_vars_{{ service_name }}
+{% if item.multi_stage is undefined or item.multi_stage == false %}  
+    - .build:default:image:noenv
+{% else %}
+    - .build:default:image:noenv:multistage
+{% endif %}
+    - .build:image:{{ service_name }}:rules
+{% if item.framework is defined and item.framework == "cocos" %}  
+  needs: ['build_cocos_web_{{ service_name }}']
+  dependencies:
+    - build_cocos_web_{{ service_name }}
+{% endif %}
+{% if transform_config is defined and transform_config == true %}  
+  needs: ['transform_config_local']
+  dependencies:
+    - transform_config_local
+{% endif %}
+{% else %}
+
+build_image_{{ service_name }}_local:
+  extends:
+    - .deploy_vars_{{ service_name }}
+{% if item.multi_stage is undefined or item.multi_stage == false %}
+    - .build:default:{{base_image}}
+{% else %}
+    - .build:default:{{base_image}}:multistage
+{% endif %}
+    - .env:local
+    - .deploy:local:{{service_name}}:rules
+{% if item.framework is defined and item.framework == "cocos" %}
+  needs: ['build_cocos_web_{{ service_name }}_local']
+  dependencies:
+    - build_cocos_web_{{ service_name }}_local
+{% endif %}
+{% if transform_config is defined and transform_config == true %}
+  needs: ['transform_config_local']
+  dependencies:
+    - transform_config_local
+{% endif %}
+#
+{% if org_name == 'nexcel' %}
+build_image_{{ service_name }}_nexprod:
+  extends:
+    - .deploy_vars_{{ service_name }}
+{% if item.multi_stage is undefined or item.multi_stage == false %}
+    - .build:default:{{base_image}}
+{% else %}
+    - .build:default:{{base_image}}:multistage
+{% endif %}
+    - .env:nexprod
+    - .deploy:nexprod:{{service_name}}:rules
+{% if item.framework is defined and item.framework == "cocos" %}  
+  needs: ['build_cocos_web_{{ service_name }}_nexprod']
+  dependencies:
+    - build_cocos_web_{{ service_name }}_nexprod
+{% endif %}
+{% if transform_config is defined and transform_config == true %}  
+  needs: ['transform_config_nexprod']
+  dependencies:
+    - transform_config_nexprod
+{% endif %}
+{% endif %}
+#
+build_image_{{ service_name }}_sit:
+  extends:
+    - .deploy_vars_{{ service_name }}
+{% if item.multi_stage is undefined or item.multi_stage == false %}
+    - .build:default:{{base_image}}
+{% else %}
+    - .build:default:{{base_image}}:multistage
+{% endif %}
+    - .env:sit
+    - .deploy:sit:{{service_name}}:rules
+{% if item.framework is defined and item.framework == "cocos" %}
+  needs: ['build_cocos_web_{{ service_name }}_sit']
+  dependencies:
+    - build_cocos_web_{{ service_name }}_sit
+{% endif %}
+{% if transform_config is defined and transform_config == true %}  
+  needs: ['transform_config_sit']
+  dependencies:
+    - transform_config_sit
+{% endif %}
+
+build_image_{{ service_name }}_uat:
+  extends:
+    - .deploy_vars_{{ service_name }}
+{% if item.multi_stage is undefined or item.multi_stage == false %}
+    - .build:default:{{base_image}}
+{% else %}
+    - .build:default:{{base_image}}:multistage
+{% endif %}
+    - .env:uat
+    - .deploy:uat:{{service_name}}:rules
+{% if item.framework is defined and item.framework == "cocos" %}
+  needs: ['build_cocos_web_{{ service_name }}_uat']
+  dependencies:
+    - build_cocos_web_{{ service_name }}_uat
+{% endif %}
+{% if transform_config is defined and transform_config == true %}  
+  needs: ['transform_config_uat']
+  dependencies:
+    - transform_config_uat
+{% endif %}
+
+build_image_{{ service_name }}_prod:
+  extends:
+    - .deploy_vars_{{ service_name }}
+{% if item.multi_stage is undefined or item.multi_stage == false %}
+    - .build:default:{{base_image}}
+{% else %}
+    - .build:default:{{base_image}}:multistage
+{% endif %}
+    - .env:prod
+    - .deploy:prod:{{service_name}}:rules
+{% if item.framework is defined and item.framework == "cocos" %}
+  needs: ['build_cocos_web_{{ service_name }}_prod']
+  dependencies:
+    - build_cocos_web_{{ service_name }}_prod
+{% endif %}
+{% if transform_config is defined and transform_config == true %}  
+  needs: ['transform_config_prod']
+  dependencies:
+    - transform_config_prod
+{% endif %}
+
+build_image_{{ service_name }}_aws:
+  extends:
+    - .deploy_vars_{{ service_name }}
+{% if item.multi_stage is undefined or item.multi_stage == false %}
+    - .build:default:{{base_image}}
+{% else %}
+    - .build:default:{{base_image}}:multistage
+{% endif %}
+    - .env:aws
+    - .deploy:aws:{{service_name}}:rules
+{% if item.framework is defined and item.framework == "cocos" %}
+  needs: ['build_cocos_web_{{ service_name }}_aws']
+  dependencies:
+    - build_cocos_web_{{ service_name }}_aws
+{% endif %}
+{% if transform_config is defined and transform_config == true %}  
+  needs: ['transform_config_aws']
+  dependencies:
+    - transform_config_aws
+{% endif %}
+
+{% endif %}

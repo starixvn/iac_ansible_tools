@@ -1,0 +1,70 @@
+{% if item.config_file_name is defined %}
+{% set config_file = item.config_file_name ~ '.' ~ item.config_file_ext %}
+{% endif %}
+{% set config_file_path = item.config_file_path | default(".") %}
+{% set config_dest_file_path = item.config_dest_file_path | default(".") %}
+{% set service_name = item.name | replace('-','_') %}
+
+.base_build_cocos_web_{{ service_name }}:
+  stage: build-cocos-web
+  extends:
+    - .build:image:{{item.name | replace('-','_') }}:rules
+  script:
+    - echo "====== Build Cocos Web Mobile ======"
+    - echo $DEPLOY_ENV
+    - npm set registry http://npm.lumigame.com
+    - yarn install
+
+{% if config_file is defined %}
+    - cp {{config_file_path}}/{{item.config_file_name}}.$DEPLOY_ENV.{{item.config_file_ext}} {{config_dest_file_path}}/{{config_file}}
+{%endif%}
+    - if [ "$COCOS_VERSION" == "" ]; then
+      export COCOS_VERSION="2.4.0";
+      else
+      export COCOS_VERSION=$COCOS_VERSION;
+      fi
+    - if [ "$COCOS_VERSION" == "2.2.2" ]; then
+      /Applications/CocosCreator.app/Contents/MacOS/CocosCreator --path ./ --build "platform=web-mobile;inlineSpriteFrames=true;webOrientation=landscape;md5Cache=true";
+      else
+      /Applications/CocosCreator/Creator/$COCOS_VERSION/CocosCreator.app/Contents/MacOS/CocosCreator --path ./ --build "platform=web-mobile;inlineSpriteFrames=true;webOrientation=landscape;md5Cache=true";
+      fi 
+  tags:
+    - cocos
+  artifacts:
+    paths:
+      - ./build/web-mobile
+    expire_in: 1 day
+
+{% if config_file is undefined %}
+build_cocos_web_{{ service_name }}:
+  extends: .base_build_cocos_web_{{ service_name }}
+{% else %}
+build_cocos_web_{{ service_name }}_local:
+  extends: 
+    - .base_build_cocos_web_{{ service_name }}
+    - .env:local
+    - .deploy:local:{{service_name}}:rules
+
+build_cocos_web_{{ service_name }}_sit:
+  extends: 
+    - .base_build_cocos_web_{{ service_name }}
+    - .env:sit
+    - .deploy:sit:{{service_name}}:rules
+
+build_cocos_web_{{ service_name }}_uat:
+  extends: 
+    - .base_build_cocos_web_{{ service_name }}
+    - .env:uat
+    - .deploy:uat:{{service_name}}:rules
+
+build_cocos_web_{{ service_name }}_prod:
+  extends: 
+    - .base_build_cocos_web_{{ service_name }}
+    - .env:prod
+    - .deploy:prod:{{service_name}}:rules
+
+build_cocos_web_{{ service_name }}_aws:
+  extends: 
+    - .base_build_cocos_web_{{ service_name }}
+    - .env:aws
+    - .deploy:aws:{{service_name}}:rules

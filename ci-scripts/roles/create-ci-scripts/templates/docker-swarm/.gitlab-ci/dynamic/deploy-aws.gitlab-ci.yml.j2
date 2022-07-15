@@ -1,0 +1,26 @@
+{% set service_name = item.name | replace('-','_') %}
+
+{% if item.platform is undefined or item.platform == "linux" %}
+post_build_{{service_name}}_aws:
+  extends:
+    - .deploy_vars_{{service_name}}
+    - .post_build
+    - .env:aws
+    - .deploy:aws:{{service_name}}:rules
+{% if item.multiple_image_env is undefined or item.multiple_image_env == false %}
+  needs: ['scan_image_{{service_name}}']
+{% else %}
+  needs: ['scan_image_{{service_name}}_aws']
+{% endif %}
+{% endif %}
+
+deploy_{{service_name}}_aws:
+  extends:
+    - .deploy_vars_{{service_name}}
+    - .deploy:aws:base:swarm:stack
+    - .deploy:aws:{{service_name}}:rules
+{% if item.platform is undefined or item.platform == "linux" %}
+  needs: ['post_build_{{service_name}}_aws']
+{% else %}
+  needs: ['build_image_{{service_name}}_aws']
+{% endif %}

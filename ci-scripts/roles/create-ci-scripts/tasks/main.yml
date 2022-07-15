@@ -5,10 +5,22 @@
 - name: Build gitlab ci scripts
   include: build-gitlab-ci.yml
   become: true
+  when: team_name == "nex3" or team_name == "pentagon"
+
+- name: Build gitlab ci scripts
+  include: build-gitlab-ci-dynamic.yml
+  become: true
+  when: team_name != "nex3" and team_name != "pentagon"
 
 - name: Build docker compose scripts
   include: build-docker-compose.yml
   become: true
+  when: team_name == "nex3" or team_name == "pentagon"
+
+- name: Build docker compose scripts
+  include: build-docker-compose-dynamic.yml
+  become: true
+  when: team_name != "nex3" and team_name != "pentagon"
 
 - name: Push CI repo
   shell: |

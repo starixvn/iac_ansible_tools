@@ -5,8 +5,7 @@
 {% set service_name = item.0.name | replace('-','_') %}
 {% set platform = item.0.platform | default('linux') %}
 {% set underscore = '' if item.1 == 0  else '_' %}
-{% set environment_version = '' if item.1 == 0  else item.1 %}
-{% set environment = env | upper ~ underscore ~ environment_version %}
+{% set environment = env | upper ~ '@DEPLOY_VERSION' %}
 {% set working_path = gluster_path ~ team_name ~ '/' ~ project_name ~ '/' ~ item.0.name | replace('-','_') %}
 {% set config_file_path = item.0.config_file_path | default(".") %}
 {% if item.0.config_file_name is defined %}
