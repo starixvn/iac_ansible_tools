@@ -13,7 +13,8 @@
     --tag-list "minio" \
     --cache-type "s3" \
     --cache-shared \
-    --cache-s3-server-address "https://minio.nexdev.net" \
+    --cache-s3-insecure \
+    --cache-s3-server-address "10.18.200.156:9901" \
     --cache-s3-access-key "AKIAIOSFODNN7EXAMPLE" \
     --cache-s3-secret-key "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY" \
     --cache-s3-bucket-name "gitlab" \
