@@ -4,7 +4,7 @@
 
 - name: remove Old gitlab-runner container
   shell: |
-    (docker ps -a --format {{.Names}} | grep gitlab-runner -w) && docker rm -f gitlab-runner || echo "Doesn't exist"
+    docker ps -a | grep gitlab-runner -w && docker rm -f gitlab-runner || echo "Doesn't exist"
 
 - name: Create Deployment directory
   file:
