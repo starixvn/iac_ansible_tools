@@ -14,7 +14,7 @@
     --cache-type "s3" \
     --cache-shared \
     --cache-s3-insecure \
-    --cache-s3-server-address "10.18.200.156:9901" \
+    --cache-s3-server-address "10.18.200.156:9900" \
     --cache-s3-access-key "gitlab" \
     --cache-s3-secret-key "123@12356" \
     --cache-s3-bucket-name "gitlab" \
