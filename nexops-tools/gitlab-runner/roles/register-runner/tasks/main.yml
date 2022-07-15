@@ -10,7 +10,7 @@
     --url "https://gitlab.nexdev.net/" \
     --registration-token "VscxAqFvRVcXgpyoBDD_" \
     --description "docker-{{inventory_hostname}}" \
-    --tag-list "minio" \
+    --tag-list "docker" \
     --cache-type "s3" \
     --cache-shared \
     --cache-s3-server-address "minio-api.nexdev.net" \
@@ -35,6 +35,12 @@
     --registration-token "9JzG2oJKAmYBHzgygxfW" \
     --description "docker-{{inventory_hostname}}" \
     --tag-list "docker" \
+    --cache-type "s3" \
+    --cache-shared \
+    --cache-s3-server-address "minio-api.lumigame.com" \
+    --cache-s3-access-key "gitlab-ci" \
+    --cache-s3-secret-key "H5nF5ywy262wt881ZWpq" \
+    --cache-s3-bucket-name "gitlab" \
     --run-untagged="true" \
     --locked="false" \
     --docker-volumes /var/run/docker.sock:/var/run/docker.sock
