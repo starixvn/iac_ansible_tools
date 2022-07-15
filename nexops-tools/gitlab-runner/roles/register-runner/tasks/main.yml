@@ -14,8 +14,8 @@
     --cache-type "s3" \
     --cache-shared \
     --cache-s3-server-address "minio-api.nexdev.net" \
-    --cache-s3-access-key "gitlab" \
-    --cache-s3-secret-key "123@12356" \
+    --cache-s3-access-key "gitlab-ci" \
+    --cache-s3-secret-key "H5nF5ywy262wt881ZWpq" \
     --cache-s3-bucket-name "gitlab" \
     --run-untagged="true" \
     --locked="false" \
