@@ -4,7 +4,7 @@
     state: directory
     mode: '0755'
   become: yes
-  with_items: '{{services}}'
+  with_items: "{{services}}"
 
 - name: Build docker-compose for {{env}}
   template:
@@ -12,7 +12,7 @@
     dest: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.0.name | replace('-','_')}}/{{env | upper}}.docker-compose.yml
   vars:
     env: local
-  with_items: '{{services}}'
+  with_items: "{{services}}"
   become: yes
 
 - name: Build docker-compose for {{env}}
@@ -21,7 +21,7 @@
     dest: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.0.name | replace('-','_')}}/{{env | upper}}.docker-compose.yml
   vars:
     env: nexprod
-  with_items: '{{services}}'
+  with_items: "{{services}}"
   become: yes
   when: org_name == 'nexcel'
 
@@ -31,7 +31,7 @@
     dest: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.0.name | replace('-','_')}}/{{env | upper}}.docker-compose.yml
   vars:
     env: sit
-  with_items: '{{services}}'
+  with_items: "{{services}}"
   become: yes
 
 - name: Build docker-compose for {{env}}
@@ -40,7 +40,7 @@
     dest: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.0.name | replace('-','_')}}/{{env | upper}}.docker-compose.yml
   vars:
     env: uat
-  with_items: '{{services}}'
+  with_items: "{{services}}"
   become: yes
 
 - name: Build docker-compose for {{env}}
@@ -49,7 +49,7 @@
     dest: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.0.name | replace('-','_')}}/{{env | upper}}.docker-compose.yml
   vars:
     env: prod
-  with_items: '{{services}}'
+  with_items: "{{services}}"
   become: yes
 
 - name: Build docker-compose for {{env}}
@@ -58,5 +58,5 @@
     dest: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.0.name | replace('-','_')}}/{{env | upper}}.docker-compose.yml
   vars:
     env: aws
-  with_items: '{{services}}'
+  with_items: "{{services}}"
   become: yes
