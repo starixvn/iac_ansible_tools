@@ -10,12 +10,12 @@
     --url "https://gitlab.nexdev.net/" \
     --registration-token "VscxAqFvRVcXgpyoBDD_" \
     --description "docker-{{inventory_hostname}}" \
-    --tag-list "docker" \
+    --tag-list "minio" \
     --cache-type "s3" \
     --cache-shared \
-    --cache-s3-server-address "10.18.200.109:9100" \
-    --cache-s3-access-key "gitlab-ci" \
-    --cache-s3-secret-key "H5nF5ywy262wt881ZWpq" \
+    --cache-s3-server-address "https://minio.nexdev.net" \
+    --cache-s3-access-key "AKIAIOSFODNN7EXAMPLE" \
+    --cache-s3-secret-key "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY" \
     --cache-s3-bucket-name "gitlab" \
     --cache-s3-insecure \
     --run-untagged="true" \
