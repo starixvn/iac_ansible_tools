@@ -28,8 +28,7 @@
         --executor shell `
         --tag-list windows `
         --shell powershell `
-        --description "{{runner_name}}-{{item}}"
-  with_items: '{{ id_list }}'
+        --description "{{runner_name}}"
 
 - name: Install gitlab-runner
   win_shell: |
