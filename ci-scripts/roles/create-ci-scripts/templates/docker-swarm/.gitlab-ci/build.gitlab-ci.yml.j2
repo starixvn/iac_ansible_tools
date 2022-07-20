@@ -1,4 +1,4 @@
-{% set service_name = item.name | replace('-','_') %}
+{% set service_name = project_name ~ '_' ~ item.name | replace('-','_') %}
 {% set base_image = "image" if item.platform is undefined or item.platform == "linux" else "windowsimage" %}
 
 {% if (item.multiple_image_env is undefined or item.multiple_image_env == false) and (item.platform is undefined or item.platform == "linux") %}
