@@ -8,7 +8,7 @@
 .base_transform_config:
   stage: transform-config
   extends:
-    - .build:image:{{item.name | replace('-','_') }}:rules
+    - .build:image:{{ service_name }}:rules
   script:
     - echo "====== Build NextJS ======"
     - echo $DEPLOY_ENV

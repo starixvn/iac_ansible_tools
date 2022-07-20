@@ -8,7 +8,7 @@
 .base_build_cocos_web_{{ service_name }}:
   stage: build-cocos-web
   extends:
-    - .build:image:{{item.name | replace('-','_') }}:rules
+    - .build:image:{{ service_name }}:rules
   script:
     - echo "====== Build Cocos Web Mobile ======"
     - echo $DEPLOY_ENV
