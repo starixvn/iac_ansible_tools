@@ -1,4 +1,4 @@
-{% set service_name = item.name | replace('-','_') %}
+{% set service_name = project_name ~ '_' ~ item.name | replace('-','_') %}
 
 {% if item.platform is undefined or item.platform == "linux" %}
 post_build_{{service_name}}_prod:

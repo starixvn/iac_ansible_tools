@@ -3,12 +3,12 @@
 {% endif %}
 {% set config_file_path = item.config_file_path | default(".") %}
 {% set config_dest_file_path = item.config_dest_file_path | default(".") %}
-{% set service_name = item.name | replace('-','_') %}
+{% set service_name = project_name ~ '_' ~ item.name | replace('-','_') %}
 
 .base_transform_config:
   stage: transform-config
   extends:
-    - .build:image:{{item.name | replace('-','_') }}:rules
+    - .build:image:{{ service_name }}:rules
   script:
     - echo "====== Build NextJS ======"
     - echo $DEPLOY_ENV
