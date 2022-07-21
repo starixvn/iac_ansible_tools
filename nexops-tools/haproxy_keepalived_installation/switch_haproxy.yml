@@ -1,0 +1,27 @@
+---
+- name: Set keepalived variables for master server {{ master_server_ip }}
+  set_fact:
+    keepalive_unicast_src_ip: "{{ master_server_ip }}"
+    keepalive_unicast_peer: "{{ backup_server_ip }}"
+    keepalive_role: "MASTER"
+    keepalive_priority: "200"
+    keepalive_priority2: "100"
+  when: "ansible_host == master_server_ip"
+  become: yes
+
+- name: Set keepalived variables for backup server {{ backup_server_ip }}
+  set_fact:
+    keepalive_unicast_src_ip: "{{ backup_server_ip }}"
+    keepalive_unicast_peer: "{{ master_server_ip }}"
+    keepalive_role: "BACKUP"
+    keepalive_priority: "100"
+    keepalive_priority2: "200"
+  when: "ansible_host == backup_server_ip"
+  become: yes
+
+- name: Create keepalived conf file
+  template:
+    src: keepalived.conf.j2
+    dest: "{{ keepalived_conf_path }}"
+  notify: Restart keepalived
+  become: yes

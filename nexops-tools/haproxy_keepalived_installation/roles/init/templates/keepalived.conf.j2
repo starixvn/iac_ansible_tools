@@ -1,26 +1,63 @@
-! Configuration File for keepalived
+########################################################################
+# File managed by Ansible
+# Your changes will be overwritten.
+########################################################################
 
-vrrp_script chk_haproxy {           # Requires keepalived-1.1.13
-        script "killall -0 haproxy"     # cheaper than pidof
-        interval 2                      # check every 2 seconds
-        weight 2                        # add 2 points of prio if OK
-		fall 2       # require 2 failures for KO
-		rise 2       # require 2 successes for OK
+global_defs {
+  smtp_server localhost
+  vrrp_version 3
 }
 
-vrrp_instance VI_1 {
-        interface {{ keepalived_bind_interface }} 
-        state MASTER
-        virtual_router_id 100
-        priority {{ keepalived_priority }}                     # 101 on master, 100 on backup
-        virtual_ipaddress {
-            {{ keepalived_vip }}
-        }
-        authentication {
-            auth_type PASS
-            auth_pass 12456
-        }
-        track_script {
-            chk_haproxy
-        }
+vrrp_track_process haproxy {
+  delay 2
+  process haproxy
+  quorum 1
+}
+
+vrrp_instance VI_5 {
+  accept
+  advert_int 1
+  interface {{ keepalived_network_interface }}
+  state {{ keepalive_role }}
+  track_process {
+    haproxy
+  }
+  priority {{ keepalive_priority }}
+  unicast_src_ip {{ keepalive_unicast_src_ip }}
+  unicast_peer {
+    {{ keepalive_unicast_peer }}
+  }
+  #authentication {
+  #  auth_type PASS
+  #  auth_pass {{ keepalived_password }}
+  #}
+  virtual_ipaddress {
+  {{ VIRTUAL_IP }}
+    }
+  virtual_router_id 130
+  #notify_master /etc/keepalived/master.sh
+}
+#VIP2
+vrrp_instance VI_6 {
+  accept
+  advert_int 1
+  interface {{ keepalived_network_interface }}
+  state {{ keepalive_role }}
+  track_process {
+    haproxy
+  }
+  priority {{ keepalive_priority2 }}
+  unicast_src_ip {{ keepalive_unicast_src_ip }}
+  unicast_peer {
+    {{ keepalive_unicast_peer }}
+  }
+  #authentication {
+  #  auth_type PASS
+  #  auth_pass {{ keepalived_password }}
+  #}
+  virtual_ipaddress {
+  {{ VIRTUAL_IP2 }}
+    }
+  virtual_router_id 140
+  #notify_master /etc/keepalived/master.sh
 }

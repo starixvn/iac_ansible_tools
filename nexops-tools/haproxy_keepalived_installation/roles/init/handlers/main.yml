@@ -1,15 +1,18 @@
 ---
 - name: restart haproxy
   service: name=haproxy state=restarted
-
-- name: restart keepalived
-  service: name=keepalived state=restarted
+  become: yes
 
 - name: restart rsyslog
   service: name=rsyslog state=restarted
+  become: yes
 
-- name: restart consul
-  service: name=consul state=restarted
-  
-- name: restart consul-template
-  service: name=consul-template state=restarted
+- name: stop haproxy
+  service: state=stopped name=haproxy
+  become: yes
+
+- name: Restart keepalived
+  service:
+    name: keepalived
+    state: restarted
+  become: yes

@@ -1,36 +1,51 @@
 global
-	log 127.0.0.1 local6
-	maxconn     100000
-	pidfile     /var/run/haproxy.pid
-	user        haproxy
-	group       haproxy
-	daemon
-	tune.ssl.default-dh-param 2048
-       server-state-file /etc/haproxy/server_state
-       stats socket /var/run/haproxy/info.sock  mode 666 level user
+    log   127.0.0.1       local0
+    stats socket /var/run/haproxy.stat level admin process 1
+    stats bind-process 1
+    #stats socket ipv4@127.0.0.1:9999 level admin
+    user haproxy
+    group haproxy
+    daemon
+    maxconn 80000
+    spread-checks 4
+    tune.bufsize 32768
+    log-send-hostname srv002
+    ssl-default-bind-options ssl-min-ver TLSv1.2 no-tls-tickets
+    ssl-default-bind-ciphers !EDH:!RC4:!ADH:!DSS:HIGH:+AES128:+AES256-SHA256:+AES128-SHA256:+SHA:!3DES:!aNULL:!eNULL
+    tune.ssl.default-dh-param 2048
+    tune.ssl.cachesize 1000000
+    tune.ssl.lifetime 2h
+    tune.ssl.maxrecord 1500
+    tune.maxrewrite 1024
+    server-state-file global
+    server-state-base /var/state/haproxy/
+    stats socket /var/run/haproxy/info.sock  mode 666 level user
 defaults
-#    log     global
-    maxconn 10000
-    option  dontlognull
-    #option dontlog-normal
+    log global
+    #mode http
     retries 3
-    option redispatch
-#       option  forwardfor except 127.0.0.0/8
-        timeout queue 1m
-	 timeout connect 10s
-	 timeout client 10m
-	 timeout server 10m
-	 timeout check 10s
+    balance roundrobin
+    option      dontlognull
+    option      abortonclose
+#    option      dontlog-normal
+    option      http-server-close
+    timeout     queue 1m
+    timeout     connect 10s
+    timeout     client 10m
+    timeout     server 10m
+    timeout     check 10s
+    load-server-state-from-file global
 
 listen stats
-        bind *:8080
-        mode  http
-        maxconn  10
-        stats  enable
-        stats  hide-version
-        stats  realm Haproxy\ Statistics
-        stats  uri /
-        stats  auth admin:admin
+    bind *:8080
+    mode  http
+    maxconn  10
+    stats  enable
+    stats  hide-version
+    stats  realm Haproxy\ Statistics
+    stats  uri /
+    stats  auth admin:St@r!x.D3v0ps
+
 ###
 frontend frontend-olympusnapbetfollowsite
 bind *:7300
@@ -2651,240 +2666,240 @@ server 10.18.200.104_tcp_7205 10.18.200.104:7205 check
 #
 ###SSH
 frontend SSH-in
-	bind *:22
-	mode tcp
-	log global
-	##ACL
-	default_backend ssh-proxy-backend
+    bind *:22
+    mode tcp
+    log global
+    ##ACL
+    default_backend ssh-proxy-backend
 ###SMTP
 frontend smtp-in
-	bind *:25
-	mode tcp
-	log global
-	default_backend smtp_cluster
+    bind *:25
+    mode tcp
+    log global
+    default_backend smtp_cluster
 ###Domain HTTP
 frontend http-in
-	bind *:80
-	bind *:443 ssl crt /etc/haproxy/certs/server.pem crt /etc/haproxy/certs/testing2.nexdev.net.pem crt /etc/haproxy/certs/bot.nexdev.net.pem crt /etc/haproxy/certs/docs.nexdev.net.pem crt /etc/haproxy/certs/licbot.nexdev.net.pem crt /etc/haproxy/certs/sentry.nexdev.net.pem
-	mode http
-	log global
-	option  httplog
-	timeout client 30m
+    bind *:80
+    bind *:443 ssl crt /etc/haproxy/certs/server.pem crt /etc/haproxy/certs/testing2.nexdev.net.pem crt /etc/haproxy/certs/bot.nexdev.net.pem crt /etc/haproxy/certs/docs.nexdev.net.pem crt /etc/haproxy/certs/licbot.nexdev.net.pem crt /etc/haproxy/certs/sentry.nexdev.net.pem
+    mode http
+    log global
+    option  httplog
+    timeout client 30m
     timeout server 30m
     timeout check 30s
-	#### Define ACL ####
-	# LetsEncrypt
-	acl letsencrypt-acl path_beg /.well-known/acme-challenge/
+    #### Define ACL ####
+    # LetsEncrypt
+    acl letsencrypt-acl path_beg /.well-known/acme-challenge/
     use_backend letsencrypt-backend if letsencrypt-acl
-	#
-	acl gitlab_host hdr(host) -i gitlab.nexdev.net
-	acl redmine_host hdr(host) -i nexdev.net
-	acl rocketor_host hdr(host) -i rocketor.nexdev.net
-	acl sonarqube_host hdr(host) -i sonarqube.nexdev.net
-	acl sonarqubedev_host hdr(host) -i sonarqube-dev.nexdev.net
+    #
+    acl gitlab_host hdr(host) -i gitlab.nexdev.net
+    acl redmine_host hdr(host) -i nexdev.net
+    acl rocketor_host hdr(host) -i rocketor.nexdev.net
+    acl sonarqube_host hdr(host) -i sonarqube.nexdev.net
+    acl sonarqubedev_host hdr(host) -i sonarqube-dev.nexdev.net
     acl ndict_host hdr(host) -i ndict.nexdev.net
-	acl ndict_host hdr(host) -i ndict.now
-	acl ndict_api_host hdr(host) -i api.ndict.now
-	acl nuget_host hdr(host) -i nuget.nexdev.net
-	acl wekan_host hdr(host) -i boards.nexdev.net
-	acl zabbix_host hdr(host) -i zabbix.nexdev.net
-	acl hasite_host hdr(host) -i ha.nexdev.net
-	acl sentry_host hdr(host) -i sentry.nexdev.net
-	acl livescoreapi_host hdr(host) -i testing2.nexdev.net
-	acl ndict_api_host hdr(host) -i api.ndict.now
-	acl grafana_host hdr(host) -i grafana.nexdev.net
-	acl kibana_host hdr(host) -i logs.nexdev.net
-	acl licbot_host hdr(host) -i licbot.nexdev.net
-	acl docs_host hdr(host) -i docs.nexdev.net
-	acl bot_host hdr(host) -i bot.nexdev.net
+    acl ndict_host hdr(host) -i ndict.now
+    acl ndict_api_host hdr(host) -i api.ndict.now
+    acl nuget_host hdr(host) -i nuget.nexdev.net
+    acl wekan_host hdr(host) -i boards.nexdev.net
+    acl zabbix_host hdr(host) -i zabbix.nexdev.net
+    acl hasite_host hdr(host) -i ha.nexdev.net
+    acl sentry_host hdr(host) -i sentry.nexdev.net
+    acl livescoreapi_host hdr(host) -i testing2.nexdev.net
+    acl ndict_api_host hdr(host) -i api.ndict.now
+    acl grafana_host hdr(host) -i grafana.nexdev.net
+    acl kibana_host hdr(host) -i logs.nexdev.net
+    acl licbot_host hdr(host) -i licbot.nexdev.net
+    acl docs_host hdr(host) -i docs.nexdev.net
+    acl bot_host hdr(host) -i bot.nexdev.net
 
-	## figure out which one to use
-	use_backend gitlab_cluster if gitlab_host
-	use_backend redmine_cluster if redmine_host
-	use_backend rocketor_cluster if rocketor_host
-	use_backend sonarqube_cluster if sonarqube_host
-	use_backend sonarqubedev_cluster if sonarqubedev_host
-	use_backend ndict_cluster if ndict_host
-	use_backend ndict_api_cluster if ndict_api_host
-	use_backend nuget_cluster if nuget_host
-	use_backend wekan_cluster if wekan_host
-	use_backend hasite_cluster if hasite_host
-	use_backend sentry_cluster if sentry_host
-	use_backend livescoreapi_cluster if livescoreapi_host
-	use_backend grafana_cluster if grafana_host
-	use_backend zabbix_cluster if zabbix_host
-	use_backend kibana_cluster if kibana_host
-	use_backend licbot_cluster if licbot_host
-	use_backend bot_cluster if bot_host
-	use_backend docs_cluster if docs_host
+    ## figure out which one to use
+    use_backend gitlab_cluster if gitlab_host
+    use_backend redmine_cluster if redmine_host
+    use_backend rocketor_cluster if rocketor_host
+    use_backend sonarqube_cluster if sonarqube_host
+    use_backend sonarqubedev_cluster if sonarqubedev_host
+    use_backend ndict_cluster if ndict_host
+    use_backend ndict_api_cluster if ndict_api_host
+    use_backend nuget_cluster if nuget_host
+    use_backend wekan_cluster if wekan_host
+    use_backend hasite_cluster if hasite_host
+    use_backend sentry_cluster if sentry_host
+    use_backend livescoreapi_cluster if livescoreapi_host
+    use_backend grafana_cluster if grafana_host
+    use_backend zabbix_cluster if zabbix_host
+    use_backend kibana_cluster if kibana_host
+    use_backend licbot_cluster if licbot_host
+    use_backend bot_cluster if bot_host
+    use_backend docs_cluster if docs_host
 
 # LE Backend
 backend letsencrypt-backend
-	mode http
+    mode http
     server letsencrypt 127.0.0.1:1111
 ### HOSTS
 ####### HTTP GITLAB.nexdev.net
 backend gitlab_cluster
-	mode http
-	default-server  inter 3s fall 3 rise 2
-	#cookie JSESSIONID prefix
-	# add X-FORWARDED-FOR
-	option forwardfor
-	# add X-CLIENT-IP
-	http-request add-header X-CLIENT-IP %[src]
-	server 10.18.200.109_8010 10.18.200.109:8010 check
-	server 10.18.200.119_8010 10.18.200.119:8010 check backup
-	#server 10.18.200.222_8010 10.18.200.222:8010 check
-	
+    mode http
+    default-server  inter 3s fall 3 rise 2
+    #cookie JSESSIONID prefix
+    # add X-FORWARDED-FOR
+    option forwardfor
+    # add X-CLIENT-IP
+    http-request add-header X-CLIENT-IP %[src]
+    server 10.18.200.109_8010 10.18.200.109:8010 check
+    server 10.18.200.119_8010 10.18.200.119:8010 check backup
+    #server 10.18.200.222_8010 10.18.200.222:8010 check
+    
 ####### SSH - GITLAB.nexdev.net
 backend ssh-proxy-backend
-	mode tcp
-	stick-table type ip size 200k expire 30m
+    mode tcp
+    stick-table type ip size 200k expire 30m
     stick on src
-	#server 10.18.200.222_2221 10.18.200.222:2221 check
-	server 10.18.200.109_2221 10.18.200.109:2221 check
-	server 10.18.200.119_2221 10.18.200.119:2221 check backup
+    #server 10.18.200.222_2221 10.18.200.222:2221 check
+    server 10.18.200.109_2221 10.18.200.109:2221 check
+    server 10.18.200.119_2221 10.18.200.119:2221 check backup
 ####### SSH - GITLAB.nexdev.net
 ####### SMTP
 backend smtp_cluster
-	mode tcp
-	no option http-server-close
-	option smtpchk HELO smtp.nexdev.net
-	server 10.18.200.250 10.18.200.250:10025 send-proxy check
-	server 10.18.200.251 10.18.200.251:10026 send-proxy check backup
+    mode tcp
+    no option http-server-close
+    option smtpchk HELO smtp.nexdev.net
+    server 10.18.200.250 10.18.200.250:10025 send-proxy check
+    server 10.18.200.251 10.18.200.251:10026 send-proxy check backup
 ####### SMTP
 ###ROCKETOR
 backend rocketor_cluster
-	mode http
-	balance source
-	timeout client 30m
+    mode http
+    balance source
+    timeout client 30m
     timeout server 30m
     timeout check 30s
-	default-server  inter 3s fall 3 rise 2
-	#cookie JSESSIONID prefix
-	server 10.18.200.122_9999 10.18.200.122:9999 check
-	server 10.18.200.123_9999 10.18.200.123:9999 check
+    default-server  inter 3s fall 3 rise 2
+    #cookie JSESSIONID prefix
+    server 10.18.200.122_9999 10.18.200.122:9999 check
+    server 10.18.200.123_9999 10.18.200.123:9999 check
 ###REDMINE
 backend redmine_cluster
-	mode http
-	timeout client 30m
+    mode http
+    timeout client 30m
     timeout server 30m
     timeout check 30s
-	default-server  inter 3s fall 3 rise 2
-	#cookie JSESSIONID prefix
-	server 10.18.200.109_8084 10.18.200.109:8084 check
-	server 10.18.200.119_8084 10.18.200.119:8084 check backup
+    default-server  inter 3s fall 3 rise 2
+    #cookie JSESSIONID prefix
+    server 10.18.200.109_8084 10.18.200.109:8084 check
+    server 10.18.200.119_8084 10.18.200.119:8084 check backup
 ###SONARQUBE
 backend sonarqube_cluster
-	mode http
-	timeout client 30m
+    mode http
+    timeout client 30m
     timeout server 30m
     timeout check 30s
-	default-server  inter 3s fall 3 rise 2
-	#cookie JSESSIONID prefix
-	server 10.18.200.109_9002 10.18.200.109:9002 check
-	server 10.18.200.119_9002 10.18.200.119:9002 check backup
+    default-server  inter 3s fall 3 rise 2
+    #cookie JSESSIONID prefix
+    server 10.18.200.109_9002 10.18.200.109:9002 check
+    server 10.18.200.119_9002 10.18.200.119:9002 check backup
 backend sonarqubedev_cluster
-	mode http
-	#balance source
-	timeout client 30m
+    mode http
+    #balance source
+    timeout client 30m
     timeout server 30m
     timeout check 30s
-	default-server  inter 3s fall 3 rise 2
-	#cookie JSESSIONID prefix
-	#server 10.18.200.109_9001 10.18.200.109:9001 check
-	server 10.18.200.119_9001 10.18.200.119:9001 check
+    default-server  inter 3s fall 3 rise 2
+    #cookie JSESSIONID prefix
+    #server 10.18.200.109_9001 10.18.200.109:9001 check
+    server 10.18.200.119_9001 10.18.200.119:9001 check
 
 backend ndict_cluster
-	mode http
-	balance source
-	default-server  inter 3s fall 3 rise 2
-	#cookie JSESSIONID prefix
-	server 10.18.200.123_7803 10.18.200.123:7803 check
-	server 10.18.200.122_7803 10.18.200.122:7803 check
+    mode http
+    balance source
+    default-server  inter 3s fall 3 rise 2
+    #cookie JSESSIONID prefix
+    server 10.18.200.123_7803 10.18.200.123:7803 check
+    server 10.18.200.122_7803 10.18.200.122:7803 check
 
 backend ndict_api_cluster
-	mode http
-	balance source
-	default-server  inter 3s fall 3 rise 2
-	#cookie JSESSIONID prefix
-	server 10.18.200.123_7804 10.18.200.123:7804 check
-	server 10.18.200.122_7804 10.18.200.122:7804 check
+    mode http
+    balance source
+    default-server  inter 3s fall 3 rise 2
+    #cookie JSESSIONID prefix
+    server 10.18.200.123_7804 10.18.200.123:7804 check
+    server 10.18.200.122_7804 10.18.200.122:7804 check
 
 backend nuget_cluster
-	mode http
-	default-server  inter 3s fall 3 rise 2
-	#cookie JSESSIONID prefix
-	server 10.18.200.122_7805 10.18.200.122:7805 check
-#	server 10.18.200.209_7805 10.18.200.209:7805 backup
+    mode http
+    default-server  inter 3s fall 3 rise 2
+    #cookie JSESSIONID prefix
+    server 10.18.200.122_7805 10.18.200.122:7805 check
+#   server 10.18.200.209_7805 10.18.200.209:7805 backup
 
 backend wekan_cluster
-	mode http
-	default-server  inter 3s fall 3 rise 2
-	#cookie JSESSIONID prefix
-	server 10.18.200.109_7807 10.18.200.109:88 check
-	server 10.18.200.119_7807 10.18.200.119:88 check backup
+    mode http
+    default-server  inter 3s fall 3 rise 2
+    #cookie JSESSIONID prefix
+    server 10.18.200.109_7807 10.18.200.109:88 check
+    server 10.18.200.119_7807 10.18.200.119:88 check backup
 ####### Sentry
 backend sentry_cluster
-	mode http
-	default-server  inter 3s fall 3 rise 2
-	option forwardfor
-	option httpchk /_health/
-	http-request add-header X-CLIENT-IP %[src]
-	server 10.18.200.109_800 10.18.200.109:800 check
-	server 10.18.200.119_800 10.18.200.119:800 check backup
+    mode http
+    default-server  inter 3s fall 3 rise 2
+    option forwardfor
+    option httpchk /_health/
+    http-request add-header X-CLIENT-IP %[src]
+    server 10.18.200.109_800 10.18.200.109:800 check
+    server 10.18.200.119_800 10.18.200.119:800 check backup
 ####### Grafana
 backend grafana_cluster
-	mode http
-	default-server  inter 3s fall 3 rise 2
-	#cookie JSESSIONID prefix
-	server 10.18.200.109_3000 10.18.200.109:3000 check
-	server 10.18.200.110_3000 10.18.200.110:3000 check backup
+    mode http
+    default-server  inter 3s fall 3 rise 2
+    #cookie JSESSIONID prefix
+    server 10.18.200.109_3000 10.18.200.109:3000 check
+    server 10.18.200.110_3000 10.18.200.110:3000 check backup
 #######  Grafana
 ####### Zabbix
 backend zabbix_cluster
-	mode http
-	default-server  inter 3s fall 3 rise 2
-	server 10.18.200.121_8181 10.18.200.121:8181 check
-#	server 10.18.200.119_8181 10.18.200.119:8181 check backup
+    mode http
+    default-server  inter 3s fall 3 rise 2
+    server 10.18.200.121_8181 10.18.200.121:8181 check
+#   server 10.18.200.119_8181 10.18.200.119:8181 check backup
 #######  Zabbix
 backend kibana_cluster
-	mode http
+    mode http
     #option  httplog
-	default-server  inter 3s fall 3 rise 2
-	#cookie JSESSIONID prefix
-	server 10.18.200.119_5601 10.18.200.119:5601 check
+    default-server  inter 3s fall 3 rise 2
+    #cookie JSESSIONID prefix
+    server 10.18.200.119_5601 10.18.200.119:5601 check
 #######  licbot.nexdev.net
 backend licbot_cluster
-	mode http
+    mode http
     option  httplog
-	balance source
-	default-server  inter 3s fall 3 rise 2
-	server 10.18.200.202_7621 10.18.200.202:7621 check
-	server 10.18.200.209_7621 10.18.200.209:7621 check
+    balance source
+    default-server  inter 3s fall 3 rise 2
+    server 10.18.200.202_7621 10.18.200.202:7621 check
+    server 10.18.200.209_7621 10.18.200.209:7621 check
 ####### bot.nexdev.net
 backend bot_cluster
-	mode http
+    mode http
     option  httplog
-	default-server  inter 3s fall 3 rise 2
-	server 10.18.200.122_6969 10.18.200.122:6969 check
-	server 10.18.200.123_6969 10.18.200.123:6969 check backup
+    default-server  inter 3s fall 3 rise 2
+    server 10.18.200.122_6969 10.18.200.122:6969 check
+    server 10.18.200.123_6969 10.18.200.123:6969 check backup
 #######  docs.nexdev.net
 backend docs_cluster
-	mode http
+    mode http
     option  httplog
-	default-server  inter 3s fall 3 rise 2
-	server 10.18.200.121_8000 10.18.200.121:8000 check
+    default-server  inter 3s fall 3 rise 2
+    server 10.18.200.121_8000 10.18.200.121:8000 check
 ######
 backend hasite_cluster
-	mode http
-	default-server  inter 3s fall 3 rise 2
-	#cookie JSESSIONID prefix
-	server 10.18.200.119_8866 10.18.200.119:8866 check
-	server 10.18.200.109_8866 10.18.200.109:8866 check backup
+    mode http
+    default-server  inter 3s fall 3 rise 2
+    #cookie JSESSIONID prefix
+    server 10.18.200.119_8866 10.18.200.119:8866 check
+    server 10.18.200.109_8866 10.18.200.109:8866 check backup
 ######
 backend livescoreapi_cluster
-	mode http
-	default-server  inter 3s fall 3 rise 2
-	server 10.18.200.103_7205 10.18.200.103:7205 check
-	server 10.18.200.104_7205 10.18.200.104:7205 check
+    mode http
+    default-server  inter 3s fall 3 rise 2
+    server 10.18.200.103_7205 10.18.200.103:7205 check
+    server 10.18.200.104_7205 10.18.200.104:7205 check

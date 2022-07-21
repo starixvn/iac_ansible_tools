@@ -1,5 +1,73 @@
 ---
 - hosts: all
-  roles:
-    - role: init
-  tags: haproxy
+
+- include: _preliminary_check.yml
+  tags:
+    - haproxy
+
+- include: _remove_previous.yml
+  when: haproxy_service.stat.exists
+  tags:
+    - haproxy
+
+- include: install_haproxy.yml
+  tags:
+    - haproxy
+
+- include: keepalived.yml
+  tags:
+    - keepalived
+
+- include: switch_haproxy.yml
+  tags:
+    - switch_haproxy
+
+- name: Restart Keepalived
+  service:
+    name: keepalived
+    state: restarted
+  become: yes
+  tags:
+    - restart_keepalived
+
+- name: Restart HAProxy
+  service:
+    name: haproxy
+    state: restarted
+  become: yes
+  tags:
+    - restart_haproxy
+
+- name: "check current version of haproxy"
+  shell: echo "$(haproxy -v)"
+  become: yes
+  args:
+    executable: /bin/bash
+  register: haproxy_v
+  tags:
+    - check_haproxy_version
+    - check_version
+    - haproxy
+- debug:
+    msg: "{{ haproxy_v.stdout.split('\n')}}"
+  tags:
+    - check_haproxy_version
+    - haproxy
+    - check_version
+
+- name: "check current version of keepalived"
+  shell: echo "$(keepalived -v)"
+  become: yes
+  args:
+    executable: /bin/bash
+  register: keepalived_v
+  tags:
+    - check_keepalived_version
+    - keepalived
+    - check_version
+- debug:
+    var: keepalived_v
+  tags:
+    - check_keepalived_version
+    - keepalived
+    - check_version

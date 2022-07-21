@@ -1,0 +1,256 @@
+global
+        maxconn     200000
+        log         127.0.0.1 local6
+        #debug
+        #quiet
+     tune.ssl.default-dh-param 2048
+        server-state-file global
+         server-state-base /var/state/haproxy/
+        stats socket /var/run/haproxy/info.sock  mode 666 level user
+defaults
+        #log     global
+        maxconn 10000
+        option  dontlognull
+        option dontlog-normal
+        option  http-server-close
+#       option  forwardfor except 127.0.0.0/8
+        timeout queue 1m
+     timeout connect 10s
+     timeout client 10m
+     timeout server 10m
+     timeout check 10s
+        load-server-state-from-file global
+
+listen stats
+        bind *:8080
+        mode  http
+        maxconn  10
+        stats  enable
+        stats  hide-version
+        stats  realm Haproxy\ Statistics
+        stats  uri /
+        stats  auth admin:1234aa
+
+### CN88.Setting.API
+frontend frontend-CN88.Setting.API
+bind *:7203
+mode tcp
+log global
+option tcplog
+option tcp-check
+default_backend backend-CN88.Setting.API
+
+backend backend-CN88.Setting.API
+mode tcp
+balance roundrobin
+server 10.40.40.73_tcp_7203 10.40.40.73:7203 check 
+server 10.40.40.75_tcp_7203 10.40.40.75:7203 check 
+###### Sparta.LAP.LOGGING.Site
+frontend frontend-LAP.LOGGING.Site
+bind *:7623
+mode tcp
+log global
+option tcplog
+option tcp-check
+default_backend backend-LAP.LOGGING.Site
+
+backend backend-LAP.LOGGING.Site
+mode tcp
+balance source
+server 10.2.23.6_tcp_7623 10.2.23.6:7623 check 
+server 10.2.27.13_tcp_7623 10.2.27.13:7623 check backup
+### SPU.FraudSensor.Site
+frontend SPU.FraudSensor.Site
+bind *:7705
+mode tcp
+log global
+option tcplog
+option tcp-check
+default_backend backend-SPU.FraudSensor.Site
+
+backend backend-SPU.FraudSensor.Site
+mode tcp
+balance source
+server 10.2.23.6_tcp_7623 10.2.23.6:7705 check 
+server 10.2.27.13_tcp_7623 10.2.27.13:7705 check backup
+### SPU.FraudSensor.Site
+### Fanex.Mail.Service
+frontend frontend-Fanex.Mail.Service
+bind *:8787
+mode tcp
+log global
+option tcplog
+option tcp-check
+default_backend backend-Fanex.Mail.Service
+
+backend backend-Fanex.Mail.Service
+mode tcp
+balance source
+server 10.40.40.73_tcp_8787 10.40.40.73:8787 check 
+server 10.40.40.75_tcp_8787 10.40.40.75:8787 check backup
+###
+### RabbitMQ
+frontend frontend-RabbitMQ
+bind *:5672
+mode tcp
+log global
+option tcplog
+option tcp-check
+default_backend backend-RabbitMQ
+
+backend backend-RabbitMQ
+mode tcp
+balance source
+server 10.40.40.73_tcp_5672 10.40.40.73:5672 check 
+server 10.2.23.6_tcp_5672 10.2.23.6:5672 check backup
+###
+### Redis
+frontend frontend-Redis
+bind *:6379
+mode tcp
+log global
+option tcplog
+option tcp-check
+default_backend backend-Redis
+
+backend backend-Redis
+mode tcp
+balance source
+server 10.40.40.73_tcp_6379 10.40.40.73:6379 check 
+server 10.40.40.75_tcp_6379 10.40.40.75:6379 check backup
+###
+### Couchbase
+frontend frontend-Couchbase
+bind *:8091
+mode tcp
+log global
+option tcplog
+option tcp-check
+default_backend backend-Couchbase
+
+backend backend-Couchbase
+mode tcp
+balance source
+server 10.40.40.73_tcp_8091 10.40.40.73:8091 check 
+server 10.40.40.75_tcp_8091 10.40.40.75:8091 check backup
+###
+### Logging.Service
+frontend frontend-Logging.Service
+bind *:9099
+mode tcp
+log global
+option tcplog
+option tcp-check
+default_backend backend-Logging.Service
+
+backend backend-Logging.Service
+mode tcp
+balance roundrobin
+server 10.40.40.73_tcp_9099 10.40.40.73:9099 check 
+server 10.40.40.75_tcp_9099 10.40.40.75:9099 check 
+###
+### NAP.API
+frontend frontend-NAP.API
+bind *:1710
+mode tcp
+log global
+option tcplog
+option tcp-check
+default_backend backend-NAP.API
+
+backend backend-NAP.API
+mode tcp
+balance roundrobin
+server 10.40.40.73_tcp_1710 10.40.40.73:1710 check 
+server 10.40.40.75_tcp_1710 10.40.40.75:1710 check 
+###
+### ONEbook.UM.API
+frontend frontend-ONEbook.UM.API
+bind *:8889
+mode tcp
+log global
+option tcplog
+option tcp-check
+default_backend backend-ONEbook.UM.API
+
+backend backend-ONEbook.UM.API
+mode tcp
+balance roundrobin
+server 10.40.40.73_tcp_8889 10.40.40.73:8889 check 
+server 10.40.40.75_tcp_8889 10.40.40.75:8889 check 
+###
+### DCS.API
+frontend frontend-DCS.API
+bind *:7200
+mode tcp
+log global
+option tcplog
+option tcp-check
+default_backend backend-DCS.API
+
+backend backend-DCS.API
+mode tcp
+balance roundrobin
+server 10.40.40.73_tcp_7200 10.40.40.73:7200 check 
+server 10.40.40.75_tcp_7200 10.40.40.75:7200 check 
+###
+### DCS.Matrix.API
+frontend frontend-DCS.Matrix.API
+bind *:7201
+mode tcp
+log global
+option tcplog
+option tcp-check
+default_backend backend-DCS.Matrix.API
+
+backend backend-DCS.Matrix.API
+mode tcp
+balance roundrobin
+server 10.40.40.73_tcp_7201 10.40.40.73:7201 check 
+server 10.40.40.75_tcp_7201 10.40.40.75:7201 check 
+###
+### DCS.StaticResources
+frontend frontend-DCS.StaticResources
+bind *:7206
+mode tcp
+log global
+option tcplog
+option tcp-check
+default_backend backend-DCS.StaticResources
+
+backend backend-DCS.StaticResources
+mode tcp
+balance roundrobin
+server 10.40.40.73_tcp_7206 10.40.40.73:7206 check 
+server 10.40.40.75_tcp_7206 10.40.40.75:7206 check 
+###
+### Fanex.RemotingRef.API
+frontend frontend-Fanex.RemotingRef.API
+bind *:7207
+mode tcp
+log global
+option tcplog
+option tcp-check
+default_backend backend-Fanex.RemotingRef.API
+
+backend backend-Fanex.RemotingRef.API
+mode tcp
+balance roundrobin
+server 10.40.40.73_tcp_7207 10.40.40.73:7207 check 
+server 10.40.40.75_tcp_7207 10.40.40.75:7207 check 
+###
+###### Sesstion.State
+frontend frontend-Sesstion.State
+bind *:42424
+mode tcp
+log global
+option tcplog
+option tcp-check
+default_backend backend-Sesstion.State
+
+backend backend-Sesstion.State
+mode tcp
+balance source
+server 10.40.40.73_tcp_42424 10.40.40.73:42424 check 
+server 10.40.40.75_tcp_42424 10.40.40.75:42424 check backup 
+###

@@ -1,0 +1,928 @@
+global
+    log   127.0.0.1       local0
+    stats socket /var/run/haproxy.stat level admin process 1
+    stats bind-process 1
+    #stats socket ipv4@127.0.0.1:9999 level admin
+    user haproxy
+    group haproxy
+    daemon
+    maxconn 80000
+    spread-checks 4
+    tune.bufsize 32768
+    log-send-hostname srv002
+    ssl-default-bind-options ssl-min-ver TLSv1.2 no-tls-tickets
+    ssl-default-bind-ciphers !EDH:!RC4:!ADH:!DSS:HIGH:+AES128:+AES256-SHA256:+AES128-SHA256:+SHA:!3DES:!aNULL:!eNULL
+    tune.ssl.default-dh-param 2048
+    tune.ssl.cachesize 1000000
+    tune.ssl.lifetime 2h
+    tune.ssl.maxrecord 1500
+    tune.maxrewrite 1024
+    server-state-file global
+    server-state-base /var/state/haproxy/
+    stats socket /var/run/haproxy/info.sock  mode 666 level user
+defaults
+    log global
+    #mode http
+    retries 3
+    balance roundrobin
+    option      dontlognull
+    option      abortonclose
+#    option      dontlog-normal
+    option      http-server-close
+    timeout     queue 1m
+    timeout     connect 10s
+    timeout     client 10m
+    timeout     server 10m
+    timeout     check 10s
+    load-server-state-from-file global
+
+listen stats
+    bind *:8080
+    mode  http
+    maxconn  10
+    stats  enable
+    stats  hide-version
+    stats  realm Haproxy\ Statistics
+    stats  uri /
+    stats  auth admin:St@r!x.D3v0ps
+    server HAProxy99-27 10.99.99.27:8080 cookie A check
+    server HAProxy99-28 10.99.99.28:8080 cookie B check
+
+### 7 - prodnapapi
+frontend frontend-prodnapapi
+bind *:1710 
+mode http
+
+log global
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+default_backend backend-prodnapapi
+
+backend backend-prodnapapi
+mode http
+balance roundrobin
+server 10.40.40.127_http_1710 10.40.40.127:1710 check 
+server 10.40.40.22_http_1710 10.40.40.22:1710 check 
+
+#
+
+### 7 - prodonebookumapi
+frontend frontend-prodonebookumapi
+bind *:8889 
+mode tcp
+
+log global
+option tcplog
+option tcp-check
+default_backend backend-prodonebookumapi
+
+backend backend-prodonebookumapi
+mode tcp
+balance roundrobin
+server 10.40.40.22_tcp_8889 10.40.40.22:8889 check 
+server 10.40.40.127_tcp_8889 10.40.40.127:8889 check 
+
+#
+
+###
+frontend frontend-loggingservice
+bind *:9099 
+mode tcp
+
+log global
+option tcplog
+option tcp-check
+default_backend backend-loggingservice
+
+backend backend-loggingservice
+mode tcp
+server 10.40.40.127_tcp_9099 10.40.40.127:9099 check 
+server 10.40.40.22_tcp_9099 10.40.40.22:9099 check backup 
+
+#
+
+### 7 - produmthirdpartyapi
+frontend frontend-produmthirdpartyapi
+bind *:8887 
+mode tcp
+
+log global
+option tcplog
+option tcp-check
+default_backend backend-produmthirdpartyapi
+
+backend backend-produmthirdpartyapi
+mode tcp
+balance roundrobin
+server 10.40.40.22_tcp_8887 10.40.40.22:8887 check 
+server 10.40.40.127_tcp_8887 10.40.40.127:8887 check 
+
+#
+
+###
+frontend frontend-sessionstateservice
+bind *:42424 
+mode tcp
+
+log global
+option tcplog
+option tcp-check
+default_backend backend-sessionstateservice
+
+backend backend-sessionstateservice
+mode tcp
+server 10.40.40.22_tcp_42424 10.40.40.22:42424 check 
+server 10.40.40.127_tcp_42424 10.40.40.127:42424 check backup 
+
+#
+
+### 3 - prodannouncementapi
+frontend frontend-prodannouncementapi
+bind *:6578 
+mode tcp
+
+log global
+option tcplog
+option tcp-check
+default_backend backend-prodannouncementapi
+
+backend backend-prodannouncementapi
+mode tcp
+balance roundrobin
+server 10.40.40.127_tcp_6578 10.40.40.127:6578 check 
+server 10.40.40.22_tcp_6578 10.40.40.22:6578 check 
+
+#
+
+###
+frontend frontend-prodfilestorageapi
+bind *:7312 
+mode http
+
+log global
+option  httplog
+option forwardfor
+option httpchk HEAD /swagger HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+default_backend backend-prodfilestorageapi
+
+backend backend-prodfilestorageapi
+mode http
+server 10.40.40.127_http_7312 10.40.40.127:7312 check 
+server 10.40.40.22_http_7312 10.40.40.22:7312 check backup 
+
+#
+
+###
+frontend frontend-prodoicapi
+bind *:7614 
+mode tcp
+
+log global
+option tcplog
+option tcp-check
+default_backend backend-prodoicapi
+
+backend backend-prodoicapi
+mode tcp
+server 10.40.40.127_tcp_7614 10.40.40.127:7614 check 
+server 10.40.40.22_tcp_7614 10.40.40.22:7614 check backup 
+
+#
+
+### 2 - prodriskcontrollegacyapi
+frontend frontend-prodriskcontrollegacyapi
+bind *:7313 
+mode tcp
+
+log global
+option tcplog
+option tcp-check
+default_backend backend-prodriskcontrollegacyapi
+
+backend backend-prodriskcontrollegacyapi
+mode tcp
+balance roundrobin
+server 10.40.40.127_tcp_7313 10.40.40.127:7313 check 
+server 10.40.40.22_tcp_7313 10.40.40.22:7313 check 
+
+#
+
+### 3 - prodnapaccountingapi
+frontend frontend-prodnapaccountingapi
+bind *:7400 
+mode tcp
+default_backend backend-prodnapaccountingapi
+
+backend backend-prodnapaccountingapi
+mode tcp
+balance source
+
+option tcplog
+option tcp-check
+server 10.2.113.138_tcp_7400 10.2.113.138:7400 check 
+server 10.2.113.139_tcp_7400 10.2.113.139:7400 check 
+
+#
+
+### 1 - stagingdcsmatrixapi
+frontend frontend-stagingdcsmatrixapi
+bind *:7588 
+mode tcp
+
+log global
+option tcplog
+option tcp-check
+default_backend backend-stagingdcsmatrixapi
+
+backend backend-stagingdcsmatrixapi
+mode tcp
+balance roundrobin
+server 10.40.40.127_tcp_7588 10.40.40.127:7588 check 
+server 10.40.40.22_tcp_7588 10.40.40.22:7588 check 
+
+#
+
+### 1 - stagingdcssettingapi
+frontend frontend-stagingdcssettingapi
+bind *:7587 
+mode tcp
+
+log global
+option tcplog
+option tcp-check
+default_backend backend-stagingdcssettingapi
+
+backend backend-stagingdcssettingapi
+mode tcp
+balance roundrobin
+server 10.40.40.127_tcp_7587 10.40.40.127:7587 check 
+server 10.40.40.22_tcp_7587 10.40.40.22:7587 check 
+
+#
+
+###
+frontend frontend-prodautopayoutapi
+bind *:8890 
+mode tcp
+
+log global
+option tcplog
+option tcp-check
+default_backend backend-prodautopayoutapi
+
+backend backend-prodautopayoutapi
+mode tcp
+server 10.40.40.127_tcp_8890 10.40.40.127:8890 check 
+server 10.40.40.22_tcp_8890 10.40.40.22:8890 check backup 
+
+#
+
+### 7 - prodfanexemailservice
+frontend frontend-prodfanexemailservice
+bind *:8585 
+mode tcp
+
+log global
+option tcplog
+option tcp-check
+default_backend backend-prodfanexemailservice
+
+backend backend-prodfanexemailservice
+mode tcp
+balance roundrobin
+server 10.40.40.127_tcp_8585 10.40.40.127:8585 check 
+server 10.40.40.22_tcp_8585 10.40.40.22:8585 check 
+
+#
+
+###
+frontend frontend-prodipapi
+bind *:8888 
+mode http
+
+log global
+option  httplog
+option forwardfor
+option httpchk HEAD /Services/Handler/GetIPInfo.ashx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+default_backend backend-prodipapi
+
+backend backend-prodipapi
+mode http
+server 10.40.40.127_http_8888 10.40.40.127:8888 check 
+server 10.40.40.22_http_8888 10.40.40.22:8888 check backup 
+
+#
+
+###
+frontend frontend-prodrabbit-mq
+bind *:5672 
+mode tcp
+
+log global
+option tcplog
+option tcp-check
+default_backend backend-prodrabbit-mq
+
+backend backend-prodrabbit-mq
+mode tcp
+server 10.40.40.127_tcp_5672 10.40.40.127:5672 check inter 5s rise 2 fall 3 
+server 10.40.40.22_tcp_5672 10.40.40.22:5672 check backup inter 5s rise 2 fall 3
+
+#
+
+### 1 - prodfanexremotingrefapi
+frontend frontend-prodfanexremotingrefapi
+bind *:7258 
+mode http
+
+log global
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+default_backend backend-prodfanexremotingrefapi
+
+backend backend-prodfanexremotingrefapi
+mode http
+balance roundrobin
+server 10.40.40.22_http_7258 10.40.40.22:7258 check 
+server 10.40.40.127_http_7258 10.40.40.127:7258 check 
+
+#
+
+### 9 - fpsmiddleapi
+frontend frontend-fpsmiddleapi
+bind *:7704 
+mode tcp
+default_backend backend-fpsmiddleapi
+
+backend backend-fpsmiddleapi
+mode tcp
+balance roundrobin
+
+option tcplog
+option tcp-check
+server 10.2.23.3_tcp_7704 10.2.23.3:7704 check 
+server 10.2.23.4_tcp_7704 10.2.23.4:7704 check 
+server 10.2.23.5_tcp_7704 10.2.23.5:7704 check 
+
+#
+
+### 7 - prodchatbotapi
+frontend frontend-prodchatbotapi
+bind *:7431 
+mode tcp
+
+log global
+option tcplog
+option tcp-check
+default_backend backend-prodchatbotapi
+
+backend backend-prodchatbotapi
+mode tcp
+balance roundrobin
+server 10.40.40.127_tcp_7431 10.40.40.127:7431 check 
+server 10.40.40.22_tcp_7431 10.40.40.22:7431 check 
+
+#
+
+### 7 - prodalphaservicesapi
+frontend frontend-prodalphaservicesapi
+bind *:7432 
+mode tcp
+default_backend backend-prodalphaservicesapi
+
+backend backend-prodalphaservicesapi
+mode tcp
+balance roundrobin
+
+option tcplog
+option tcp-check
+server 10.2.27.1_tcp_7432 10.2.27.1:7432 check 
+server 10.2.27.4_tcp_7432 10.2.27.4:7432 check 
+
+#
+
+### 7 - prodalphaannouncementsapi
+frontend frontend-prodalphaannouncementsapi
+bind *:7434 
+mode tcp
+default_backend backend-prodalphaannouncementsapi
+
+backend backend-prodalphaannouncementsapi
+mode tcp
+balance roundrobin
+
+option tcplog
+option tcp-check
+server 10.2.27.1_tcp_7434 10.2.27.1:7434 check 
+server 10.2.27.4_tcp_7434 10.2.27.4:7434 check 
+
+#
+
+### 7 - prodchatbotumapi
+frontend frontend-prodchatbotumapi
+bind *:7435 
+mode tcp
+
+log global
+option tcplog
+option tcp-check
+default_backend backend-prodchatbotumapi
+
+backend backend-prodchatbotumapi
+mode tcp
+balance roundrobin
+server 10.40.40.22_tcp_7435 10.40.40.22:7435 check 
+server 10.40.40.127_tcp_7435 10.40.40.127:7435 check 
+
+#
+
+### 7 - produpproxyapi
+frontend frontend-produpproxyapi
+bind *:8088 
+mode tcp
+
+log global
+option tcplog
+option tcp-check
+default_backend backend-produpproxyapi
+
+backend backend-produpproxyapi
+mode tcp
+balance source
+server 10.40.40.74_tcp_8088 10.40.40.74:8088 check 
+server 10.40.40.208_tcp_8088 10.40.40.208:8088 check 
+
+#
+
+### 7 - produpsite
+frontend frontend-produpsite
+bind *:9999 
+mode tcp
+
+log global
+option tcplog
+option tcp-check
+default_backend backend-produpsite
+
+backend backend-produpsite
+mode tcp
+balance source
+server 10.40.40.74_tcp_9999 10.40.40.74:9999 check 
+server 10.40.40.208_tcp_9999 10.40.40.208:9999 check 
+
+#
+
+###
+frontend frontend-fpsgraphapi
+bind *:7708 
+mode http
+
+#option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+default_backend backend-fpsgraphapi
+
+backend backend-fpsgraphapi
+mode http
+server 10.2.23.1_http_7708 10.2.23.1:7708 check 
+server 10.2.23.2_http_7708 10.2.23.2:7708 check backup 
+
+#
+
+###
+frontend frontend-sentry-web
+bind *:801 
+mode http
+
+log global
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+default_backend backend-sentry-web
+
+backend backend-sentry-web
+mode http
+server 10.99.99.100_http_801 10.99.99.100:801 check
+server 10.40.40.135_http_800 10.40.40.135:800 check backup
+
+#
+
+### 7 - romealphacopycustomerapi
+frontend frontend-romealphacopycustomerapi
+bind *:7436 
+mode tcp
+
+log global
+option tcplog
+option tcp-check
+default_backend backend-romealphacopycustomerapi
+
+backend backend-romealphacopycustomerapi
+mode tcp
+balance source
+server 10.40.40.22_tcp_7436 10.40.40.22:7436 check 
+server 10.40.40.127_tcp_7436 10.40.40.127:7436 check 
+
+#
+
+### 7 - fanexbotapi
+frontend frontend-fanexbotapi
+bind *:7800 
+mode tcp
+
+log global
+option tcplog
+option tcp-check
+default_backend backend-fanexbotapi
+
+backend backend-fanexbotapi
+mode tcp
+balance roundrobin
+server 10.40.40.74_tcp_7800 10.40.40.74:7800 check 
+server 10.40.40.208_tcp_7800 10.40.40.208:7800 check 
+
+#
+
+### 7 - olympusletstalkserviceapi
+frontend frontend-olympusletstalkserviceapi
+bind *:7309 
+mode tcp
+default_backend backend-olympusletstalkserviceapi
+
+backend backend-olympusletstalkserviceapi
+mode tcp
+balance roundrobin
+
+option tcplog
+option tcp-check
+server 10.40.40.127_tcp_7309 10.40.40.127:7309 check 
+server 10.40.40.22_tcp_7309 10.40.40.22:7309 check 
+
+#
+
+###
+frontend frontend-sentry-db
+bind *:5432 
+mode tcp
+
+log global
+option tcplog
+option tcp-check
+default_backend backend-sentry-db
+
+backend backend-sentry-db
+mode tcp
+server 10.99.99.100_tcp_5432 10.99.99.100:5432 check 
+
+#
+
+###
+frontend frontend-zabbix
+bind *:8181 
+mode tcp
+
+log global
+option tcplog
+option tcp-check
+default_backend backend-zabbix
+
+backend backend-zabbix
+mode tcp
+server 10.99.99.100_tcp_8181 10.99.99.100:8181 check 
+
+#
+
+###
+frontend frontend-cn88customersettingapi
+bind *:7310 
+mode tcp
+
+log global
+option tcplog
+option tcp-check
+default_backend backend-cn88customersettingapi
+
+backend backend-cn88customersettingapi
+mode tcp
+server 10.40.40.22_tcp_7310 10.40.40.22:7310 check 
+server 10.40.40.127_tcp_7310 10.40.40.127:7310 check backup 
+
+#
+
+###
+frontend frontend-rabbit-mq-admin
+bind *:15672 
+mode tcp
+
+log global
+option tcplog
+option tcp-check
+default_backend backend-rabbit-mq-admin
+
+backend backend-rabbit-mq-admin
+mode tcp
+server 10.40.40.22_tcp_15672 10.40.40.22:15672 check 
+server 10.40.40.127_tcp_15672 10.40.40.127:15672 check backup 
+
+#
+
+###
+frontend frontend-alphastate
+bind *:42428 
+mode tcp
+
+log global
+option tcplog
+option tcp-check
+default_backend backend-alphastate
+
+backend backend-alphastate
+mode tcp
+server 10.2.27.11_tcp_42424 10.2.27.11:42424 check 
+server 10.2.27.1_tcp_42424 10.2.27.1:42424 check backup 
+server 10.2.27.4_tcp_42424 10.2.27.4:42424 check backup 
+
+#
+
+### 7 - cn88customersettingapistaging
+frontend frontend-cn88customersettingapistaging
+bind *:7311 
+mode tcp
+
+log global
+option tcplog
+option tcp-check
+default_backend backend-cn88customersettingapistaging
+
+backend backend-cn88customersettingapistaging
+mode tcp
+balance roundrobin
+server 10.40.40.22_tcp_7311 10.40.40.22:7311 check 
+server 10.40.40.127_tcp_7311 10.40.40.127:7311 check 
+
+#
+
+### 7 - lapbetlistsite
+frontend frontend-lapbetlistsite
+bind *:7620 
+mode tcp
+
+log global
+option tcplog
+option tcp-check
+default_backend backend-lapbetlistsite
+
+backend backend-lapbetlistsite
+mode tcp
+balance roundrobin
+server 10.2.8.9_tcp_7620 10.2.8.9:7620 check 
+server 10.2.8.10_tcp_7620 10.2.8.10:7620 check 
+
+#
+
+### 7 - laploggingsite
+frontend frontend-laploggingsite
+bind *:7623 
+mode tcp
+
+log global
+option tcplog
+option tcp-check
+default_backend backend-laploggingsite
+
+backend backend-laploggingsite
+mode tcp
+balance roundrobin
+server 10.2.8.9_tcp_7623 10.2.8.9:7623 check 
+server 10.2.8.10_tcp_7623 10.2.8.10:7623 check 
+
+#
+
+### 7 - spartalaplgapisite
+frontend frontend-spartalaplgapisite
+bind *:7627 
+mode tcp
+
+log global
+option tcplog
+option tcp-check
+default_backend backend-spartalaplgapisite
+
+backend backend-spartalaplgapisite
+mode tcp
+balance roundrobin
+server 10.2.8.9_tcp_7627 10.2.8.9:7627 check 
+server 10.2.8.10_tcp_7627 10.2.8.10:7627 check 
+
+#
+
+### 7 - lapreportsite
+frontend frontend-lapreportsite
+bind *:7624 
+mode tcp
+
+log global
+option tcplog
+option tcp-check
+default_backend backend-lapreportsite
+
+backend backend-lapreportsite
+mode tcp
+balance roundrobin
+server 10.2.8.8_tcp_7624 10.2.8.8:7624 check 
+server 10.2.8.9_tcp_7624 10.2.8.9:7624 check 
+server 10.2.8.6_tcp_7624 10.2.8.6:7624 check 
+server 10.2.8.7_tcp_7624 10.2.8.7:7624 check 
+server 10.2.8.10_tcp_7624 10.2.8.10:7624 check 
+
+#
+
+### 7 - spartalapextservicesite
+frontend frontend-spartalapextservicesite
+bind *:7626 
+mode tcp
+
+log global
+option tcplog
+option tcp-check
+default_backend backend-spartalapextservicesite
+
+backend backend-spartalapextservicesite
+mode tcp
+balance roundrobin
+server 10.2.8.9_tcp_7626 10.2.8.9:7626 check 
+server 10.2.8.10_tcp_7626 10.2.8.10:7626 check 
+server 10.2.8.8_tcp_7626 10.2.8.8:7626 check 
+
+#
+
+### 7 - napchatbotbotserviceendpoint
+frontend frontend-napchatbotbotserviceendpoint
+bind *:7541 
+mode tcp
+
+log global
+option tcplog
+option tcp-check
+default_backend backend-napchatbotbotserviceendpoint
+
+backend backend-napchatbotbotserviceendpoint
+mode tcp
+balance source
+server 10.2.8.9_tcp_7541 10.2.8.9:7541 check 
+server 10.2.8.10_tcp_7541 10.2.8.10:7541 check 
+
+#
+
+###
+frontend frontend-alphastatey1
+bind *:42430 
+mode tcp
+
+log global
+option tcplog
+option tcp-check
+default_backend backend-alphastatey1
+
+backend backend-alphastatey1
+mode tcp
+server 10.2.27.1_tcp_42424 10.2.27.1:42424 check 
+server 10.2.27.4_tcp_42424 10.2.27.4:42424 check backup 
+
+#
+
+###
+frontend frontend-alphastatey7
+bind *:42432 
+mode tcp
+
+log global
+option tcplog
+option tcp-check
+default_backend backend-alphastatey7
+
+backend backend-alphastatey7
+mode tcp
+server 10.2.27.4_tcp_42424 10.2.27.4:42424 check 
+server 10.2.27.1_tcp_42424 10.2.27.1:42424 check backup 
+
+#
+
+###
+frontend frontend-redis-cluster
+bind *:16379 name redis
+mode tcp
+default_backend backend-redis-cluster
+
+option tcplog
+option tcp-check
+backend backend-redis-cluster
+option tcp-check
+tcp-check connect
+tcp-check send AUTH\ foo1@bared\r\n
+tcp-check send PING\r\n
+tcp-check expect string +PONG
+tcp-check send info\ replication\r\n
+tcp-check expect string role:master
+tcp-check send QUIT\r\n
+tcp-check expect string +OK
+server 10.40.40.135_tcp_16379 10.40.40.135:16379 check inter 1s 
+server 10.99.99.100_tcp_16379 10.99.99.100:16379 check inter 1s
+#server 10.18.200.107_tcp_16379 10.18.200.107:16379 check inter 1s
+
+#
+
+###
+frontend frontend-couchbase-oddfeed
+bind *:8092 
+mode tcp
+
+log global
+option tcplog
+option tcp-check
+default_backend backend-couchbase-oddfeed
+
+backend backend-couchbase-oddfeed
+mode tcp
+server 10.40.40.153_tcp_8091 10.40.40.153:8091 check 
+server 10.40.40.22_tcp_8091 10.40.40.22:8091 check backup 
+
+#
+
+### 7 - tgrsapi
+frontend frontend-tgrsapi
+bind *:7724 
+mode tcp
+default_backend backend-tgrsapi
+
+backend backend-tgrsapi
+mode tcp
+balance roundrobin
+
+option tcplog
+option tcp-check
+server 10.40.40.127_tcp_7724 10.40.40.127:7724 check 
+server 10.40.40.22_tcp_7724 10.40.40.22:7724 check 
+
+#
+
+### 7 - spunapctsportalapi
+frontend frontend-spunapctsportalapi
+bind *:7725 
+mode tcp
+default_backend backend-spunapctsportalapi
+
+backend backend-spunapctsportalapi
+mode tcp
+balance roundrobin
+
+option tcplog
+option tcp-check
+server 10.40.40.127_tcp_7725 10.40.40.127:7725 check 
+server 10.40.40.22_tcp_7725 10.40.40.22:7725 check 
+
+#
+
+### 7 - proddcssettingapi
+frontend frontend-proddcssettingapi
+bind *:7577 
+mode tcp
+
+log global
+option tcplog
+option tcp-check
+default_backend backend-proddcssettingapi
+
+backend backend-proddcssettingapi
+mode tcp
+balance roundrobin
+server 10.40.40.127_tcp_7577 10.40.40.127:7577 check 
+server 10.40.40.22_tcp_7577 10.40.40.22:7577 check 
+
+#
+
+### 7 - proddcsmatrixapi
+frontend frontend-proddcsmatrixapi
+bind *:7578 
+mode tcp
+
+log global
+option tcplog
+option tcp-check
+default_backend backend-proddcsmatrixapi
+
+backend backend-proddcsmatrixapi
+mode tcp
+balance roundrobin
+server 10.40.40.127_tcp_7578 10.40.40.127:7578 check 
+server 10.40.40.22_tcp_7578 10.40.40.22:7578 check 
+
+#
