@@ -1,0 +1,34 @@
+global
+    maxconn     200000
+    log         127.0.0.1 local6
+    #debug
+    #quiet
+    tune.ssl.default-dh-param 2048
+    server-state-file global
+    server-state-base /var/state/haproxy/
+    stats socket /var/run/haproxy/info.sock  mode 666 level user
+defaults
+    #log     global
+    maxconn 10000
+    option  dontlognull
+    option dontlog-normal
+    option  http-server-close
+#   option  forwardfor except 127.0.0.0/8
+    timeout queue 1m
+    timeout connect 10s
+    timeout client 10m
+    timeout server 10m
+    timeout check 10s
+    load-server-state-from-file global
+
+listen stats
+        bind *:8080
+        mode  http
+        maxconn  10
+        stats  enable
+        stats  hide-version
+        stats  realm Haproxy\ Statistics
+        stats  uri /
+        stats  auth admin:St@r!x.D3v0ps
+#        server HAProxy40-16 10.40.40.16:8080 cookie A check
+#        server HAProxy40-135 10.40.40.135:8080 cookie B check

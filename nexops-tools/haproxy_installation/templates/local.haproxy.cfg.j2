@@ -1,0 +1,2890 @@
+global
+	log 127.0.0.1 local6
+	maxconn     100000
+	pidfile     /var/run/haproxy.pid
+	user        haproxy
+	group       haproxy
+	daemon
+	tune.ssl.default-dh-param 2048
+       server-state-file /etc/haproxy/server_state
+       stats socket /var/run/haproxy/info.sock  mode 666 level user
+defaults
+#    log     global
+    maxconn 10000
+    option  dontlognull
+    #option dontlog-normal
+    retries 3
+    option redispatch
+#       option  forwardfor except 127.0.0.0/8
+        timeout queue 1m
+	 timeout connect 10s
+	 timeout client 10m
+	 timeout server 10m
+	 timeout check 10s
+
+listen stats
+        bind *:8080
+        mode  http
+        maxconn  10
+        stats  enable
+        stats  hide-version
+        stats  realm Haproxy\ Statistics
+        stats  uri /
+        stats  auth admin:admin
+###
+frontend frontend-olympusnapbetfollowsite
+bind *:7300
+mode http
+default_backend backend-olympusnapbetfollowsite
+
+backend backend-olympusnapbetfollowsite
+load-server-state-from-file global
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+server 10.18.200.209_http_7300 10.18.200.209:7300 check
+server 10.18.200.202_http_7300 10.18.200.202:7300 check backup
+#
+
+###
+frontend frontend-olympusnapparlayrmssite
+bind *:7301 
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+default_backend backend-olympusnapparlayrmssite
+
+backend backend-olympusnapparlayrmssite
+mode http
+server 10.18.200.202_http_7301 10.18.200.202:7301 check 
+server 10.18.200.209_http_7301 10.18.200.209:7301 check backup 
+
+#
+
+### 2 - olympusnapriskandcontrolsite
+frontend frontend-olympusnapriskandcontrolsite
+bind *:7302 
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+default_backend backend-olympusnapriskandcontrolsite
+
+backend backend-olympusnapriskandcontrolsite
+mode http
+balance source
+server 10.18.200.202_http_7302 10.18.200.202:7302 check 
+server 10.18.200.209_http_7302 10.18.200.209:7302 check 
+
+#
+
+###
+frontend frontend-olympusnapreportsite
+bind *:7303 
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+default_backend backend-olympusnapreportsite
+
+backend backend-olympusnapreportsite
+mode http
+server 10.18.200.202_http_7303 10.18.200.202:7303 check 
+server 10.18.200.209_http_7303 10.18.200.209:7303 check backup 
+
+#
+
+###
+frontend frontend-olympusnapdwsite
+bind *:7305
+mode http
+default_backend backend-olympusnapdwsite
+
+backend backend-olympusnapdwsite
+load-server-state-from-file global
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+balance roundrobin
+server 10.18.200.202_http_7305 10.18.200.202:7305 check
+server 10.18.200.209_http_7305 10.18.200.209:7305 check
+#
+
+### 2 - olympusnapsettlementsite
+frontend frontend-olympusnapsettlementsite
+bind *:7306 
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+default_backend backend-olympusnapsettlementsite
+
+backend backend-olympusnapsettlementsite
+mode http
+balance source
+server 10.18.200.202_http_7306 10.18.200.202:7306 check 
+server 10.18.200.209_http_7306 10.18.200.209:7306 check 
+
+#
+
+###
+frontend frontend-olympusnapspecialdeletesite
+bind *:7307
+mode http
+default_backend backend-olympusnapspecialdeletesite
+
+backend backend-olympusnapspecialdeletesite
+load-server-state-from-file global
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+balance source
+server 10.18.200.209_http_7307 10.18.200.209:7307 check
+server 10.18.200.202_http_7307 10.18.200.202:7307 check
+#
+
+###
+frontend frontend-olympusnapautopayoutapi
+bind *:7308
+mode http
+default_backend backend-olympusnapautopayoutapi
+
+backend backend-olympusnapautopayoutapi
+load-server-state-from-file global
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+balance source
+server 10.18.200.209_http_7308 10.18.200.209:7308 check
+server 10.18.200.202_http_7308 10.18.200.202:7308 check
+#
+
+###
+frontend frontend-onebookumapi
+bind *:8889
+mode tcp
+default_backend backend-onebookumapi
+
+backend backend-onebookumapi
+load-server-state-from-file global
+mode tcp
+
+option tcplog
+option tcp-check
+balance source
+server 10.18.200.103_tcp_8889 10.18.200.103:8889 check
+server 10.18.200.104_tcp_8889 10.18.200.104:8889 check
+#
+
+### 3 - romenapsite
+frontend frontend-romenapsite
+bind *:7400 
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+default_backend backend-romenapsite
+
+backend backend-romenapsite
+mode http
+option  httplog
+balance source
+server 10.18.200.202_http_7400 10.18.200.202:7400 check 
+server 10.18.200.209_http_7400 10.18.200.209:7400 check 
+
+#
+
+###
+frontend frontend-romeextnapsite
+bind *:7401 
+mode tcp
+
+option tcp-check
+default_backend backend-romeextnapsite
+
+backend backend-romeextnapsite
+mode tcp
+server 10.18.200.202_tcp_7401 10.18.200.202:7401 check 
+server 10.18.200.209_tcp_7401 10.18.200.209:7401 check backup 
+
+#
+
+###
+frontend frontend-romealphabfsite
+bind *:7402 
+mode tcp
+default_backend backend-romealphabfsite
+
+backend backend-romealphabfsite
+mode tcp
+
+option tcplog
+option tcp-check
+server 10.18.200.202_tcp_7402 10.18.200.202:7402 check 
+server 10.18.200.209_tcp_7402 10.18.200.209:7402 check backup 
+
+#
+
+### 3 - romealphasite01
+frontend frontend-romealphasite01
+bind *:7403 
+mode tcp
+
+option tcp-check
+default_backend backend-romealphasite01
+
+backend backend-romealphasite01
+mode tcp
+balance source
+server 10.18.200.202_tcp_7403 10.18.200.202:7403 check 
+server 10.18.200.209_tcp_7403 10.18.200.209:7403 check 
+
+#
+
+###
+frontend frontend-romealphasite02
+bind *:7404
+mode tcp
+default_backend backend-romealphasite02
+
+backend backend-romealphasite02
+load-server-state-from-file global
+mode tcp
+
+option tcplog
+option tcp-check
+balance source
+server 10.18.200.209_tcp_7404 10.18.200.209:7404 check
+server 10.18.200.202_tcp_7404 10.18.200.202:7404 check
+#
+
+###
+frontend frontend-romealphasite03
+bind *:7405
+mode tcp
+default_backend backend-romealphasite03
+
+backend backend-romealphasite03
+load-server-state-from-file global
+mode tcp
+
+option tcplog
+option tcp-check
+balance source
+server 10.18.200.209_tcp_7405 10.18.200.209:7405 check
+server 10.18.200.202_tcp_7405 10.18.200.202:7405 check
+#
+
+###
+frontend frontend-romealphasite04
+bind *:7406
+mode tcp
+default_backend backend-romealphasite04
+
+backend backend-romealphasite04
+load-server-state-from-file global
+mode tcp
+
+option tcplog
+option tcp-check
+balance source
+server 10.18.200.209_tcp_7406 10.18.200.209:7406 check
+server 10.18.200.202_tcp_7406 10.18.200.202:7406 check
+#
+
+###
+frontend frontend-romealphasite05
+bind *:7407
+mode tcp
+default_backend backend-romealphasite05
+
+backend backend-romealphasite05
+load-server-state-from-file global
+mode tcp
+
+option tcplog
+option tcp-check
+balance source
+server 10.18.200.209_tcp_7407 10.18.200.209:7407 check
+server 10.18.200.202_tcp_7407 10.18.200.202:7407 check
+#
+
+### 7 - fanexmailservice
+frontend frontend-fanexmailservice
+bind *:8787 
+mode tcp
+
+option tcp-check
+default_backend backend-fanexmailservice
+
+backend backend-fanexmailservice
+mode tcp
+balance source
+server 10.18.200.103_tcp_8787 10.18.200.103:8787 check 
+server 10.18.200.104_tcp_8787 10.18.200.104:8787 check 
+
+#
+
+###
+frontend frontend-romealphasite06
+bind *:7408
+mode tcp
+default_backend backend-romealphasite06
+
+backend backend-romealphasite06
+load-server-state-from-file global
+mode tcp
+
+option tcplog
+option tcp-check
+balance source
+server 10.18.200.209_tcp_7408 10.18.200.209:7408 check
+server 10.18.200.202_tcp_7408 10.18.200.202:7408 check
+#
+
+### 3 - romealphasite07
+frontend frontend-romealphasite07
+bind *:7409 
+mode tcp
+
+option tcp-check
+default_backend backend-romealphasite07
+
+backend backend-romealphasite07
+mode tcp
+option  httplog
+balance source
+server 10.18.200.202_tcp_7409 10.18.200.202:7409 check 
+server 10.18.200.209_tcp_7409 10.18.200.209:7409 check 
+
+#
+
+###
+frontend frontend-romealphasite08
+bind *:7410 
+mode tcp
+default_backend backend-romealphasite08
+
+option tcplog
+option tcp-check
+backend backend-romealphasite08
+mode tcp
+server 10.18.200.202_tcp_7410 10.18.200.202:7410 check 
+server 10.18.200.209_tcp_7410 10.18.200.209:7410 check backup 
+
+#
+
+###
+frontend frontend-romealphasite09
+bind *:7411
+mode tcp
+default_backend backend-romealphasite09
+
+backend backend-romealphasite09
+load-server-state-from-file global
+mode tcp
+
+option tcplog
+option tcp-check
+balance source
+server 10.18.200.209_tcp_7411 10.18.200.209:7411 check
+server 10.18.200.202_tcp_7411 10.18.200.202:7411 check
+#
+
+###
+frontend frontend-romealphasite10
+bind *:7412
+mode tcp
+default_backend backend-romealphasite10
+
+backend backend-romealphasite10
+load-server-state-from-file global
+mode tcp
+
+option tcplog
+option tcp-check
+balance source
+server 10.18.200.209_tcp_7412 10.18.200.209:7412 check
+server 10.18.200.202_tcp_7412 10.18.200.202:7412 check
+#
+
+### 3 - romenapcmsite
+frontend frontend-romenapcmsite
+bind *:7413 
+mode tcp
+
+option tcp-check
+default_backend backend-romenapcmsite
+
+backend backend-romenapcmsite
+mode tcp
+balance source
+server 10.18.200.202_tcp_7413 10.18.200.202:7413 check 
+server 10.18.200.209_tcp_7413 10.18.200.209:7413 check 
+
+#
+
+###
+frontend frontend-romenapu3site
+bind *:7414
+mode tcp
+default_backend backend-romenapu3site
+
+backend backend-romenapu3site
+load-server-state-from-file global
+mode tcp
+
+option tcplog
+option tcp-check
+balance source
+server 10.18.200.209_tcp_7414 10.18.200.209:7414 check
+server 10.18.200.202_tcp_7414 10.18.200.202:7414 check
+#
+
+### 3 - romealphau3site
+frontend frontend-romealphau3site
+bind *:7415 
+mode http
+default_backend backend-romealphau3site
+
+backend backend-romealphau3site
+mode http
+balance source
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+server 10.18.200.202_http_7415 10.18.200.202:7415 check 
+server 10.18.200.209_http_7415 10.18.200.209:7415 check 
+
+#
+
+### 7 - dcssettingapi
+frontend frontend-dcssettingapi
+bind *:7200 
+mode tcp
+
+option tcp-check
+default_backend backend-dcssettingapi
+
+backend backend-dcssettingapi
+mode tcp
+option  httplog
+balance source
+server 10.18.200.103_tcp_7200 10.18.200.103:7200 check 
+server 10.18.200.104_tcp_7200 10.18.200.104:7200 check 
+
+#
+
+### 7 - dcsstaticresources
+frontend frontend-dcsstaticresources
+bind *:7202 
+mode tcp
+
+option tcp-check
+default_backend backend-dcsstaticresources
+
+backend backend-dcsstaticresources
+mode tcp
+option  httplog
+balance source
+server 10.18.200.103_tcp_7202 10.18.200.103:7202 check 
+server 10.18.200.104_tcp_7202 10.18.200.104:7202 check 
+
+#
+
+### 7 - dcsmatrixapi
+frontend frontend-dcsmatrixapi
+bind *:7201 
+mode tcp
+
+option tcp-check
+default_backend backend-dcsmatrixapi
+
+backend backend-dcsmatrixapi
+mode tcp
+balance source
+server 10.18.200.103_tcp_7201 10.18.200.103:7201 check 
+server 10.18.200.104_tcp_7201 10.18.200.104:7201 check 
+
+#
+
+### 7 - napapi-230231
+frontend frontend-napapi-230231
+bind *:1710 
+mode tcp
+
+option tcp-check
+default_backend backend-napapi-230231
+
+backend backend-napapi-230231
+mode tcp
+balance source
+server 10.18.200.103_tcp_1710 10.18.200.103:1710 check 
+server 10.18.200.104_tcp_1710 10.18.200.104:1710 check 
+
+#
+
+### 5 - spartaowasite
+frontend frontend-spartaowasite
+bind *:7600 
+mode tcp
+
+option tcp-check
+default_backend backend-spartaowasite
+
+backend backend-spartaowasite
+mode tcp
+balance roundrobin
+server 10.18.200.202_tcp_7600 10.18.200.202:7600 check 
+server 10.18.200.209_tcp_7600 10.18.200.209:7600 check 
+
+#
+
+###
+frontend frontend-spartalapdashboardsite
+bind *:7601
+mode tcp
+default_backend backend-spartalapdashboardsite
+
+backend backend-spartalapdashboardsite
+load-server-state-from-file global
+mode tcp
+
+option tcplog
+option tcp-check
+balance source
+server 10.18.200.209_tcp_7601 10.18.200.209:7601 check
+server 10.18.200.202_tcp_7601 10.18.200.202:7601 check
+#
+
+###
+frontend frontend-spartanapcrmsite
+bind *:7602
+mode tcp
+default_backend backend-spartanapcrmsite
+
+backend backend-spartanapcrmsite
+load-server-state-from-file global
+mode tcp
+
+option tcplog
+option tcp-check
+balance source
+server 10.18.200.209_tcp_7602 10.18.200.209:7602 check
+server 10.18.200.202_tcp_7602 10.18.200.202:7602 check
+#
+
+###
+frontend frontend-spartanaplmsite
+bind *:7603
+mode tcp
+default_backend backend-spartanaplmsite
+
+backend backend-spartanaplmsite
+load-server-state-from-file global
+mode tcp
+
+option tcplog
+option tcp-check
+balance source
+server 10.18.200.209_tcp_7603 10.18.200.209:7603 check
+server 10.18.200.202_tcp_7603 10.18.200.202:7603 check
+#
+
+###
+frontend frontend-spartanapbasite
+bind *:7604
+mode tcp
+default_backend backend-spartanapbasite
+
+backend backend-spartanapbasite
+load-server-state-from-file global
+mode tcp
+
+option tcplog
+option tcp-check
+balance source
+server 10.18.200.209_tcp_7604 10.18.200.209:7604 check
+server 10.18.200.202_tcp_7604 10.18.200.202:7604 check
+#
+
+###
+frontend frontend-spartaoddsfeedadminsite
+bind *:7605
+mode tcp
+default_backend backend-spartaoddsfeedadminsite
+
+backend backend-spartaoddsfeedadminsite
+load-server-state-from-file global
+mode tcp
+
+option tcplog
+option tcp-check
+balance source
+server 10.18.200.209_tcp_7605 10.18.200.209:7605 check
+server 10.18.200.202_tcp_7605 10.18.200.202:7605 check
+#
+
+###
+frontend frontend-spartaoddsfeedwebservicesite
+bind *:7606
+mode tcp
+default_backend backend-spartaoddsfeedwebservicesite
+
+backend backend-spartaoddsfeedwebservicesite
+load-server-state-from-file global
+mode tcp
+
+option tcplog
+option tcp-check
+balance source
+server 10.18.200.209_tcp_7606 10.18.200.209:7606 check
+server 10.18.200.202_tcp_7606 10.18.200.202:7606 check
+#
+
+### 5 - spartanapoicsite
+frontend frontend-spartanapoicsite
+bind *:7608 
+mode tcp
+
+option tcp-check
+default_backend backend-spartanapoicsite
+
+backend backend-spartanapoicsite
+mode tcp
+balance source
+server 10.18.200.202_tcp_7608 10.18.200.202:7608 check 
+server 10.18.200.209_tcp_7608 10.18.200.209:7608 check 
+
+#
+
+###
+frontend frontend-onebookum3rd
+bind *:8887
+mode tcp
+default_backend backend-onebookum3rd
+
+backend backend-onebookum3rd
+load-server-state-from-file global
+mode tcp
+
+option tcplog
+option tcp-check
+balance source
+server 10.18.200.103_tcp_8887 10.18.200.103:8887 check
+server 10.18.200.104_tcp_8887 10.18.200.104:8887 check
+#
+
+###
+frontend frontend-spartalasiteva
+bind *:7609 
+mode tcp
+default_backend backend-spartalasiteva
+
+option tcplog
+option tcp-check
+backend backend-spartalasiteva
+mode tcp
+server 10.18.200.202_tcp_7609 10.18.200.202:7609 check 
+
+#
+
+###
+frontend frontend-spartalrfsite
+bind *:7610
+mode tcp
+default_backend backend-spartalrfsite
+
+backend backend-spartalrfsite
+load-server-state-from-file global
+mode tcp
+
+option tcplog
+option tcp-check
+balance source
+server 10.18.200.209_tcp_7610 10.18.200.209:7610 check
+server 10.18.200.202_tcp_7610 10.18.200.202:7610 check
+#
+
+### 5 - spartalapsite
+frontend frontend-spartalapsite
+bind *:7611 
+mode tcp
+
+option tcp-check
+default_backend backend-spartalapsite
+
+backend backend-spartalapsite
+mode tcp
+balance source
+server 10.18.200.202_tcp_7611 10.18.200.202:7611 check 
+server 10.18.200.209_tcp_7611 10.18.200.209:7611 check 
+
+#
+
+###
+frontend frontend-spartaaffathenasite
+bind *:7612
+mode tcp
+default_backend backend-spartaaffathenasite
+
+backend backend-spartaaffathenasite
+load-server-state-from-file global
+mode tcp
+
+option tcplog
+option tcp-check
+server 10.18.200.209_tcp_7612 10.18.200.209:7612 check
+server 10.18.200.202_tcp_7612 10.18.200.202:7612 check backup
+#
+
+###
+frontend frontend-spartaaff12betsite
+bind *:7613 ssl crt /etc/haproxy/cert/server.pem
+reqadd X-Forwarded-Proto:\ https
+http-response replace-value Location ^http://(.*)$ https://\
+redirect scheme https if !{ ssl_fc }
+
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+default_backend backend-spartaaff12betsite
+
+backend backend-spartaaff12betsite
+mode http
+server 10.18.200.202_http_7613 10.18.200.202:7613 check 
+server 10.18.200.209_http_7613 10.18.200.209:7613 check backup 
+
+#
+
+###
+frontend frontend-rndlccsite
+bind *:7230
+mode http
+default_backend backend-rndlccsite
+
+backend backend-rndlccsite
+load-server-state-from-file global
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+balance source
+server 10.18.200.202_http_7230 10.18.200.202:7230 check
+server 10.18.200.209_http_7230 10.18.200.209:7230 check
+#
+
+###
+frontend frontend-rndlccadminsite
+bind *:7231
+mode http
+default_backend backend-rndlccadminsite
+
+backend backend-rndlccadminsite
+load-server-state-from-file global
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+balance source
+server 10.18.200.202_http_7231 10.18.200.202:7231 check
+server 10.18.200.209_http_7231 10.18.200.209:7231 check
+#
+
+###
+frontend frontend-rndlccauthenticationapi
+bind *:7232
+mode http
+default_backend backend-rndlccauthenticationapi
+
+backend backend-rndlccauthenticationapi
+load-server-state-from-file global
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+balance source
+server 10.18.200.202_http_7232 10.18.200.202:7232 check
+server 10.18.200.209_http_7232 10.18.200.209:7232 check
+#
+
+###
+frontend frontend-rndlccmembersitesimulatorsite
+bind *:7233
+mode http
+default_backend backend-rndlccmembersitesimulatorsite
+
+backend backend-rndlccmembersitesimulatorsite
+load-server-state-from-file global
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+balance source
+server 10.18.200.202_http_7233 10.18.200.202:7233 check
+server 10.18.200.209_http_7233 10.18.200.209:7233 check
+#
+
+###
+frontend frontend-rndbetlistcoredemosite
+bind *:7240
+mode http
+default_backend backend-rndbetlistcoredemosite
+
+backend backend-rndbetlistcoredemosite
+load-server-state-from-file global
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+balance source
+server 10.18.200.202_http_7240 10.18.200.202:7240 check
+server 10.18.200.209_http_7240 10.18.200.209:7240 check
+#
+
+###
+frontend frontend-rndresultcoredemosite
+bind *:7241
+mode http
+default_backend backend-rndresultcoredemosite
+
+backend backend-rndresultcoredemosite
+load-server-state-from-file global
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+balance source
+server 10.18.200.202_http_7241 10.18.200.202:7241 check
+server 10.18.200.209_http_7241 10.18.200.209:7241 check
+#
+
+### 1 - rnddcsdemo
+frontend frontend-rnddcsdemo
+bind *:7250 
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+default_backend backend-rnddcsdemo
+
+backend backend-rnddcsdemo
+mode http
+option  httplog
+balance source
+server 10.18.200.209_http_7250 10.18.200.209:7250 check 
+server 10.18.200.202_http_7250 10.18.200.202:7250 check 
+
+#
+
+###
+frontend frontend-fpsadminsite
+bind *:7700
+mode tcp
+default_backend backend-fpsadminsite
+
+backend backend-fpsadminsite
+load-server-state-from-file global
+mode tcp
+
+option tcplog
+option tcp-check
+balance source
+server 10.18.200.209_tcp_7700 10.18.200.209:7700 check
+server 10.18.200.202_tcp_7700 10.18.200.202:7700 check
+#
+
+### 9 - fpssubsite
+frontend frontend-fpssubsite
+bind *:7701 
+mode tcp
+
+option tcplog
+option tcp-check
+default_backend backend-fpssubsite
+
+backend backend-fpssubsite
+mode tcp
+balance source
+server 10.18.200.48_tcp_7701 10.18.200.48:7701 check 
+server 10.18.200.49_tcp_7701 10.18.200.49:7701 check 
+
+#
+
+###
+frontend frontend-fpsdisite
+bind *:7702
+mode tcp
+default_backend backend-fpsdisite
+
+backend backend-fpsdisite
+load-server-state-from-file global
+mode tcp
+
+option tcplog
+option tcp-check
+balance source
+server 10.18.200.209_tcp_7702 10.18.200.209:7702 check
+server 10.18.200.202_tcp_7702 10.18.200.202:7702 check
+#
+
+###
+frontend frontend-fpswebservicesite
+bind *:7703
+mode tcp
+default_backend backend-fpswebservicesite
+
+backend backend-fpswebservicesite
+load-server-state-from-file global
+mode tcp
+
+option tcplog
+option tcp-check
+balance source
+server 10.18.200.209_tcp_7703 10.18.200.209:7703 check
+server 10.18.200.202_tcp_7703 10.18.200.202:7703 check
+#
+
+### 9 - fpsapi2site
+frontend frontend-fpsapi2site
+bind *:7704 
+mode tcp
+
+option tcp-check
+default_backend backend-fpsapi2site
+
+backend backend-fpsapi2site
+mode tcp
+balance source
+server 10.18.200.202_tcp_7704 10.18.200.202:7704 check 
+server 10.18.200.209_tcp_7704 10.18.200.209:7704 check 
+
+#
+
+### 3 - romealphaksssite
+frontend frontend-romealphaksssite
+bind *:7417 
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+default_backend backend-romealphaksssite
+
+backend backend-romealphaksssite
+mode http
+balance source
+server 10.18.200.202_http_7417 10.18.200.202:7417 check 
+server 10.18.200.209_http_7417 10.18.200.209:7417 check 
+
+#
+
+### 1 - rndfanexgridsite
+frontend frontend-rndfanexgridsite
+bind *:7254 
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+default_backend backend-rndfanexgridsite
+
+backend backend-rndfanexgridsite
+mode http
+balance source
+server 10.18.200.202_http_7254 10.18.200.202:7254 check 
+server 10.18.200.209_http_7254 10.18.200.209:7254 check 
+
+#
+
+### 7 - napapi-206215
+frontend frontend-napapi-206215
+bind *:1711 
+mode tcp
+
+option tcplog
+option tcp-check
+default_backend backend-napapi-206215
+
+backend backend-napapi-206215
+mode tcp
+balance roundrobin
+server 10.18.200.103_tcp_1711 10.18.200.103:1711 check 
+server 10.18.200.104_tcp_1711 10.18.200.104:1711 check 
+
+#
+
+### 9 - spufraudsensorsite
+frontend frontend-spufraudsensorsite
+bind *:7705 
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+default_backend backend-spufraudsensorsite
+
+backend backend-spufraudsensorsite
+mode http
+option  httplog
+balance source
+server 10.18.200.202_http_7705 10.18.200.202:7705 check 
+server 10.18.200.209_http_7705 10.18.200.209:7705 check 
+
+#
+
+### 9 - spunaptgrssite
+frontend frontend-spunaptgrssite
+bind *:7706 
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+default_backend backend-spunaptgrssite
+
+backend backend-spunaptgrssite
+mode http
+balance source
+server 10.18.200.202_http_7706 10.18.200.202:7706 check 
+server 10.18.200.209_http_7706 10.18.200.209:7706 check 
+
+#
+
+### 4 - nexusowplocalsite
+frontend frontend-nexusowplocalsite
+bind *:7501 ssl crt /etc/haproxy/cert/server.pem
+reqadd X-Forwarded-Proto:\ https
+http-response replace-value Location ^http://(.*)$ https://\
+redirect scheme https if !{ ssl_fc }
+
+mode tcp
+
+option tcplog
+option tcp-check
+default_backend backend-nexusowplocalsite
+
+backend backend-nexusowplocalsite
+mode tcp
+balance source
+server 10.18.200.202_tcp_7501 10.18.200.202:7501 check 
+server 10.18.200.209_tcp_7501 10.18.200.209:7501 check 
+
+#
+
+###
+frontend frontend-rndonebookumtoken
+bind *:7255 
+mode http
+default_backend backend-rndonebookumtoken
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+backend backend-rndonebookumtoken
+mode http
+server 10.18.200.202_http_7255 10.18.200.202:7255 check 
+server 10.18.200.209_http_7255 10.18.200.209:7255 check backup 
+
+#
+
+### 9 - fpsrobotdetectionapi
+frontend frontend-fpsrobotdetectionapi
+bind *:7707 
+mode tcp
+
+option tcp-check
+default_backend backend-fpsrobotdetectionapi
+
+backend backend-fpsrobotdetectionapi
+mode tcp
+balance source
+server 10.18.200.202_tcp_7707 10.18.200.202:7707 check 
+server 10.18.200.209_tcp_7707 10.18.200.209:7707 check 
+
+#
+
+### 3 - romenaphomesite
+frontend frontend-romenaphomesite
+bind *:7418 
+mode tcp
+
+option tcp-check
+default_backend backend-romenaphomesite
+
+backend backend-romenaphomesite
+mode tcp
+balance source
+server 10.18.200.202_tcp_7418 10.18.200.202:7418 check 
+server 10.18.200.209_tcp_7418 10.18.200.209:7418 check 
+
+#
+
+###
+frontend frontend-rnddevnotessite
+bind *:7253 
+mode tcp
+
+option tcp-check
+default_backend backend-rnddevnotessite
+
+backend backend-rnddevnotessite
+mode tcp
+server 10.18.200.202_tcp_7253 10.18.200.202:7253 check 
+server 10.18.200.209_tcp_7253 10.18.200.209:7253 check backup 
+
+#
+
+###
+frontend frontend-state-service
+bind *:42424 
+mode tcp
+option tcplog
+option tcp-check
+default_backend backend-state-service
+
+backend backend-state-service
+mode tcp
+balance source
+#hash-type consistent
+server 10.18.200.103_tcp_43434 10.18.200.103:43434 check 
+server 10.18.200.104_tcp_43434 10.18.200.104:43434 check 
+
+#
+
+### 7 - loggingservice
+frontend frontend-loggingservice
+bind *:9099 
+mode tcp
+
+option tcp-check
+default_backend backend-loggingservice
+
+backend backend-loggingservice
+mode tcp
+balance source
+server 10.18.200.103_tcp_9099 10.18.200.103:9099 check 
+server 10.18.200.104_tcp_9099 10.18.200.104:9099 check 
+
+#
+
+### 3 - romealphasite11
+frontend frontend-romealphasite11
+bind *:7421 
+mode tcp
+
+option tcp-check
+default_backend backend-romealphasite11
+
+backend backend-romealphasite11
+mode tcp
+balance source
+server 10.18.200.202_tcp_7421 10.18.200.202:7421 check 
+server 10.18.200.209_tcp_7421 10.18.200.209:7421 check 
+
+#
+
+### 3 - romealphasite12
+frontend frontend-romealphasite12
+bind *:7422 
+mode tcp
+
+option tcp-check
+default_backend backend-romealphasite12
+
+backend backend-romealphasite12
+mode tcp
+balance source
+server 10.18.200.202_tcp_7422 10.18.200.202:7422 check 
+server 10.18.200.209_tcp_7422 10.18.200.209:7422 check 
+
+#
+
+### 3 - romealphasite13
+frontend frontend-romealphasite13
+bind *:7423 
+mode tcp
+
+option tcp-check
+default_backend backend-romealphasite13
+
+backend backend-romealphasite13
+mode tcp
+balance source
+server 10.18.200.202_tcp_7423 10.18.200.202:7423 check 
+server 10.18.200.209_tcp_7423 10.18.200.209:7423 check 
+
+#
+
+### 3 - romealphasite14
+frontend frontend-romealphasite14
+bind *:7424 
+mode tcp
+
+option tcp-check
+default_backend backend-romealphasite14
+
+backend backend-romealphasite14
+mode tcp
+balance source
+server 10.18.200.202_tcp_7424 10.18.200.202:7424 check 
+server 10.18.200.209_tcp_7424 10.18.200.209:7424 check 
+
+#
+
+### 3 - romealphasite15
+frontend frontend-romealphasite15
+bind *:7425 
+mode tcp
+
+option tcp-check
+default_backend backend-romealphasite15
+
+backend backend-romealphasite15
+mode tcp
+balance source
+server 10.18.200.202_tcp_7425 10.18.200.202:7425 check 
+server 10.18.200.209_tcp_7425 10.18.200.209:7425 check 
+
+#
+
+### 2 - olympusletstalkserviceapi
+frontend frontend-olympusletstalkserviceapi
+bind *:7309 
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+default_backend backend-olympusletstalkserviceapi
+
+backend backend-olympusletstalkserviceapi
+mode http
+balance source
+server 10.18.200.202_http_7309 10.18.200.202:7309 check 
+server 10.18.200.209_http_7309 10.18.200.209:7309 check 
+
+#
+
+###
+frontend frontend-rabbit-mq
+bind *:5672
+mode tcp
+default_backend backend-rabbit-mq
+
+backend backend-rabbit-mq
+load-server-state-from-file global
+mode tcp
+
+option tcplog
+option tcp-check
+server 10.18.200.103_tcp_5672 10.18.200.103:5672 check
+server 10.18.200.104_tcp_5672 10.18.200.104:5672 check backup
+#
+
+###
+frontend frontend-romealphamaintenance
+bind *:7426
+mode tcp
+default_backend backend-romealphamaintenance
+
+backend backend-romealphamaintenance
+load-server-state-from-file global
+mode tcp
+
+option tcplog
+option tcp-check
+balance source
+server 10.18.200.209_tcp_7426 10.18.200.209:7426 check
+server 10.18.200.202_tcp_7426 10.18.200.202:7426 check
+#
+
+###
+frontend frontend-refremotestation-new
+bind *:9633 
+mode tcp
+default_backend backend-refremotestation-new
+
+option tcplog
+option tcp-check
+backend backend-refremotestation-new
+mode tcp
+server 10.18.200.103_tcp_9633 10.18.200.103:9633 check 
+
+#
+
+###
+frontend frontend-olympusnapowapi
+bind *:7310
+mode http
+default_backend backend-olympusnapowapi
+
+backend backend-olympusnapowapi
+load-server-state-from-file global
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+balance source
+server 10.18.200.202_http_7310 10.18.200.202:7310 check
+server 10.18.200.209_http_7310 10.18.200.209:7310 check
+#
+
+###
+frontend frontend-umbot
+bind *:6969 ssl crt /etc/haproxy/certs/bot.nexdev.net.pem
+#reqadd X-Forwarded-Proto:\ https
+mode http
+default_backend backend-umbot
+
+backend backend-umbot
+load-server-state-from-file global
+mode http
+
+http-response replace-value Location ^http://(.*)$ https://\1
+redirect scheme https if !{ ssl_fc }
+option  httplog
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+server 10.18.200.122_http_6969 10.18.200.122:6969 check 
+server 10.18.200.123_http_6969 10.18.200.123:6969 check backup 
+#
+
+### 1 - rndnapadminsite
+frontend frontend-rndnapadminsite
+bind *:7221 
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+default_backend backend-rndnapadminsite
+
+backend backend-rndnapadminsite
+mode http
+balance source
+server 10.18.200.202_http_7221 10.18.200.202:7221 check 
+server 10.18.200.209_http_7221 10.18.200.209:7221 check 
+
+#
+
+### 5 - spartaoicapi
+frontend frontend-spartaoicapi
+bind *:7614 
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+default_backend backend-spartaoicapi
+
+backend backend-spartaoicapi
+mode http
+balance source
+server 10.18.200.202_http_7614 10.18.200.202:7614 check 
+server 10.18.200.209_http_7614 10.18.200.209:7614 check 
+
+#
+
+### 1 - rndmsitesite
+frontend frontend-rndmsitesite
+bind *:7220 
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+default_backend backend-rndmsitesite
+
+backend backend-rndmsitesite
+mode http
+option  httplog
+balance source
+server 10.18.200.202_http_7220 10.18.200.202:7220 check 
+server 10.18.200.209_http_7220 10.18.200.209:7220 check 
+
+#
+
+### 2 - olympussettlementinternalsite
+frontend frontend-olympussettlementinternalsite
+bind *:7311 
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+default_backend backend-olympussettlementinternalsite
+
+backend backend-olympussettlementinternalsite
+mode http
+balance source
+server 10.18.200.202_http_7311 10.18.200.202:7311 check 
+server 10.18.200.209_http_7311 10.18.200.209:7311 check 
+
+#
+
+###
+frontend frontend-spartalasite01
+bind *:7615 
+mode tcp
+
+option tcp-check
+default_backend backend-spartalasite01
+
+backend backend-spartalasite01
+mode tcp
+server 10.18.200.202_tcp_7615 10.18.200.202:7615 check 
+server 10.18.200.209_tcp_7615 10.18.200.209:7615 check backup 
+
+#
+
+### 5 - spartalasite02
+frontend frontend-spartalasite02
+bind *:7616 
+mode tcp
+
+option tcp-check
+default_backend backend-spartalasite02
+
+backend backend-spartalasite02
+mode tcp
+balance source
+server 10.18.200.202_tcp_7616 10.18.200.202:7616 check 
+server 10.18.200.209_tcp_7616 10.18.200.209:7616 check 
+
+#
+
+### 5 - spartalasite03
+frontend frontend-spartalasite03
+bind *:7617 
+mode tcp
+
+option tcp-check
+default_backend backend-spartalasite03
+
+backend backend-spartalasite03
+mode tcp
+balance source
+server 10.18.200.202_tcp_7617 10.18.200.202:7617 check 
+server 10.18.200.209_tcp_7617 10.18.200.209:7617 check 
+
+#
+
+### 2 - olympusriskcontrollegacyapi
+frontend frontend-olympusriskcontrollegacyapi
+bind *:7313 
+mode tcp
+
+option tcp-check
+default_backend backend-olympusriskcontrollegacyapi
+
+backend backend-olympusriskcontrollegacyapi
+mode tcp
+balance roundrobin
+server 10.18.200.202_tcp_7313 10.18.200.202:7313 check 
+server 10.18.200.209_tcp_7313 10.18.200.209:7313 check 
+
+#
+
+###
+frontend frontend-olympusswaggerapi
+bind *:7312 ssl crt /etc/haproxy/cert/server.pem
+reqadd X-Forwarded-Proto:\ https
+http-response replace-value Location ^http://(.*)$ https://\
+redirect scheme https if !{ ssl_fc }
+
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /swagger HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+default_backend backend-olympusswaggerapi
+
+backend backend-olympusswaggerapi
+mode http
+server 10.18.200.104_http_7312 10.18.200.104:7312 check 
+server 10.18.200.103_http_7312 10.18.200.103:7312 check backup 
+
+#
+
+### 9 - spusmssitelinux2
+frontend frontend-spusmssitelinux2
+bind *:7710 ssl crt /etc/haproxy/cert/server.pem
+reqadd X-Forwarded-Proto:\ https
+http-response replace-value Location ^http://(.*)$ https://\
+redirect scheme https if !{ ssl_fc }
+
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.php HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+default_backend backend-spusmssitelinux2
+
+backend backend-spusmssitelinux2
+mode http
+option  httplog
+balance roundrobin
+server 10.70.70.211_http_7710 10.70.70.211:7710 check 
+server 10.70.70.212_http_7710 10.70.70.212:7710 check 
+
+#
+
+###
+frontend frontend-db-qcromenapsite
+bind *:7451 
+mode http
+default_backend backend-db-qcromenapsite
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+backend backend-db-qcromenapsite
+mode http
+server 10.18.200.202_http_7451 10.18.200.202:7451 check 
+
+#
+
+###
+frontend frontend-db-qcromeextnapsite
+bind *:7452 
+mode http
+default_backend backend-db-qcromeextnapsite
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+backend backend-db-qcromeextnapsite
+mode http
+server 10.18.200.202_http_7452 10.18.200.202:7452 check 
+
+#
+
+###
+frontend frontend-db-qcromealphabfsite
+bind *:7453 
+mode http
+default_backend backend-db-qcromealphabfsite
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+backend backend-db-qcromealphabfsite
+mode http
+server 10.18.200.202_http_7453 10.18.200.202:7453 check 
+
+#
+
+### 3 - db-qcromealphasite01
+frontend frontend-db-qcromealphasite01
+bind *:7454 
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+default_backend backend-db-qcromealphasite01
+
+backend backend-db-qcromealphasite01
+mode http
+balance source
+server 10.18.200.202_http_7454 10.18.200.202:7454 check 
+server 10.18.200.209_http_7454 10.18.200.209:7454 check 
+
+#
+
+### 3 - db-qcromealphasite02
+frontend frontend-db-qcromealphasite02
+bind *:7455 
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+default_backend backend-db-qcromealphasite02
+
+backend backend-db-qcromealphasite02
+mode http
+balance source
+server 10.18.200.202_http_7455 10.18.200.202:7455 check 
+server 10.18.200.209_http_7455 10.18.200.209:7455 check 
+
+#
+
+### 3 - db-qcromealphasite03
+frontend frontend-db-qcromealphasite03
+bind *:7456 
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+default_backend backend-db-qcromealphasite03
+
+backend backend-db-qcromealphasite03
+mode http
+balance source
+server 10.18.200.202_http_7456 10.18.200.202:7456 check 
+server 10.18.200.209_http_7456 10.18.200.209:7456 check 
+
+#
+
+### 3 - db-qcromealphasite04
+frontend frontend-db-qcromealphasite04
+bind *:7457 
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+default_backend backend-db-qcromealphasite04
+
+backend backend-db-qcromealphasite04
+mode http
+balance source
+server 10.18.200.202_http_7457 10.18.200.202:7457 check 
+server 10.18.200.209_http_7457 10.18.200.209:7457 check 
+
+#
+
+### 3 - db-qcromealphasite05
+frontend frontend-db-qcromealphasite05
+bind *:7458 
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+default_backend backend-db-qcromealphasite05
+
+backend backend-db-qcromealphasite05
+mode http
+balance source
+server 10.18.200.202_http_7458 10.18.200.202:7458 check 
+server 10.18.200.209_http_7458 10.18.200.209:7458 check 
+
+#
+
+### 3 - db-qcromealphasite06
+frontend frontend-db-qcromealphasite06
+bind *:7459 
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+default_backend backend-db-qcromealphasite06
+
+backend backend-db-qcromealphasite06
+mode http
+balance source
+server 10.18.200.202_http_7459 10.18.200.202:7459 check 
+server 10.18.200.209_http_7459 10.18.200.209:7459 check 
+
+#
+
+### 3 - db-qcromealphasite07
+frontend frontend-db-qcromealphasite07
+bind *:7460 
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+default_backend backend-db-qcromealphasite07
+
+backend backend-db-qcromealphasite07
+mode http
+balance source
+server 10.18.200.202_http_7460 10.18.200.202:7460 check 
+server 10.18.200.209_http_7460 10.18.200.209:7460 check 
+
+#
+
+### 3 - db-qcromealphasite08
+frontend frontend-db-qcromealphasite08
+bind *:7461 
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+default_backend backend-db-qcromealphasite08
+
+backend backend-db-qcromealphasite08
+mode http
+balance source
+server 10.18.200.202_http_7461 10.18.200.202:7461 check 
+server 10.18.200.209_http_7461 10.18.200.209:7461 check 
+
+#
+
+### 3 - db-qcromealphasite09
+frontend frontend-db-qcromealphasite09
+bind *:7462 
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+default_backend backend-db-qcromealphasite09
+
+backend backend-db-qcromealphasite09
+mode http
+balance source
+server 10.18.200.202_http_7462 10.18.200.202:7462 check 
+server 10.18.200.209_http_7462 10.18.200.209:7462 check 
+
+#
+
+### 3 - db-qcromealphasite10
+frontend frontend-db-qcromealphasite10
+bind *:7463 
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+default_backend backend-db-qcromealphasite10
+
+backend backend-db-qcromealphasite10
+mode http
+balance source
+server 10.18.200.202_http_7463 10.18.200.202:7463 check 
+server 10.18.200.209_http_7463 10.18.200.209:7463 check 
+
+#
+
+###
+frontend frontend-db-qcromenapcmsite
+bind *:7469 
+mode http
+default_backend backend-db-qcromenapcmsite
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+backend backend-db-qcromenapcmsite
+mode http
+server 10.18.200.202_http_7469 10.18.200.202:7469 check 
+
+#
+
+### 1 - remotingrefdemosite
+frontend frontend-remotingrefdemosite
+bind *:7259 
+mode tcp
+
+option tcp-check
+default_backend backend-remotingrefdemosite
+
+backend backend-remotingrefdemosite
+mode tcp
+balance source
+server 10.18.200.202_tcp_7259 10.18.200.202:7259 check 
+server 10.18.200.209_tcp_7259 10.18.200.209:7259 check 
+
+#
+
+### 9 - spufraudsensor2site
+frontend frontend-spufraudsensor2site
+bind *:7720 
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+default_backend backend-spufraudsensor2site
+
+backend backend-spufraudsensor2site
+mode http
+balance source
+server 10.18.200.202_http_7720 10.18.200.202:7720 check 
+server 10.18.200.209_http_7720 10.18.200.209:7720 check 
+
+#
+
+### 7 - nexopsrocketorsite
+frontend frontend-nexopsrocketorsite
+bind *:9999 
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+default_backend backend-nexopsrocketorsite
+
+backend backend-nexopsrocketorsite
+mode http
+option  httplog
+balance source
+server 10.18.200.122_http_9999 10.18.200.122:9999 check 
+server 10.18.200.123_http_9999 10.18.200.123:9999 check 
+
+#
+
+### 7 - nexopsrocketorapi
+frontend frontend-nexopsrocketorapi
+bind *:7801 
+mode tcp
+
+option tcp-check
+default_backend backend-nexopsrocketorapi
+
+backend backend-nexopsrocketorapi
+mode tcp
+option  httplog
+balance roundrobin
+server 10.18.200.122_tcp_7801 10.18.200.122:7801 check 
+server 10.18.200.123_tcp_7801 10.18.200.123:7801 check 
+
+#
+
+### 7 - napapi2062151
+frontend frontend-napapi2062151
+bind *:1712 
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+default_backend backend-napapi2062151
+
+backend backend-napapi2062151
+mode http
+option  httplog
+balance roundrobin
+server 10.18.200.103_http_1712 10.18.200.103:1712 check 
+server 10.18.200.104_http_1712 10.18.200.104:1712 check 
+
+#
+
+###
+frontend frontend-romealphalogcollectorapi
+bind *:7427 
+mode tcp
+default_backend backend-romealphalogcollectorapi
+
+option tcplog
+option tcp-check
+backend backend-romealphalogcollectorapi
+mode tcp
+server 10.18.200.104_tcp_7427 10.18.200.104:7427 check 
+
+#
+
+### 1 - rndremotingrefapi
+frontend frontend-rndremotingrefapi
+bind *:7258 
+mode tcp
+
+option tcplog
+option tcp-check
+default_backend backend-rndremotingrefapi
+
+backend backend-rndremotingrefapi
+mode tcp
+balance roundrobin
+server 10.18.200.103_tcp_7258 10.18.200.103:7258 check 
+server 10.18.200.104_tcp_7258 10.18.200.104:7258 check 
+
+#
+
+###
+frontend frontend-rabbit-mq-admin
+bind *:15672 
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+default_backend backend-rabbit-mq-admin
+
+backend backend-rabbit-mq-admin
+mode http
+server 10.18.200.103_http_15672 10.18.200.103:15672 check 
+server 10.18.200.104_http_15672 10.18.200.104:15672 check backup 
+
+#
+
+###
+frontend frontend-couchbase
+bind *:8091 
+mode tcp
+
+option tcp-check
+default_backend backend-couchbase
+
+backend backend-couchbase
+mode tcp
+server 10.18.200.104_tcp_8091 10.18.200.104:8091 check 
+server 10.18.200.103_tcp_8091 10.18.200.103:8091 check backup 
+
+#
+
+### 3 - romealphaletstalkmockservicesite
+frontend frontend-romealphaletstalkmockservicesite
+bind *:7428 ssl crt /etc/haproxy/cert/server.pem
+reqadd X-Forwarded-Proto:\ https
+http-response replace-value Location ^http://(.*)$ https://\
+redirect scheme https if !{ ssl_fc }
+
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+default_backend backend-romealphaletstalkmockservicesite
+
+backend backend-romealphaletstalkmockservicesite
+mode http
+option  httplog
+balance source
+server 10.18.200.202_http_7428 10.18.200.202:7428 check 
+
+#
+
+###
+frontend frontend-dottrace
+bind *:1347 
+mode tcp
+
+option tcp-check
+default_backend backend-dottrace
+
+backend backend-dottrace
+mode tcp
+server 10.18.200.202_tcp_1347 10.18.200.202:1347 check 
+
+#
+
+### 3 - romealphabetlistapi
+frontend frontend-romealphabetlistapi
+bind *:7430 
+mode tcp
+
+option tcp-check 
+default_backend backend-romealphabetlistapi
+
+backend backend-romealphabetlistapi
+mode tcp
+balance source
+server 10.18.200.103_tcp_7430 10.18.200.103:7430 check 
+server 10.18.200.104_tcp_7430 10.18.200.104:7430 check 
+
+#
+
+### 3 - romealphaletstalkwebhooksite
+frontend frontend-romealphaletstalkwebhooksite
+bind *:7419 ssl crt /etc/haproxy/cert/bot.nexdev.net.pem
+reqadd X-Forwarded-Proto:\ https
+http-response replace-value Location ^http://(.*)$ https://\
+redirect scheme https if !{ ssl_fc }
+
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+default_backend backend-romealphaletstalkwebhooksite
+
+backend backend-romealphaletstalkwebhooksite
+mode http
+option  httplog
+balance source
+server 10.18.200.202_http_7419 10.18.200.202:7419 check 
+server 10.18.200.209_http_7419 10.18.200.209:7419 check 
+
+#
+
+### 7 - nexopsrocketorproxy
+frontend frontend-nexopsrocketorproxy
+bind *:7802 
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2 
+default_backend backend-nexopsrocketorproxy
+
+backend backend-nexopsrocketorproxy
+mode http
+balance source
+server 10.18.200.122_http_7802 10.18.200.122:7802 check 
+server 10.18.200.123_http_7802 10.18.200.123:7802 check 
+
+#
+
+### 7 - upapi
+frontend frontend-upapi
+bind *:8801 
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+default_backend backend-upapi
+
+backend backend-upapi
+mode http
+option  httplog
+balance roundrobin
+server 10.18.200.122_http_8801 10.18.200.122:8801 check 
+server 10.18.200.123_http_8801 10.18.200.123:8801 check 
+
+#
+
+### 7 - upproxyapi
+frontend frontend-upproxyapi
+bind *:8802 
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+default_backend backend-upproxyapi
+
+backend backend-upproxyapi
+mode http
+option  httplog
+balance roundrobin
+server 10.18.200.123_http_8802 10.18.200.123:8802 check 
+server 10.18.200.122_http_8802 10.18.200.122:8802 check 
+
+#
+
+###
+frontend frontend-redisservice
+bind *:6379 
+mode tcp
+
+option tcp-check
+default_backend backend-redisservice
+
+backend backend-redisservice
+mode tcp
+server 10.18.200.110_tcp_6379 10.18.200.110:6379 check 
+server 10.18.200.121_tcp_6379 10.18.200.121:6379 check backup 
+
+#
+
+### 3 - chatbotapi
+frontend frontend-chatbotapi
+bind *:7431 
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+default_backend backend-chatbotapi
+
+backend backend-chatbotapi
+mode http
+option  httplog
+balance source
+server 10.18.200.103_http_7431 10.18.200.103:7431 check 
+server 10.18.200.104_http_7431 10.18.200.104:7431 check 
+
+#
+
+### 3 - lettalkbotapi
+frontend frontend-lettalkbotapi
+bind *:7499 ssl crt /etc/haproxy/certs/bot.nexdev.net.pem
+reqadd X-Forwarded-Proto:\ https
+http-response replace-value Location ^http://(.*)$ https://\
+redirect scheme https if !{ ssl_fc }
+
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+default_backend backend-lettalkbotapi
+
+backend backend-lettalkbotapi
+mode http
+balance source
+server 10.18.200.202_http_7419 10.18.200.202:7419 check 
+server 10.18.200.209_http_7419 10.18.200.209:7419 check 
+
+#
+
+### 3 - romealphaservicesapi
+frontend frontend-romealphaservicesapi
+bind *:7432 
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+default_backend backend-romealphaservicesapi
+
+backend backend-romealphaservicesapi
+mode http
+option  httplog
+balance source
+server 10.18.200.103_http_7432 10.18.200.103:7432 check 
+server 10.18.200.104_http_7432 10.18.200.104:7432 check 
+
+#
+
+### 9 - spugraphapi
+frontend frontend-spugraphapi
+bind *:7721 
+mode tcp
+
+option tcp-check 
+default_backend backend-spugraphapi
+
+backend backend-spugraphapi
+mode tcp
+balance source
+server 10.18.200.103_tcp_7721 10.18.200.103:7721 check 
+server 10.18.200.104_tcp_7721 10.18.200.104:7721 check 
+
+#
+
+### 3 - romealphaannoucementsapi
+frontend frontend-romealphaannoucementsapi
+bind *:7433 
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+default_backend backend-romealphaannoucementsapi
+
+backend backend-romealphaannoucementsapi
+mode http
+option  httplog
+balance source
+server 10.18.200.103_http_7433 10.18.200.103:7433 check 
+server 10.18.200.104_http_7433 10.18.200.104:7433 check 
+
+#
+
+### 7 - fanexbotapi
+frontend frontend-fanexbotapi
+bind *:6868 
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2 
+default_backend backend-fanexbotapi
+
+backend backend-fanexbotapi
+mode http
+balance source
+server 10.18.200.122_http_6868 10.18.200.122:6868 check 
+server 10.18.200.123_http_6868 10.18.200.123:6868 check 
+
+#
+
+### 3 - romealphaletstalksimulatorsite
+frontend frontend-romealphaletstalksimulatorsite
+bind *:7420 
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+default_backend backend-romealphaletstalksimulatorsite
+
+backend backend-romealphaletstalksimulatorsite
+mode http
+option  httplog
+balance source
+server 10.18.200.202_http_7420 10.18.200.202:7420 check 
+server 10.18.200.209_http_7420 10.18.200.209:7420 check 
+
+#
+
+### 7 - fanexbotauthenticationapi
+frontend frontend-fanexbotauthenticationapi
+bind *:7918 ssl crt /etc/haproxy/cert/server.pem
+reqadd X-Forwarded-Proto:\ https
+http-response replace-value Location ^http://(.*)$ https://\
+redirect scheme https if !{ ssl_fc }
+
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+default_backend backend-fanexbotauthenticationapi
+
+backend backend-fanexbotauthenticationapi
+mode http
+option  httplog
+balance source
+server 10.18.200.122_http_7918 10.18.200.122:7918 check 
+server 10.18.200.123_http_7918 10.18.200.123:7918 check 
+
+#
+
+### 7 - haproxyslide
+frontend frontend-haproxyslide
+bind *:7777 
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2 
+default_backend backend-haproxyslide
+
+backend backend-haproxyslide
+mode http
+balance source
+server 10.18.200.122_http_7777 10.18.200.122:7777 check 
+
+#
+
+###
+frontend frontend-sentry-db
+bind *:5432 
+mode tcp
+
+option tcp-check
+default_backend backend-sentry-db
+
+backend backend-sentry-db
+mode tcp
+server 10.18.200.109_tcp_5432 10.18.200.109:5432 check 
+server 10.18.200.119_tcp_5432 10.18.200.119:5433 check backup 
+
+#
+
+### 3 - romealphacopycustomerapi
+frontend frontend-romealphacopycustomerapi
+bind *:7434 
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+default_backend backend-romealphacopycustomerapi
+
+backend backend-romealphacopycustomerapi
+mode http
+option  httplog
+balance source
+server 10.18.200.103_http_7434 10.18.200.103:7434 check 
+server 10.18.200.104_http_7434 10.18.200.104:7434 check 
+
+#
+
+###
+frontend frontend-mongodb
+bind *:27017 
+mode tcp
+
+option tcp-check 
+default_backend backend-mongodb
+
+backend backend-mongodb
+mode tcp
+server 10.18.200.109_tcp_27017 10.18.200.109:27017 check 
+server 10.18.200.119_tcp_27017 10.18.200.119:27018 check backup 
+
+#
+
+### 3 - romealphasite16
+frontend frontend-romealphasite16
+bind *:7435 
+mode tcp
+
+option tcp-check
+default_backend backend-romealphasite16
+
+backend backend-romealphasite16
+mode tcp
+option  httplog
+balance source
+server 10.18.200.202_tcp_7435 10.18.200.202:7435 check 
+server 10.18.200.209_tcp_7435 10.18.200.209:7435 check 
+
+#
+
+### 3 - romealphasite17
+frontend frontend-romealphasite17
+bind *:7436 
+mode tcp
+
+option tcp-check 
+default_backend backend-romealphasite17
+
+backend backend-romealphasite17
+mode tcp
+balance source
+server 10.18.200.202_tcp_7436 10.18.200.202:7436 check 
+server 10.18.200.209_tcp_7436 10.18.200.209:7436 check 
+
+#
+
+### 3 - romealphasite18
+frontend frontend-romealphasite18
+bind *:7437 
+mode tcp
+
+option tcp-check 
+default_backend backend-romealphasite18
+
+backend backend-romealphasite18
+mode tcp
+balance source
+server 10.18.200.202_tcp_7437 10.18.200.202:7437 check 
+server 10.18.200.209_tcp_7437 10.18.200.209:7437 check 
+
+#
+
+### 3 - romealphasite19
+frontend frontend-romealphasite19
+bind *:7438 
+mode tcp
+
+option tcp-check
+default_backend backend-romealphasite19
+
+backend backend-romealphasite19
+mode tcp
+option  httplog
+balance source
+server 10.18.200.202_tcp_7438 10.18.200.202:7438 check 
+server 10.18.200.209_tcp_7438 10.18.200.209:7438 check 
+
+#
+
+### 3 - romealphasite20
+frontend frontend-romealphasite20
+bind *:7439 
+mode tcp
+
+option tcp-check 
+default_backend backend-romealphasite20
+
+backend backend-romealphasite20
+mode tcp
+balance source
+server 10.18.200.202_tcp_7439 10.18.200.202:7439 check 
+server 10.18.200.209_tcp_7439 10.18.200.209:7439 check 
+
+#
+
+### 5 - spartanapchatbotmainsite
+frontend frontend-spartanapchatbotmainsite
+bind *:7618 
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+default_backend backend-spartanapchatbotmainsite
+
+backend backend-spartanapchatbotmainsite
+mode http
+option  httplog
+balance source
+server 10.18.200.202_http_7618 10.18.200.202:7618 check 
+server 10.18.200.209_http_7618 10.18.200.209:7618 check 
+
+#
+
+### 5 - spartanapchatbotauthsite
+frontend frontend-spartanapchatbotauthsite
+bind *:7619 
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+default_backend backend-spartanapchatbotauthsite
+
+backend backend-spartanapchatbotauthsite
+mode http
+balance source
+server 10.18.200.202_http_7619 10.18.200.202:7619 check 
+server 10.18.200.209_http_7619 10.18.200.209:7619 check 
+
+#
+
+### 5 - spartalapbetlistsite
+frontend frontend-spartalapbetlistsite
+bind *:7620 
+mode tcp
+
+option tcp-check 
+default_backend backend-spartalapbetlistsite
+
+backend backend-spartalapbetlistsite
+mode tcp
+balance source
+server 10.18.200.202_tcp_7620 10.18.200.202:7620 check 
+server 10.18.200.209_tcp_7620 10.18.200.209:7620 check 
+
+#
+
+### 1 - cn88settingapi
+frontend frontend-cn88settingapi
+bind *:7203 
+mode tcp
+
+option tcp-check 
+default_backend backend-cn88settingapi
+
+backend backend-cn88settingapi
+mode tcp
+balance source
+server 10.18.200.103_tcp_7203 10.18.200.103:7203 check 
+server 10.18.200.104_tcp_7203 10.18.200.104:7203 check 
+
+#
+
+### 1 - cn88settingdemosite
+frontend frontend-cn88settingdemosite
+bind *:7204 
+mode http
+
+option  httplog
+option forwardfor
+option httpchk HEAD /whoami.aspx HTTP/1.0
+default-server  inter 3s fall 3 rise 2
+default_backend backend-cn88settingdemosite
+
+backend backend-cn88settingdemosite
+mode http
+balance source
+server 10.18.200.202_http_7204 10.18.200.202:7204 check 
+server 10.18.200.209_http_7204 10.18.200.209:7204 check 
+
+#
+
+### 3 - cn88site01
+frontend frontend-cn88site01
+bind *:7445 
+mode tcp
+
+option tcp-check 
+default_backend backend-cn88site01
+
+backend backend-cn88site01
+mode tcp
+balance source
+server 10.18.200.202_tcp_7445 10.18.200.202:7445 check 
+server 10.18.200.209_tcp_7445 10.18.200.209:7445 check 
+
+#
+
+### 3 - cn88site02
+frontend frontend-cn88site02
+bind *:7446 
+mode tcp
+
+option tcp-check 
+default_backend backend-cn88site02
+
+backend backend-cn88site02
+mode tcp
+balance source
+server 10.18.200.202_tcp_7446 10.18.200.202:7446 check 
+server 10.18.200.209_tcp_7446 10.18.200.209:7446 check 
+
+#
+
+### 3 - cn88site03
+frontend frontend-cn88site03
+bind *:7447 
+mode tcp
+
+option tcp-check 
+default_backend backend-cn88site03
+
+backend backend-cn88site03
+mode tcp
+balance source
+server 10.18.200.202_tcp_7447 10.18.200.202:7447 check 
+server 10.18.200.209_tcp_7447 10.18.200.209:7447 check 
+
+#
+
+### 3 - cn88site04
+frontend frontend-cn88site04
+bind *:7448 
+mode tcp
+
+option tcp-check 
+default_backend backend-cn88site04
+
+backend backend-cn88site04
+mode tcp
+balance source
+server 10.18.200.202_tcp_7448 10.18.200.202:7448 check 
+server 10.18.200.209_tcp_7448 10.18.200.209:7448 check 
+
+#
+
+### 3 - cn88site05
+frontend frontend-cn88site05
+bind *:7449 
+mode tcp
+
+option tcp-check 
+default_backend backend-cn88site05
+
+backend backend-cn88site05
+mode tcp
+balance source
+server 10.18.200.202_tcp_7449 10.18.200.202:7449 check 
+server 10.18.200.209_tcp_7449 10.18.200.209:7449 check 
+
+#
+
+### 1 - livescoreapi
+frontend frontend-livescoreapi
+bind *:7205 ssl crt /etc/haproxy/cert/server.pem
+#reqadd X-Forwarded-Proto:\ https
+http-response replace-value Location ^http://(.*)$ https://\
+redirect scheme https if !{ ssl_fc }
+
+mode tcp
+
+option tcplog
+option tcp-check
+default_backend backend-livescoreapi
+
+backend backend-livescoreapi
+mode tcp
+balance roundrobin
+server 10.18.200.103_tcp_7205 10.18.200.103:7205 check 
+server 10.18.200.104_tcp_7205 10.18.200.104:7205 check 
+
+#
+###SSH
+frontend SSH-in
+	bind *:22
+	mode tcp
+	log global
+	##ACL
+	default_backend ssh-proxy-backend
+###SMTP
+frontend smtp-in
+	bind *:25
+	mode tcp
+	log global
+	default_backend smtp_cluster
+###Domain HTTP
+frontend http-in
+	bind *:80
+	bind *:443 ssl crt /etc/haproxy/certs/server.pem crt /etc/haproxy/certs/testing2.nexdev.net.pem crt /etc/haproxy/certs/bot.nexdev.net.pem crt /etc/haproxy/certs/docs.nexdev.net.pem crt /etc/haproxy/certs/licbot.nexdev.net.pem crt /etc/haproxy/certs/sentry.nexdev.net.pem
+	mode http
+	log global
+	option  httplog
+	timeout client 30m
+    timeout server 30m
+    timeout check 30s
+	#### Define ACL ####
+	# LetsEncrypt
+	acl letsencrypt-acl path_beg /.well-known/acme-challenge/
+    use_backend letsencrypt-backend if letsencrypt-acl
+	#
+	acl gitlab_host hdr(host) -i gitlab.nexdev.net
+	acl redmine_host hdr(host) -i nexdev.net
+	acl rocketor_host hdr(host) -i rocketor.nexdev.net
+	acl sonarqube_host hdr(host) -i sonarqube.nexdev.net
+	acl sonarqubedev_host hdr(host) -i sonarqube-dev.nexdev.net
+    acl ndict_host hdr(host) -i ndict.nexdev.net
+	acl ndict_host hdr(host) -i ndict.now
+	acl ndict_api_host hdr(host) -i api.ndict.now
+	acl nuget_host hdr(host) -i nuget.nexdev.net
+	acl wekan_host hdr(host) -i boards.nexdev.net
+	acl zabbix_host hdr(host) -i zabbix.nexdev.net
+	acl hasite_host hdr(host) -i ha.nexdev.net
+	acl sentry_host hdr(host) -i sentry.nexdev.net
+	acl livescoreapi_host hdr(host) -i testing2.nexdev.net
+	acl ndict_api_host hdr(host) -i api.ndict.now
+	acl grafana_host hdr(host) -i grafana.nexdev.net
+	acl kibana_host hdr(host) -i logs.nexdev.net
+	acl licbot_host hdr(host) -i licbot.nexdev.net
+	acl docs_host hdr(host) -i docs.nexdev.net
+	acl bot_host hdr(host) -i bot.nexdev.net
+
+	## figure out which one to use
+	use_backend gitlab_cluster if gitlab_host
+	use_backend redmine_cluster if redmine_host
+	use_backend rocketor_cluster if rocketor_host
+	use_backend sonarqube_cluster if sonarqube_host
+	use_backend sonarqubedev_cluster if sonarqubedev_host
+	use_backend ndict_cluster if ndict_host
+	use_backend ndict_api_cluster if ndict_api_host
+	use_backend nuget_cluster if nuget_host
+	use_backend wekan_cluster if wekan_host
+	use_backend hasite_cluster if hasite_host
+	use_backend sentry_cluster if sentry_host
+	use_backend livescoreapi_cluster if livescoreapi_host
+	use_backend grafana_cluster if grafana_host
+	use_backend zabbix_cluster if zabbix_host
+	use_backend kibana_cluster if kibana_host
+	use_backend licbot_cluster if licbot_host
+	use_backend bot_cluster if bot_host
+	use_backend docs_cluster if docs_host
+
+# LE Backend
+backend letsencrypt-backend
+	mode http
+    server letsencrypt 127.0.0.1:1111
+### HOSTS
+####### HTTP GITLAB.nexdev.net
+backend gitlab_cluster
+	mode http
+	default-server  inter 3s fall 3 rise 2
+	#cookie JSESSIONID prefix
+	# add X-FORWARDED-FOR
+	option forwardfor
+	# add X-CLIENT-IP
+	http-request add-header X-CLIENT-IP %[src]
+	server 10.18.200.109_8010 10.18.200.109:8010 check
+	server 10.18.200.119_8010 10.18.200.119:8010 check backup
+	#server 10.18.200.222_8010 10.18.200.222:8010 check
+	
+####### SSH - GITLAB.nexdev.net
+backend ssh-proxy-backend
+	mode tcp
+	stick-table type ip size 200k expire 30m
+    stick on src
+	#server 10.18.200.222_2221 10.18.200.222:2221 check
+	server 10.18.200.109_2221 10.18.200.109:2221 check
+	server 10.18.200.119_2221 10.18.200.119:2221 check backup
+####### SSH - GITLAB.nexdev.net
+####### SMTP
+backend smtp_cluster
+	mode tcp
+	no option http-server-close
+	option smtpchk HELO smtp.nexdev.net
+	server 10.18.200.250 10.18.200.250:10025 send-proxy check
+	server 10.18.200.251 10.18.200.251:10026 send-proxy check backup
+####### SMTP
+###ROCKETOR
+backend rocketor_cluster
+	mode http
+	balance source
+	timeout client 30m
+    timeout server 30m
+    timeout check 30s
+	default-server  inter 3s fall 3 rise 2
+	#cookie JSESSIONID prefix
+	server 10.18.200.122_9999 10.18.200.122:9999 check
+	server 10.18.200.123_9999 10.18.200.123:9999 check
+###REDMINE
+backend redmine_cluster
+	mode http
+	timeout client 30m
+    timeout server 30m
+    timeout check 30s
+	default-server  inter 3s fall 3 rise 2
+	#cookie JSESSIONID prefix
+	server 10.18.200.109_8084 10.18.200.109:8084 check
+	server 10.18.200.119_8084 10.18.200.119:8084 check backup
+###SONARQUBE
+backend sonarqube_cluster
+	mode http
+	timeout client 30m
+    timeout server 30m
+    timeout check 30s
+	default-server  inter 3s fall 3 rise 2
+	#cookie JSESSIONID prefix
+	server 10.18.200.109_9002 10.18.200.109:9002 check
+	server 10.18.200.119_9002 10.18.200.119:9002 check backup
+backend sonarqubedev_cluster
+	mode http
+	#balance source
+	timeout client 30m
+    timeout server 30m
+    timeout check 30s
+	default-server  inter 3s fall 3 rise 2
+	#cookie JSESSIONID prefix
+	#server 10.18.200.109_9001 10.18.200.109:9001 check
+	server 10.18.200.119_9001 10.18.200.119:9001 check
+
+backend ndict_cluster
+	mode http
+	balance source
+	default-server  inter 3s fall 3 rise 2
+	#cookie JSESSIONID prefix
+	server 10.18.200.123_7803 10.18.200.123:7803 check
+	server 10.18.200.122_7803 10.18.200.122:7803 check
+
+backend ndict_api_cluster
+	mode http
+	balance source
+	default-server  inter 3s fall 3 rise 2
+	#cookie JSESSIONID prefix
+	server 10.18.200.123_7804 10.18.200.123:7804 check
+	server 10.18.200.122_7804 10.18.200.122:7804 check
+
+backend nuget_cluster
+	mode http
+	default-server  inter 3s fall 3 rise 2
+	#cookie JSESSIONID prefix
+	server 10.18.200.122_7805 10.18.200.122:7805 check
+#	server 10.18.200.209_7805 10.18.200.209:7805 backup
+
+backend wekan_cluster
+	mode http
+	default-server  inter 3s fall 3 rise 2
+	#cookie JSESSIONID prefix
+	server 10.18.200.109_7807 10.18.200.109:88 check
+	server 10.18.200.119_7807 10.18.200.119:88 check backup
+####### Sentry
+backend sentry_cluster
+	mode http
+	default-server  inter 3s fall 3 rise 2
+	option forwardfor
+	option httpchk /_health/
+	http-request add-header X-CLIENT-IP %[src]
+	server 10.18.200.109_800 10.18.200.109:800 check
+	server 10.18.200.119_800 10.18.200.119:800 check backup
+####### Grafana
+backend grafana_cluster
+	mode http
+	default-server  inter 3s fall 3 rise 2
+	#cookie JSESSIONID prefix
+	server 10.18.200.109_3000 10.18.200.109:3000 check
+	server 10.18.200.110_3000 10.18.200.110:3000 check backup
+#######  Grafana
+####### Zabbix
+backend zabbix_cluster
+	mode http
+	default-server  inter 3s fall 3 rise 2
+	server 10.18.200.121_8181 10.18.200.121:8181 check
+#	server 10.18.200.119_8181 10.18.200.119:8181 check backup
+#######  Zabbix
+backend kibana_cluster
+	mode http
+    #option  httplog
+	default-server  inter 3s fall 3 rise 2
+	#cookie JSESSIONID prefix
+	server 10.18.200.119_5601 10.18.200.119:5601 check
+#######  licbot.nexdev.net
+backend licbot_cluster
+	mode http
+    option  httplog
+	balance source
+	default-server  inter 3s fall 3 rise 2
+	server 10.18.200.202_7621 10.18.200.202:7621 check
+	server 10.18.200.209_7621 10.18.200.209:7621 check
+####### bot.nexdev.net
+backend bot_cluster
+	mode http
+    option  httplog
+	default-server  inter 3s fall 3 rise 2
+	server 10.18.200.122_6969 10.18.200.122:6969 check
+	server 10.18.200.123_6969 10.18.200.123:6969 check backup
+#######  docs.nexdev.net
+backend docs_cluster
+	mode http
+    option  httplog
+	default-server  inter 3s fall 3 rise 2
+	server 10.18.200.121_8000 10.18.200.121:8000 check
+######
+backend hasite_cluster
+	mode http
+	default-server  inter 3s fall 3 rise 2
+	#cookie JSESSIONID prefix
+	server 10.18.200.119_8866 10.18.200.119:8866 check
+	server 10.18.200.109_8866 10.18.200.109:8866 check backup
+######
+backend livescoreapi_cluster
+	mode http
+	default-server  inter 3s fall 3 rise 2
+	server 10.18.200.103_7205 10.18.200.103:7205 check
+	server 10.18.200.104_7205 10.18.200.104:7205 check

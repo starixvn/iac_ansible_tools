@@ -1,0 +1,33 @@
+global
+    log 127.0.0.1 local6
+    maxconn     100000
+    pidfile     /var/run/haproxy.pid
+    user        haproxy
+    group       haproxy
+    daemon
+    tune.ssl.default-dh-param 2048
+    server-state-file /etc/haproxy/server_state
+    stats socket /var/run/haproxy/info.sock  mode 666 level user
+defaults
+#    log     global
+    maxconn 10000
+    option  dontlognull
+    #option dontlog-normal
+    retries 3
+    option redispatch
+#       option  forwardfor except 127.0.0.0/8
+    timeout queue 1m
+    timeout connect 10s
+    timeout client 10m
+    timeout server 10m
+    timeout check 10s
+
+listen stats
+    bind *:8080
+    mode  http
+    maxconn  10
+    stats  enable
+    stats  hide-version
+    stats  realm Haproxy\ Statistics
+    stats  uri /
+    stats  auth admin:admin
