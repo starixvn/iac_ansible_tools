@@ -57,16 +57,14 @@ configs:
 
 services:
   {{service_name}}_{{environment}}:
-{% if org_name == 'luminet' %}
+{% if team_name == "nex3" or team_name == "pentagon" %}
 {% if env == "local" %}
     image: hub.lumigame.com/{{team_name}}/{{project_name}}_{{service_name}}:{{environment}}-latest
-{% elif env == "uat" or env == "sit" %}
-    image: lumhub.starixplay.com/kbt/{{team_name}}/{{project_name}}_{{service_name}}:{{environment}}-latest
 {% else %}
-    image: git3.nexdev.net:5050/{{item.0.docker_image_registry_path}}:{{environment}}-latest
+    image: lumhub.starixplay.com/kbt/{{team_name}}/{{project_name}}_{{service_name}}:{{environment}}-latest
 {% endif %}
 {% endif %}
-{% if org_name == 'nexcel' %}
+{% if team_name != "nex3" and team_name != "pentagon" %}
 {% if env == "local" or env == "nexprod" %}
     image: hub.nexdev.net/{{team_name}}/{{project_name}}_{{service_name}}:{{environment}}-latest
 {% else %}

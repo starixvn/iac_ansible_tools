@@ -57,16 +57,20 @@ configs:
 
 services:
   {{service_name}}_{{environment}}:
-{% if org_name == 'luminet' %}
+{% if team_name == "nex3" or team_name == "pentagon" %}
+{% if env == "local" %}
+    image: hub.lumigame.com/{{team_name}}/{{project_name}}_{{service_name}}:{{environment}}-latest
+{% elif env == "uat" or env == "sit" %}
+    image: lumhub.starixplay.com/kbt/{{team_name}}/{{project_name}}_{{service_name}}:{{environment}}-latest
+{% else %}
     image: git3.nexdev.net:5050/{{item.0.docker_image_registry_path}}:{{environment}}-latest
 {% endif %}
-{% if org_name == 'nexcel' %}
+{% endif %}
+{% if team_name != "nex3" and team_name != "pentagon" %}
 {% if env == "local" or env == "nexprod" %}
     image: hub.nexdev.net/{{team_name}}/{{project_name}}_{{service_name}}:{{environment}}-latest
-{% elif env == "uat" or env == "sit" %}
-    image: nexhub.starixplay.com/kbt/{{team_name}}/{{project_name}}_{{service_name}}:{{environment}}-latest
 {% else %}
-    image: registry.nexdev.net:5050/{{item.0.docker_image_registry_path}}:{{environment}}-latest
+    image: nexhub.starixplay.com/kbt/{{team_name}}/{{project_name}}_{{service_name}}:{{environment}}-latest
 {% endif %}
 {% endif %}
 {% if platform == "linux" %}
@@ -178,12 +182,26 @@ services:
 {% endif %}
 {% if env == "prod" or env == "nexprod" %}
       update_config:
+{% if item.0.update_order is defined and item.0.update_order == 'stop-first' %}
+        order: stop-first
+{% else %}
         order: start-first
         failure_action: rollback
         delay: 10s
       rollback_config:
         parallelism: 0
         order: stop-first
+{% endif %}
+{% else %}
+{% if item.0.update_order is defined and item.0.update_order == 'start-first' %}
+      update_config:
+        order: start-first
+        failure_action: rollback
+        delay: 10s
+      rollback_config:
+        parallelism: 0
+        order: stop-first
+{% endif %}
 {% endif %}
       restart_policy:
         condition: any
@@ -226,7 +244,7 @@ services:
 {% if item.0.disable_health_check is undefined or item.0.disable_health_check == false %}
 {% if item.0.framework is defined and item.0.framework == "dotnet" %}
     healthcheck:
-      test: ['CMD', 'curl', '-f', "http://localhost:{{item.0.port | default('5000')}}{{item.0.healthcheck_path | default('')}}"]
+      test: ['CMD', 'curl', '-f', "http://{{item.0.healthcheck_domain | default('localhost')}}:{{item.0.port | default('5000')}}{{item.0.healthcheck_path | default('')}}"]
       interval: {{item.0.healthcheck_interval | default('5s')}}
       timeout: {{item.0.healthcheck_timeout | default('5s')}}
       retries: {{item.0.healthcheck_retries | default('5')}}
