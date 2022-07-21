@@ -1,2 +1,11 @@
 echo "AKIAIOSFODNN7EXAMPLE" | docker secret create access_key -
 echo "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY" | docker secret create secret_key -
+
+#########
+
+docker volume create minio_data1-1
+docker volume create minio_data1-2
+docker volume create minio_data2-1
+docker volume create minio_data2-2
+docker volume create minio_data3-1
+docker volume create minio_data3-2
