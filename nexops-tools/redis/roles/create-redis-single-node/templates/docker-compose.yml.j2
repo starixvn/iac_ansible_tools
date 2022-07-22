@@ -9,6 +9,7 @@ services:
     image: {{hub_url}}/base/database/redis:{{redis_version | default ('5')}}
     container_name: {{redis_name | default ('redis')}}
     hostname: {{redis_name | default ('redis')}}
+    restart: always
 {% if external_port is defined%}
     ports:
       - "{{external_port | default ('13379')}}:{{internal_port | default ('6379')}}"
