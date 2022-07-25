@@ -56,7 +56,7 @@
   shell: docker login --username={{item.user}} --password={{item.pass}} {{item.url}}
   with_items:
     - "{{luminet_kbt_registry_login}}"
-  when: org == "luminet" and env == "prod" or org_nex3 == "luminet" or org == "luminet" and env == "uat" or org == "luminet" and env == "sit"
+  when: org == "luminet" and env == "prod" or org == "luminet" and env == "uat" or org == "luminet" and env == "sit"
 
 - name: Login registry LUMI
   shell: docker login --username={{item.user}} --password={{item.pass}} {{item.url}}
