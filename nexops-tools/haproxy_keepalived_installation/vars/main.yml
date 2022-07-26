@@ -1,0 +1,25 @@
+---
+#tag: haproxy (install haproxy), keepalived (install keepalived), check_version (check version of haproxy and keepalived), check_haproxy_version
+master_server_ip: 10.70.70.34
+backup_server_ip: 10.70.70.32
+VIRTUAL_IP: 10.70.70.35
+VIRTUAL_IP2: 10.70.70.42
+keepalived_password: 123456
+#add keepalived_network_interface to host
+haproxy_version: "1.9" #"2.1" 1.8 2.2
+haproxy_ppa: "ppa:vbernat/haproxy-{{ haproxy_version }}"
+haproxy_configs: "local"
+hostvar: "install"
+haproxy_local_sbin_path: /usr/local/sbin
+haproxy_local_sbin: "{{ haproxy_local_sbin_path }}/haproxy"
+haproxy_usr_sbin_path: /usr/sbin
+haproxy_config_path: /etc/haproxy
+haproxy_stats_path: /var/lib/haproxy
+haproxy_chroot_path: /var/run/haproxy
+haproxy_stats_socket: /var/run/haproxy.sock
+haproxy_stats_socket_user: /var/run/haproxy-stats.sock
+haproxy_initd: /etc/init.d/haproxy
+keepalived_version: 2.0.20
+keepalived_source_url: "http://www.keepalived.org/software/keepalived-{{ keepalived_version }}.tar.gz"
+keepalived_install_dir: "/tmp/keepalived-{{ keepalived_version }}"
+keepalived_conf_path: /etc/keepalived/keepalived.conf
