@@ -18,7 +18,7 @@
 - name: Copy HAProxy source file - {{ haproxy_file }}
   copy:
     src: files/{{ haproxy_file }}
-    dest: "{{haproxy_file_path}}"
+    dest: "{{software_files_path}}"
   #connection: local
   when: not haproxy_file_result.stat.exists
   become: yes
