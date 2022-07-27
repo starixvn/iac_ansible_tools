@@ -74,7 +74,7 @@ listen statistics
   stats enable
   stats auth {{ haproxy_stats_auth }}
   stats uri {{ haproxy_stats_uri }}
-  stats hide-version
+  #stats hide-version
   stats admin if TRUE
   stats refresh 3s
   stats show-node

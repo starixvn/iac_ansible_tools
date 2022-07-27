@@ -18,6 +18,11 @@
 
 - hosts: haproxy_onhost
   roles:
+    - role: upgrade-haproxy
+  tags: upgrade-haproxy
+
+- hosts: haproxy_onhost
+  roles:
     - role: keepalived
   tags: install-keepalived
 
