@@ -20,7 +20,7 @@
   unarchive: src={{ haproxy_url }} dest=/opt/applications/ copy=no
   become: yes
 
-- file: path=/opt/applications/haproxy src=/opt/applications/haproxy-{{ haproxy_version }}/ state=link
+- file: path=/opt/applications/haproxy src=/opt/applications/haproxy-{{ haproxy_version_full }}/ state=link
   become: yes
 
 - group: name=haproxy state=present
