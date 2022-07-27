@@ -9,116 +9,160 @@
       "password_hash": "1sdzfV8zBb7ZlqHq2HJGggf7ZIY=",
       "hashing_algorithm": "rabbit_password_hashing_md5",
       "tags": "monitoring",
-      "limits": {}
+      "limits": {
+      }
     },
     {
       "name": "score247",
       "password_hash": "qJ/i3XLBV2ZbpS8jwYsw0vhLbB7NuyMB44QX5UUNuP8ZScg6",
       "hashing_algorithm": "rabbit_password_hashing_sha256",
       "tags": "monitoring",
-      "limits": {}
+      "limits": {
+      }
     },
     {
       "name": "la",
       "password_hash": "pF3RPe+yMAMxodH2FTjV1Rat9oGzF/LQGOe77EgPuSECfeKE",
       "hashing_algorithm": "rabbit_password_hashing_sha256",
       "tags": "monitoring",
-      "limits": {}
+      "limits": {
+      }
     },
     {
       "name": "zbx_monitor",
       "password_hash": "wEX61rjfi1K4O5QXcMN4Fx6cYPWOJAdBIDhJurY42SQZYlug",
       "hashing_algorithm": "rabbit_password_hashing_sha256",
       "tags": "monitoring",
-      "limits": {}
+      "limits": {
+      }
     },
     {
       "name": "fps",
       "password_hash": "1QrsEkFzzAA9D1SvYy5VtsfJxHippcQ9RMLhU5M8Yj2XxKGx",
       "hashing_algorithm": "rabbit_password_hashing_sha256",
       "tags": "monitoring",
-      "limits": {}
+      "limits": {
+      }
     },
     {
       "name": "fanexlogging",
       "password_hash": "EfNHxL/jVshU+4e6wksVsA2C59mhF/oUlOWhdfSQr/EaYd4R",
       "hashing_algorithm": "rabbit_password_hashing_sha256",
       "tags": "management",
-      "limits": {}
+      "limits": {
+      }
     },
     {
       "name": "ng2.api",
       "password_hash": "fZQYvfxs7elf+J5NfWimHiybqPE=",
       "hashing_algorithm": "rabbit_password_hashing_md5",
       "tags": "monitoring",
-      "limits": {}
+      "limits": {
+      }
     },
     {
       "name": "kaden",
       "password_hash": "zrc37HoLEBermbi+Rs7FmXHky2E=",
       "hashing_algorithm": "rabbit_password_hashing_md5",
       "tags": "monitoring",
-      "limits": {}
+      "limits": {
+      }
     },
     {
       "name": "admin",
       "password_hash": "yYqLdKMKRidHdMIkAU0jPixe/ok=",
       "hashing_algorithm": "rabbit_password_hashing_md5",
       "tags": "administrator",
-      "limits": {}
+      "limits": {
+      }
     },
     {
       "name": "guest",
       "password_hash": "77aMU8gTLk0cJD5N+lIwLE97d5I=",
       "hashing_algorithm": "rabbit_password_hashing_md5",
       "tags": "administrator",
-      "limits": {}
+      "limits": {
+      }
     },
     {
       "name": "rabbitclient",
       "password_hash": "Xa/W88Qp/VbB+rd1E6VXDkOsBvk=",
       "hashing_algorithm": "rabbit_password_hashing_md5",
       "tags": "monitoring",
-      "limits": {}
+      "limits": {
+      }
     },
     {
       "name": "owp",
       "password_hash": "sW4J+GblLZcg0e+Qrd1F5WaLe3lrcpYDHgNXqWnMO8/u4tOl",
       "hashing_algorithm": "rabbit_password_hashing_sha256",
       "tags": "monitoring",
-      "limits": {}
+      "limits": {
+      }
     },
     {
       "name": "zabbix",
       "password_hash": "wId49Tp6WYeNBdG+XYqNk+LpLI5pQtbzjxzRO6I0wL9ZWLsi",
       "hashing_algorithm": "rabbit_password_hashing_sha256",
       "tags": "monitoring",
-      "limits": {}
+      "limits": {
+      }
     },
     {
       "name": "nexops",
       "password_hash": "wN/9uFQqnJcmA/ZVlF3yK7AZPtE=",
       "hashing_algorithm": "rabbit_password_hashing_md5",
       "tags": "",
-      "limits": {}
+      "limits": {
+      }
     }
   ],
   "vhosts": [
-    { "name": "/MetricGaming" },
-    { "name": "/Fanex_Logging" },
-    { "name": "/QCLocalTest" },
-    { "name": "/Alpha_Chatbot" },
-    { "name": "/NexOps_Queue_Checking" },
-    { "name": "ONEbook.NG2.API" },
-    { "name": "/ActivityTracking" },
-    { "name": "/" },
-    { "name": "/FPS_Oneye_Service" },
-    { "name": "/OWP" },
-    { "name": "/UpHost" },
-    { "name": "/score_247_local_main" },
-    { "name": "/ActivityTracking_Ricky" },
-    { "name": "/MailStationHost" },
-    { "name": "/LA" }
+    {
+      "name": "/MetricGaming"
+    },
+    {
+      "name": "/Fanex_Logging"
+    },
+    {
+      "name": "/QCLocalTest"
+    },
+    {
+      "name": "/Alpha_Chatbot"
+    },
+    {
+      "name": "/NexOps_Queue_Checking"
+    },
+    {
+      "name": "ONEbook.NG2.API"
+    },
+    {
+      "name": "/ActivityTracking"
+    },
+    {
+      "name": "/"
+    },
+    {
+      "name": "/FPS_Oneye_Service"
+    },
+    {
+      "name": "/OWP"
+    },
+    {
+      "name": "/UpHost"
+    },
+    {
+      "name": "/score_247_local_main"
+    },
+    {
+      "name": "/ActivityTracking_Ricky"
+    },
+    {
+      "name": "/MailStationHost"
+    },
+    {
+      "name": "/LA"
+    }
   ],
   "permissions": [
     {
@@ -206,15 +250,15 @@
       "read": ".*"
     },
     {
-      "user": "activity_tracking",
-      "vhost": "/ActivityTracking",
+      "user": "nexops",
+      "vhost": "/NexOps_Queue_Checking",
       "configure": ".*",
       "write": ".*",
       "read": ".*"
     },
     {
-      "user": "nexops",
-      "vhost": "/NexOps_Queue_Checking",
+      "user": "activity_tracking",
+      "vhost": "/ActivityTracking",
       "configure": ".*",
       "write": ".*",
       "read": ".*"
@@ -241,15 +285,15 @@
       "read": ".*"
     },
     {
-      "user": "admin",
-      "vhost": "/Alpha_Chatbot",
+      "user": "ng2.api",
+      "vhost": "ONEbook.NG2.API",
       "configure": ".*",
       "write": ".*",
       "read": ".*"
     },
     {
-      "user": "ng2.api",
-      "vhost": "ONEbook.NG2.API",
+      "user": "admin",
+      "vhost": "/Alpha_Chatbot",
       "configure": ".*",
       "write": ".*",
       "read": ".*"
@@ -283,15 +327,15 @@
       "read": ".*"
     },
     {
-      "user": "owp",
-      "vhost": "/OWP",
+      "user": "admin",
+      "vhost": "/ActivityTracking_Ricky",
       "configure": ".*",
       "write": ".*",
       "read": ".*"
     },
     {
-      "user": "admin",
-      "vhost": "/ActivityTracking_Ricky",
+      "user": "owp",
+      "vhost": "/OWP",
       "configure": ".*",
       "write": ".*",
       "read": ".*"
@@ -360,8 +404,10 @@
       "read": ".*"
     }
   ],
-  "topic_permissions": [],
-  "parameters": [],
+  "topic_permissions": [
+  ],
+  "parameters": [
+  ],
   "global_parameters": [
     {
       "name": "cluster_name",
