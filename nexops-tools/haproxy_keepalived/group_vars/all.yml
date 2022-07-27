@@ -4,7 +4,7 @@
 software_files_path: "/opt/software"
 software_install_path: "/usr/local"
 
-haproxy_version: "{{haproxy_version | default ('2.2.4')}}" #1.9.5
+haproxy_version: "2.2.4" #1.9.5
 
 haproxy_file: "haproxy-{{ haproxy_version }}.tar.gz"
 haproxy_file_path: "{{ software_files_path }}/{{ haproxy_file }}"
