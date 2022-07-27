@@ -9,26 +9,35 @@
      - g++
      - libssl-dev
      - libpcre3-dev
+  become: yes
 
 - file: path=/opt/applications/ state=directory owner=root group=root mode=0755
+  become: yes
 - file: path=/etc/haproxy/ state=directory owner=root group=root mode=0755
+  become: yes
 
 - name: Unarchive HAProxy from {{ haproxy_url }} to /opt/applications/
   unarchive: src={{ haproxy_url }} dest=/opt/applications/ copy=no
+  become: yes
 
 - file: path=/opt/applications/haproxy src=/opt/applications/haproxy-{{ haproxy_version }}/ state=link
+  become: yes
 
 - group: name=haproxy state=present
+  become: yes
 - user: name=haproxy shell=/bin/false/ groups=haproxy
+  become: yes
 
 - name: Run make command with TARGET=custom CPU=native USE_PCRE=1 USE_LIBCRYPT=1 USE_LINUX_SPLICE=1 USE_LINUX_TPROXY=1 USE_OPENSSL=yes
   shell: make TARGET=custom CPU=native USE_PCRE=1 USE_LIBCRYPT=1 USE_LINUX_SPLICE=1 USE_LINUX_TPROXY=1 USE_OPENSSL=yes
+  become: yes
   args:
      chdir: "/opt/applications/haproxy/"
      executable: /bin/bash
 
 - name: Run make install command
   shell: make install
+  become: yes
   args:
      chdir: "/opt/applications/haproxy"
      executable: /bin/bash
@@ -45,9 +54,12 @@
 #     mode: 0600
 
 - file: path=/etc/haproxy/errors/ state=directory owner=root group=root mode=0644
+  become: yes
 - file: path=/run/haproxy/ state=directory owner=root group=root mode=0755
+  become: yes
 
 - name: "Create haproxy config file"
+  become: yes
   template:
     src: haproxy.cfg.j2
     dest: /etc/haproxy/haproxy.cfg
@@ -60,10 +72,13 @@
   #  - haproxy_config
 
 - name: Add this option to /etc/sysctl.conf net.ipv4.ip_nonlocal_bind=1
+  become: yes
   lineinfile: dest=/etc/sysctl.conf line="net.ipv4.ip_nonlocal_bind=1" state=present
 
 - name: Put init script in /etc/init.d
+  become: yes
   copy: src=files/haproxy_init dest=/etc/init.d/haproxy owner=root group=root mode=0755
 
 - name: Configure HAProxy to start at boot
+  become: yes
   service: name=haproxy enabled=yes state=started
