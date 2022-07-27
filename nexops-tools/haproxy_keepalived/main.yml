@@ -13,8 +13,13 @@
 
 - hosts: haproxy_onhost
   roles:
-    - role: haproxy
+    - role: install-haproxy
   tags: install-haproxy
+
+- hosts: haproxy_onhost
+  roles:
+    - role: change-version-haproxy
+  tags: change-version-haproxy
 
 - hosts: haproxy_onhost
   roles:

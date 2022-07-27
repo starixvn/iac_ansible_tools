@@ -1,0 +1,38 @@
+---
+# author: lework
+
+- name: configure | Copy HAProxy configuration in place.
+  become: yes
+  template:
+    src: haproxy.cfg.j2
+    dest: "{{ haproxy_conf_path }}/haproxy.cfg"
+    mode: 0644
+    validate: /usr/local/haproxy/sbin/haproxy -f %s -c -q
+
+- file: path=/etc/haproxy/errors/ state=directory owner=root group=root mode=0644
+  become: yes
+- file: path=/run/haproxy/ state=directory owner=root group=root mode=0755
+  become: yes
+
+- name: "Create haproxy config file"
+  become: yes
+  template:
+    src: haproxy.cfg.j2
+    dest: /etc/haproxy/haproxy.cfg
+    backup: yes
+    owner: root
+    mode: 0644
+  notify:
+    - restart haproxy
+
+- name: Add this option to /etc/sysctl.conf net.ipv4.ip_nonlocal_bind=1
+  become: yes
+  lineinfile: dest=/etc/sysctl.conf line="net.ipv4.ip_nonlocal_bind=1" state=present
+
+- name: Put init script in /etc/init.d
+  become: yes
+  copy: src=files/haproxy_init dest=/etc/init.d/haproxy owner=root group=root mode=0755
+
+- name: Configure HAProxy to start at boot
+  become: yes
+  service: name=haproxy enabled=yes state=started
