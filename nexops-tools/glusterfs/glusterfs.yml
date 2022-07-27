@@ -3,9 +3,4 @@
   roles:
     - role: init-gluster
     - role: create-volumes
-  tags: create-volumes
-
-- hosts: all
-  roles:
-    - role: mount-volumes
-  tags: mount-volumes
+  tags: init_create-volumes
