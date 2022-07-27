@@ -81,7 +81,7 @@
   #  - "make install PREFIX={{ haproxy_chroot }}"
   args:
     chdir: "/tmp/haproxy-{{ haproxy_version }}/"
-  when: not haproxy_bin_result.stat.exists
+  #when: not haproxy_bin_result.stat.exists
 
 - name: install | Copy errorfiles to haproxy home.
   become: yes
