@@ -1,11 +1,13 @@
 ---
 - name: install | Check if haproxy local file {{ haproxy_file_path }} status.
   stat: path={{ haproxy_file_path }}
+  become: yes
   #connection: local
   register: haproxy_file_result
 
 - name: install | Create software files path.
   file: path={{ software_files_path }} state=directory
+  become: yes
   #connection: local
   when: not haproxy_file_result.stat.exists
   
