@@ -12,7 +12,7 @@
 - name: configure | Setup HAProxy init script file.
   become: yes
   template:
-    dest: "/etc/rc.d/init.d/haproxy"
+    dest: "/etc/init.d/haproxy"
     mode: 0755
     src: haproxy.init.j2
 
