@@ -44,6 +44,7 @@
   when: ansible_os_family == 'RedHat'
 
 - name: Install basic packages
+  become: yes
   apt: name={{ item }} state=present update_cache=yes
   with_items:
      - build-essential
@@ -53,22 +54,27 @@
      - libpcre3-dev
 
 - name: install | Create haproxy group.
+  become: yes
   group: name={{ haproxy_user }}
 
 - name: install | Create haproxy user.
+  become: yes
   user: name={{ haproxy_user }} group={{ haproxy_user }} shell=/sbin/nologin
 
 - name: install | Create haproxy work Directory.
+  become: yes
   file: path={{ item }} state=directory owner={{ haproxy_user }} group={{ haproxy_user }}
   with_items:
    - "{{ haproxy_conf_path }}"
    - "{{ haproxy_logspath }}"
 
 - name: install | Check if haproxy bin file is already configured.
+  become: yes
   stat: path={{ haproxy_chroot }}/sbin/haproxy
   register: haproxy_bin_result
  
 - name: install | Build an install haproxy.
+  become: yes
   shell: "{{ item }}" 
   with_items:
     - "{{ haproxy_configure_command }}"
@@ -78,7 +84,9 @@
   when: not haproxy_bin_result.stat.exists
 
 - name: install | Copy errorfiles to haproxy home.
+  become: yes
   command: "cp -rf /tmp/haproxy-{{ haproxy_version }}/examples/errorfiles {{ haproxy_chroot }}/"
   
 - name: install | Config environment variable.
+  become: yes
   lineinfile: dest=/etc/profile line='export PATH={{ haproxy_chroot }}/sbin/:$PATH'
