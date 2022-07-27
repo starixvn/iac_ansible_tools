@@ -24,8 +24,6 @@
     mode: 0644
   notify:
     - restart haproxy
-  tags:
-    - haproxy_config
 
 - name: Add this option to /etc/sysctl.conf net.ipv4.ip_nonlocal_bind=1
   become: yes

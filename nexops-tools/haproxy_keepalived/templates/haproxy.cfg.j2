@@ -78,9 +78,9 @@ listen statistics
   stats admin if TRUE
   stats refresh 3s
   stats show-node
-  acl allow src {{ haproxy_stats_allow_src }}
-  tcp-request content accept if allow
-  tcp-request content reject
+  #acl allow src {{ haproxy_stats_allow_src }}
+  #tcp-request content accept if allow
+  #tcp-request content reject
   stats realm {{ haproxy_stats_realm }}
 {% endif %}
 

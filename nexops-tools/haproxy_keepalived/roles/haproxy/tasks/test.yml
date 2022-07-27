@@ -1,7 +1,5 @@
 ---
-# author: lework
-
-- name: install | Check if haproxy local file is already configured.
+- name: install | Check if haproxy local file {{ haproxy_file_path }} status.
   stat: path={{ haproxy_file_path }}
   connection: local
   register: haproxy_file_result
@@ -11,10 +9,17 @@
   connection: local
   when: not haproxy_file_result.stat.exists
   
-- name: install | Download haproxy file.
-  get_url: url={{ haproxy_file_url }} dest={{ software_files_path }}
+#- name: install | Download haproxy file.
+#  get_url: url={{ haproxy_file_url }} dest={{ software_files_path }}
+#  connection: local
+#  when: not haproxy_file_result.stat.exists
+- name: Copy HAProxy source file - {{ haproxy_file }}
+  copy:
+    src: files/{{ haproxy_file }}
+    dest: "{{haproxy_file_path}}"
   connection: local
   when: not haproxy_file_result.stat.exists
+  become: yes
 
 - name: install | Confirm the existence of the installation directory.
   file: path={{ software_install_path }} state=directory
@@ -25,27 +30,9 @@
     dest: "/tmp"
     creates: "/tmp/haproxy-{{ haproxy_version }}"
 
-- name: install | Ensure gcc packages are installed.
-  yum:
-    name: "{{ item }}"
-    state: installed
-  with_items:
-    - gcc
-    - gcc-c++
-    - libtool
-    - make
-    - zlib
-    - zlib-devel
-    - openssl
-    - openssl-devel
-    - kernel-devel
-    - pcre
-    - pcre-devel
-  when: ansible_os_family == 'RedHat'
-
 - name: Install basic packages
   become: yes
-  apt: name={{ item }} state=present update_cache=yes
+  apt: name={{ item }} state=present update_cache=no #yes
   with_items:
      - build-essential
      - make

@@ -4,7 +4,7 @@
 software_files_path: "/opt/software"
 software_install_path: "/usr/local"
 
-haproxy_version: "1.9.5"
+haproxy_version: "{{haproxy_version | default ('2.2.4')}}" #1.9.5
 
 haproxy_file: "haproxy-{{ haproxy_version }}.tar.gz"
 haproxy_file_path: "{{ software_files_path }}/{{ haproxy_file }}"
@@ -83,4 +83,4 @@ haproxy_stats_bindport: 18080
 haproxy_stats_auth: "admin:admin"
 haproxy_stats_realm: "Haproxy\ Statistics"
 haproxy_stats_allow_src: "{{ ansible_default_ipv4.network }}/{{ ansible_default_ipv4.netmask }}"
-haproxy_stats_uri: "/admin?status"
+haproxy_stats_uri: "/stats"
