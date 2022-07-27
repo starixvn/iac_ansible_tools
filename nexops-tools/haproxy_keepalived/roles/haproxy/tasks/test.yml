@@ -75,10 +75,10 @@
  
 - name: install | Build an install haproxy.
   become: yes
-  shell: "{{ item }}" 
-  with_items:
-    - "{{ haproxy_configure_command }}"
-    - "make install PREFIX={{ haproxy_chroot }}"
+  shell: "make TARGET=linux41 && make install PREFIX={{ haproxy_chroot }}" #"{{ item }}" 
+  #with_items:
+  #  - "{{ haproxy_configure_command }}"
+  #  - "make install PREFIX={{ haproxy_chroot }}"
   args:
     chdir: "/tmp/haproxy-{{ haproxy_version }}/"
   when: not haproxy_bin_result.stat.exists
