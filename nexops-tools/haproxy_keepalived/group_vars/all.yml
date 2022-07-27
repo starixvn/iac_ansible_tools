@@ -1,0 +1,64 @@
+---
+haproxy_url: http://www.haproxy.org/download/{{haproxy_version}}/src/haproxy-{{haproxy_version}}.7.tar.gz
+haproxy_version: 1.9
+# Variables here are applicable to all host groups
+#haproxy_version: 2.4.16
+haproxy_image_name: registry.nexdev.net:5050/docker/haproxy/haproxy-debian
+nexcel_haproxy_image_local: hub.nexdev.net/base
+nexcel_haproxy_image_local_test: hub.nexdev.net/base
+nexcel_haproxy_image_nexprod: hub.nexdev.net/base
+nexcel_haproxy_image_sit: nexhub.starixplay.com/kbt/base
+nexcel_haproxy_image_uat: nexhub.starixplay.com/kbt/base
+nexcel_haproxy_image_prod: nexhub.starixplay.com/kbt/base
+nexcel_haproxy_image_aws: nexhub.starixplay.com/kbt/base
+###
+luminet_haproxy_image_local: hub.lumigame.com/base
+luminet_haproxy_image_local_test: hub.lumigame.com/base
+luminet_haproxy_image_sit: lumhub.starixplay.com/kbt/base
+luminet_haproxy_image_uat: lumhub.starixplay.com/kbt/base
+luminet_haproxy_image_prod: registry.nexdev.net:5050/docker
+luminet_haproxy_image_aws: lumhub.starixplay.com/kbt/base
+
+stack_name: haproxy
+config_filename: haproxy.cfg
+image_config_path: /usr/local/etc/haproxy
+key_file: /root/.ssh/id_rsa
+
+nexcel_cert_files:
+- nexdev.net.pem
+- nexcel.vn.pem
+- nexcel.info.pem
+
+luminet_cert_files:
+- lumigame.com.pem
+
+keepalived_version: 2.2.7
+keepalived_source_url: 'http://www.keepalived.org/software/keepalived-{{ keepalived_version }}.tar.gz'
+keepalived_install_dir: '/tmp/keepalived-{{ keepalived_version }}'
+keepalived_conf_dir: /etc/keepalived
+keepalived_conf_name: keepalived.conf
+service_name: keepalived
+#tag: haproxy (install haproxy), keepalived (install keepalived), check_version (check version of haproxy and keepalived), check_haproxy_version #
+master_server_ip: 10.70.70.34
+backup_server_ip: 10.70.70.32
+VIRTUAL_IP: 10.70.70.35
+VIRTUAL_IP2: 10.70.70.42
+keepalived_password: 123456
+#add keepalived_network_interface to host
+#haproxy_version: "1.9" #"2.1" 1.8 2.2
+haproxy_ppa: "ppa:vbernat/haproxy-{{ haproxy_version }}"
+haproxy_configs: "local"
+hostvar: "install"
+haproxy_local_sbin_path: /usr/local/sbin
+haproxy_local_sbin: "{{ haproxy_local_sbin_path }}/haproxy"
+haproxy_usr_sbin_path: /usr/sbin
+haproxy_config_path: /etc/haproxy
+haproxy_stats_path: /var/lib/haproxy
+haproxy_chroot_path: /var/run/haproxy
+haproxy_stats_socket: /var/run/haproxy.sock
+haproxy_stats_socket_user: /var/run/haproxy-stats.sock
+haproxy_initd: /etc/init.d/haproxy
+keepalived_version: 2.0.20
+keepalived_source_url: "http://www.keepalived.org/software/keepalived-{{ keepalived_version }}.tar.gz"
+keepalived_install_dir: "/tmp/keepalived-{{ keepalived_version }}"
+keepalived_conf_path: /etc/keepalived/keepalived.conf

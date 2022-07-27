@@ -1,0 +1,49 @@
+vrrp_script haproxy_container {
+    script "/usr/bin/docker container ls --filter name=haproxy-service | /bin/grep haproxy-service"
+    interval 5
+    weight -20
+    fall 2
+    rise 2
+}
+
+vrrp_instance VI_1 {
+    interface {{nic}}
+    state {{keepalive_role}}
+    virtual_router_id 205
+    priority {{keepalive_priority}}
+    virtual_ipaddress {
+        {{vip}}
+    }
+    authentication {
+    auth_type PASS
+    auth_pass {{ keepalived_password }}
+  	}
+    track_script {
+        haproxy_container
+    }
+}
+#########
+vrrp_track_process haproxy {
+  delay 2
+  process haproxy
+  quorum 1
+}
+
+vrrp_instance VI_5 {
+  accept
+  advert_int 1
+  interface {{ nic }}
+  state {{ keepalive_role }}
+
+  track_process {
+    haproxy
+  }
+  priority {{ keepalive_priority }}
+  authentication {
+    auth_type PASS
+    auth_pass {{ keepalived_password }}
+  }
+  virtual_ipaddress {
+        {{vip}}
+    }
+  }

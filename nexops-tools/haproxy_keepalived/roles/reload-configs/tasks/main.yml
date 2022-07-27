@@ -1,0 +1,236 @@
+##### Clean Deployment directory
+- name: Clean Deployment directory
+  file:
+    state: absent
+    path: "{{item}}"
+  become: yes
+  run_once: true
+  delegate_to: localhost
+  ignore_errors: yes
+  with_items:
+    - "/srv/{{team}}/compiled/tmp/{{ env }}"
+    - "/srv/{{team}}/compiled/deploy/{{ env }}"
+
+- name: Create Deployment directory
+  file:
+    path: "{{item}}"
+    state: directory
+    mode: "0755"
+  become: yes
+  run_once: true
+  delegate_to: localhost
+  with_items:
+    - "/srv/{{team}}/compiled/tmp/{{ env }}"
+    - "/srv/{{team}}/compiled/deploy/{{ env }}/configs"
+    - "/srv/{{team}}/compiled/deploy/{{ env }}/maps"
+##### Clean folder haproxy on Target servers
+- name: Clean HAProxy working_dir
+  shell: rm -R {{ volume_path }}/*
+  become: yes
+  ignore_errors: yes
+  when: clean_working_dir is defined and clean_working_dir == "true"
+
+- name: Clean HAProxy config directory
+  file:
+    state: absent
+    path: "{{ volume_path }}/configs"
+  become: yes
+  ignore_errors: yes
+
+- name: Create HAProxy directory
+  file:
+    path: "{{item}}"
+    state: directory
+    mode: "0755"
+  become: yes
+  with_items:
+    - "{{ volume_path }}/configs"
+    - "{{ volume_path }}/maps"
+
+################ Set git repo
+- name: Checkout source code {{team}}
+  git: 
+    repo: "git@gitlab.nexdev.net:NEXOPS/haproxy/{{item}}.git"
+    dest: /srv/{{team}}/{{item}}
+    key_file: "{{key_file}}"
+    accept_hostkey: true
+    update: yes
+    #version: "{{branch_name | default('HEAD')}}"
+  become: yes
+  run_once: true
+  register: command_result
+  delegate_to: localhost
+  with_items:
+    - "haproxy-default"
+    - "haproxy-rome"
+    - "haproxy-olympus"
+    - "haproxy-nexus"
+    - "haproxy-spu"
+    - "haproxy-legion"
+    - "haproxy-nex3"
+    - "haproxy-nexops"
+  when: team == "nexcel"
+
+- name: Checkout source code {{team}}
+  git:
+    repo: "git@git3.nexdev.net:haproxy/{{item}}.git"
+    dest: /srv/{{team}}/{{item}}
+    key_file: "{{key_file}}"
+    accept_hostkey: true
+    update: yes
+    #version: "{{branch_name | default('HEAD')}}"
+  become: yes
+  run_once: true
+  #register: command_result
+  delegate_to: localhost
+  when: team == "luminet"
+  with_items:
+    - "haproxy-default"
+    - "haproxy-sc1"
+    - "haproxy-vg2"
+    - "haproxy-vg3"
+    - "haproxy-nexops"
+
+############# HAProxy Configuration
+- name: Copy all of HAProxy configs (team) to temp folder
+  copy:
+    src: "/srv/{{team}}/{{item}}/configs/{{ env }}"
+    dest: "/srv/{{team}}/compiled/tmp"
+  become: yes
+  run_once: true
+  delegate_to: localhost
+  with_items:
+    - "haproxy-default"
+    - "haproxy-rome"
+    - "haproxy-olympus"
+    - "haproxy-nexus"
+    - "haproxy-spu"
+    - "haproxy-legion"
+    - "haproxy-nex3"
+    - "haproxy-nexops"
+  when: team == "nexcel"
+  ignore_errors: yes
+
+- name: Copy all of HAProxy configs (team) to temp folder
+  copy:
+    src: "/srv/{{team}}/{{item}}/configs/{{ env }}"
+    dest: "/srv/{{team}}/compiled/tmp"
+  become: yes
+  run_once: true
+  delegate_to: localhost
+  with_items:
+    - "haproxy-default"
+    - "haproxy-sc1"
+    - "haproxy-vg2"
+    - "haproxy-vg3"
+    - "haproxy-nexops"
+  when: team == "luminet"
+  ignore_errors: yes
+
+- name: collect map configuration {{ env }} {{team}}
+  copy:
+    src: "/srv/{{team}}/compiled/tmp/{{ env }}/special-maps/"
+    dest: "/srv/{{team}}/compiled/deploy/{{ env }}/maps/"
+  become: yes
+  run_once: true
+  delegate_to: localhost
+
+- name: Build HAProxy configurations
+  assemble:
+    src: "/srv/{{team}}/compiled/tmp/{{ env }}"
+    dest: "/srv/{{team}}/compiled/deploy/{{ env }}/configs/{{ config_filename }}"
+    regexp: "cfg$"
+  become: yes
+  run_once: true
+  delegate_to: localhost
+
+- name: Build HAProxy Map configurations
+  assemble:
+    src: "/srv/{{team}}/compiled/tmp/{{ env }}/maps"
+    dest: "/srv/{{team}}/compiled/deploy/{{ env }}/maps/hosts.map"
+    regexp: "map$"
+  become: yes
+  run_once: true
+  delegate_to: localhost
+
+#- name: Exterminate
+#  pause:
+#    prompt: Press return to continue. Press Ctrl+c and then "a" to abort
+##########Target servers
+- name: Copy HAProxy cfg to target servers for testing
+  copy:
+    src: "/srv/{{team}}/compiled/deploy/{{ env }}/configs/{{ config_filename }}"
+    dest: "{{ volume_path }}/configs"
+  become: yes
+
+- name: Copy map configuration {{ env }} {{team}}
+  copy:
+    src: "/srv/{{team}}/compiled/deploy/{{ env }}/maps/"
+    dest: "{{ volume_path }}/maps"
+  become: yes
+
+- name: Copy whitelist configuration {{ env }} .
+  when: env != "local"
+  template:
+    src: "/srv/{{team}}/haproxy-default/{{item}}"
+    dest: "{{ volume_path }}/{{item}}"
+  become: yes
+  with_items:
+    - whitelisted.ips
+
+- name: Copy SSL Certs configuration lumi {{ env }}
+  when: team == "luminet" and env == "local" or team == "luminet" and env == "local_test"
+  template:
+    src: "/srv/{{team}}/haproxy-default/certs/{{item}}"
+    dest: "{{ volume_path }}/{{item}}"
+  become: yes
+  with_items:
+    - "{{luminet_cert_files}}"
+
+- name: Copy SSL Certs configuration nexcel {{ env }}
+  when: team == "nexcel" and env == "nexprod" or team == "nexcel" and env == "local" or team == "nexcel" and env == "local_test"
+  template:
+    src: "/srv/{{team}}/haproxy-default/certs/{{item}}"
+    dest: "{{ volume_path }}/{{item}}"
+  become: yes
+  with_items:
+    - "{{nexcel_cert_files}}"
+  #ignore_errors: yes
+
+- name: Copy HAProxy Dockerfile Testlab.
+  template:
+    #src: "templates/{{team}}/check-config.Dockerfile_{{env}}.j2"
+    src: "templates/check-config.Dockerfile.j2"
+    dest: "{{ volume_path }}/Dockerfile"
+  become: yes
+
+- name: Remove HAProxy image for syntax check
+  shell: docker image rm haproxy-check-config
+  ignore_errors: yes
+  become: yes
+
+- name: Build HAProxy container for syntax check
+  docker_image:
+    name: haproxy-check-config
+    build:
+      path: "{{ volume_path }}"
+    state: present
+  become: yes
+
+#- name: Build HAProxy container for syntax check 2
+#  shell: cd {{ volume_path }} && docker build -t haproxy-check-config .
+#  become: yes
+
+- name: Check HAProxy config
+  shell: docker run -it --rm haproxy-check-config haproxy -c -V -f /etc/haproxy/haproxy.cfg
+  become: yes
+
+- name: backup {{ config_filename }}
+  shell: cp {{ volume_path }}/{{ config_filename }} {{ volume_path }}/configs/backup_{{ config_filename }}
+  become: yes
+
+- name: Copy HAProxy configuration
+  copy:
+    src: "/srv/{{team}}/compiled/deploy/{{ env }}/configs/{{ config_filename }}"
+    dest: "{{ volume_path }}"
+  become: yes

@@ -1,0 +1,6 @@
+---
+- include: test1.yml
+#- include: _preliminary_check.yml
+#- include: _remove_previous.yml
+#  when: haproxy_service.stat.exists
+#- include: install_haproxy.yml

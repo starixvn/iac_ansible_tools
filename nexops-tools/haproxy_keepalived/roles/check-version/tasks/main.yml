@@ -1,0 +1,22 @@
+- name: "check current version of haproxy"
+  shell: echo "$(haproxy -v)"
+  become: yes
+  args:
+    executable: /bin/bash
+  register: haproxy_v
+  #tags:
+  #  - check_haproxy_version
+  #  - check_version
+  #  - haproxy
+- debug:
+    msg: "{{ haproxy_v.stdout.split('\n')}}"
+
+- name: "check current version of keepalived"
+  shell: echo "$(keepalived -v)"
+  become: yes
+  args:
+    executable: /bin/bash
+  register: keepalived_v
+
+- debug:
+    var: keepalived_v
