@@ -5,10 +5,9 @@
     src: haproxy.cfg.j2
     dest: "{{ haproxy_conf_path }}/haproxy.cfg"
     mode: 0644
-    validate: "{{haproxy_chroot}}/sbin/haproxy -f %s -c -q"
 
-- file: path=/etc/haproxy/errors/ state=directory owner=root group=root mode=0644
-  become: yes
+#- file: path=/etc/haproxy/errors/ state=directory owner=root group=root mode=0644
+#  become: yes
 - file: path=/run/haproxy/ state=directory owner=root group=root mode=0755
   become: yes
 
@@ -20,8 +19,6 @@
     backup: yes
     #owner: root
     mode: 0644
-  #notify:
-  #  - restart haproxy
 
 - name: Add this option to /etc/sysctl.conf net.ipv4.ip_nonlocal_bind=1
   become: yes
