@@ -1,6 +1,4 @@
 ---
-# author: lework
-
 - name: configure | Copy HAProxy configuration in place.
   become: yes
   template:
@@ -42,7 +40,7 @@
   become: yes
   register: haproxy_bin
 
-- name: Configure | Create a symbolic link for HAProxy.
+- name: Configure | Remove symbolic link for HAProxy if existed.
   become: yes
   shell: "rm /usr/sbin/haproxy"
   when: haproxy_bin.stat.exists
