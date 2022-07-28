@@ -64,5 +64,4 @@
   become: yes
 
 - name: Testing reload haproxy
-  notify:
-    - reload haproxy
+  notify: reload haproxy
