@@ -24,7 +24,7 @@
 ##### Clean folder haproxy on Target servers
 
 ############# HAProxy Configuration
-- name: Copy all of HAProxy configs (team) to temp folder
+- name: Copy all of HAProxy configs to temp folder
   copy:
     src: "files/configs/{{ env }}"
     dest: "/srv/haproxy/compiled/tmp/{{ env }}/configs"
@@ -47,7 +47,7 @@
 ##########Target servers
 - name: Copy HAProxy cfg to target servers for testing
   copy:
-    src: "/srv/{{team}}/compiled/deploy/{{ env }}/configs/{{ config_filename }}"
+    src: "/srv/haproxy/compiled/deploy/{{ env }}/configs/{{ config_filename }}"
     dest: "{{ haproxy_conf_path }}"
   become: yes
 
