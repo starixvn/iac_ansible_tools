@@ -47,7 +47,7 @@
 
 - name: Configure | Create a symbolic link for HAProxy.
   become: yes
-  shell: "ln -s {{haproxy_chroot}}/sbin/haproxy /usr/sbin/haproxy"
+  shell: "ln -s {{haproxy_chroot}}/sbin/haproxy /usr/sbin/haproxy && systemctl daemon-reload"
   #when: not haproxy_bin.stat.exists
 
 - name: Configure | HAProxy to start at boot
