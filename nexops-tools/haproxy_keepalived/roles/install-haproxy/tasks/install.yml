@@ -34,7 +34,7 @@
 
 - name: Install basic packages
   become: yes
-  apt: name={{ item }} state=present update_cache=no #yes
+  apt: name={{ item }} state=present update_cache=yes #yes
   with_items:
      - build-essential
      - make
