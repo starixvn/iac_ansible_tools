@@ -3,7 +3,7 @@
 
 software_files_path: "/opt/software"
 software_install_path: "/etc" #"/usr/local"
-
+config_filename: haproxy.cfg
 haproxy_version: "2.2.24" #1.9.5
 
 haproxy_file: "haproxy-{{ haproxy_version }}.tar.gz"
