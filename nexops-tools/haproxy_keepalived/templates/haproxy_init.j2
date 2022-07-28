@@ -1,16 +1,15 @@
 #!/bin/sh
 # This is our service name
 BASENAME=haproxy
-
 BIN={{ haproxy_chroot }}/sbin/$BASENAME
-
 CFG={{ haproxy_conf_path }}/$BASENAME.cfg
 [ -f $CFG ] || exit 1
-
 PIDFILE={{ haproxy_pid_file }}
 LOCKFILE=/var/lock/subsys/$BASENAME
-
 RETVAL=0
+test -x $HAPROXY_DAEMON || exit 0
+
+set -e
 
 start() {
   quiet_check
