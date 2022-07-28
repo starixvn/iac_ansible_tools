@@ -7,7 +7,7 @@ CFG={{ haproxy_conf_path }}/$BASENAME.cfg
 PIDFILE={{ haproxy_pid_file }}
 LOCKFILE=/var/lock/subsys/$BASENAME
 RETVAL=0
-test -x $HAPROXY_DAEMON || exit 0
+test -x $BIN || exit 0
 
 set -e
 
