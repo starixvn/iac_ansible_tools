@@ -1,6 +1,4 @@
 ---
-# author: lework
-
 - name: configure | Copy HAProxy configuration in place.
   become: yes
   template:
@@ -20,10 +18,10 @@
     src: haproxy.cfg.j2
     dest: /etc/haproxy/haproxy.cfg
     backup: yes
-    owner: root
+    #owner: root
     mode: 0644
-  notify:
-    - restart haproxy
+  #notify:
+  #  - restart haproxy
 
 - name: Add this option to /etc/sysctl.conf net.ipv4.ip_nonlocal_bind=1
   become: yes
@@ -31,8 +29,27 @@
 
 - name: Put init script in /etc/init.d
   become: yes
-  copy: src=files/haproxy_init dest=/etc/init.d/haproxy owner=root group=root mode=0755
+  template:
+    src: haproxy_init.j2
+    dest: "/etc/init.d/haproxy"
+    mode: 0755
+  #copy: src=files/haproxy_init dest=/etc/init.d/haproxy owner=root group=root mode=0755
 
-- name: Configure HAProxy to start at boot
+- name: Configure | Check if symbolic link for HAProxy /usr/sbin/haproxy existed.
+  stat: path=/usr/sbin/haproxy
+  become: yes
+  register: haproxy_bin
+
+- name: Configure | Remove symbolic link for HAProxy if existed.
+  become: yes
+  shell: "rm /usr/sbin/haproxy"
+  when: haproxy_bin.stat.exists
+
+- name: Configure | Create a symbolic link for HAProxy.
+  become: yes
+  shell: "ln -s {{haproxy_chroot}}/sbin/haproxy /usr/sbin/haproxy && systemctl daemon-reload"
+  #when: not haproxy_bin.stat.exists
+
+- name: Configure | HAProxy to start at boot
   become: yes
   service: name=haproxy enabled=yes state=started
