@@ -1,36 +1,6 @@
 #!/bin/sh
-#
-# chkconfig: - 85 15
-# description: HA-Proxy is a TCP/HTTP reverse proxy which is particularly suited \
-#              for high availability environments.
-# processname: haproxy
-# config: {{ haproxy_conf_path }}/$BASENAME.cfg }}
-# pidfile: {{ haproxy_pid_file }}
-
-# Script Author: Simon Matter <simon.matter@invoca.ch>
-# Version: 2004060600
-
-# Source function library.
-if [ -f /etc/init.d/functions ]; then
-  . /etc/init.d/functions
-elif [ -f /etc/rc.d/init.d/functions ] ; then
-  . /etc/rc.d/init.d/functions
-else
-  exit 0
-fi
-
-# Source networking configuration.
-. /etc/sysconfig/network
-
-# Check that networking is up.
-[ ${NETWORKING} = "no" ] && exit 0
-
 # This is our service name
-BASENAME=`basename $0`
-if [ -L $0 ]; then
-  BASENAME=`find $0 -name $BASENAME -printf %l`
-  BASENAME=`basename $BASENAME`
-fi
+BASENAME=haproxy
 
 BIN={{ haproxy_chroot }}/sbin/$BASENAME
 
