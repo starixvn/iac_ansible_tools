@@ -37,6 +37,21 @@
     mode: 0755
   #copy: src=files/haproxy_init dest=/etc/init.d/haproxy owner=root group=root mode=0755
 
-- name: Configure HAProxy to start at boot
+- name: Configure | Check if symbolic link for HAProxy /usr/sbin/haproxy existed.
+  stat: path=/usr/sbin/haproxy
+  become: yes
+  register: haproxy_bin
+
+- name: Configure | Create a symbolic link for HAProxy.
+  become: yes
+  shell: "rm /usr/sbin/haproxy"
+  when: haproxy_bin.stat.exists
+
+- name: Configure | Create a symbolic link for HAProxy.
+  become: yes
+  shell: "ln -s {{haproxy_chroot}}/sbin/haproxy /usr/sbin/haproxy"
+  #when: not haproxy_bin.stat.exists
+
+- name: Configure | HAProxy to start at boot
   become: yes
   service: name=haproxy enabled=yes state=started
