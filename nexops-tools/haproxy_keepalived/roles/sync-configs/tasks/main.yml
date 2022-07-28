@@ -58,5 +58,10 @@
 - name: Copy HAProxy configuration
   shell: cp {{ haproxy_conf_path }}/{{ config_filename }} {{ haproxy_chroot }}
   become: yes
-  notify:
-    - restart haproxy
+  
+- name: reload haproxy
+  service: name=haproxy state=reloaded
+  become: yes
+
+- notify:
+    - reload haproxy
