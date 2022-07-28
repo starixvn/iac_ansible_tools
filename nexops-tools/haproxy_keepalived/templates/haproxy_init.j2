@@ -11,7 +11,7 @@
 ### END INIT INFO
 
 HAPROXY_CONF=/etc/haproxy/haproxy.cfg
-HAPROXY_PATH=/usr/local/haproxy/sbin
+HAPROXY_PATH={{haproxy_chroot}}/sbin
 HAPROXY_DAEMON=$HAPROXY_PATH/haproxy
 
 test -x $HAPROXY_DAEMON || exit 0

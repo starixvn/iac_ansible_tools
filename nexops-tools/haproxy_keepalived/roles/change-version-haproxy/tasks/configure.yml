@@ -20,7 +20,7 @@
     src: haproxy.cfg.j2
     dest: /etc/haproxy/haproxy.cfg
     backup: yes
-    owner: root
+    #owner: root
     mode: 0644
   notify:
     - restart haproxy
@@ -31,7 +31,11 @@
 
 - name: Put init script in /etc/init.d
   become: yes
-  copy: src=files/haproxy_init dest=/etc/init.d/haproxy owner=root group=root mode=0755
+  template:
+    src: haproxy_init.j2
+    dest: "/etc/init.d/haproxy"
+    mode: 0755
+  #copy: src=files/haproxy_init dest=/etc/init.d/haproxy owner=root group=root mode=0755
 
 - name: Configure HAProxy to start at boot
   become: yes
