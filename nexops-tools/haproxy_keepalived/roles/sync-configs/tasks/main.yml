@@ -56,7 +56,7 @@
   become: yes
 
 - name: Copy HAProxy configuration
-  copy:
-    src: "{{ haproxy_conf_path }}/{{ config_filename }}"
-    dest: "{{ haproxy_chroot }}"
+  shell: cp {{ haproxy_conf_path }}/{{ config_filename }} {{ haproxy_chroot }}
   become: yes
+  notify:
+    - restart haproxy
