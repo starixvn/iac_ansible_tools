@@ -7,7 +7,7 @@
     src: haproxy.cfg.j2
     dest: "{{ haproxy_conf_path }}/haproxy.cfg"
     mode: 0644
-    validate: /usr/local/haproxy/sbin/haproxy -f %s -c -q
+    validate: "{{haproxy_chroot}}/sbin/haproxy -f %s -c -q"
 
 - file: path=/etc/haproxy/errors/ state=directory owner=root group=root mode=0644
   become: yes
