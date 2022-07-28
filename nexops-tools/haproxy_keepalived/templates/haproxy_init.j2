@@ -14,7 +14,7 @@
 PATH=/sbin:/usr/sbin:/bin:/usr/bin
 BASENAME=haproxy
 PIDFILE={{haproxy_pid_file}}
-CONFIG={{ haproxy_conf_path }}/$BASENAME.cfg
+CONFIG={{ haproxy_chroot }}/$BASENAME.cfg
 HAPROXY=/usr/sbin/haproxy
 RUNDIR=/run/${BASENAME}
 EXTRAOPTS=

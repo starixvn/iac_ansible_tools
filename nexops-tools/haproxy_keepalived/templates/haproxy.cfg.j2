@@ -12,7 +12,7 @@ global
   group {{ haproxy_user }}
   maxconn {{ haproxy_maxconn }}
   ulimit-n {{ haproxy_ulimit }}
-  nbproc {{ haproxy_nbproc }}
+##  nbproc {{ haproxy_nbproc }} nbproc is not supported any more since HAProxy 2.5
 {% for global_var in haproxy_global_vars %}
   {{ global_var }}
 {% endfor %}
