@@ -64,4 +64,5 @@
   become: yes
 
 - name: Testing reload haproxy
+  shell: ls -l
   notify: reload haproxy
