@@ -1,0 +1,79 @@
+##### Clean Deployment directory
+- name: Clean Deployment directory
+  file:
+    state: absent
+    path: "{{item}}"
+  run_once: true
+  become: yes
+  connection: local
+  with_items:
+    - "/srv/haproxy/compiled/deploy/{{ env }}"
+    - "/srv/haproxy/compiled/tmp/{{ env }}"
+
+- name: Create Deployment directory
+  file:
+    path: "{{item}}"
+    state: directory
+    mode: "0755"
+  become: yes
+  run_once: true
+  delegate_to: localhost
+  with_items:
+    - "/srv/haproxy/compiled/tmp/{{ env }}/configs"
+    - "/srv/haproxy/compiled/deploy/{{ env }}/configs"
+##### Clean folder haproxy on Target servers
+
+############# HAProxy Configuration
+- name: Copy all of HAProxy configs to temp folder
+  copy:
+    src: "files/configs/{{ env }}"
+    dest: "/srv/haproxy/compiled/tmp/{{ env }}/configs"
+  become: yes
+  run_once: true
+  delegate_to: localhost
+
+- name: Build HAProxy configurations
+  assemble:
+    src: "/srv/haproxy/compiled/tmp/{{ env }}/configs/{{ env }}/"
+    dest: "/srv/haproxy/compiled/deploy/{{ env }}/configs/{{ config_filename }}"
+    regexp: "cfg$"
+  become: yes
+  run_once: true
+  delegate_to: localhost
+
+#- name: Exterminate
+#  pause:
+#    prompt: Press return to continue. Press Ctrl+c and then "a" to abort
+##########Target servers
+- name: Copy HAProxy cfg to target servers for testing
+  copy:
+    src: "/srv/haproxy/compiled/deploy/{{ env }}/configs/{{ config_filename }}"
+    dest: "{{ haproxy_conf_path }}"
+  become: yes
+################## Use Docker to validate haproxy cfg
+- name: Remove HAProxy image for syntax check
+  shell: docker image rm haproxy-check-config
+  ignore_errors: yes
+  become: yes
+
+- name: Build HAProxy container for syntax check
+  docker_image:
+    name: haproxy-check-config
+    build:
+      path: "{{ volume_path }}"
+    state: present
+  become: yes
+
+- name: Check HAProxy config
+  shell: docker run -it --rm haproxy-check-config haproxy -c -V -f /etc/haproxy/haproxy.cfg
+  become: yes
+###################
+- name: backup {{ config_filename }}
+  shell: cp {{ haproxy_conf_path }}/{{ config_filename }} {{ haproxy_conf_path }}/backup_{{ config_filename }}
+  become: yes
+  validate: "{{haproxy_chroot}}/sbin/haproxy -f %s -c -q"
+
+- name: Copy HAProxy configuration
+  shell: cp {{ haproxy_conf_path }}/{{ config_filename }} {{ haproxy_chroot }}
+  become: yes
+  notify: reload haproxy

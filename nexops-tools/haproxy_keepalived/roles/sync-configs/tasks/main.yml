@@ -50,7 +50,13 @@
     src: "/srv/haproxy/compiled/deploy/{{ env }}/configs/{{ config_filename }}"
     dest: "{{ haproxy_conf_path }}"
   become: yes
+################## validate haproxy cfg
+- name: Check HAProxy config
+  shell: haproxy -c -V -f {{ haproxy_conf_path }}/{{ config_filename }}
+  register: haproxy_check
+  become: yes
 
+###################
 - name: backup {{ config_filename }}
   shell: cp {{ haproxy_conf_path }}/{{ config_filename }} {{ haproxy_conf_path }}/backup_{{ config_filename }}
   become: yes
@@ -58,11 +64,4 @@
 - name: Copy HAProxy configuration
   shell: cp {{ haproxy_conf_path }}/{{ config_filename }} {{ haproxy_chroot }}
   become: yes
-  
-- name: reload haproxy
-  service: name=haproxy state=reloaded
-  become: yes
-
-- name: Testing reload haproxy
-  shell: ls -l
   notify: reload haproxy
