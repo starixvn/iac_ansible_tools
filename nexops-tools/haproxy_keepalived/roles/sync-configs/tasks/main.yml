@@ -5,7 +5,7 @@
     path: "{{item}}"
   run_once: true
   become: yes
-  connection: local
+  delegate_to: localhost
   with_items:
     - "/srv/haproxy/compiled/deploy/{{ env }}"
     - "/srv/haproxy/compiled/tmp/{{ env }}"
