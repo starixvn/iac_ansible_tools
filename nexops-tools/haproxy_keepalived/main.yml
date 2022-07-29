@@ -1,36 +1,36 @@
 ---
-- hosts: haproxy_onhost
+- hosts: all
   roles:
     - role: sync-configs
     #- role: reload-configs
   tags: sync-configs
 
-- hosts: haproxy_onhost
+- hosts: all
   roles:
     - role: haproxy
     - role: keepalived
   tags: install-haproxy-keepalived
 
-- hosts: haproxy_onhost
+- hosts: all
   roles:
     - role: install-haproxy
     - role: configure-haproxy
     - role: sync-configs
   tags: install-haproxy
 
-- hosts: haproxy_onhost
+- hosts: all
   roles:
     - role: change-version-haproxy
     - role: configure-haproxy
     - role: sync-configs
   tags: change-version-haproxy
 
-- hosts: haproxy_onhost
+- hosts: all
   roles:
     - role: keepalived
   tags: install-keepalived
 
-- hosts: haproxy_onhost
+- hosts: all
   roles:
     - role: restore-backup-configs
     #- role: reload-configs
