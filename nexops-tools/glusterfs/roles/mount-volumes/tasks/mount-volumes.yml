@@ -1,5 +1,24 @@
 ---
-# tasks file for glusterfs-ansible-role
+- name: Add a key from a file on the Ansible server
+  apt_key:
+    url: https://download.gluster.org/pub/gluster/glusterfs/7/rsa.pub
+    state: present
+  become: yes
+  ignore_errors: yes
+
+- name: Add apt repository gluster
+  apt_repository:
+    repo: ppa:gluster/glusterfs-7
+    state: present
+  become: yes
+  ignore_errors: yes
+
+- name: Install GlusterFS client
+  apt: name={{ item }} state=latest update_cache=no
+  with_items:
+    - glusterfs-client
+  become: true
+  ignore_errors: yes
 
 - name: Remove old mount point from fstab in case of change
   lineinfile:
