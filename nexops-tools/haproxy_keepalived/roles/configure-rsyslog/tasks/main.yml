@@ -4,7 +4,7 @@
   become: yes
 
 - name: install | Create haproxy dev log Directory.
-  file: path={{ haproxy_logspath }} state=directory
+  file: path={{ haproxy_logspath }} state=directory mode=0777
   become: yes
 
 - name: rsyslog | Setup HAProxy rsyslog conf file.
