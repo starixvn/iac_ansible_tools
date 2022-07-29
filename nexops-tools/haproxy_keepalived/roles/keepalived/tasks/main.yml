@@ -1,8 +1,10 @@
 ---
-- name: Check if Service Exists
-  stat: path=/etc/init.d/{{service_name}}
-  register: service_status
+- name: install | Check if keepalived file {{ keepalived_file_path }} status.
+  stat: path={{ keepalived_file_path }}
   become: yes
+  connection: local
+  run_once: true
+  register: keepalived_file_result
 
 - name: Install necessary apt package
   apt:
@@ -11,11 +13,11 @@
 
 - name: Copy keepalived setup file - {{keepalived_version}}.tar.gz
   copy:
-    src: files/keepalived-{{keepalived_version}}.tar.gz
+    src: files/source/keepalived-{{keepalived_version}}.tar.gz
     dest: '/tmp/keepalived.tar.gz'
   register: keepalived_source
-  # when:
-  #   - not service_status.stat.exists
+  when:
+    - not keepalived_file_result.stat.exists
   become: yes
 
 - name: Unpack keepalived

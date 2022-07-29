@@ -1,7 +1,15 @@
 ---
-# author: lework
-
 software_files_path: "/opt/software"
+#####Keealived
+keepalived_password: 1qaz@WSX
+keepalived_version: 2.2.7
+keepalived_source_url: 'http://www.keepalived.org/software/keepalived-{{ keepalived_version }}.tar.gz'
+keepalived_install_dir: '/tmp/keepalived-{{ keepalived_version }}'
+keepalived_conf_dir: /etc/keepalived
+keepalived_conf_name: keepalived.conf
+service_name: keepalived
+keepalived_file_path: "{{ software_files_path }}/keepalived-{{ keepalived_version }}.tar.gz"
+#######HAProxy
 software_install_path: "/etc" #"/usr/local"
 config_filename: haproxy.cfg
 haproxy_version: "2.4.17" #1.9.5
@@ -19,64 +27,9 @@ haproxy_logspath: "/var/log/haproxy"
 haproxy_socket: "/var/run/haproxy.sock"
 haproxy_pid_file: "/var/run/haproxy.pid"
 
-haproxy_build_target: 'linux26{{ "28"
-                         if ( ansible_kernel.split("-")[0] | version_compare("2.6.28",">=", strict=True))
-                         else "" }}'
-haproxy_build_arch: "{{ ansible_machine }}"
-haproxy_configure_command: "make TARGET={{ haproxy_build_target }} ARCH={{ haproxy_build_arch }} USE_PCRE=1 USE_OPENSSL=1 USE_ZLIB=1 PREFIX={{ haproxy_chroot }}"
-
 haproxy_maxconn: 60000
 haproxy_ulimit: 200000
 haproxy_nbproc: "{{ ansible_processor_vcpus | default(ansible_processor_count) }}"
-
-# Frontend settings.
-haproxy_frontend_name: "hafrontend"
-haproxy_frontend_bind_address: "*"
-haproxy_frontend_port: 80
-haproxy_frontend_mode: "http"
-haproxy_frontend_vars: []
-# haproxy_frontend_vars: |
-#  - 'option httpchk GET /ok.html'
-#  - 'http-check expect status 200'
-
-# Backend settings.
-haproxy_backend_name: "habackend"
-haproxy_backend_mode: "http"
-haproxy_backend_balance_method: "roundrobin"
-haproxy_backend_httpchk: "HEAD / HTTP/1.1\\r\\nHost:localhost"
-
-# List of backend servers.
-haproxy_backend_servers: []
-# - name: app1
-#   address: 192.168.0.1:80
-# - name: app2
-#   address: 192.168.0.2:80
-#   check: "inter 5000 rise 2 fall 3"
-#   backup: true
-#   extra: "on-marked-down shutdown-sessions"
-  
-haproxy_backend_vars: []
-# haproxy_backend_vars: |
-#  - 'option httpchk GET /ok.html'
-#  - 'http-check expect status 200'
-
-haproxy_global_vars: []
-# haproxy_global_vars:
-#  - 'ssl-default-bind-ciphers ABCD+KLMJ:...'
-#  - 'ssl-default-bind-options no-sslv3'
-      
-haproxy_defaults_vars: []
-# haproxy_defaults_vars: |
-#  - 'timeout client 1m'
-#  - 'timeout server 1m'
-
-haproxy_conf_extra: ""
-# haproxy_conf_vars: |
-#    frontend mysql
-#        bind *:3306
-#        mode tcp
-#        log global
-#        default_backend mysqlservers
 
 haproxy_stats: true
 haproxy_stats_bindport: 18080
