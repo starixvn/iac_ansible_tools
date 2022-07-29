@@ -34,9 +34,9 @@
 - name: Mount volume(s)
   mount:
     name: '{{ item.mount.path }}'
-    src: "{% if cluster is defined %}{{ cluster[0] + ':/' + item.volume }}{% else %}{{ play_hosts[0] + ':/' + item.volume }}{% endif %}"
+    src: "{{ host + ':/' + item.volume }}"
     fstype: glusterfs
-    opts: "{%- if item.mount.options is defined -%}{{ item.mount.options }}{%- else -%}{%- if cluster is defined and cluster | length > 1 -%}{{ 'defaults,_netdev,backupvolfile-server=' + cluster[1] }}{%- elif cluster is undefined and play_hosts | length > 1 -%}{{ 'defaults,_netdev,backupvolfile-server=' + play_hosts[1] }}{%- else -%}defaults,_netdev{%- endif -%}{%- endif -%}"
+    #opts: "{%- if item.mount.options is defined -%}{{ item.mount.options }}{%- else -%}{%- if cluster is defined and cluster | length > 1 -%}{{ 'defaults,_netdev, 0 0}}{%- elif cluster is undefined and play_hosts | length > 1 -%}{{ 'defaults,_netdev,backupvolfile-server=' + play_hosts[1] }}{%- else -%}defaults,_netdev{%- endif -%}{%- endif -%}"
     state: mounted
   with_items: '{{ glusterfs_volumes }}'
   when: >
