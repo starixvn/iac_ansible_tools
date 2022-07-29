@@ -23,7 +23,7 @@
 - name: Remove old mount point from fstab in case of change
   lineinfile:
     dest: /etc/fstab
-    regexp: "{{ cluster[0] + ':/' + item.volume }}
+    regexp: "{{ cluster[0] + ':/' + item.volume }}"
     state: absent
   register: regex_fstab
   with_items: '{{ glusterfs_volumes }}'
