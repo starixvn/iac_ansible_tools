@@ -1,0 +1,26 @@
+---
+- name: rsyslog | Ensure rsyslog packages are installed.
+  apt: name=rsyslog state=present update_cache=yes
+  become: yes
+
+- name: install | Create haproxy dev log Directory.
+  file: path={{ haproxy_logspath }} state=directory mode=0777
+  become: yes
+
+- name: rsyslog | Setup HAProxy rsyslog conf file.
+  template: dest=/etc/rsyslog.d/haproxy.conf src=haproxy.conf.j2
+  become: yes
+    
+- name: rsyslog | Ensure rsyslog is resstarted and enabled on boot.
+  service: "name=rsyslog state=restarted enabled=yes"
+  become: yes
+
+- name: configure | Ensure HAProxy is restarted.
+  service: "name=haproxy state=restarted"
+  become: yes
+
+- name: logrotate | Setup HAProxy logrotate conf file.
+  template:
+    dest: "/etc/logrotate.d/haproxy"
+    src: haproxy.logrotate.j2
+  become: yes

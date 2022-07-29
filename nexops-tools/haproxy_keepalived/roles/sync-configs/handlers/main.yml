@@ -1,0 +1,22 @@
+---
+- name: restart haproxy
+  service: name=haproxy state=restarted
+  become: yes
+
+- name: reload haproxy
+  service: name=haproxy state=reloaded
+  become: yes
+
+- name: restart rsyslog
+  service: name=rsyslog state=restarted
+  become: yes
+
+- name: stop haproxy
+  service: state=stopped name=haproxy
+  become: yes
+
+- name: Restart keepalived
+  service:
+    name: keepalived
+    state: restarted
+  become: yes

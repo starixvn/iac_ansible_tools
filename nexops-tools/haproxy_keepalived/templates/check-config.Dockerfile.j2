@@ -1,0 +1,76 @@
+{% if env == "local" %}
+FROM hub.nexdev.net/haproxy/haproxy-debian:{{haproxy_version}}
+{% else %}
+
+{% endif %}
+FROM {{ lookup('vars', org + '_haproxy_image_' + env)}}/haproxy/haproxy-debian:{{haproxy_version}}
+COPY configs/haproxy.cfg {{image_config_path}}/haproxy.cfg
+COPY maps/hosts.map {{image_config_path}}/maps/hosts.map
+{% if team == "nexcel" %}
+######################### {{team}} - {{env}}
+{% if env == "local_test" %}
+COPY whitelisted.ips {{image_config_path}}/whitelisted.ips
+COPY *.pem {{image_config_path}}/
+COPY maps/*.map {{image_config_path}}/maps/
+{% elif env == "nexprod" %}
+COPY nexdev.net.pem {{image_config_path}}/nexdev.net.pem
+COPY nexcel.vn.pem {{image_config_path}}/nexcel.vn.pem
+COPY nexcel.info.pem {{image_config_path}}/nexcel.info.pem
+{% elif env == "local" %}
+COPY nexdev.net.pem {{image_config_path}}/nexdev.net.pem
+COPY nexcel.vn.pem {{image_config_path}}/nexcel.vn.pem
+COPY nexcel.info.pem {{image_config_path}}/nexcel.info.pem
+COPY maps/vg3-game-proxy.map {{image_config_path}}/maps/vg3-game-proxy.map
+COPY maps/olympus-proxy.map {{image_config_path}}/maps/olympus-proxy.map
+COPY maps/olympus-proxy-tvs.map {{image_config_path}}/maps/olympus-proxy-tvs.map
+COPY maps/alpha.map {{image_config_path}}/maps/alpha.map
+COPY maps/special-hosts.map {{image_config_path}}/maps/special-hosts.map
+COPY maps/special-hosts-1.map {{image_config_path}}/maps/special-hosts-1.map
+{% elif env == "uat" %}
+COPY whitelisted.ips {{image_config_path}}/whitelisted.ips
+COPY maps/uat-vg3-game-proxy.map {{image_config_path}}/maps/uat-vg3-game-proxy.map
+COPY maps/rome-alpha-i1.map {{image_config_path}}/maps/rome-alpha-i1.map
+COPY maps/rome-alpha-i7.map {{image_config_path}}/maps/rome-alpha-i7.map
+COPY maps/olympus-proxy-settle.map {{image_config_path}}/maps/olympus-proxy-settle.map
+COPY maps/olympus-proxy-tvs.map {{image_config_path}}/maps/olympus-proxy-tvs.map
+{% elif env == "sit" %}
+COPY whitelisted.ips {{image_config_path}}/whitelisted.ips
+COPY maps/olympus-proxy-settle.map {{image_config_path}}/maps/olympus-proxy-settle.map
+COPY maps/olympus-proxy-tvs.map {{image_config_path}}/maps/olympus-proxy-tvs.map
+{% elif env == "prod" %}
+COPY whitelisted.ips {{image_config_path}}/whitelisted.ips
+COPY maps/olympus-proxy-settle.map {{image_config_path}}/maps/olympus-proxy-settle.map
+COPY maps/olympus-proxy-tvs.map {{image_config_path}}/maps/olympus-proxy-tvs.map
+{% elif env == "prod-nex3" %}
+COPY whitelisted.ips {{image_config_path}}/whitelisted.ips
+COPY maps/game-proxy.map {{image_config_path}}/maps/game-proxy.map
+{% elif env == "aws" %}
+COPY whitelisted.ips {{image_config_path}}/whitelisted.ips
+{% elif env == "aws-nex3" %}
+COPY whitelisted.ips {{image_config_path}}/whitelisted.ips
+COPY maps/game-proxy.map {{image_config_path}}/maps/game-proxy.map
+{% endif %}
+{% endif %}
+{% if team == "luminet" %}
+######################### {{team}} - {{env}}
+{% if env == "local_test" %}
+COPY lumigame.com.pem {{image_config_path}}/lumigame.com.pem
+COPY whitelisted.ips {{image_config_path}}/whitelisted.ips
+COPY l2-game-proxy.map {{image_config_path}}/l2-game-proxy.map
+{% elif env == "local" %}
+COPY lumigame.com.pem {{image_config_path}}/lumigame.com.pem
+COPY maps/*.map {{image_config_path}}/maps/
+{% elif env == "uat" %}
+COPY whitelisted.ips {{image_config_path}}/whitelisted.ips
+COPY maps/l2-game-proxy.map {{image_config_path}}/maps/l2-game-proxy.map
+COPY maps/l1-game-proxy.map {{image_config_path}}/maps/l1-game-proxy.map
+{% elif env == "prod" %}
+COPY whitelisted.ips {{image_config_path}}/whitelisted.ips
+COPY maps/l2-game-proxy.map {{image_config_path}}/maps/l2-game-proxy.map
+COPY maps/l1-game-proxy.map {{image_config_path}}/maps/l1-game-proxy.map
+{% elif env == "aws" %}
+COPY whitelisted.ips {{image_config_path}}/whitelisted.ips
+COPY maps/l2-game-proxy.map {{image_config_path}}/maps/l2-game-proxy.map
+COPY maps/l1-game-proxy.map {{image_config_path}}/maps/l1-game-proxy.map
+{% endif %}
+{% endif %}

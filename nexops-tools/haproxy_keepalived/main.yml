@@ -1,0 +1,40 @@
+---
+- hosts: all
+  roles:
+    - role: sync-configs
+  tags: sync-configs
+
+- hosts: all
+  roles:
+    - role: haproxy
+    - role: keepalived
+  tags: install-haproxy-keepalived
+
+- hosts: all
+  roles:
+    - role: install-haproxy
+    - role: configure-haproxy
+    - role: sync-configs
+  tags: install-haproxy
+
+- hosts: all
+  roles:
+    - role: change-version-haproxy
+    - role: configure-haproxy
+    - role: sync-configs
+  tags: change-version-haproxy
+
+- hosts: all
+  roles:
+    - role: keepalived
+  tags: install-keepalived
+
+- hosts: all
+  roles:
+    - role: restore-backup-configs
+  tags: restore-backup-configs
+
+- hosts: all
+  roles:
+    - role: configure-rsyslog
+  tags: configure-rsyslog
