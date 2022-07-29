@@ -1,12 +1,24 @@
 ---
+- name: Install basic packages
+  become: yes
+  apt: name={{ item }} state=present update_cache=yes #yes
+  with_items:
+     - build-essential
+     - make
+     - g++
+     - libssl-dev
+     - libpcre3-dev
+
 - name: install | Check if haproxy local file {{ haproxy_file_path }} status.
   stat: path={{ haproxy_file_path }}
   become: yes
   connection: local
+  run_once: true
   register: haproxy_file_result
 
 - name: install | Create software files path.
   file: path={{ software_files_path }} state=directory
+  run_once: true
   become: yes
   connection: local
   when: not haproxy_file_result.stat.exists
@@ -16,6 +28,7 @@
 #  connection: local
 #  when: not haproxy_file_result.stat.exists
 - name: Copy HAProxy source file - {{ haproxy_file }}
+  run_once: true
   copy:
     src: files/{{ haproxy_file }}
     dest: "{{software_files_path}}"
@@ -31,16 +44,6 @@
     src: "{{ haproxy_file_path }}"
     dest: "/tmp"
     creates: "/tmp/haproxy-{{ haproxy_version }}"
-
-- name: Install basic packages
-  become: yes
-  apt: name={{ item }} state=present update_cache=yes #yes
-  with_items:
-     - build-essential
-     - make
-     - g++
-     - libssl-dev
-     - libpcre3-dev
 
 - name: install | Create haproxy group.
   become: yes
