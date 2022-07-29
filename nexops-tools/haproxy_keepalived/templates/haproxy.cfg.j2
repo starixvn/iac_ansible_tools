@@ -38,34 +38,6 @@ defaults
   errorfile 502 {{haproxy_chroot}}/errorfiles/502.http
   errorfile 503 {{haproxy_chroot}}/errorfiles/503.http
   errorfile 504 {{haproxy_chroot}}/errorfiles/504.http
-{% for defaults_var in haproxy_defaults_vars %}
-  {{ defaults_var }}
-{% endfor %}
-
-frontend {{ haproxy_frontend_name }}
-  bind {{ haproxy_frontend_bind_address }}:{{ haproxy_frontend_port }}
-  mode {{ haproxy_frontend_mode }}
-  default_backend {{ haproxy_backend_name }}
-{% for frontend_var in haproxy_frontend_vars %}
-  {{ frontend_var }}
-{% endfor %}
-
-backend {{ haproxy_backend_name }}
-  mode {{ haproxy_backend_mode }}
-  balance {{ haproxy_backend_balance_method }}
-  option forwardfor
-{% if haproxy_backend_httpchk != '' and haproxy_backend_mode == "http" %}
-  option httpchk {{ haproxy_backend_httpchk }}
-{% endif %}
-{% if haproxy_backend_mode == "http" %}
-  cookie SERVERID insert indirect
-{% endif %}
-{% for backend in haproxy_backend_servers %}
-  server {{ backend.name }} {{ backend.address }} {% if haproxy_backend_mode == "http" %} cookie {{ backend.name }} {% endif%}{%if backend.backup is defined %}backup{% endif %} check {% if backend.check is defined %}{{ backend.check }}{% endif %} {% if backend.extra is defined %}{{ backend.extra }}{% endif %} 
-{% endfor %}
-{% for backend_var in haproxy_backend_vars %}
-  {{ backend_var }}
-{% endfor %}
 
 {% if haproxy_stats %}
 listen statistics
@@ -82,8 +54,4 @@ listen statistics
   #tcp-request content accept if allow
   #tcp-request content reject
   stats realm {{ haproxy_stats_realm }}
-{% endif %}
-
-{% if haproxy_conf_extra %}
-{{ haproxy_conf_extra }}
 {% endif %}

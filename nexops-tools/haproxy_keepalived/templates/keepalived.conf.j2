@@ -4,9 +4,9 @@ global_defs {
   script_user root root enable_script_security
 }
 
-vrrp_script haproxy_container {
-    script "/etc/keepalived/haproxy-container-check.sh"
-    interval 1
+vrrp_script chk_haproxy  {
+    script "pidof haproxy"
+    interval 2
     weight -20
     fall 3
     rise 3
@@ -25,7 +25,7 @@ vrrp_instance VI_10 {
     auth_pass {{ keepalived_password }}
   	}
     track_script {
-        haproxy_container
+        chk_haproxy 
     }
     notify "/etc/keepalived/keepalived_notify.sh"
 }
@@ -44,7 +44,7 @@ vrrp_instance VI_1 {
     auth_pass {{ keepalived_password }}
   	}
     track_script {
-        haproxy_container
+        chk_haproxy 
     }
     notify "/etc/keepalived/keepalived_notify.sh"
 }
@@ -64,7 +64,7 @@ vrrp_instance VI_2 {
     auth_pass {{ keepalived_password }}
   	}
     track_script {
-        haproxy_container
+        chk_haproxy 
     }
     notify "/etc/keepalived/keepalived_notify.sh"
 }
