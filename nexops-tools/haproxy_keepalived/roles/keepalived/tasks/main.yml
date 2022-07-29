@@ -1,20 +1,22 @@
 ---
-- name: install | Check if keepalived file {{ keepalived_file_path }} status.
-  stat: path={{ keepalived_file_path }}
-  become: yes
-  connection: local
-  run_once: true
-  register: keepalived_file_result
-
 - name: Install necessary apt package
   apt:
     name: libssl-dev
   become: yes
 
+- name: install | Check if keepalived file {{ keepalived_file_path }} status.
+  stat: path={{ keepalived_file_path }}
+  become: yes
+  run_once: true
+  delegate_to: localhost
+  register: keepalived_file_result
+
 - name: Copy keepalived setup file - {{keepalived_version}}.tar.gz
   copy:
     src: files/source/keepalived-{{keepalived_version}}.tar.gz
-    dest: '/tmp/keepalived.tar.gz'
+    dest: "{{software_files_path}}"
+  run_once: true
+  delegate_to: localhost
   register: keepalived_source
   when:
     - not keepalived_file_result.stat.exists
@@ -22,9 +24,9 @@
 
 - name: Unpack keepalived
   unarchive:
-    copy: no
     dest: /tmp/
-    src: '{{ keepalived_source.dest }}'
+    src: "{{ keepalived_file_path }}"
+    creates: "/tmp/keepalived-{{ keepalived_version }}"
   # when:
   #   - not service_status.stat.exists or keepalived_source.changed
   register: keepalived_source_unpack
