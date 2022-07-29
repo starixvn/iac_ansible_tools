@@ -58,7 +58,7 @@
  
 - name: Change version | Build an install haproxy.
   become: yes
-  shell: "make TARGET=linux41 USE_PCRE=1 USE_OPENSSL=1 USE_ZLIB=1 && make install PREFIX={{ haproxy_chroot }}" #"{{ item }}" 
+  shell: "make TARGET=linux41 USE_PCRE=1 USE_OPENSSL=1 && make install PREFIX={{ haproxy_chroot }}" #"{{ item }}" 
   #with_items:
   #  - "{{ haproxy_configure_command }}"
   #  - "make install PREFIX={{ haproxy_chroot }}"
