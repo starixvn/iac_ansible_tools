@@ -1,6 +1,6 @@
 ---
 - name: rsyslog | Ensure rsyslog packages are installed.
-  apt: name=rsyslog state=installed
+  apt: name=rsyslog state=present update_cache=yes
   become: yes
 
 - name: install | Create haproxy dev log Directory.
