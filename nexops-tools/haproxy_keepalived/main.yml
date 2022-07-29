@@ -14,11 +14,15 @@
 - hosts: haproxy_onhost
   roles:
     - role: install-haproxy
+    - role: configure-haproxy
+    - role: sync-configs
   tags: install-haproxy
 
 - hosts: haproxy_onhost
   roles:
     - role: change-version-haproxy
+    - role: configure-haproxy
+    - role: sync-configs
   tags: change-version-haproxy
 
 - hosts: haproxy_onhost

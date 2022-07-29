@@ -1,4 +1,75 @@
 ---
-- include: index.yml
-- include: configure.yml
-- include: sync-configs.yml
+- name: Change version | Check if haproxy local file {{ haproxy_file_path }} status.
+  stat: path={{ haproxy_file_path }}
+  become: yes
+  connection: local
+  register: haproxy_file_result
+
+- name: Change version | Create software files path.
+  file: path={{ software_files_path }} state=directory
+  become: yes
+  connection: local
+  when: not haproxy_file_result.stat.exists
+  
+#- name: Change version | Download haproxy file.
+#  get_url: url={{ haproxy_file_url }} dest={{ software_files_path }}
+#  connection: local
+#  when: not haproxy_file_result.stat.exists
+- name: Copy HAProxy source file - {{ haproxy_file }}
+  copy:
+    src: files/{{ haproxy_file }}
+    dest: "{{software_files_path}}"
+  connection: local
+  when: not haproxy_file_result.stat.exists
+  become: yes
+
+- name: Change version | Confirm the existence of the installation directory.
+  file: path={{ software_install_path }} state=directory
+
+- name: Change version | Copy haproxy file to agent.
+  unarchive:
+    src: "{{ haproxy_file_path }}"
+    dest: "/tmp"
+    creates: "/tmp/haproxy-{{ haproxy_version }}"
+
+- name: Change version | stop haproxy
+  service: state=stopped name=haproxy
+  become: yes
+
+- name: Change version | Create haproxy group.
+  become: yes
+  group: name={{ haproxy_user }}
+
+- name: Change version | Create haproxy user.
+  become: yes
+  user: name={{ haproxy_user }} group={{ haproxy_user }} shell=/sbin/nologin
+
+- name: Change version | Create haproxy work Directory.
+  become: yes
+  file: path={{ item }} state=directory owner={{ haproxy_user }} group={{ haproxy_user }}
+  with_items:
+   - "{{ haproxy_conf_path }}"
+   - "{{ haproxy_logspath }}"
+
+- name: Change version | Check if haproxy bin file is already configured.
+  become: yes
+  stat: path={{ haproxy_chroot }}/sbin/haproxy
+  register: haproxy_bin_result
+ 
+- name: Change version | Build an install haproxy.
+  become: yes
+  shell: "make TARGET=linux41 && make install PREFIX={{ haproxy_chroot }}" #"{{ item }}" 
+  #with_items:
+  #  - "{{ haproxy_configure_command }}"
+  #  - "make install PREFIX={{ haproxy_chroot }}"
+  args:
+    chdir: "/tmp/haproxy-{{ haproxy_version }}/"
+  #when: not haproxy_bin_result.stat.exists
+
+- name: Change version | Copy errorfiles to haproxy home.
+  become: yes
+  command: "cp -rf /tmp/haproxy-{{ haproxy_version }}/examples/errorfiles {{ haproxy_chroot }}/"
+  
+- name: Change version | Config environment variable.
+  become: yes
+  lineinfile: dest=/etc/profile line='export PATH={{ haproxy_chroot }}/sbin/:$PATH'

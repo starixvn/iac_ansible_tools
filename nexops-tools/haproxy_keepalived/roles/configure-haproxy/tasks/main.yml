@@ -1,11 +1,4 @@
 ---
-- name: configure | Copy HAProxy configuration in place.
-  become: yes
-  template:
-    src: haproxy.cfg.j2
-    dest: "{{ haproxy_chroot }}/haproxy.cfg"
-    mode: 0644
-
 - file: path=/run/haproxy/ state=directory owner=root group=root mode=0755
   become: yes
 
