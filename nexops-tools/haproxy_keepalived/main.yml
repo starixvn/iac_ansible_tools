@@ -2,7 +2,6 @@
 - hosts: all
   roles:
     - role: sync-configs
-    #- role: reload-configs
   tags: sync-configs
 
 - hosts: all
@@ -33,5 +32,9 @@
 - hosts: all
   roles:
     - role: restore-backup-configs
-    #- role: reload-configs
   tags: restore-backup-configs
+
+- hosts: all
+  roles:
+    - role: configure-rsyslog
+  tags: configure-rsyslog

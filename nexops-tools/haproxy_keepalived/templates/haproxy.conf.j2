@@ -1,0 +1,8 @@
+# Collect log with UDP
+$ModLoad imudp
+$UDPServerAddress 127.0.0.1
+$UDPServerRun 514
+
+# Creating separate log files based on the severity
+local0.* {{haproxy_logspath}}/haproxy-traffic.log
+local0.notice {{haproxy_logspath}}/haproxy-admin.log

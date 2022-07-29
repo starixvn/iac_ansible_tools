@@ -1,0 +1,11 @@
+{{ haproxy_logspath }}/haproxy.log {
+	daily
+    rotate 52
+    missingok
+    notifempty
+    compress
+    delaycompress
+    postrotate
+        /usr/lib/rsyslog/rsyslog-rotate
+    endscript
+}
