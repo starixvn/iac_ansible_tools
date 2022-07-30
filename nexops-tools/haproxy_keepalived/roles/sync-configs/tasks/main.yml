@@ -64,10 +64,11 @@
 - name: Copy HAProxy configuration
   shell: cp {{ haproxy_conf_path }}/{{ config_filename }} {{ haproxy_chroot }}
   become: yes
-
-- name: Saving state FE,BE of HAProxy and reload HAProxy service
-  shell: socat /etc/haproxy/info.sock - <<< "show servers state" > /etc/haproxy/server_state
-  become: yes
-  args:
-    executable: /bin/bash
   notify: reload haproxy
+
+#- name: Saving state FE,BE of HAProxy and reload HAProxy service
+#  shell: socat /etc/haproxy/info.sock - <<< "show servers state" > /etc/haproxy/server_state
+#  become: yes
+#  args:
+#    executable: /bin/bash
+#  notify: reload haproxy
