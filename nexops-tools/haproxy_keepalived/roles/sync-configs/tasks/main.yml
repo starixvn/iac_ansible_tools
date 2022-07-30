@@ -64,4 +64,8 @@
 - name: Copy HAProxy configuration
   shell: cp {{ haproxy_conf_path }}/{{ config_filename }} {{ haproxy_chroot }}
   become: yes
+
+- name: Saving state FE,BE of HAProxy and reload HAProxy service
+  shell: socat stdio /var/run/haproxy.sock > /var/lib/haproxy/server-state
+  become: yes
   notify: reload haproxy
