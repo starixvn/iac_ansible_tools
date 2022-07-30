@@ -66,6 +66,6 @@
   become: yes
 
 - name: Saving state FE,BE of HAProxy and reload HAProxy service
-  shell: echo "show servers state" | socat stdio /etc/haproxy/info.sock > /etc/haproxy/server_state 
+  shell: /usr/bin/socat /etc/haproxy/info.sock - <<< "show servers state" > /etc/haproxy/server_state
   become: yes
   notify: reload haproxy
