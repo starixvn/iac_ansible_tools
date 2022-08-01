@@ -21,6 +21,16 @@
   with_items:
     - "/srv/haproxy/compiled/tmp/{{ env }}/configs"
     - "/srv/haproxy/compiled/deploy/{{ env }}/configs"
+
+- name: Create HAP cert directory
+  when: env == "local"
+  file:
+    path: "{{item}}"
+    state: directory
+    mode: "0755"
+  become: yes
+  with_items:
+    - "{{ haproxy_chroot }}/certs"
 ##### Clean folder haproxy on Target servers
 
 ############# HAProxy Configuration
