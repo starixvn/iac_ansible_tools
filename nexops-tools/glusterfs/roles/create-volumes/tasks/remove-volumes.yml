@@ -9,7 +9,7 @@
   with_items: "{{ glusterfs_volume_list.results }}"
   become: true
 
--- name: delete volume(s)
+- name: delete volume(s)
   shell: "gluster volume delete {{ item.stdout  }} force"
   with_items: "{{ glusterfs_volume_list.results }}"
   become: true
