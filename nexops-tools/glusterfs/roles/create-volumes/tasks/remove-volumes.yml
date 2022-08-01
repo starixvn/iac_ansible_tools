@@ -6,11 +6,11 @@
   delegate_to: '{{ play_hosts | first }}'
 
 - name: Stop volume(s)
-  shell: 'gluster volume stop {{ item }}'
+  shell: 'echo 'y'| gluster volume stop {{ item }}'
   with_items: 'glusterfs_volume_list.stdout'
   become: true
 
 - name: Delete volume(s)
-  shell: 'gluster volume delete {{ item }}'
+  shell: 'echo 'y' | gluster volume delete {{ item }}'
   with_items: 'glusterfs_volume_list.stdout'
   become: true
