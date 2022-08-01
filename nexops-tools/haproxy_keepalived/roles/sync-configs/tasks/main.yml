@@ -45,6 +45,15 @@
 #  pause:
 #    prompt: Press return to continue. Press Ctrl+c and then "a" to abort
 ##########Target servers
+- name: Copy SSL Certs configuration nexcel {{ env }}
+  when: env == "local"
+  copy:
+    src: "files/nexdev.net.pem"
+    dest: "{{ haproxy_conf_path }}/certs"
+  become: yes
+  with_items:
+    - "{{nexcel_cert_files}}"
+
 - name: Copy HAProxy cfg to target servers for testing
   copy:
     src: "/srv/haproxy/compiled/deploy/{{ env }}/configs/{{ config_filename }}"
