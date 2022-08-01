@@ -22,8 +22,8 @@
 
 - name: Remove old mount point from fstab in case of change
   mount:
-  path: "{{ umount_volume }}"
-  state: absent
+    path: "/var/www/gluster/*"
+    state: absent
 
 - name: Unmount old mount point in case of change
   shell: umount --verbose {{ umount_volume }}
