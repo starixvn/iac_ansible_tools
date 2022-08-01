@@ -22,7 +22,7 @@
 
 - name: Remove old mount point from fstab in case of change
   mount:
-    path: "/var/www/gluster/*"
+    path: "/nexprod"
     state: absent
 
 - name: Unmount old mount point in case of change
