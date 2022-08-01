@@ -49,7 +49,7 @@
   when: env == "local"
   copy:
     src: "files/{{item}}"
-    dest: "{{ haproxy_chroot }}/certs"
+    dest: "{{ haproxy_chroot }}/certs/{{item}}"
   become: yes
   with_items:
     - "nexdev.net.pem"
