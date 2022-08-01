@@ -23,16 +23,16 @@
 - name: Remove old mount point from fstab in case of change
   lineinfile:
     dest: /etc/fstab
-    regexp: "{{ glusterfs_host + ':/' + item.volume + *}}"
+    regexp: "{{ glusterfs_host + ':/' + item.volume + {{ umount_volume }} + glusterfs defaults,_netdev 0 0}}"
     state: absent
-  register: regex_fstab
+  #register: regex_fstab
   with_items: '{{ glusterfs_volumes }}'
-  when: >
-    glusterfs_auto_remount and
-    item.mount is defined
+  #when: >
+    #glusterfs_auto_remount and
+    #item.mount is defined
 
 - name: Unmount old mount point in case of change
-  shell: umount --verbose /var/www/gluster/*
+  shell: umount --verbose {{ umount_volume }}
   become: yes
   ignore_errors: yes
 
