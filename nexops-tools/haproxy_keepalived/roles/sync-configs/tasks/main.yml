@@ -32,7 +32,7 @@
     - "/srv/haproxy/compiled/deploy/{{ env }}/configs"
 
 - name: Create HAP cert directory
-  when: env == "local"
+  when: env == "local" or env == "test"
   file:
     path: "{{item}}"
     state: directory
@@ -66,7 +66,7 @@
 #    prompt: Press return to continue. Press Ctrl+c and then "a" to abort
 ##########Target servers
 - name: Copy SSL Certs configuration nexcel {{ env }}
-  when: env == "local"
+  when: env == "local" or env == "test"
   copy:
     src: "files/{{item}}"
     dest: "{{ haproxy_chroot }}/certs/{{item}}"

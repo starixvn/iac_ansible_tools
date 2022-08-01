@@ -12,7 +12,7 @@ vrrp_script chk_haproxy  {
     rise 3
 }
 
-vrrp_instance VI_10 {
+vrrp_instance VI_0 {
     interface {{nic}}
     state BACKUP
     virtual_router_id {{virtual_router_id | default('205')}}
