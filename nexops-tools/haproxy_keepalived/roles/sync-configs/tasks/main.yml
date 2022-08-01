@@ -48,11 +48,11 @@
 - name: Copy SSL Certs configuration nexcel {{ env }}
   when: env == "local"
   copy:
-    src: "files/nexdev.net.pem"
+    src: "files/{{item}}"
     dest: "{{ haproxy_conf_path }}/certs"
   become: yes
   with_items:
-    - "{{nexcel_cert_files}}"
+    - "nexdev.net.pem"
 
 - name: Copy HAProxy cfg to target servers for testing
   copy:
