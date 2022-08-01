@@ -31,15 +31,10 @@
     glusterfs_auto_remount and
     item.mount is defined
 
-#- name: Unmount old mount point in case of change
-#  command: umount "{{ glusterfs_host + ':/' + item.0.volume }}"
-#  when: >
-#    item.1.msg is defined and
-#    'line(s) removed' in item.1.msg and 
-#    glusterfs_auto_remount
-#  with_together:
-#    - '{{ glusterfs_volumes }}'
-#    - '{{ regex_fstab.results }}'
+- name: Unmount old mount point in case of change
+  shell: umount --verbose /var/www/gluster/*
+  become: yes
+  ignore_errors: yes
 
 - name: Ensure mount paths presence
   file:
