@@ -20,13 +20,7 @@
   become: yes
   ignore_errors: yes
 
-#- name: Add apt repository gluster (2/2)
-#  shell: dpkg --force-all -P glusterfs-server
-#  become: yes
-#  ignore_errors: yes
-
 - name: Install GlusterFS
-  #apt: name={{ item }} state=latest update_cache=yes
   apt: name={{ item }} state=latest update_cache=no
   with_items:
     - glusterfs-server
@@ -57,8 +51,6 @@
   apt:
     state: present
     update_cache: no
-    #update_cache: yes
-    #upgrade: yes
     pkg:
       - python3-pip
       - curl

@@ -21,9 +21,16 @@
   ignore_errors: yes
 
 - name: Remove old mount point from fstab in case of change
-  mount:
-    path: "/nexprod"
+  lineinfile:
+    dest: /etc/fstab
+    regexp: "{{ glusterfs_host }}.*"
     state: absent
+  #register: regex_fstab
+  #with_items: '{{ glusterfs_volumes }}'
+  #when: >
+  #  glusterfs_auto_remount and
+  #  item.mount is defined
+
 
 - name: Unmount old mount point in case of change
   shell: umount --verbose {{ umount_volume }}
