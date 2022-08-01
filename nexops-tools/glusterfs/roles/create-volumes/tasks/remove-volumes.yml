@@ -1,5 +1,4 @@
 ---
-# tasks file for glusterfs-ansible-role
 - name: Get existing volumes list
   shell: 'gluster volume list'
   changed_when: false
