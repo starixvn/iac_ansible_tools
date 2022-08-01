@@ -5,11 +5,11 @@
   register: glusterfs_volume_list
 
 - name: Stop volume(s)
-  shell: "gluster volume stop {{ glusterfs_volume_list }} force"
-  #with_items: "{{ glusterfs_volume_list }}"
+  shell: "gluster volume stop {{ item.stdout  }} force"
+  with_items: "{{ glusterfs_volume_list.results }}"
   become: true
 
-- name: Delete volume(s)
-  shell: "gluster volume delete {{ glusterfs_volume_list }} force"
-  #with_items: "{{ glusterfs_volume_list }}"
+-- name: delete volume(s)
+  shell: "gluster volume delete {{ item.stdout  }} force"
+  with_items: "{{ glusterfs_volume_list.results }}"
   become: true
