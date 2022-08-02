@@ -18,9 +18,9 @@ build_image_{{ service_name }}:
     - build_cocos_web_{{ service_name }}
 {% endif %}
 {% if transform_config is defined and transform_config == true %}  
-  needs: ['transform_config_local']
+  needs: ['transform_config_{{ service_name }}_local']
   dependencies:
-    - transform_config_local
+    - transform_config_{{ service_name }}_local
 {% endif %}
 {% else %}
 
@@ -40,9 +40,9 @@ build_image_{{ service_name }}_local:
     - build_cocos_web_{{ service_name }}_local
 {% endif %}
 {% if transform_config is defined and transform_config == true %}
-  needs: ['transform_config_local']
+  needs: ['transform_config_{{ service_name }}_local']
   dependencies:
-    - transform_config_local
+    - transform_config_{{ service_name }}_local
 {% endif %}
 #
 {% if org_name == 'nexcel' %}
@@ -62,9 +62,9 @@ build_image_{{ service_name }}_nexprod:
     - build_cocos_web_{{ service_name }}_nexprod
 {% endif %}
 {% if transform_config is defined and transform_config == true %}  
-  needs: ['transform_config_nexprod']
+  needs: ['transform_config_{{ service_name }}_nexprod']
   dependencies:
-    - transform_config_nexprod
+    - transform_config_{{ service_name }}_nexprod
 {% endif %}
 {% endif %}
 #
@@ -84,9 +84,9 @@ build_image_{{ service_name }}_sit:
     - build_cocos_web_{{ service_name }}_sit
 {% endif %}
 {% if transform_config is defined and transform_config == true %}  
-  needs: ['transform_config_sit']
+  needs: ['transform_config_{{ service_name }}_sit']
   dependencies:
-    - transform_config_sit
+    - transform_config_{{ service_name }}_sit
 {% endif %}
 
 build_image_{{ service_name }}_uat:
@@ -105,9 +105,9 @@ build_image_{{ service_name }}_uat:
     - build_cocos_web_{{ service_name }}_uat
 {% endif %}
 {% if transform_config is defined and transform_config == true %}  
-  needs: ['transform_config_uat']
+  needs: ['transform_config_{{ service_name }}_uat']
   dependencies:
-    - transform_config_uat
+    - transform_config_{{ service_name }}_uat
 {% endif %}
 
 build_image_{{ service_name }}_prod:
@@ -126,9 +126,9 @@ build_image_{{ service_name }}_prod:
     - build_cocos_web_{{ service_name }}_prod
 {% endif %}
 {% if transform_config is defined and transform_config == true %}  
-  needs: ['transform_config_prod']
+  needs: ['transform_config_{{ service_name }}_prod']
   dependencies:
-    - transform_config_prod
+    - transform_config_{{ service_name }}_prod
 {% endif %}
 
 build_image_{{ service_name }}_aws:
@@ -147,9 +147,9 @@ build_image_{{ service_name }}_aws:
     - build_cocos_web_{{ service_name }}_aws
 {% endif %}
 {% if transform_config is defined and transform_config == true %}  
-  needs: ['transform_config_aws']
+  needs: ['transform_config_{{ service_name }}_aws']
   dependencies:
-    - transform_config_aws
+    - transform_config_{{ service_name }}_aws
 {% endif %}
 
 {% endif %}
