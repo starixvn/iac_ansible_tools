@@ -29,7 +29,7 @@ scan_image_{{ service_name }}_local:
     - .env:local
     - .deploy:local:{{service_name}}:rules
 ####
-{% if org_name == 'nexcel' %}
+{% if team_name != "nex3" and team_name != "pentagon" %}
 ####
 scan_config_{{ service_name }}_nexprod:
   extends:
