@@ -30,7 +30,7 @@
     env: nexprod
   with_items: "{{services}}"
   become: yes
-  when: org_name == 'nexcel'
+  when: team_name != "nex3" and team_name != "pentagon"
 
 - name: Build docker-compose for {{env}}
   template:
