@@ -27,7 +27,8 @@
     - '{{ services }}'
     - '{{ versions }}'
   become: yes
-  when: org_name == 'nexcel'
+  when: team_name != "nex3" and team_name != "pentagon"
+  #when: org_name == 'nexcel'
 
 - name: Build docker-compose for {{env}}
   template:
