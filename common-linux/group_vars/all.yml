@@ -12,6 +12,10 @@ nexcel_local_registry_login:
   user: "gitlab-ci"
   pass: "H5nF5ywy262wt881ZWpq"
 
+- url: "hub.lumigame.com"
+  user: "gitlab-ci"
+  pass: "H5nF5ywy262wt881ZWpq"
+
 nexcel_kbt_registry_login:
 - url: "nexhub.starixplay.com"
   user: "gitlab-ci"
