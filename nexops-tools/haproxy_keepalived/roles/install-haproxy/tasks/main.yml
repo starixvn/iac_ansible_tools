@@ -4,6 +4,7 @@
   apt: name={{ item }} state=present update_cache=yes #yes
   with_items:
      - build-essential
+     - socat
      - make
      - g++
      - libssl-dev
@@ -12,15 +13,15 @@
 - name: install | Check if haproxy local file {{ haproxy_file_path }} status.
   stat: path={{ haproxy_file_path }}
   become: yes
-  connection: local
   run_once: true
+  delegate_to: localhost
   register: haproxy_file_result
 
 - name: install | Create software files path.
   file: path={{ software_files_path }} state=directory
-  run_once: true
   become: yes
-  connection: local
+  run_once: true
+  delegate_to: localhost
   when: not haproxy_file_result.stat.exists
   
 #- name: install | Download haproxy file.
@@ -28,11 +29,11 @@
 #  connection: local
 #  when: not haproxy_file_result.stat.exists
 - name: Copy HAProxy source file - {{ haproxy_file }}
-  run_once: true
   copy:
     src: files/source/{{ haproxy_file }}
     dest: "{{software_files_path}}"
-  connection: local
+  run_once: true
+  delegate_to: localhost
   when: not haproxy_file_result.stat.exists
   become: yes
 
@@ -67,7 +68,7 @@
  
 - name: install | Build an install haproxy.
   become: yes
-  shell: "make TARGET=linux41 && make install PREFIX={{ haproxy_chroot }}" #"{{ item }}" 
+  shell: "make TARGET=linux41 USE_PCRE=1 USE_OPENSSL=1 && make install PREFIX={{ haproxy_chroot }}" #"{{ item }}" 
   #with_items:
   #  - "{{ haproxy_configure_command }}"
   #  - "make install PREFIX={{ haproxy_chroot }}"

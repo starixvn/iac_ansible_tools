@@ -10,6 +10,15 @@
     - "/srv/haproxy/compiled/deploy/{{ env }}"
     - "/srv/haproxy/compiled/tmp/{{ env }}"
 
+- name: Clean HAP cert directory
+  when: clean is defined and clean == "certs"
+  file:
+    path: "{{item}}"
+    state: absent
+  become: yes
+  with_items:
+    - "{{ haproxy_chroot }}/certs"
+    
 - name: Create Deployment directory
   file:
     path: "{{item}}"
@@ -21,6 +30,17 @@
   with_items:
     - "/srv/haproxy/compiled/tmp/{{ env }}/configs"
     - "/srv/haproxy/compiled/deploy/{{ env }}/configs"
+
+- name: Create HAP cert directory
+  when: env == "local" or env == "test"
+  file:
+    path: "{{item}}"
+    state: directory
+    mode: "0755"
+  become: yes
+  ignore_errors: yes
+  with_items:
+    - "{{ haproxy_chroot }}/certs"
 ##### Clean folder haproxy on Target servers
 
 ############# HAProxy Configuration
@@ -45,6 +65,15 @@
 #  pause:
 #    prompt: Press return to continue. Press Ctrl+c and then "a" to abort
 ##########Target servers
+- name: Copy SSL Certs configuration nexcel {{ env }}
+  when: env == "local" or env == "test"
+  copy:
+    src: "files/{{item}}"
+    dest: "{{ haproxy_chroot }}/certs/{{item}}"
+  become: yes
+  with_items:
+    - "nexdev.net.pem"
+
 - name: Copy HAProxy cfg to target servers for testing
   copy:
     src: "/srv/haproxy/compiled/deploy/{{ env }}/configs/{{ config_filename }}"
@@ -65,3 +94,10 @@
   shell: cp {{ haproxy_conf_path }}/{{ config_filename }} {{ haproxy_chroot }}
   become: yes
   notify: reload haproxy
+
+#- name: Saving state FE,BE of HAProxy and reload HAProxy service
+#  shell: socat /etc/haproxy/info.sock - <<< "show servers state" > /etc/haproxy/server_state
+#  become: yes
+#  args:
+#    executable: /bin/bash
+#  notify: reload haproxy
