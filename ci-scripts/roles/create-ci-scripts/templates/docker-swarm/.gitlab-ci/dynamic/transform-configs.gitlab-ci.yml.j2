@@ -25,6 +25,7 @@ transform_config_{{ service_name }}_local:
     - .base_transform_config_{{ service_name }}
     - .env:local
     - .deploy:local:{{service_name}}:rules
+
 {% if org_name == 'nexcel' %}
 transform_config_{{ service_name }}_nexprod:
   extends: 
@@ -32,6 +33,7 @@ transform_config_{{ service_name }}_nexprod:
     - .env:nexprod
     - .deploy:nexprod:{{service_name}}:rules
 {% endif %}
+
 transform_config_{{ service_name }}_sit:
   extends: 
     - .base_transform_config_{{ service_name }}
