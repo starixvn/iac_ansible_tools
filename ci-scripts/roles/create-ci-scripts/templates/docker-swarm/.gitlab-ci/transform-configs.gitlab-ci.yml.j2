@@ -5,7 +5,7 @@
 {% set config_dest_file_path = item.config_dest_file_path | default(".") %}
 {% set service_name = project_name ~ '_' ~ item.name | replace('-','_') %}
 
-.base_transform_config:
+.base_transform_config_{{ service_name }}:
   stage: transform-config
   extends:
     - .build:image:{{ service_name }}:rules
@@ -22,39 +22,39 @@
 
 {% for version in versions %}
 {% set version_number = '' if version == 0 else version %}
-transform_config_local{{ version_number }}:
+transform_config_{{ service_name }}_local{{ version_number }}:
   extends: 
-    - .base_transform_config
+    - .base_transform_config_{{ service_name }}
     - .deploy:local{{ version_number }}
     - .deploy:local{{ version_number }}:{{service_name}}:rules
 {% if org_name == 'nexcel' %}
-transform_config_nexprod{{ version_number }}:
+transform_config_{{ service_name }}_nexprod{{ version_number }}:
   extends: 
-    - .base_transform_config
+    - .base_transform_config_{{ service_name }}
     - .deploy:nexprod{{ version_number }}
     - .deploy:nexprod{{ version_number }}:{{service_name}}:rules
 {% endif %}
-transform_config_sit{{ version_number }}:
+transform_config_{{ service_name }}_sit{{ version_number }}:
   extends: 
-    - .base_transform_config
+    - .base_transform_config_{{ service_name }}
     - .deploy:sit{{ version_number }}
     - .deploy:sit{{ version_number }}:{{service_name}}:rules
 
-transform_config_uat{{ version_number }}:
+transform_config_{{ service_name }}_uat{{ version_number }}:
   extends: 
-    - .base_transform_config
+    - .base_transform_config_{{ service_name }}
     - .deploy:uat{{ version_number }}
     - .deploy:uat{{ version_number }}:{{service_name}}:rules
 
-transform_config_prod{{ version_number }}:
+transform_config_{{ service_name }}_prod{{ version_number }}:
   extends: 
-    - .base_transform_config
+    - .base_transform_config_{{ service_name }}
     - .deploy:prod{{ version_number }}
     - .deploy:prod{{ version_number }}:{{service_name}}:rules
 
-transform_config_aws{{ version_number }}:
+transform_config_{{ service_name }}_aws{{ version_number }}:
   extends: 
-    - .base_transform_config
+    - .base_transform_config_{{ service_name }}
     - .deploy:aws{{ version_number }}
     - .deploy:aws{{ version_number }}:{{service_name}}:rules
 {% endfor %}
