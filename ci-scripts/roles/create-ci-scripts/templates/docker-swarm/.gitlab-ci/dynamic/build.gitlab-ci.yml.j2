@@ -45,7 +45,7 @@ build_image_{{ service_name }}_local:
     - transform_config_{{ service_name }}_local
 {% endif %}
 #
-{% if org_name == 'nexcel' %}
+{% if team_name != "nex3" and team_name != "pentagon" %}
 build_image_{{ service_name }}_nexprod:
   extends:
     - .deploy_vars_{{ service_name }}
