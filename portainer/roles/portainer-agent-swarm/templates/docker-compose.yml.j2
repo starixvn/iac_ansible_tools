@@ -2,7 +2,7 @@ version: '3.5'
 
 services:
   agent:
-    image: registry.nexdev.net:5050/docker/nexops-tools/portainer:agent #portainer/agent
+    image: image: {{ lookup('vars', org + '_image_' + env)}}/nexops-tools/portainer:agent #portainer/agent
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /var/lib/docker/volumes:/var/lib/docker/volumes
