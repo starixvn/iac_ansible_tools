@@ -36,7 +36,7 @@ configs:
   {{service_name}}_{{ environment }}_config_@CONFIG_VERSION:
     file: {{working_path}}/{{environment}}/configs/{{config_file}}
     labels:
-{% if env == "prod" or env == "aws" %}
+{% if env == "prod" or env == "aws" or env == "azure" %}
       - "io.portainer.accesscontrol.teams={{team_name | upper}}_LEADERS"
 {% else %}
       - "io.portainer.accesscontrol.teams={{team_name | upper}}"
@@ -45,7 +45,7 @@ configs:
   {{service_name}}_{{ environment }}_sp_config_@CONFIG_VERSION:
     file: {{working_path}}/{{environment}}/configs/{{sp_file}}
     labels:
-{% if env == "prod" or env == "aws" %}
+{% if env == "prod" or env == "aws" or env == "azure" %}
       - "io.portainer.accesscontrol.teams={{team_name | upper}}_LEADERS"
 {% else %}
       - "io.portainer.accesscontrol.teams={{team_name | upper}}"
@@ -120,6 +120,14 @@ services:
       replicas: {{item.number_of_replicas_aws | default('1') }}
 {% endif %}
 {% endif %}
+{% if env == "azure"%}
+#Azure
+{% if item.number_of_replicas_azure is defined and item.number_of_replicas_azure > 2 %}
+      replicas: 2
+{% else %}
+      replicas: {{item.number_of_replicas_azure | default('1') }}
+{% endif %}
+{% endif %}
 {% if env == "uat"%}
 {% if item.number_of_replicas_uat is defined and item.number_of_replicas_uat > 2 %}
       replicas: 2
@@ -175,6 +183,11 @@ services:
 {% endif %}
 {% if env == "aws"%}
 {% if item.port_aws is undefined %}
+      endpoint_mode: dnsrr
+{% endif %}
+{% endif %}
+{% if env == "azure"%}
+{% if item.port_azure is undefined %}
       endpoint_mode: dnsrr
 {% endif %}
 {% endif %}
@@ -239,6 +252,10 @@ services:
     ports:
       - {{item.port_aws}}:{{item.port | default('5000')}}
 {% endif %}
+{% if env == "azure" and item.port_azure is defined %}
+    ports:
+      - {{item.port_azure}}:{{item.port | default('5000')}}
+{% endif %}
 {% if item.disable_health_check is undefined or item.disable_health_check == false %}
 {% if item.framework is defined and item.framework == "dotnet" %}
     healthcheck:
@@ -253,7 +270,7 @@ services:
       - SYS_PTRACE
 {% endif %}
     labels:
-{% if env == "prod" or env == "aws" %}
+{% if env == "prod" or env == "aws" or env == "azure" %}
       - "io.portainer.accesscontrol.teams={{team_name | upper}}_LEADERS"
 {% else %}
       - "io.portainer.accesscontrol.teams={{team_name | upper}}"
@@ -276,7 +293,7 @@ volumes:
        device: {{gluster_path}}{{volume.src}}/{{environment}}
 {% endif %}
     labels:
-{% if env == "prod" or env == "aws" %}
+{% if env == "prod" or env == "aws" or env == "azure" %}
       - "io.portainer.accesscontrol.teams={{team_name | upper}}_LEADERS"
 {% else %}
       - "io.portainer.accesscontrol.teams={{team_name | upper}}"
