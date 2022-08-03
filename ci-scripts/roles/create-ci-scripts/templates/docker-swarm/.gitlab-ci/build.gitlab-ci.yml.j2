@@ -47,8 +47,8 @@ build_image_{{ service_name }}_local{{ version_number }}:
   dependencies:
     - transform_config_{{ service_name }}_local{{ version_number }}
 {% endif %}
-#
 {% if team_name != "nex3" and team_name != "pentagon" %}
+#NexProd
 build_image_{{ service_name }}_nexprod{{ version_number }}:
   extends:
     - .deploy_vars_{{ service_name }}
@@ -68,6 +68,27 @@ build_image_{{ service_name }}_nexprod{{ version_number }}:
   needs: ['transform_config_{{ service_name }}_nexprod{{ version_number }}']
   dependencies:
     - transform_config_{{ service_name }}_nexprod{{ version_number }}
+{% endif %}
+#Azure
+build_image_{{ service_name }}_azure{{ version_number }}:
+  extends:
+    - .deploy_vars_{{ service_name }}
+{% if item.multi_stage is undefined or item.multi_stage == false %}
+    - .build:default:{{base_image}}
+{% else %}
+    - .build:default:{{base_image}}:multistage
+{% endif %}
+    - .deploy:azure{{ version_number }}
+    - .deploy:azure{{ version_number }}:{{service_name}}:rules
+{% if item.framework is defined and item.framework == "cocos" %}  
+  needs: ['build_cocos_web_{{ service_name }}_azure{{ version_number }}']
+  dependencies:
+    - build_cocos_web_{{ service_name }}_azure{{ version_number }}
+{% endif %}
+{% if transform_config is defined and transform_config == true %}  
+  needs: ['transform_config_{{ service_name }}_azure{{ version_number }}']
+  dependencies:
+    - transform_config_{{ service_name }}_azure{{ version_number }}
 {% endif %}
 {% endif %}
 #
