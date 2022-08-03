@@ -67,3 +67,12 @@
     env: aws
   with_items: "{{services}}"
   become: yes
+
+- name: Build docker-compose for {{env}}
+  template:
+    src: templates/docker-swarm/.docker-compose/dynamic/docker-compose.yml.j2
+    dest: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.name | replace('-','_')}}/{{env | upper}}.docker-compose.yml
+  vars:
+    env: azure
+  with_items: "{{services}}"
+  become: yes
