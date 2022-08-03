@@ -65,7 +65,7 @@ services:
 {% endif %}
 {% endif %}
 {% if team_name != "nex3" and team_name != "pentagon" %}
-{% if env == "local" or env == "nexprod" %}
+{% if env == "local" or env == "nexprod" or env == "azure" %}
     image: hub.nexdev.net/{{team_name}}/{{project_name}}_{{service_name}}:{{environment}}-latest
 {% else %}
     image: nexhub.starixplay.com/kbt/{{team_name}}/{{project_name}}_{{service_name}}:{{environment}}-latest
