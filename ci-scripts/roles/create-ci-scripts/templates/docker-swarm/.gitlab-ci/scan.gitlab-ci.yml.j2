@@ -31,7 +31,7 @@ scan_image_{{ service_name }}_local{{ version_number }}:
     - .deploy:local{{ version_number }}:{{service_name}}:rules
 ####
 {% if team_name != "nex3" and team_name != "pentagon" %}
-####
+####NexProd
 scan_config_{{ service_name }}_nexprod{{ version_number }}:
   extends:
     - .deploy_vars_{{ service_name }}
@@ -48,6 +48,24 @@ scan_image_{{ service_name }}_nexprod{{ version_number }}:
 {% endif %}
     - .deploy:nexprod{{ version_number }}
     - .deploy:nexprod{{ version_number }}:{{service_name}}:rules
+####
+####Azure
+scan_config_{{ service_name }}_azure{{ version_number }}:
+  extends:
+    - .deploy_vars_{{ service_name }}
+    - .scan_config
+    - .scan:config:{{ service_name }}:rules
+####
+scan_image_{{ service_name }}_azure{{ version_number }}:
+  extends:
+    - .deploy_vars_{{ service_name }}
+{% if item.multi_stage is undefined or item.multi_stage == false %}
+    - .scan:default:image
+{% else %}
+    - .scan:default:image:multistage
+{% endif %}
+    - .deploy:azure{{ version_number }}
+    - .deploy:azure{{ version_number }}:{{service_name}}:rules
 ####
 {% endif %}
 scan_config_{{ service_name }}_sit{{ version_number }}:

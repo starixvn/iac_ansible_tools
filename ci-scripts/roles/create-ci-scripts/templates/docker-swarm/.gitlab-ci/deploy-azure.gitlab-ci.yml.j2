@@ -1,0 +1,60 @@
+{% set service_name = project_name ~ '_' ~ item.name | replace('-','_') %}
+
+{% for version in versions %}
+{% set version_number = '' if version == 0 else version %}
+{% if org_name != 'luminet' %}
+{% if item.platform is undefined or item.platform == "linux" %}
+post_build_{{service_name}}_azure{{ version_number }}:
+  extends:
+    - .deploy_vars_{{service_name}}
+    - .post_build
+    - .deploy:azure{{ version_number }}
+    - .deploy:azure{{ version_number }}:{{service_name}}:rules
+{% if item.multiple_image_env is undefined or item.multiple_image_env == false %}
+  needs: ['scan_image_{{service_name}}']
+{% else %}
+  needs: ['scan_image_{{service_name}}_azure{{ version_number }}']
+{% endif %}
+{% endif %}
+
+deploy_{{service_name}}_azure{{ version_number }}:
+  extends:
+    - .deploy_vars_{{service_name}}
+    - .deploy:azure{{ version_number }}:base:swarm:stack
+    - .deploy:azure{{ version_number }}:{{service_name}}:rules
+{% if item.platform is undefined or item.platform == "linux" %}
+  needs: ['post_build_{{service_name}}_azure{{ version_number }}']
+{% else %}
+  needs: ['build_image_{{service_name}}_azure{{ version_number }}']
+{% endif %}
+
+{% endif %}
+{% endfor %}
+
+{% if org_name == 'luminet' %}
+{% if item.platform is undefined or item.platform == "linux" %}
+post_build_{{service_name}}_azure:
+  extends:
+    - .deploy_vars_{{service_name}}
+    - .post_build
+    - .deploy:azure
+    - .deploy:azure:{{service_name}}:rules
+{% if item.multiple_image_env is undefined or item.multiple_image_env == false %}
+  needs: ['scan_image_{{service_name}}']
+{% else %}
+  needs: ['scan_image_{{service_name}}_azure']
+{% endif %}
+{% endif %}
+
+deploy_{{service_name}}_azure:
+  extends:
+    - .deploy_vars_{{service_name}}
+    - .deploy:azure:base:swarm:stack
+    - .deploy:azure:{{service_name}}:rules
+{% if item.platform is undefined or item.platform == "linux" %}
+  needs: ['post_build_{{service_name}}_azure']
+{% else %}
+  needs: ['build_image_{{service_name}}_azure']
+{% endif %}
+
+{% endif %}

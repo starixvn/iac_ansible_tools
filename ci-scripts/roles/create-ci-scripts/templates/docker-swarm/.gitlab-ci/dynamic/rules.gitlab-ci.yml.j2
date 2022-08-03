@@ -3,9 +3,13 @@
 
 .if-deploy-{{rule_name}}-local: &if-deploy-{{rule_name}}-local
   if: '$CI_COMMIT_TAG =~ /^deploy-{{rule_name}}-local\d*- */ && $DEPLOY_BY == "rocketor"'
-
+{% if team_name != "nex3" and team_name != "pentagon" %}
 .if-deploy-{{rule_name}}-nexprod: &if-deploy-{{rule_name}}-nexprod
   if: '$CI_COMMIT_TAG =~ /^deploy-{{rule_name}}-nexprod\d*- */ && $DEPLOY_BY == "rocketor"'
+
+.if-deploy-{{rule_name}}-azure: &if-deploy-{{rule_name}}-azure
+  if: '$CI_COMMIT_TAG =~ /^deploy-{{rule_name}}-azure\d*- */ && $DEPLOY_BY == "rocketor"'
+{% endif %}
 
 .if-deploy-{{rule_name}}-sit: &if-deploy-{{rule_name}}-sit
   if: '$CI_COMMIT_TAG =~ /^deploy-{{rule_name}}-sit\d*- */ && $DEPLOY_BY == "rocketor"'
@@ -33,8 +37,12 @@
   rules:
     - <<: *if-deploy-{{rule_name}}-local
       when: always
+{% if team_name != "nex3" and team_name != "pentagon" %}
     - <<: *if-deploy-{{rule_name}}-nexprod
       when: always
+    - <<: *if-deploy-{{rule_name}}-azure
+      when: always
+{% endif %}
     - <<: *if-deploy-{{rule_name}}-sit
       when: always
     - <<: *if-deploy-{{rule_name}}-uat
@@ -48,8 +56,12 @@
   rules:
     - <<: *if-deploy-{{rule_name}}-local
       when: on_success
+{% if team_name != "nex3" and team_name != "pentagon" %}
     - <<: *if-deploy-{{rule_name}}-nexprod
       when: on_success
+    - <<: *if-deploy-{{rule_name}}-azure
+      when: on_success
+{% endif %}
     - <<: *if-deploy-{{rule_name}}-sit
       when: on_success
     - <<: *if-deploy-{{rule_name}}-uat
@@ -66,11 +78,31 @@
       when: on_success
     - when: never
 
+{% if team_name != "nex3" and team_name != "pentagon" %}
 .deploy:nexprod:{{service_name}}:rules:
   rules:
     - <<: *if-deploy-{{rule_name}}-nexprod
       when: on_success
     - when: never
+
+.deploy:nexprod:{{service_name}}:manual:rules:
+  rules:
+    - <<: *if-deploy-{{rule_name}}-nexprod
+      when: manual
+    - when: never
+
+.deploy:azure:{{service_name}}:rules:
+  rules:
+    - <<: *if-deploy-{{rule_name}}-azure
+      when: on_success
+    - when: never
+
+.deploy:azure:{{service_name}}:manual:rules:
+  rules:
+    - <<: *if-deploy-{{rule_name}}-azure
+      when: manual
+    - when: never
+{% endif %}
 
 .deploy:sit:{{service_name}}:rules:
   rules:
