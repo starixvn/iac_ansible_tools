@@ -5,7 +5,7 @@
 version: '3.3'
 services:
     {{mysql_name}}_db:
-        image: registry.nexdev.net:5050/docker/database/mysql:{{version}}
+        image: hub.nexdev.net/base/database/mysql:{{version}}
         command: --default-authentication-plugin=mysql_native_password
         ports:
             - published: {{mysql_port}}
@@ -34,14 +34,14 @@ services:
             - {{network | default('swarm_nexops')}}
 {%if team_name is defined %}
         labels:
-{% if env == "prod" or env == "aws" %}
+{% if env == "prod" or env == "aws" or env == "azure" %}
       - "io.portainer.accesscontrol.teams={{team_name | upper}}_LEADERS"
 {% else %}
       - "io.portainer.accesscontrol.teams={{team_name | upper}}"
 {% endif %}
 {% endif %}
     {{mysql_name}}_phpmyadmin:
-        image: registry.nexdev.net:5050/docker/phpmyadmin:latest
+        image: hub.nexdev.net/base/phpmyadmin:latest
         volumes:
             - {{gluster_path}}/{{team_path}}/phpadmin/uploads.ini:/usr/local/etc/php/conf.d/php-phpmyadmin.ini
         restart: always
@@ -61,7 +61,7 @@ services:
             - {{network | default('swarm_nexops')}}
 {%if team_name is defined %}
         labels:
-{% if env == "prod" or env == "aws" %}
+{% if env == "prod" or env == "aws" or env == "azure"%}
       - "io.portainer.accesscontrol.teams={{team_name | upper}}_LEADERS"
 {% else %}
       - "io.portainer.accesscontrol.teams={{team_name | upper}}"
