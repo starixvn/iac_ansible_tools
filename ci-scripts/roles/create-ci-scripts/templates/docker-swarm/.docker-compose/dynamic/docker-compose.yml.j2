@@ -56,7 +56,7 @@ configs:
 services:
   {{service_name}}_{{environment}}:
 {% if team_name == "nex3" or team_name == "pentagon" %}
-{% if env == "local" %}
+{% if env == "local" or env == "azure" or env == "aws" %}
     image: hub.lumigame.com/{{team_name}}/{{project_name}}_{{service_name}}:{{environment}}-latest
 {% elif env == "uat" or env == "sit" or env == "prod" %}
     image: lumhub.starixplay.com/kbt/{{team_name}}/{{project_name}}_{{service_name}}:{{environment}}-latest
@@ -65,7 +65,7 @@ services:
 {% endif %}
 {% endif %}
 {% if team_name != "nex3" and team_name != "pentagon" %}
-{% if env == "local" or env == "nexprod" or env == "azure" %}
+{% if env == "local" or env == "nexprod" or env == "azure" or env == "aws" %}
     image: hub.nexdev.net/{{team_name}}/{{project_name}}_{{service_name}}:{{environment}}-latest
 {% else %}
     image: nexhub.starixplay.com/kbt/{{team_name}}/{{project_name}}_{{service_name}}:{{environment}}-latest
