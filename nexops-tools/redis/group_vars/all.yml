@@ -51,6 +51,20 @@ alpha_redis_prod:
   maxmemory: "4g"
   redis_stack: "ALPHA"
 
+alpha_redis_aws:
+  master: "10.0.4.238"
+  #slave1: "10.0.4.125"
+  #slave2: "10.0.4.242"
+  node1: "{{redis_config_master}}"
+  node2: "{{redis_config_slave}}"
+  node3: "{{redis_config_slave}}"
+  redis_port: "6312"
+  sentinel_port: "26112"
+  python_port: "33005"
+  redis_version: "5"
+  maxmemory: "4g"
+  redis_stack: "ALPHA"
+
 ####  NAP & Other System
 nap_redis_local_test:
   master: "10.70.70.31"
@@ -117,6 +131,20 @@ nap_redis_prod:
   master: "10.2.27.125"
   #slave1: "10.2.27.130"
   #slave2: "10.99.99.210"
+  node1: "{{redis_config_master}}"
+  node2: "{{redis_config_slave}}"
+  node3: "{{redis_config_slave}}"
+  redis_port: "6311"
+  sentinel_port: "26111"
+  python_port: "33003"
+  redis_version: "5"
+  maxmemory: "6g"
+  redis_stack: "NAP"
+
+nap_redis_aws:
+  master: "10.0.4.125"
+  #slave1: "10.2.27.130"
+  #slave2: "10.0.4.242"
   node1: "{{redis_config_master}}"
   node2: "{{redis_config_slave}}"
   node3: "{{redis_config_slave}}"
