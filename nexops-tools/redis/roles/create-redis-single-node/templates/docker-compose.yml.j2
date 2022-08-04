@@ -1,5 +1,5 @@
 {% if env == "local" or env == "nexprod" or env == "aws" or env == "azure" %}
-{% set hub_url = "{{hub_url}}" %}
+{% set hub_url = "hub.nexdev.net" %}
 {% else %}
 {% set hub_url = "nexhub.starixplay.com/kbt" %}
 {% endif %}
