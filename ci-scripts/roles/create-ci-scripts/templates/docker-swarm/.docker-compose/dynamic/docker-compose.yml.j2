@@ -58,10 +58,8 @@ services:
 {% if team_name == "nex3" or team_name == "pentagon" %}
 {% if env == "local" or env == "azure" or env == "aws" %}
     image: hub.lumigame.com/{{team_name}}/{{project_name}}_{{service_name}}:{{environment}}-latest
-{% elif env == "uat" or env == "sit" or env == "prod" %}
-    image: lumhub.starixplay.com/kbt/{{team_name}}/{{project_name}}_{{service_name}}:{{environment}}-latest
 {% else %}
-    image: git3.nexdev.net:5050/{{item.docker_image_registry_path}}:{{environment}}-latest
+    image: lumhub.starixplay.com/kbt/{{team_name}}/{{project_name}}_{{service_name}}:{{environment}}-latest
 {% endif %}
 {% endif %}
 {% if team_name != "nex3" and team_name != "pentagon" %}
