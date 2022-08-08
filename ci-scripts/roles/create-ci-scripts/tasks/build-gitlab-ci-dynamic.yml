@@ -111,3 +111,4 @@
     dest: /var/ci-scripts/{{repo_name}}/.gitlab-ci/{{item.name | replace('-','_')}}/deploy-azure.gitlab-ci.yml
   with_items: '{{ services }}'
   become: yes
+  when: team_name != "nex3" and team_name != "pentagon"

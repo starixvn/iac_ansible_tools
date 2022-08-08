@@ -76,3 +76,4 @@
     env: azure
   with_items: "{{services}}"
   become: yes
+  when: team_name != "nex3" and team_name != "pentagon"

@@ -75,11 +75,6 @@ include:
 
 {%endif%}
 {%endif%}
-{% if team_name == "nex3" or team_name == "pentagon"  %}
-  - project: 'ci/common-ci'
-    ref: rocketor
-    file: 'rocketor-integration/rules/index.gitlab-ci.yml'
-{%endif%}
 {% if platform is undefined or platform == "linux" %}
   - project: 'ci/common-ci'
     ref: rocketor
