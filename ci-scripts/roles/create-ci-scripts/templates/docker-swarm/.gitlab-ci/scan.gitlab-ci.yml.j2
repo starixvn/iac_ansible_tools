@@ -17,9 +17,8 @@ scan_image_{{ service_name }}:
     - .scan:image:{{ service_name }}:rules
   needs: ['build_image_{{service_name}}']
 {% else %}
-{% for version in versions %}
-{% set version_number = '' if version == 0 else version %}
-scan_image_{{ service_name }}_local{{ version_number }}:
+
+scan_image_{{ service_name }}_local:
   extends:
     - .deploy_vars_{{ service_name }}
 {% if item.multi_stage is undefined or item.multi_stage == false %}
@@ -27,18 +26,17 @@ scan_image_{{ service_name }}_local{{ version_number }}:
 {% else %}
     - .scan:default:image:multistage
 {% endif %}
-    - .deploy:local{{ version_number }}
-    - .deploy:local{{ version_number }}:{{service_name}}:rules
-####
+    - .env:local
+    - .deploy:local:{{service_name}}:rules
 {% if team_name != "nex3" and team_name != "pentagon" %}
-####NexProd
-scan_config_{{ service_name }}_nexprod{{ version_number }}:
+#### NexProd
+scan_config_{{ service_name }}_nexprod:
   extends:
     - .deploy_vars_{{ service_name }}
     - .scan_config
     - .scan:config:{{ service_name }}:rules
-####
-scan_image_{{ service_name }}_nexprod{{ version_number }}:
+
+scan_image_{{ service_name }}_nexprod:
   extends:
     - .deploy_vars_{{ service_name }}
 {% if item.multi_stage is undefined or item.multi_stage == false %}
@@ -46,17 +44,34 @@ scan_image_{{ service_name }}_nexprod{{ version_number }}:
 {% else %}
     - .scan:default:image:multistage
 {% endif %}
-    - .deploy:nexprod{{ version_number }}
-    - .deploy:nexprod{{ version_number }}:{{service_name}}:rules
-####
+    - .env:nexprod
+    - .deploy:nexprod:{{service_name}}:rules
 ####Azure
-scan_config_{{ service_name }}_azure{{ version_number }}:
+scan_config_{{ service_name }}_azure:
+  extends:
+    - .deploy_vars_{{ service_name }}
+    - .scan_config
+    - .scan:config:{{ service_name }}:rules
+
+scan_image_{{ service_name }}_azure:
+  extends:
+    - .deploy_vars_{{ service_name }}
+{% if item.multi_stage is undefined or item.multi_stage == false %}
+    - .scan:default:image
+{% else %}
+    - .scan:default:image:multistage
+{% endif %}
+    - .env:azure
+    - .deploy:azure:{{service_name}}:rules
+{% endif %}
+####
+scan_config_{{ service_name }}_sit:
   extends:
     - .deploy_vars_{{ service_name }}
     - .scan_config
     - .scan:config:{{ service_name }}:rules
 ####
-scan_image_{{ service_name }}_azure{{ version_number }}:
+scan_image_{{ service_name }}_sit:
   extends:
     - .deploy_vars_{{ service_name }}
 {% if item.multi_stage is undefined or item.multi_stage == false %}
@@ -64,17 +79,16 @@ scan_image_{{ service_name }}_azure{{ version_number }}:
 {% else %}
     - .scan:default:image:multistage
 {% endif %}
-    - .deploy:azure{{ version_number }}
-    - .deploy:azure{{ version_number }}:{{service_name}}:rules
+    - .env:sit
+    - .deploy:sit:{{service_name}}:rules
 ####
-{% endif %}
-scan_config_{{ service_name }}_sit{{ version_number }}:
+scan_config_{{ service_name }}_uat:
   extends:
     - .deploy_vars_{{ service_name }}
     - .scan_config
     - .scan:config:{{ service_name }}:rules
 ####
-scan_image_{{ service_name }}_sit{{ version_number }}:
+scan_image_{{ service_name }}_uat:
   extends:
     - .deploy_vars_{{ service_name }}
 {% if item.multi_stage is undefined or item.multi_stage == false %}
@@ -82,68 +96,9 @@ scan_image_{{ service_name }}_sit{{ version_number }}:
 {% else %}
     - .scan:default:image:multistage
 {% endif %}
-    - .deploy:sit{{ version_number }}
-    - .deploy:sit{{ version_number }}:{{service_name}}:rules
-####
-scan_config_{{ service_name }}_uat{{ version_number }}:
-  extends:
-    - .deploy_vars_{{ service_name }}
-    - .scan_config
-    - .scan:config:{{ service_name }}:rules
-####
-scan_image_{{ service_name }}_uat{{ version_number }}:
-  extends:
-    - .deploy_vars_{{ service_name }}
-{% if item.multi_stage is undefined or item.multi_stage == false %}
-    - .scan:default:image
-{% else %}
-    - .scan:default:image:multistage
-{% endif %}
-    - .deploy:uat{{ version_number }}
-    - .deploy:uat{{ version_number }}:{{service_name}}:rules
+    - .env:uat
+    - .deploy:uat:{{service_name}}:rules
 
-{% if org_name != 'luminet' %}
-####
-scan_config_{{ service_name }}_prod{{ version_number }}:
-  extends:
-    - .deploy_vars_{{ service_name }}
-    - .scan_config
-    - .deploy:prod{{ version_number }}:{{service_name}}:rules
-####
-scan_image_{{ service_name }}_prod{{ version_number }}:
-  extends:
-    - .deploy_vars_{{ service_name }}
-{% if item.multi_stage is undefined or item.multi_stage == false %}
-    - .scan:default:image
-{% else %}
-    - .scan:default:image:multistage
-{% endif %}
-    - .deploy:prod{{ version_number }}
-    - .deploy:prod{{ version_number }}:{{service_name}}:rules
-
-####
-scan_config_{{ service_name }}_aws{{ version_number }}:
-  extends:
-    - .deploy_vars_{{ service_name }}
-    - .scan_config
-    - .deploy:aws{{ version_number }}:{{service_name}}:rules
-####
-scan_image_{{ service_name }}_aws{{ version_number }}:
-  extends:
-    - .deploy_vars_{{ service_name }}
-{% if item.multi_stage is undefined or item.multi_stage == false %}
-    - .scan:default:image
-{% else %}
-    - .scan:default:image:multistage
-{% endif %}
-    - .deploy:aws{{ version_number }}
-    - .deploy:aws{{ version_number }}:{{service_name}}:rules
-
-{% endif %}
-{% endfor %}
-
-{% if org_name == 'luminet' %}
-####
 scan_config_{{ service_name }}_prod:
   extends:
     - .deploy_vars_{{ service_name }}
@@ -158,7 +113,7 @@ scan_image_{{ service_name }}_prod:
 {% else %}
     - .scan:default:image:multistage
 {% endif %}
-    - .deploy:prod
+    - .env:prod
     - .deploy:prod:{{service_name}}:rules
 
 ####
@@ -176,9 +131,7 @@ scan_image_{{ service_name }}_aws:
 {% else %}
     - .scan:default:image:multistage
 {% endif %}
-    - .deploy:aws
+    - .env:aws
     - .deploy:aws:{{service_name}}:rules
-
-{% endif %}
 
 {% endif %}

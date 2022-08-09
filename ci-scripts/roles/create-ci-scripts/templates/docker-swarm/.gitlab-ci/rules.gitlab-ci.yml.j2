@@ -1,46 +1,28 @@
 {% set service_name = project_name ~ '_' ~ item.name | replace('-','_') %}
 {% set rule_name = project_name | replace('_','-') ~ '-' ~ item.name | replace('_','-') %}
-{% for version in versions %}
-{% set version_number = '' if version == 0 else version %}
 
-.if-deploy-local{{ version_number }}: &if-deploy-local{{ version_number }}
-  if: '$CI_COMMIT_TAG =~ /^deploy-{{project_name}}-local{{ version_number }}-\d{8}-\d+.*$ */'
-
-.if-deploy-{{rule_name}}-local{{ version_number }}: &if-deploy-{{rule_name}}-local{{ version_number }}
-  if: '$CI_COMMIT_TAG =~ /^deploy-{{rule_name}}-local{{ version_number }}- */'
-
+.if-deploy-{{rule_name}}-local: &if-deploy-{{rule_name}}-local
+  if: '$CI_COMMIT_TAG =~ /^deploy-{{rule_name}}-local\d*- */ && $DEPLOY_BY == "rocketor"'
 {% if team_name != "nex3" and team_name != "pentagon" %}
-.if-deploy-nexprod{{ version_number }}: &if-deploy-nexprod{{ version_number }}
-  if: '$CI_COMMIT_TAG =~ /^deploy-{{project_name}}-nexprod{{ version_number }}-\d{8}-\d+.*$ */'
+.if-deploy-{{rule_name}}-nexprod: &if-deploy-{{rule_name}}-nexprod
+  if: '$CI_COMMIT_TAG =~ /^deploy-{{rule_name}}-nexprod\d*- */ && $DEPLOY_BY == "rocketor"'
 
-.if-deploy-{{rule_name}}-nexprod{{ version_number }}: &if-deploy-{{rule_name}}-nexprod{{ version_number }}
-  if: '$CI_COMMIT_TAG =~ /^deploy-{{rule_name}}-nexprod{{ version_number }}- */'
-
-.if-deploy-azure{{ version_number }}: &if-deploy-azure{{ version_number }}
-  if: '$CI_COMMIT_TAG =~ /^deploy-{{project_name}}-azure{{ version_number }}-\d{8}-\d+.*$ */'
-
-.if-deploy-{{rule_name}}-azure{{ version_number }}: &if-deploy-{{rule_name}}-azure{{ version_number }}
-  if: '$CI_COMMIT_TAG =~ /^deploy-{{rule_name}}-azure{{ version_number }}- */'
+.if-deploy-{{rule_name}}-azure: &if-deploy-{{rule_name}}-azure
+  if: '$CI_COMMIT_TAG =~ /^deploy-{{rule_name}}-azure\d*- */ && $DEPLOY_BY == "rocketor"'
 {% endif %}
-.if-deploy-sit{{ version_number }}: &if-deploy-sit{{ version_number }}
-  if: '$CI_COMMIT_TAG =~ /^deploy-{{project_name}}-sit{{ version_number }}-\d{8}-\d+.*$ */'
 
-.if-deploy-{{rule_name}}-sit{{ version_number }}: &if-deploy-{{rule_name}}-sit{{ version_number }}
-  if: '$CI_COMMIT_TAG =~ /^deploy-{{rule_name}}-sit{{ version_number }}- */'
+.if-deploy-{{rule_name}}-sit: &if-deploy-{{rule_name}}-sit
+  if: '$CI_COMMIT_TAG =~ /^deploy-{{rule_name}}-sit\d*- */ && $DEPLOY_BY == "rocketor"'
 
-.if-deploy-uat{{ version_number }}: &if-deploy-uat{{ version_number }}
-  if: '$CI_COMMIT_TAG =~ /^deploy-{{project_name}}-uat{{ version_number }}-\d{8}-\d+.*$ */'
+.if-deploy-{{rule_name}}-uat: &if-deploy-{{rule_name}}-uat
+  if: '$CI_COMMIT_TAG =~ /^deploy-{{rule_name}}-uat\d*- */ && $DEPLOY_BY == "rocketor"'
 
-.if-deploy-{{rule_name}}-uat{{ version_number }}: &if-deploy-{{rule_name}}-uat{{ version_number }}
-  if: '$CI_COMMIT_TAG =~ /^deploy-{{rule_name}}-uat{{ version_number }}- */'
+.if-deploy-{{rule_name}}-prod: &if-deploy-{{rule_name}}-prod
+  if: '$CI_COMMIT_TAG =~ /^deploy-{{rule_name}}-prod\d*- */ && $DEPLOY_BY == "rocketor"'
 
-.if-deploy-{{rule_name}}-prod{{ version_number }}: &if-deploy-{{rule_name}}-prod{{ version_number }}
-  if: '$CI_COMMIT_TAG =~ /^deploy-{{rule_name}}-prod{{ version_number }}- */'
+.if-deploy-{{rule_name}}-aws: &if-deploy-{{rule_name}}-aws
+  if: '$CI_COMMIT_TAG =~ /^deploy-{{rule_name}}-aws\d*- */ && $DEPLOY_BY == "rocketor"'
 
-.if-deploy-{{rule_name}}-aws{{ version_number }}: &if-deploy-{{rule_name}}-aws{{ version_number }}
-  if: '$CI_COMMIT_TAG =~ /^deploy-{{rule_name}}-aws{{ version_number }}- */'
-
-{% endfor %}
 .scan:config:{{service_name}}:rules:
   rules:
     - if: '$CI_COMMIT_TAG =~ /^deploy- */'
@@ -53,140 +35,107 @@
 
 .build:image:{{service_name}}:rules:
   rules:
-{% for version in versions %}
-{% set version_number = '' if version == 0 else version %}
-    - <<: *if-deploy-local{{ version_number }}
+    - <<: *if-deploy-{{rule_name}}-local
       when: always
 {% if team_name != "nex3" and team_name != "pentagon" %}
-    - <<: *if-deploy-nexprod{{ version_number }}
-      when: always{ version_number }}
-      if: '$CI_COMMIT_TAG =~ /^deploy-{{rule_name}}-azure{{ version_number }}- */'
-    - <<: *if-deploy-{{rule_name}}-nexprod{{ version_number }}
+    - <<: *if-deploy-{{rule_name}}-nexprod
       when: always
-    - <<: *if-deploy-azure{{ version_number }}
-      when: always{ version_number }}
-      if: '$CI_COMMIT_TAG =~ /^deploy-{{rule_name}}-azure{{ version_number }}- */'
-    - <<: *if-deploy-{{rule_name}}-azure{{ version_number }}
+    - <<: *if-deploy-{{rule_name}}-azure
       when: always
 {% endif %}
-    - <<: *if-deploy-sit{{ version_number }}
+    - <<: *if-deploy-{{rule_name}}-sit
       when: always
-    - <<: *if-deploy-uat{{ version_number }}
+    - <<: *if-deploy-{{rule_name}}-uat
       when: always
-    - <<: *if-deploy-{{rule_name}}-local{{ version_number }}
+    - <<: *if-deploy-{{rule_name}}-prod
       when: always
-    - <<: *if-deploy-{{rule_name}}-sit{{ version_number }}
+    - <<: *if-deploy-{{rule_name}}-aws
       when: always
-    - <<: *if-deploy-{{rule_name}}-uat{{ version_number }}
-      when: always
-    - <<: *if-deploy-{{rule_name}}-prod{{ version_number }}
-      when: always
-    - <<: *if-deploy-{{rule_name}}-aws{{ version_number }}
-      when: always
-{% endfor %}
 
 .scan:image:{{service_name}}:rules:
   rules:
-{% for version in versions %}
-{% set version_number = '' if version == 0 else version %}
-    - <<: *if-deploy-local{{ version_number }}
+    - <<: *if-deploy-{{rule_name}}-local
       when: on_success
 {% if team_name != "nex3" and team_name != "pentagon" %}
-    - <<: *if-deploy-nexprod{{ version_number }}
+    - <<: *if-deploy-{{rule_name}}-nexprod
       when: on_success
-    - <<: *if-deploy-{{rule_name}}-nexprod{{ version_number }}
-      when: on_success
-    - <<: *if-deploy-azure{{ version_number }}
-      when: on_success
-    - <<: *if-deploy-{{rule_name}}-azure{{ version_number }}
+    - <<: *if-deploy-{{rule_name}}-azure
       when: on_success
 {% endif %}
-    - <<: *if-deploy-sit{{ version_number }}
+    - <<: *if-deploy-{{rule_name}}-sit
       when: on_success
-    - <<: *if-deploy-uat{{ version_number }}
+    - <<: *if-deploy-{{rule_name}}-uat
       when: on_success
-    - <<: *if-deploy-{{rule_name}}-local{{ version_number }}
+    - <<: *if-deploy-{{rule_name}}-prod
       when: on_success
-    - <<: *if-deploy-{{rule_name}}-sit{{ version_number }}
+    - <<: *if-deploy-{{rule_name}}-aws
       when: on_success
-    - <<: *if-deploy-{{rule_name}}-uat{{ version_number }}
-      when: on_success
-    - <<: *if-deploy-{{rule_name}}-prod{{ version_number }}
-      when: on_success
-    - <<: *if-deploy-{{rule_name}}-aws{{ version_number }}
-      when: on_success
-{% endfor %}
     - when: never
 
-{% for version in versions %}
-{% set version_number = '' if version == 0 else version %}
-.deploy:local{{ version_number }}:{{service_name}}:rules:
+.deploy:local:{{service_name}}:rules:
   rules:
-    - <<: *if-deploy-local{{ version_number }}
-      when: on_success
-    - <<: *if-deploy-{{rule_name}}-local{{ version_number }}
+    - <<: *if-deploy-{{rule_name}}-local
       when: on_success
     - when: never
 
 {% if team_name != "nex3" and team_name != "pentagon" %}
-.deploy:nexprod{{ version_number }}:{{service_name}}:rules:
+.deploy:nexprod:{{service_name}}:rules:
   rules:
-    - <<: *if-deploy-nexprod{{ version_number }}
-      when: on_success
-    - <<: *if-deploy-{{rule_name}}-nexprod{{ version_number }}
+    - <<: *if-deploy-{{rule_name}}-nexprod
       when: on_success
     - when: never
 
-.deploy:azure{{ version_number }}:{{service_name}}:rules:
+.deploy:nexprod:{{service_name}}:manual:rules:
   rules:
-    - <<: *if-deploy-azure{{ version_number }}
+    - <<: *if-deploy-{{rule_name}}-nexprod
+      when: manual
+    - when: never
+
+.deploy:azure:{{service_name}}:rules:
+  rules:
+    - <<: *if-deploy-{{rule_name}}-azure
       when: on_success
-    - <<: *if-deploy-{{rule_name}}-azure{{ version_number }}
-      when: on_success
+    - when: never
+
+.deploy:azure:{{service_name}}:manual:rules:
+  rules:
+    - <<: *if-deploy-{{rule_name}}-azure
+      when: manual
     - when: never
 {% endif %}
 
-.deploy:sit{{ version_number }}:{{service_name}}:rules:
+.deploy:sit:{{service_name}}:rules:
   rules:
-    - <<: *if-deploy-sit{{ version_number }}
-      when: on_success
-    - <<: *if-deploy-{{rule_name}}-sit{{ version_number }}
+    - <<: *if-deploy-{{rule_name}}-sit
       when: on_success
     - when: never
 
-.deploy:uat{{ version_number }}:{{service_name}}:rules:
+.deploy:uat:{{service_name}}:rules:
   rules:
-    - <<: *if-deploy-uat{{ version_number }}
-      when: on_success
-    - <<: *if-deploy-{{rule_name}}-uat{{ version_number }}
+    - <<: *if-deploy-{{rule_name}}-uat
       when: on_success
     - when: never
 
-.deploy:prod{{ version_number }}:{{service_name}}:rules:
+.deploy:prod:{{service_name}}:rules:
   rules:
-    - <<: *if-deploy-{{rule_name}}-prod{{ version_number }}
+    - <<: *if-deploy-{{rule_name}}-prod
       when: on_success
     - when: never
 
-.deploy:prod{{ version_number }}:{{service_name}}:manual:rules:
+.deploy:prod:{{service_name}}:manual:rules:
   rules:
-    - <<: *if-deploy-{{rule_name}}-prod{{ version_number }}
+    - <<: *if-deploy-{{rule_name}}-prod
       when: manual
     - when: never
     
-.deploy:aws{{ version_number }}:{{service_name}}:rules:
+.deploy:aws:{{service_name}}:rules:
   rules:
-    - <<: *if-deploy-{{rule_name}}-aws{{ version_number }}
+    - <<: *if-deploy-{{rule_name}}-aws
       when: on_success
     - when: never
 
-.deploy:aws{{ version_number }}:{{service_name}}:manual:rules:
+.deploy:aws:{{service_name}}:manual:rules:
   rules:
-    - <<: *if-deploy-{{rule_name}}-aws{{ version_number }}
+    - <<: *if-deploy-{{rule_name}}-aws
       when: manual
     - when: never
-
-{% endfor %}
-
-
-

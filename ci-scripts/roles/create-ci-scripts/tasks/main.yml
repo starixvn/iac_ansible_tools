@@ -3,11 +3,11 @@
   become: true
 
 - name: Build gitlab ci scripts
-  include: build-gitlab-ci-dynamic.yml
+  include: build-gitlab-ci.yml
   become: true
 
 - name: Build docker compose scripts
-  include: build-docker-compose-dynamic.yml
+  include: build-docker-compose.yml
   become: true
 
 - name: Push CI repo

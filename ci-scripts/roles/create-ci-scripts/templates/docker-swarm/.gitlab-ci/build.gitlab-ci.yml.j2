@@ -12,7 +12,6 @@ build_image_{{ service_name }}:
     - .build:default:image:noenv:multistage
 {% endif %}
     - .build:image:{{ service_name }}:rules
-  #needs: ['scan_config_{{service_name}}']
 {% if item.framework is defined and item.framework == "cocos" %}  
   needs: ['build_cocos_web_{{ service_name }}']
   dependencies:
@@ -25,9 +24,7 @@ build_image_{{ service_name }}:
 {% endif %}
 {% else %}
 
-{% for version in versions %}
-{% set version_number = '' if version == 0 else version %}
-build_image_{{ service_name }}_local{{ version_number }}:
+build_image_{{ service_name }}_local:
   extends:
     - .deploy_vars_{{ service_name }}
 {% if item.multi_stage is undefined or item.multi_stage == false %}
@@ -35,64 +32,22 @@ build_image_{{ service_name }}_local{{ version_number }}:
 {% else %}
     - .build:default:{{base_image}}:multistage
 {% endif %}
-    - .deploy:local{{ version_number }}
-    - .deploy:local{{ version_number }}:{{service_name}}:rules
-{% if item.framework is defined and item.framework == "cocos" %}  
-  needs: ['build_cocos_web_{{ service_name }}_local{{ version_number }}']
+    - .env:local
+    - .deploy:local:{{service_name}}:rules
+{% if item.framework is defined and item.framework == "cocos" %}
+  needs: ['build_cocos_web_{{ service_name }}_local']
   dependencies:
-    - build_cocos_web_{{ service_name }}_local{{ version_number }}
+    - build_cocos_web_{{ service_name }}_local
 {% endif %}
-{% if transform_config is defined and transform_config == true %}  
-  needs: ['transform_config_{{ service_name }}_local{{ version_number }}']
+{% if transform_config is defined and transform_config == true %}
+  needs: ['transform_config_{{ service_name }}_local']
   dependencies:
-    - transform_config_{{ service_name }}_local{{ version_number }}
-{% endif %}
-{% if team_name != "nex3" and team_name != "pentagon" %}
-#NexProd
-build_image_{{ service_name }}_nexprod{{ version_number }}:
-  extends:
-    - .deploy_vars_{{ service_name }}
-{% if item.multi_stage is undefined or item.multi_stage == false %}
-    - .build:default:{{base_image}}
-{% else %}
-    - .build:default:{{base_image}}:multistage
-{% endif %}
-    - .deploy:nexprod{{ version_number }}
-    - .deploy:nexprod{{ version_number }}:{{service_name}}:rules
-{% if item.framework is defined and item.framework == "cocos" %}  
-  needs: ['build_cocos_web_{{ service_name }}_nexprod{{ version_number }}']
-  dependencies:
-    - build_cocos_web_{{ service_name }}_nexprod{{ version_number }}
-{% endif %}
-{% if transform_config is defined and transform_config == true %}  
-  needs: ['transform_config_{{ service_name }}_nexprod{{ version_number }}']
-  dependencies:
-    - transform_config_{{ service_name }}_nexprod{{ version_number }}
-{% endif %}
-#Azure
-build_image_{{ service_name }}_azure{{ version_number }}:
-  extends:
-    - .deploy_vars_{{ service_name }}
-{% if item.multi_stage is undefined or item.multi_stage == false %}
-    - .build:default:{{base_image}}
-{% else %}
-    - .build:default:{{base_image}}:multistage
-{% endif %}
-    - .deploy:azure{{ version_number }}
-    - .deploy:azure{{ version_number }}:{{service_name}}:rules
-{% if item.framework is defined and item.framework == "cocos" %}  
-  needs: ['build_cocos_web_{{ service_name }}_azure{{ version_number }}']
-  dependencies:
-    - build_cocos_web_{{ service_name }}_azure{{ version_number }}
-{% endif %}
-{% if transform_config is defined and transform_config == true %}  
-  needs: ['transform_config_{{ service_name }}_azure{{ version_number }}']
-  dependencies:
-    - transform_config_{{ service_name }}_azure{{ version_number }}
-{% endif %}
+    - transform_config_{{ service_name }}_local
 {% endif %}
 #
-build_image_{{ service_name }}_sit{{ version_number }}:
+{% if team_name != "nex3" and team_name != "pentagon" %}
+#NEXPROD
+build_image_{{ service_name }}_nexprod:
   extends:
     - .deploy_vars_{{ service_name }}
 {% if item.multi_stage is undefined or item.multi_stage == false %}
@@ -100,20 +55,21 @@ build_image_{{ service_name }}_sit{{ version_number }}:
 {% else %}
     - .build:default:{{base_image}}:multistage
 {% endif %}
-    - .deploy:sit{{ version_number }}
-    - .deploy:sit{{ version_number }}:{{service_name}}:rules
-{% if item.framework is defined and item.framework == "cocos" %}
-  needs: ['build_cocos_web_{{ service_name }}_sit{{ version_number }}']
+    - .env:nexprod
+    - .deploy:nexprod:{{service_name}}:rules
+    
+{% if item.framework is defined and item.framework == "cocos" %}  
+  needs: ['build_cocos_web_{{ service_name }}_nexprod']
   dependencies:
-    - build_cocos_web_{{ service_name }}_sit{{ version_number }}
+    - build_cocos_web_{{ service_name }}_nexprod
 {% endif %}
 {% if transform_config is defined and transform_config == true %}  
-  needs: ['transform_config_{{ service_name }}_sit{{ version_number }}']
+  needs: ['transform_config_{{ service_name }}_nexprod']
   dependencies:
-    - transform_config_{{ service_name }}_sit{{ version_number }}
+    - transform_config_{{ service_name }}_nexprod
 {% endif %}
-
-build_image_{{ service_name }}_uat{{ version_number }}:
+#AZURE
+build_image_{{ service_name }}_azure:
   extends:
     - .deploy_vars_{{ service_name }}
 {% if item.multi_stage is undefined or item.multi_stage == false %}
@@ -121,21 +77,21 @@ build_image_{{ service_name }}_uat{{ version_number }}:
 {% else %}
     - .build:default:{{base_image}}:multistage
 {% endif %}
-    - .deploy:uat{{ version_number }}
-    - .deploy:uat{{ version_number }}:{{service_name}}:rules
-{% if item.framework is defined and item.framework == "cocos" %}
-  needs: ['build_cocos_web_{{ service_name }}_uat{{ version_number }}']
+    - .env:azure
+    - .deploy:azure:{{service_name}}:rules
+    
+{% if item.framework is defined and item.framework == "cocos" %}  
+  needs: ['build_cocos_web_{{ service_name }}_azure']
   dependencies:
-    - build_cocos_web_{{ service_name }}_uat{{ version_number }}
+    - build_cocos_web_{{ service_name }}_azure
 {% endif %}
 {% if transform_config is defined and transform_config == true %}  
-  needs: ['transform_config_{{ service_name }}_uat{{ version_number }}']
+  needs: ['transform_config_{{ service_name }}_azure']
   dependencies:
-    - transform_config_{{ service_name }}_uat{{ version_number }}
+    - transform_config_{{ service_name }}_azure
 {% endif %}
-
-{% if org_name != 'luminet' %}
-build_image_{{ service_name }}_prod{{ version_number }}:
+{% endif %}
+build_image_{{ service_name }}_sit:
   extends:
     - .deploy_vars_{{ service_name }}
 {% if item.multi_stage is undefined or item.multi_stage == false %}
@@ -143,20 +99,20 @@ build_image_{{ service_name }}_prod{{ version_number }}:
 {% else %}
     - .build:default:{{base_image}}:multistage
 {% endif %}
-    - .deploy:prod{{ version_number }}
-    - .deploy:prod{{ version_number }}:{{service_name}}:rules
+    - .env:sit
+    - .deploy:sit:{{service_name}}:rules
 {% if item.framework is defined and item.framework == "cocos" %}
-  needs: ['build_cocos_web_{{ service_name }}_prod{{ version_number }}']
+  needs: ['build_cocos_web_{{ service_name }}_sit']
   dependencies:
-    - build_cocos_web_{{ service_name }}_prod{{ version_number }}
+    - build_cocos_web_{{ service_name }}_sit
 {% endif %}
 {% if transform_config is defined and transform_config == true %}  
-  needs: ['transform_config_{{ service_name }}_prod{{ version_number }}']
+  needs: ['transform_config_{{ service_name }}_sit']
   dependencies:
-    - transform_config_{{ service_name }}_prod{{ version_number }}
+    - transform_config_{{ service_name }}_sit
 {% endif %}
 
-build_image_{{ service_name }}_aws{{ version_number }}:
+build_image_{{ service_name }}_uat:
   extends:
     - .deploy_vars_{{ service_name }}
 {% if item.multi_stage is undefined or item.multi_stage == false %}
@@ -164,23 +120,19 @@ build_image_{{ service_name }}_aws{{ version_number }}:
 {% else %}
     - .build:default:{{base_image}}:multistage
 {% endif %}
-    - .deploy:aws{{ version_number }}
-    - .deploy:aws{{ version_number }}:{{service_name}}:rules
+    - .env:uat
+    - .deploy:uat:{{service_name}}:rules
 {% if item.framework is defined and item.framework == "cocos" %}
-  needs: ['build_cocos_web_{{ service_name }}_aws{{ version_number }}']
+  needs: ['build_cocos_web_{{ service_name }}_uat']
   dependencies:
-    - build_cocos_web_{{ service_name }}_aws{{ version_number }}
+    - build_cocos_web_{{ service_name }}_uat
 {% endif %}
 {% if transform_config is defined and transform_config == true %}  
-  needs: ['transform_config_{{ service_name }}_aws{{ version_number }}']
+  needs: ['transform_config_{{ service_name }}_uat']
   dependencies:
-    - transform_config_{{ service_name }}_aws{{ version_number }}
+    - transform_config_{{ service_name }}_uat
 {% endif %}
 
-{% endif %}
-{% endfor %}
-
-{% if org_name == 'luminet' %}
 build_image_{{ service_name }}_prod:
   extends:
     - .deploy_vars_{{ service_name }}
@@ -189,7 +141,7 @@ build_image_{{ service_name }}_prod:
 {% else %}
     - .build:default:{{base_image}}:multistage
 {% endif %}
-    - .deploy:prod
+    - .env:prod
     - .deploy:prod:{{service_name}}:rules
 {% if item.framework is defined and item.framework == "cocos" %}
   needs: ['build_cocos_web_{{ service_name }}_prod']
@@ -202,7 +154,6 @@ build_image_{{ service_name }}_prod:
     - transform_config_{{ service_name }}_prod
 {% endif %}
 
-
 build_image_{{ service_name }}_aws:
   extends:
     - .deploy_vars_{{ service_name }}
@@ -211,7 +162,7 @@ build_image_{{ service_name }}_aws:
 {% else %}
     - .build:default:{{base_image}}:multistage
 {% endif %}
-    - .deploy:aws
+    - .env:aws
     - .deploy:aws:{{service_name}}:rules
 {% if item.framework is defined and item.framework == "cocos" %}
   needs: ['build_cocos_web_{{ service_name }}_aws']
@@ -222,8 +173,6 @@ build_image_{{ service_name }}_aws:
   needs: ['transform_config_{{ service_name }}_aws']
   dependencies:
     - transform_config_{{ service_name }}_aws
-{% endif %}
-
 {% endif %}
 
 {% endif %}
