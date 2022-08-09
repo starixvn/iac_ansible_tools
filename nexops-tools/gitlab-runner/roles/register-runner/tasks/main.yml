@@ -19,7 +19,7 @@
     --cache-s3-bucket-name "gitlab" \
     --run-untagged="true" \
     --locked="false" \
-    --docker-volumes /var/run/docker.sock:/var/run/docker.sock
+    --docker-volumes /var/run/docker.sock:/var/run/docker.sock \
     --docker-volumes /certs/client
   with_items: '{{ services }}'
   become: yes
@@ -44,7 +44,7 @@
     --cache-s3-bucket-name "gitlab" \
     --run-untagged="true" \
     --locked="false" \
-    --docker-volumes /var/run/docker.sock:/var/run/docker.sock
+    --docker-volumes /var/run/docker.sock:/var/run/docker.sock \
     --docker-volumes /certs/client
   with_items: '{{ services }}'
   become: yes
