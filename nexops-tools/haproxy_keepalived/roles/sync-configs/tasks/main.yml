@@ -95,7 +95,12 @@
   become: yes
   notify: reload haproxy
 
-#- name: Saving state FE,BE of HAProxy and reload HAProxy service
+- name: restart HAProxy
+  shell: service haproxy restart
+  become: yes
+  when: env == "uat"
+
+##- name: Saving state FE,BE of HAProxy and reload HAProxy service
 #  shell: socat /etc/haproxy/info.sock - <<< "show servers state" > /etc/haproxy/server_state
 #  become: yes
 #  args:
