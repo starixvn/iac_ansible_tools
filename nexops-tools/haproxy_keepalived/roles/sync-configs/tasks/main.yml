@@ -93,8 +93,11 @@
 - name: Copy HAProxy configuration
   shell: cp {{ haproxy_conf_path }}/{{ config_filename }} {{ haproxy_chroot }}
   become: yes
-  notify: reload haproxy
 
+- name: restart HAProxy
+  shell: service haproxy reload
+  become: yes
+  
 - name: restart HAProxy
   shell: service haproxy restart
   become: yes
