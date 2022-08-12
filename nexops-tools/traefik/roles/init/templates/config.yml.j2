@@ -1,12 +1,12 @@
 ---
 tls:
   certificates:
-    - certFile: "/certs/fullchain.pem"
-      keyFile: "/certs/privkey.pem"
+    - certFile: "/etc/traefik/dynamic_conf/certs/fullchain.pem"
+      keyFile: "/etc/traefik/dynamic_conf/certs/privkey.pem"
       stores:
         - default
   stores:
     default:
       defaultCertificate:
-        certFile: "/certs/fullchain.pem"
-        keyFile: "/certs/privkey.pem"
+        certFile: "/etc/traefik/dynamic_conf/certs/fullchain.pem"
+        keyFile: "/etc/traefik/dynamic_conf/certs/privkey.pem"
