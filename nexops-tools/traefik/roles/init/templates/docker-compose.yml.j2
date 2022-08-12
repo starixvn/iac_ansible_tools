@@ -31,11 +31,11 @@ services:
       - {{swarm_network_nexops}}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      {% if env == "local" or env == "local_test" %}
+{% if env == "local" or env == "local_test" %}
       - {{volume_path}}/certs:/certs
-      {% endif %}
-      - /etc/localtime:/etc/localtime:ro
       - {{volume_path}}/config.yml:/etc/traefik/dynamic_conf/conf.yml:ro
+{% endif %}
+      - /etc/localtime:/etc/localtime:ro
     deploy:
       labels: {}
       placement:
