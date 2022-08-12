@@ -18,6 +18,7 @@
   file:
     path: "{{ volume_path }}/certs"
     state: directory
+  become: yes
 
 - name: Copy SSL Certs configuration lumi {{ env }}
   when: team == "luminet" and env == "local" or team == "luminet" and env == "local_test"
@@ -41,6 +42,7 @@
   file:
     path: "/home/{{ansible_user}}/stacks"
     state: directory
+  become: yes
 
 - name: Copy docker-compose file
   template:
