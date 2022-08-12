@@ -1,0 +1,300 @@
+########################################################################
+# File managed by Ansible - NexOps
+# Your changes will be overwritten.
+#######################################################################
+{% set service_name = item.name | replace('-','_') %}
+{% set platform = item.platform | default('linux') %}
+{% set environment = env | upper ~ '@DEPLOY_VERSION' %}
+{% set working_path = gluster_path ~ team_name ~ '/' ~ project_name ~ '/' ~ item.name | replace('-','_') %}
+{% set config_file_path = item.config_file_path | default(".") %}
+{% if item.config_file_name is defined %}
+{% if item.config_file_ext | length > 0 %}
+{% set config_file = item.config_file_name ~ '.' ~ item.config_file_ext %}
+{% else %}
+{% set config_file = item.config_file_name %}
+{% endif %}
+{% endif %}
+{% set config_container_path = item.config_container_path | default ('.') %}
+{% set container_root_path = item.container_root_path | default ('/app') %}
+{% if item.sp_mapper is defined and item.sp_mapper == true %}
+{% set sp_file = item.sp_file_name | default("SpNames") ~ '.' ~ item.sp_file_extension | default("xml") %}
+{% set sp_container_path = item.sp_container_path | default ('App_Data') %}
+{% endif %}
+{% set storage_label = '_LOW_STORAGE' if high_storage is undefined or high_storage == false else '_HIGH_STORAGE'%}
+{% set org_node_label = org_name ~ storage_label if platform == "linux" else org_name ~ "_WINDOWS" %}
+{% set network = org_name | lower ~ '_' ~ env | lower ~ lookup('vars', org_name + '_network_version_' + env) %}
+{% set separator_char = '/' if platform == "linux" else '\\' %}
+
+{% if env == "sit"%}
+version: '3.4'
+{% else %}
+version: '3.8'
+{% endif %}
+
+{% if config_file is defined %}
+configs:
+  {{service_name}}_{{ environment }}_config_@CONFIG_VERSION:
+    file: {{working_path}}/{{environment}}/configs/{{config_file}}
+    labels:
+{% if env == "prod" or env == "aws" or env == "azure" %}
+      - "io.portainer.accesscontrol.teams={{team_name | upper}}_LEADERS"
+{% else %}
+      - "io.portainer.accesscontrol.teams={{team_name | upper}}"
+{% endif %}
+{% if sp_file is defined %}
+  {{service_name}}_{{ environment }}_sp_config_@CONFIG_VERSION:
+    file: {{working_path}}/{{environment}}/configs/{{sp_file}}
+    labels:
+{% if env == "prod" or env == "aws" or env == "azure" %}
+      - "io.portainer.accesscontrol.teams={{team_name | upper}}_LEADERS"
+{% else %}
+      - "io.portainer.accesscontrol.teams={{team_name | upper}}"
+{% endif %}
+{% endif %}
+{% endif %}
+
+services:
+  {{service_name}}_{{environment}}:
+{% if team_name == "nex3" or team_name == "pentagon" %}
+{% if env == "local" or env == "azure" or env == "aws" %}
+    image: hub.lumigame.com/{{team_name}}/{{project_name}}_{{service_name}}:{{environment}}-latest
+{% else %}
+    image: lumhub.starixplay.com/kbt/{{team_name}}/{{project_name}}_{{service_name}}:{{environment}}-latest
+{% endif %}
+{% endif %}
+{% if team_name != "nex3" and team_name != "pentagon" %}
+{% if env == "local" or env == "nexprod" or env == "azure" or env == "aws" %}
+    image: hub.nexdev.net/{{team_name}}/{{project_name}}_{{service_name}}:{{environment}}-latest
+{% else %}
+    image: nexhub.starixplay.com/kbt/{{team_name}}/{{project_name}}_{{service_name}}:{{environment}}-latest
+{% endif %}
+{% endif %}
+{% if platform == "linux" %}
+    hostname: "swarm-{{'{{'}}.Service.Name{{'}}'}}-{{'{{'}}.Task.Slot{{'}}'}}"
+{% else %}
+    hostname: "{{service_name | regex_search('\w{3,9}')}}-{{'{{'}}.Task.ID{{'}}'}}"
+{% endif %}
+
+{% if config_file is defined %}
+    configs:
+      - source: {{service_name}}_{{ environment }}_config_@CONFIG_VERSION
+        target: {{container_root_path}}{{separator_char}}{{config_container_path}}{{separator_char}}{{config_file}}
+{% if sp_file is defined %}
+      - source: {{service_name}}_{{ environment }}_sp_config_@CONFIG_VERSION
+        target: {{container_root_path}}{{separator_char}}{{sp_container_path}}{{separator_char}}{{sp_file}}
+{% endif %}
+{% endif %}
+{% if item.volumes is defined %}
+    volumes:
+{% for volume in item.volumes %}
+      - {{volume.name}}_{{environment}}:{{volume.dest}}
+{% endfor %}
+{% endif %}
+    logging:
+      options:
+        max-size: 100m
+    deploy:
+      mode: replicated
+      resources:
+        limits:
+{% if item.max_memory is defined and item.max_memory > 4000 %}
+          memory: 4096M
+{% elif item.max_memory is defined and item.max_memory < 100 %}
+          memory: 1000M
+{% else %}
+          memory: {{ item.max_memory | default('2048') }}M
+{% endif %}
+{% if env == "prod"%}
+{% if item.number_of_replicas_prod is defined and item.number_of_replicas_prod > 6 %}
+      replicas: 6
+{% else %}
+      replicas: {{item.number_of_replicas_prod | default('1') }}
+{% endif %}
+{% endif %}
+{% if env == "aws"%}
+{% if item.number_of_replicas_aws is defined and item.number_of_replicas_aws > 2 %}
+      replicas: 2
+{% else %}
+      replicas: {{item.number_of_replicas_aws | default('1') }}
+{% endif %}
+{% endif %}
+{% if env == "azure"%}
+#Azure
+{% if item.number_of_replicas_azure is defined and item.number_of_replicas_azure > 2 %}
+      replicas: 2
+{% else %}
+      replicas: {{item.number_of_replicas_azure | default('1') }}
+{% endif %}
+{% endif %}
+{% if env == "uat"%}
+{% if item.number_of_replicas_uat is defined and item.number_of_replicas_uat > 2 %}
+      replicas: 2
+{% else %}
+      replicas: {{item.number_of_replicas_uat | default('1') }}
+{% endif %}
+{% endif %}
+{% if env == "sit"%}
+{% if item.number_of_replicas_sit is defined and item.number_of_replicas_sit > 2 %}
+      replicas: 2
+{% else %}
+      replicas: {{item.number_of_replicas_sit | default('1') }}
+{% endif %}
+{% endif %}
+{% if env == "local"%}
+{% if item.number_of_replicas_local is defined and item.number_of_replicas_local > 2 %}
+      replicas: 2
+{% else %}
+      replicas: {{item.number_of_replicas_local | default('1') }}
+{% endif %}
+{% endif %}
+{% if env == "nexprod"%}
+{% if item.number_of_replicas_nexprod is defined and item.number_of_replicas_nexprod > 2 %}
+      replicas: 2
+{% else %}
+      replicas: {{item.number_of_replicas_nexprod | default('1') }}
+{% endif %}
+{% endif %}
+{% if env == "local"%}
+{% if item.port_local is undefined %}
+      endpoint_mode: dnsrr
+{% endif %}
+{% endif %}
+{% if env == "nexprod"%}
+{% if item.port_nexprod is undefined %}
+      endpoint_mode: dnsrr
+{% endif %}
+{% endif %}
+{% if env == "uat"%}
+{% if item.port_uat is undefined %}
+      endpoint_mode: dnsrr
+{% endif %}
+{% endif %}
+{% if env == "sit"%}
+{% if item.port_sit is undefined %}
+      endpoint_mode: dnsrr
+{% endif %}
+{% endif %}
+{% if env == "prod"%}
+{% if item.port_prod is undefined %}
+      endpoint_mode: dnsrr
+{% endif %}
+{% endif %}
+{% if env == "aws"%}
+{% if item.port_aws is undefined %}
+      endpoint_mode: dnsrr
+{% endif %}
+{% endif %}
+{% if env == "azure"%}
+{% if item.port_azure is undefined %}
+      endpoint_mode: dnsrr
+{% endif %}
+{% endif %}
+{% if env == "prod" or env == "nexprod" %}
+      update_config:
+{% if item.update_order is defined and item.update_order == 'stop-first' %}
+        order: stop-first
+{% else %}
+        order: start-first
+        failure_action: rollback
+        delay: 10s
+      rollback_config:
+        parallelism: 0
+        order: stop-first
+{% endif %}
+{% else %}
+{% if item.update_order is defined and item.update_order == 'start-first' %}
+      update_config:
+        order: start-first
+        failure_action: rollback
+        delay: 10s
+      rollback_config:
+        parallelism: 0
+        order: stop-first
+{% endif %}
+{% endif %}
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+      placement:
+        constraints:
+{% if item.node_labels is defined %}
+          - node.labels.{{ item.node_labels[0] | upper }} == yes
+{% else %}
+          - node.labels.{{ org_node_label | upper }} == yes
+{% endif %}
+    networks:
+      - swarm_{{ network }}
+{% if env == "local" and item.port_local is defined %}
+    ports:
+      - {{item.port_local}}:{{item.port | default('5000')}}
+{% endif %}
+{% if env == "nexprod" and item.port_nexprod is defined %}
+    ports:
+      - {{item.port_nexprod}}:{{item.port | default('5000')}}
+{% endif %}
+{% if env == "uat" and item.port_uat is defined %}
+    ports:
+      - {{item.port_uat}}:{{item.port | default('5000')}}
+{% endif %}
+{% if env == "sit" and item.port_sit is defined %}
+    ports:
+      - {{item.port_sit}}:{{item.port | default('5000')}}
+{% endif %}
+{% if env == "prod" and item.port_prod is defined %}
+    ports:
+      - {{item.port_prod}}:{{item.port | default('5000')}}
+{% endif %}
+{% if env == "aws" and item.port_aws is defined %}
+    ports:
+      - {{item.port_aws}}:{{item.port | default('5000')}}
+{% endif %}
+{% if env == "azure" and item.port_azure is defined %}
+    ports:
+      - {{item.port_azure}}:{{item.port | default('5000')}}
+{% endif %}
+{% if item.disable_health_check is undefined or item.disable_health_check == false %}
+{% if item.framework is defined and item.framework == "dotnet" %}
+    healthcheck:
+      test: ['CMD', 'curl', '-f', "http://{{item.healthcheck_domain | default('localhost')}}:{{item.port | default('5000')}}{{item.healthcheck_path | default('')}}"]
+      interval: {{item.healthcheck_interval | default('5s')}}
+      timeout: {{item.healthcheck_timeout | default('5s')}}
+      retries: {{item.healthcheck_retries | default('5')}}
+{% endif %}
+{% endif %}
+{% if item.dump_permission is defined and item.dump_permission == true %}
+    cap_add:
+      - SYS_PTRACE
+{% endif %}
+    labels:
+{% if env == "prod" or env == "aws" or env == "azure" %}
+      - "io.portainer.accesscontrol.teams={{team_name | upper}}_LEADERS"
+{% else %}
+      - "io.portainer.accesscontrol.teams={{team_name | upper}}"
+{% endif %}
+networks:
+  swarm_{{ network }}:
+    external: true
+
+{% if item.volumes is defined %}
+volumes:
+{% for volume in item.volumes %}
+  {{volume.name}}_{{environment}}:
+    driver: local
+    driver_opts:
+       o: bind
+       type: none
+{% if item.custom_volumes is defined %}
+       device: {{item.custom_volumes}}
+{% else %}
+       device: {{gluster_path}}{{volume.src}}/{{environment}}
+{% endif %}
+    labels:
+{% if env == "prod" or env == "aws" or env == "azure" %}
+      - "io.portainer.accesscontrol.teams={{team_name | upper}}_LEADERS"
+{% else %}
+      - "io.portainer.accesscontrol.teams={{team_name | upper}}"
+{% endif %}
+{% endfor %}
+{% endif %}
