@@ -10,7 +10,7 @@ services:
       - --providers.docker.swarmMode=true
       - --providers.docker.exposedbydefault=false
       - --metrics.prometheus=true
-      - --metrics.prometheus.buckets=0.1,0.3,1.2,5.0"
+      - --metrics.prometheus.buckets=0.1,0.3,1.2,5.0
       - --providers.docker.watch
       - --entrypoints.http.address=:8800
       - --entrypoints.https.address=:4400
