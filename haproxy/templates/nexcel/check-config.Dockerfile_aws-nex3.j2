@@ -1,5 +1,0 @@
-FROM {{haproxy_image_name}}:{{haproxy_version}}
-COPY haproxy.cfg {{image_config_path}}/haproxy.cfg
-COPY whitelisted.ips {{image_config_path}}/whitelisted.ips
-COPY hosts.map {{image_config_path}}/hosts.map
-COPY game-proxy.map {{image_config_path}}/game-proxy.map

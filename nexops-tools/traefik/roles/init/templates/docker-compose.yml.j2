@@ -1,0 +1,61 @@
+version: "3.8"
+services:
+  traefik:
+    image: {{ lookup('vars', org + '_traefik_image_' + env)}}/traefik:{{traefik_version}}
+    command:
+      - --log.level=INFO #DEBUG
+      - --api.insecure=true # set to 'false' on production true
+      - --api.dashboard=true # see https://docs.traefik.io/v2.0/operations/dashboard/#secure-mode for how to secure the dashboard
+      - --providers.docker=true
+      - --providers.docker.swarmMode=true
+      - --providers.docker.exposedbydefault=false
+      - --metrics.prometheus=true
+      - --metrics.prometheus.buckets=0.1,0.3,1.2,5.0"
+      - --providers.docker.watch
+      - --entrypoints.http.address=:8800
+      - --entrypoints.https.address=:4400
+      - --providers.file.directory=/etc/traefik/dynamic_conf
+      - --accesslog
+    
+    ports:
+{% for port in lookup('vars', team + '_ports_' + env) %}
+      - published: {{port.published}}
+        target: {{port.target}}
+        mode: {{port.mode}}
+{% endfor %}
+
+    networks:
+{% for swarm_network in swarm_networks %}
+      - {{swarm_network}}
+{% endfor %}
+      - {{swarm_network_nexops}}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      {% if env == "local" or env == "local_test" %}
+      - {{volume_path}}/certs:/certs
+      {% endif %}
+      - /etc/localtime:/etc/localtime:ro
+      - {{volume_path}}/config.yml:/etc/traefik/dynamic_conf/conf.yml:ro
+    deploy:
+      labels: {}
+      placement:
+        constraints:
+          - node.labels.HAPROXY == yes
+      restart_policy:
+        condition: on-failure
+##
+networks:
+{% for swarm_network in swarm_networks %}
+  {{swarm_network}}:
+    external: true
+{% endfor %}
+  {{swarm_network_nexops}}:
+    external: true
+
+volumes:
+  data:
+    driver: local
+    driver_opts:
+       o: bind
+       type: none
+       device: {{volume_path}}

@@ -1,0 +1,56 @@
+# - name: Create network
+#   docker_network:
+#     name: "{{item}}"
+#     driver: "overlay"
+#     attachable: true
+#   with_items: '{{swarm_networks}}'
+#   ignore_errors: yes
+#   become: yes
+
+# - name: Create network NexOps
+#   docker_network:
+#     name: "{{swarm_network_nexops}}"
+#     driver: "overlay"
+#     attachable: true
+#   ignore_errors: yes
+#   become: yes
+- name: Verify cert directory exists
+  file:
+    path: "{{ volume_path }}/certs"
+    state: directory
+
+- name: Copy SSL Certs configuration lumi {{ env }}
+  when: team == "luminet" and env == "local" or team == "luminet" and env == "local_test"
+  template:
+    src: "certs/{{team}}/{{item}}"
+    dest: "{{ volume_path }}/certs/{{item}}"
+  become: yes
+  with_items:
+    - "{{luminet_cert_files}}"
+
+- name: Copy SSL Certs configuration nexcel {{ env }}
+  when: team == "nexcel" and env == "azure" or team == "nexcel" and env == "nexprod"  or team == "nexcel" and env == "local" or team == "nexcel" and env == "local_test"
+  template:
+    src: "certs/{{team}}/{{item}}"
+    dest: "{{ volume_path }}/certs/{{item}}"
+  become: yes
+  with_items:
+    - "{{nexcel_cert_files}}"
+
+- name: Verify stacks directory exists (on first swarm node)
+  file:
+    path: "/home/{{ansible_user}}/stacks"
+    state: directory
+
+- name: Copy docker-compose file
+  template:
+    src: 'templates/docker-compose.yml.j2'
+    dest: /home/{{ansible_user}}/stacks/traefik-stack.yml
+  become: yes
+
+- name: Deploy traefik service
+  shell: |
+    cd /home/{{ansible_user}}/stacks
+    docker stack deploy --compose-file=traefik-stack.yml {{stack_name}} --with-registry-auth
+  become: yes
+  run_once: true

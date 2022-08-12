@@ -1,0 +1,112 @@
+---
+# Variables here are applicable to all host groups
+volume_path: /var/www/traefik
+traefik_version: 2.4
+nexcel_traefik_image_local: hub.nexdev.net/base
+nexcel_traefik_image_local_test: hub.nexdev.net/base
+nexcel_traefik_image_nexprod: hub.nexdev.net/base
+nexcel_traefik_image_sit: nexhub.starixplay.com/kbt/base
+nexcel_traefik_image_uat: nexhub.starixplay.com/kbt/base
+nexcel_traefik_image_prod: nexhub.starixplay.com/kbt/base
+nexcel_traefik_image_aws: hub.nexdev.net/base
+nexcel_traefik_image_azure: hub.nexdev.net/base
+###
+luminet_traefik_image_local: hub.lumigame.com/base
+luminet_traefik_image_local_test: hub.lumigame.com/base
+luminet_traefik_image_sit: lumhub.starixplay.com/kbt/base
+luminet_traefik_image_uat: lumhub.starixplay.com/kbt/base
+luminet_traefik_image_prod: registry.nexdev.net:5050/docker
+luminet_traefik_image_aws: hub.lumigame.com/base
+
+stack_name: traefik
+
+nexcel_cert_files:
+- nexdev.net.pem
+- nexcel.vn.pem
+- nexcel.info.pem
+
+luminet_cert_files:
+- lumigame.com.pem
+
+nexcel_ports_local_test:
+  [
+    { "published": 8800, "target": 8800, "mode": "ingress" },
+    { "published": 4400, "target": 4400, "mode": "ingress" },
+  ]
+
+nexcel_ports_local:
+  [
+    { "published": 8800, "target": 8800, "mode": "ingress" },
+    { "published": 4400, "target": 4400, "mode": "ingress" },
+  ]
+
+nexcel_ports_nexprod: 
+  [
+    { "published": 8800, "target": 8800, "mode": "ingress" },
+    { "published": 4400, "target": 4400, "mode": "ingress" },
+  ]
+
+nexcel_ports_azure: 
+  [
+    { "published": 8800, "target": 8800, "mode": "ingress" },
+    { "published": 4400, "target": 4400, "mode": "ingress" },
+  ]
+
+nexcel_ports_sit: [
+    { "published": 8800, "target": 8800, "mode": "ingress" },
+    { "published": 4400, "target": 4400, "mode": "ingress" },
+  ]
+
+nexcel_ports_uat:
+  [
+    { "published": 8800, "target": 8800, "mode": "ingress" },
+    { "published": 4400, "target": 4400, "mode": "ingress" },
+  ]
+
+nexcel_ports_prod:
+  [
+    { "published": 8800, "target": 8800, "mode": "ingress" },
+    { "published": 4400, "target": 4400, "mode": "ingress" },
+  ]
+
+nexcel_ports_aws:
+  [
+    { "published": 8800, "target": 8800, "mode": "ingress" },
+    { "published": 4400, "target": 4400, "mode": "ingress" },
+  ]
+
+nexcel_ports_prod-nex3:
+  [
+    { "published": 8800, "target": 8800, "mode": "ingress" },
+    { "published": 4400, "target": 4400, "mode": "ingress" },
+  ]
+
+nexcel_ports_aws-nex3: 
+  [
+    { "published": 80, "target": 80, "mode": "ingress" },
+    { "published": 8001, "target": 8001, "mode": "ingress" },
+  ]
+
+luminet_ports_local:
+  [
+    { "published": 8800, "target": 8800, "mode": "ingress" },
+    { "published": 4400, "target": 4400, "mode": "ingress" },
+  ]
+
+luminet_ports_uat:
+  [
+    { "published": 8800, "target": 8800, "mode": "ingress" },
+    { "published": 4400, "target": 4400, "mode": "ingress" },
+  ]
+
+luminet_ports_prod:
+  [
+    { "published": 8800, "target": 8800, "mode": "ingress" },
+    { "published": 4400, "target": 4400, "mode": "ingress" },
+  ]
+
+luminet_ports_aws:
+  [
+    { "published": 8800, "target": 8800, "mode": "ingress" },
+    { "published": 4400, "target": 4400, "mode": "ingress" },
+  ]
