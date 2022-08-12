@@ -46,8 +46,14 @@
 
 - name: Copy docker-compose file
   template:
-    src: 'templates/docker-compose.yml.j2'
-    dest: /home/{{ansible_user}}/stacks/traefik-stack.yml
+    src: "templates/docker-compose.yml.j2"
+    dest: "{{ volume_path }}/traefik-stack.yml"
+  become: yes
+
+- name: Copy traefik cfg
+  template:
+    src: "templates/config.yml.j2"
+    dest: "{{ volume_path }}/config.yml"
   become: yes
 
 - name: Deploy traefik service
