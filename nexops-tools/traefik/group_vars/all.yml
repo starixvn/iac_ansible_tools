@@ -21,12 +21,12 @@ luminet_traefik_image_aws: hub.lumigame.com/base
 stack_name: traefik
 
 nexcel_cert_files:
-- nexdev.net.pem
-- nexcel.vn.pem
-- nexcel.info.pem
+- fullchain.pem
+- privkey.pem
 
 luminet_cert_files:
-- lumigame.com.pem
+- fullchain.pem
+- privkey.pem
 
 nexcel_ports_local_test:
   [
