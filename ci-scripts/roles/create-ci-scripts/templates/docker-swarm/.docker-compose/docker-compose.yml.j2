@@ -99,15 +99,15 @@ services:
       labels:
         - "traefik.enable=true"
 {% if path_prefix is defined %}
-        - "traefik.http.routers.{{service_name}}_{{ environment }}.rule=Host({{{domain}}) && PathPrefix(`/{{path_prefix}}`)"
+        - "traefik.http.routers.{{service_name}}_{{ environment }}.rule=Host(`{{domain}}`) && PathPrefix(`/{{path_prefix}}`)"
         - "traefik.http.routers.{{service_name}}_{{ environment }}.middlewares={{service_name}}_{{ environment }}-stripprefix"
         - "traefik.http.middlewares.{{service_name}}_{{ environment }}-stripprefix.stripprefix.prefixes=/{{path_prefix}}"
-        - "traefik.http.routers.{{service_name}}_{{ environment }}_https.rule=Host({{{domain}}) && PathPrefix(`/{{path_prefix}}/`)"
+        - "traefik.http.routers.{{service_name}}_{{ environment }}_https.rule=Host(`{{domain}}`) && PathPrefix(`/{{path_prefix}}/`)"
         - "traefik.http.routers.{{service_name}}_{{ environment }}_https.middlewares={{service_name}}_{{ environment }}_https_stripprefix"
         - "traefik.http.middlewares.{{service_name}}_{{ environment }}_https_stripprefix.stripprefix.prefixes=/{{path_prefix}}"
 
 {% else %}
-        - "traefik.http.routers.{{service_name}}_{{ environment }}.rule=Host({{{domain}})"
+        - "traefik.http.routers.{{service_name}}_{{ environment }}.rule=Host(`{{domain}}`)"
 {% endif %}
         # http
         - "traefik.http.routers.{{service_name}}_{{ environment }}.entrypoints=web"
@@ -115,7 +115,7 @@ services:
         # https
         - "traefik.http.routers.{{service_name}}_{{ environment }}_https.entrypoints=websecure"
         - "traefik.http.routers.{{service_name}}_{{ environment }}_https.tls=true"
-        - "traefik.http.routers.{{service_name}}_{{ environment }}_https.rule=Host({{{domain}})"
+        - "traefik.http.routers.{{service_name}}_{{ environment }}_https.rule=Host(`{{domain}}`)"
         - "traefik.http.routers.{{service_name}}_{{ environment }}.middlewares={{service_name}}_{{ environment }}_redirect_https"
         - "traefik.http.middlewares.{{service_name}}_{{ environment }}_https.redirectscheme.permanent=true"
         - "traefik.http.middlewares.{{service_name}}_{{ environment }}_https.redirectscheme.port=4400"
