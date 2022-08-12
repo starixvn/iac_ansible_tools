@@ -18,7 +18,7 @@ luminet_traefik_image_uat: lumhub.starixplay.com/kbt/base
 luminet_traefik_image_prod: registry.nexdev.net:5050/docker
 luminet_traefik_image_aws: hub.lumigame.com/base
 
-stack_name: proxy #traefik
+stack_name: traefik #traefik
 
 nexcel_cert_files:
 - fullchain.pem
