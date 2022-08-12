@@ -115,7 +115,10 @@ services:
         # https
         - "traefik.http.routers.{{service_name}}_{{ environment }}_https.entrypoints=websecure"
         - "traefik.http.routers.{{service_name}}_{{ environment }}_https.tls=true"
+        - "traefik.http.routers.{{service_name}}_{{ environment }}_https.rule=Host(`{{domain}}`)"
         - "traefik.http.routers.{{service_name}}_{{ environment }}.middlewares={{service_name}}_{{ environment }}_redirect_https"
+        - "traefik.http.middlewares.{{service_name}}_{{ environment }}_https.redirectscheme.permanent=true"
+        - "traefik.http.middlewares.{{service_name}}_{{ environment }}_https.redirectscheme.port=4400"
         - "traefik.http.middlewares.{{service_name}}_{{ environment }}_redirect_https.redirectscheme.scheme=https"
 {% endif %}
         - "traefik.http.services.{{service_name}}_{{ environment }}.loadbalancer.server.port={{item.port | default('5000')}}"
