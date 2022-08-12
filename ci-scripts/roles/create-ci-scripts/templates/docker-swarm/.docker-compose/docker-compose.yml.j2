@@ -95,10 +95,10 @@ services:
         max-size: 100m
     deploy:
       mode: replicated
-{% if traefik is defined and traefik == "true" %}
+{% if item.traefik is defined and item.traefik == "true" %}
       labels:
         - "traefik.enable=true"
-{% if path_prefix is defined %}
+{% if item.path_prefix is defined %}
         - "traefik.http.routers.{{service_name}}_{{ environment }}.rule=Host({{domain}}) && PathPrefix(`/{{path_prefix}}`)"
         - "traefik.http.routers.{{service_name}}_{{ environment }}.middlewares={{service_name}}_{{ environment }}-stripprefix"
         - "traefik.http.middlewares.{{service_name}}_{{ environment }}-stripprefix.stripprefix.prefixes=/{{path_prefix}}"
