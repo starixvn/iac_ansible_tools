@@ -38,11 +38,11 @@ services:
     deploy:
       labels: #{}
         - "traefik.enable=true"
-        - "traefik.http.routers.traefik.rule=Host(`{{dashboard_domain}}`)" # domain for dashboard
-        - "traefik.http.routers.traefik.entrypoints=websecure"
-        - "traefik.http.routers.traefik.tls=true"
-        - "traefik.http.services.traefik.loadbalancer.server.port=8080"
-        - "traefik.http.routers.traefik.middlewares=auth" # enable password auth
+        - "traefik.http.routers.proxy_traefik.rule=Host(`{{dashboard_domain}}`)" # domain for dashboard
+        - "traefik.http.routers.proxy_traefik.entrypoints=web"
+        - "traefik.http.routers.proxy_traefik.tls=true"
+        - "traefik.http.services.proxy_traefik.loadbalancer.server.port=8080"
+        - "traefik.http.routers.proxy_traefik.middlewares=auth" # enable password auth
         - "traefik.http.middlewares.auth.basicauth.users=admin:$$apr1$$Cxc/yICo$$fzbntEa9HlDGiDiLNVniz0" # substitute with your htpasswd string and escape dollar signs!
       placement:
         constraints:
