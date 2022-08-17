@@ -125,6 +125,11 @@ services:
 {% endif %}
 {% endif %}
         - "traefik.http.services.{{service_name}}_{{ environment }}.loadbalancer.server.port={{item.port | default('5000')}}"
+        ###healthcheck
+        - "traefik.http.services.{{service_name}}_{{ environment }}.loadbalancer.healthcheck.path={{item.healthcheck_path | default('')}}"
+        - "traefik.http.services.{{service_name}}_{{ environment }}.loadbalancer.healthcheck.port={{item.port | default('5000')}}"
+        - "traefik.http.services.{{service_name}}_{{ environment }}.loadbalancer.healthcheck.interval={{item.interval | default('2s')}}"
+        - "traefik.http.services.{{service_name}}_{{ environment }}.loadbalancer.healthcheck.timeout={{item.timeout | default('1s')}}"
 {% endif %}
       resources:
         limits:
