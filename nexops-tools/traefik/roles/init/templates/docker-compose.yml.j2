@@ -10,8 +10,8 @@ services:
       - --providers.docker=true
       - --providers.docker.swarmMode=true
       - --providers.docker.exposedbydefault=false
-      - --metrics.prometheus=true
-      - --metrics.prometheus.buckets=0.1,0.3,1.2,5.0
+      #- --metrics.prometheus=true
+      #- --metrics.prometheus.buckets=0.1,0.3,1.2,5.0
       - --providers.docker.watch
       - --entrypoints.web.address=:8800
       - --entrypoints.websecure.address=:4400
