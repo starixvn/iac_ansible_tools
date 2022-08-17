@@ -100,12 +100,12 @@ services:
       labels:
         - "traefik.enable=true"
 {% if item.path_prefix is defined %}
-        - "traefik.http.routers.{{service_name}}_{{ environment }}.rule=Host({{domains}}) && PathPrefix(`/{{path_prefix}}`)"
+        - "traefik.http.routers.{{service_name}}_{{ environment }}.rule=Host({{domains}}) && PathPrefix(`/{{item.path_prefix}}`)"
         - "traefik.http.routers.{{service_name}}_{{ environment }}.middlewares={{service_name}}_{{ environment }}-stripprefix"
-        - "traefik.http.middlewares.{{service_name}}_{{ environment }}-stripprefix.stripprefix.prefixes=/{{path_prefix}}"
-        - "traefik.http.routers.{{service_name}}_{{ environment }}_https.rule=Host({{domains}}) && PathPrefix(`/{{path_prefix}}/`)"
+        - "traefik.http.middlewares.{{service_name}}_{{ environment }}-stripprefix.stripprefix.prefixes=/{{item.path_prefix}}"
+        - "traefik.http.routers.{{service_name}}_{{ environment }}_https.rule=Host({{domains}}) && PathPrefix(`/{{item.path_prefix}}/`)"
         - "traefik.http.routers.{{service_name}}_{{ environment }}_https.middlewares={{service_name}}_{{ environment }}_https_stripprefix"
-        - "traefik.http.middlewares.{{service_name}}_{{ environment }}_https_stripprefix.stripprefix.prefixes=/{{path_prefix}}"
+        - "traefik.http.middlewares.{{service_name}}_{{ environment }}_https_stripprefix.stripprefix.prefixes=/{{item.path_prefix}}"
 
 {% else %}
         - "traefik.http.routers.{{service_name}}_{{ environment }}.rule=Host({{domains}})"

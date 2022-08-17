@@ -19,7 +19,6 @@
     dest: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.name | replace('-','_')}}/{{env | upper}}.docker-compose.yml
   vars:
     env: local
-    domain: "{{item.domain_local | default ('nodomain')}}"
   with_items: "{{services}}"
   become: yes
 
@@ -39,7 +38,6 @@
     dest: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.name | replace('-','_')}}/{{env | upper}}.docker-compose.yml
   vars:
     env: sit
-    domain: "{{item.domain_sit | default ('nodomain')}}"
   with_items: "{{services}}"
   become: yes
 
@@ -49,7 +47,6 @@
     dest: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.name | replace('-','_')}}/{{env | upper}}.docker-compose.yml
   vars:
     env: uat
-    domain: "{{item.domain_uat | default ('nodomain')}}"
   with_items: "{{services}}"
   become: yes
 
@@ -59,7 +56,6 @@
     dest: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.name | replace('-','_')}}/{{env | upper}}.docker-compose.yml
   vars:
     env: prod
-    domain: "{{item.domain_prod | default ('nodomain')}}"
   with_items: "{{services}}"
   become: yes
 
@@ -69,7 +65,6 @@
     dest: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.name | replace('-','_')}}/{{env | upper}}.docker-compose.yml
   vars:
     env: aws
-    domain: "{{item.domain_aws | default ('nodomain')}}"
   with_items: "{{services}}"
   become: yes
 
