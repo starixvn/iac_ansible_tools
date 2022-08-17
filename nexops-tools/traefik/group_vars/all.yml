@@ -91,6 +91,7 @@ luminet_ports_local:
   [
     { "published": 8800, "target": 8800, "mode": "ingress" },
     { "published": 4400, "target": 4400, "mode": "ingress" },
+    { "published": 8822, "target": 8822, "mode": "ingress" },
   ]
 
 luminet_ports_uat:

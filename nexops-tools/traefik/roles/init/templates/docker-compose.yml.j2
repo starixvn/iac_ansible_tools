@@ -15,6 +15,8 @@ services:
       - --providers.docker.watch
       - --entrypoints.web.address=:8800
       - --entrypoints.websecure.address=:4400
+      - --metrics.prometheus.entryPoint=metrics
+      - --entryPoints.metrics.address=:8822
       - --providers.file.directory=/etc/traefik/dynamic_conf
       - --accesslog
     
