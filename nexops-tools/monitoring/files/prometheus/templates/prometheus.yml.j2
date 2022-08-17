@@ -43,8 +43,6 @@ scrape_configs:
     metrics_path: '{{traefik.metric}}'
     static_configs:
       - targets: ['{{traefik.url}}']
-        labels:
-            service: '{{traefik.name}}'
 {% endfor %}
 {%endif%}
 {%if haproxys is defined%}
