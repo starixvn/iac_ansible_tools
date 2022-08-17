@@ -89,24 +89,24 @@ nexcel_ports_aws-nex3:
 
 luminet_ports_local:
   [
-    { "published": 8800, "target": 80, "mode": "ingress" },
-    { "published": 4400, "target": 443, "mode": "ingress" },
+    { "published": 8800, "target": 8800, "mode": "ingress" },
+    { "published": 4400, "target": 4400, "mode": "ingress" },
   ]
 
 luminet_ports_uat:
   [
-    { "published": 8800, "target": 80, "mode": "ingress" },
-    { "published": 4400, "target": 443, "mode": "ingress" },
+    { "published": 8800, "target": 8800, "mode": "ingress" },
+    { "published": 4400, "target": 4400, "mode": "ingress" },
   ]
 
 luminet_ports_prod:
   [
-    { "published": 8800, "target": 80, "mode": "ingress" },
-    { "published": 4400, "target": 443, "mode": "ingress" },
+    { "published": 8800, "target": 8800, "mode": "ingress" },
+    { "published": 4400, "target": 4400, "mode": "ingress" },
   ]
 
 luminet_ports_aws:
   [
-    { "published": 8800, "target": 80, "mode": "ingress" },
-    { "published": 4400, "target": 443, "mode": "ingress" },
+    { "published": 8800, "target": 8800, "mode": "ingress" },
+    { "published": 4400, "target": 4400, "mode": "ingress" },
   ]
