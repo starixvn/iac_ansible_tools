@@ -44,6 +44,16 @@ services:
         - "traefik.http.services.proxy_traefik.loadbalancer.server.port=8080"
         - "traefik.http.routers.proxy_traefik.middlewares=auth" # enable password auth
         - "traefik.http.middlewares.auth.basicauth.users=admin:$$apr1$$Cxc/yICo$$fzbntEa9HlDGiDiLNVniz0" # substitute with your htpasswd string and escape dollar signs!
+{% if env == "local"%}
+        # https
+        - "traefik.http.routers.proxy_traefik_https.service=api@internal"
+        - "traefik.http.routers.proxy_traefik_https.tls=true"
+        - "traefik.http.routers.proxy_traefik_https.rule=Host(`{{dashboard_domain}}`)"
+        - "traefik.http.routers.proxy_traefik.middlewares=proxy_traefik_redirect_https"
+        - "traefik.http.middlewares.proxy_traefik_redirect_https.redirectscheme.permanent=true"
+        - "traefik.http.middlewares.proxy_traefik_redirect_https.redirectscheme.port=4400"
+        - "traefik.http.middlewares.proxy_traefik_redirect_https.redirectscheme.scheme=https"
+{% endif %}
       placement:
         constraints:
           - node.labels.HAPROXY == yes
