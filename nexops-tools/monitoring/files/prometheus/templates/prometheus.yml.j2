@@ -35,7 +35,18 @@ scrape_configs:
       - names:
           - 'tasks.node-exporter'
         type: 'A'
-        port: 9100        
+        port: 9100
+{%if traefiks is defined%}
+{% for traefik in traefiks %}
+  - job_name: '{{traefik.name}}'
+    scrape_interval: '{{scrape_interval}}'
+    metrics_path: '{{traefik.metric}}'
+    static_configs:
+      - targets: ['{{traefik.url}}']
+        labels:
+            service: '{{traefik.name}}'
+{% endfor %}
+{%endif%}
 {%if haproxys is defined%}
 {% for haproxy in haproxys %}
   - job_name: '{{haproxy.name}}'
