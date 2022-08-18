@@ -59,7 +59,6 @@ include:
 {% endif %}
 
 {% else %}
-
 {% if unit_test is undefined or unit_test == true %}
   - project: "ci/common-ci"
     ref: rocketor
@@ -72,7 +71,11 @@ include:
     ref: rocketor
     file: "sonarqube/sonarqube.gitlab-ci.yml"  
 {%endif%}
-
+{% if frameworks is defined and "nodejs" in frameworks %}
+  - project: "ci/common-ci"
+    ref: rocketor
+    file: "integration-test/nodejs-integration-test.gitlab-ci.yml"
+{%endif%}
 {%endif%}
 {%endif%}
 {% if platform is undefined or platform == "linux" %}
