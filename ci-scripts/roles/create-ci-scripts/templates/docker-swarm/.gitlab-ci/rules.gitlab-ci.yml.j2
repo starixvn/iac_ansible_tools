@@ -9,6 +9,9 @@
 
 .if-deploy-{{rule_name}}-azure: &if-deploy-{{rule_name}}-azure
   if: '$CI_COMMIT_TAG =~ /^deploy-{{rule_name}}-azure\d*- */ && $DEPLOY_BY == "rocketor"'
+
+.if-deploy-{{rule_name}}-gc: &if-deploy-{{rule_name}}-gc
+  if: '$CI_COMMIT_TAG =~ /^deploy-{{rule_name}}-gc\d*- */ && $DEPLOY_BY == "rocketor"'
 {% endif %}
 
 .if-deploy-{{rule_name}}-sit: &if-deploy-{{rule_name}}-sit
@@ -42,6 +45,8 @@
       when: always
     - <<: *if-deploy-{{rule_name}}-azure
       when: always
+    - <<: *if-deploy-{{rule_name}}-gc
+      when: always
 {% endif %}
     - <<: *if-deploy-{{rule_name}}-sit
       when: always
@@ -60,6 +65,8 @@
     - <<: *if-deploy-{{rule_name}}-nexprod
       when: on_success
     - <<: *if-deploy-{{rule_name}}-azure
+      when: on_success
+    - <<: *if-deploy-{{rule_name}}-gc
       when: on_success
 {% endif %}
     - <<: *if-deploy-{{rule_name}}-sit
@@ -100,6 +107,18 @@
 .deploy:azure:{{service_name}}:manual:rules:
   rules:
     - <<: *if-deploy-{{rule_name}}-azure
+      when: manual
+    - when: never
+
+.deploy:gc:{{service_name}}:rules:
+  rules:
+    - <<: *if-deploy-{{rule_name}}-gc
+      when: on_success
+    - when: never
+
+.deploy:gc:{{service_name}}:manual:rules:
+  rules:
+    - <<: *if-deploy-{{rule_name}}-gc
       when: manual
     - when: never
 {% endif %}
