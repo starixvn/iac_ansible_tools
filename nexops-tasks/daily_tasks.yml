@@ -24,7 +24,7 @@
     - name: message "clean IISlog task is running.." {{env}}
       win_shell: |
         $info = "clean IISlog task is running.."
-        Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+        #Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
       ignore_errors: true
       tags:
         - iislog
@@ -48,7 +48,7 @@
     - name: message "End IISlog task is running.." {{env}}
       win_shell: |
         $info = "{{env}} - clean IISlog task has finished"
-        Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+        #Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
       ignore_errors: true
       tags:
         - iislog
