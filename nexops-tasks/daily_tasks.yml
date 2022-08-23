@@ -33,10 +33,10 @@
       win_shell: '{{ script_location }}\Tasks\Clean\del_iislogs.ps1 >> {{ script_location }}\Tasks\Clean\del_iislogs.ps1.txt chdir={{ script_location }}\Tasks\Clean'
       register: result1
       become: yes
-      become_method: runas
-      become_user: "{{user_id}}"
-      vars:
-        ansible_become_password: "{{pass_id}}"
+      #become_method: runas
+      #become_user: "{{user_id}}"
+      #vars:
+      #  ansible_become_password: "{{pass_id}}"
       tags:
         - iislog
 

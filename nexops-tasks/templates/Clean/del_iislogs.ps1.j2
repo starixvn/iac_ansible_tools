@@ -44,7 +44,7 @@ if (Ping($ComputerName) -eq $true -and if (WMIConnectionTest($ComputerName) -eq 
 	#####
 	$info = "Cleanup of log files older than $($(Get-Date).AddDays((-1 * $DaysOfHistoryToKeep))) on $ComputerName"
 	Write-Output "$info"
-	#Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+	Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
 	#####
 	    $WebLogFilesLocation = GetWebLogFilesLocation($computername) 
 	    $W3SVCList = gci $WebLogFilesLocation | where {$_.mode -match "d"} 
@@ -72,7 +72,7 @@ if (Ping($ComputerName) -eq $true -and if (WMIConnectionTest($ComputerName) -eq 
 		#####
 		$info = "-->Done cleaning older IIS Logs on $ComputerName"
 		Write-Output "$info"
-		#Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+		Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
 		#####
 	} 
 }
