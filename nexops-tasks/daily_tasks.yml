@@ -32,7 +32,7 @@
     - name: Executing script to delete old IIS logs - DaysOfHistoryToKeep {{DaysOfHistoryToKeep}} day
       win_shell: '{{ script_location }}\Tasks\Clean\del_iislogs.ps1 >> {{ script_location }}\Tasks\Clean\del_iislogs.ps1.txt chdir={{ script_location }}\Tasks\Clean'
       register: result1
-      become: yes
+      #become: yes
       #become_method: runas
       #become_user: "{{user_id}}"
       #vars:
