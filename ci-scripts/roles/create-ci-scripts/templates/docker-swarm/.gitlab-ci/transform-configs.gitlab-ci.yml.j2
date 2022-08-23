@@ -32,6 +32,18 @@ transform_config_{{ service_name }}_nexprod:
     - .base_transform_config_{{ service_name }}
     - .env:nexprod
     - .deploy:nexprod:{{service_name}}:rules
+
+transform_config_{{ service_name }}_azure:
+  extends: 
+    - .base_transform_config_{{ service_name }}
+    - .env:azure
+    - .deploy:azure:{{service_name}}:rules
+
+transform_config_{{ service_name }}_gc:
+  extends: 
+    - .base_transform_config_{{ service_name }}
+    - .env:gc
+    - .deploy:gc:{{service_name}}:rules
 {% endif %}
 
 transform_config_{{ service_name }}_sit:
