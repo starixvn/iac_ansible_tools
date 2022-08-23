@@ -24,7 +24,7 @@
     - name: message "clean IISlog task is running.." {{env}}
       win_shell: |
         $info = "clean IISlog task is running.."
-        #Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+        Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
       ignore_errors: true
       tags:
         - iislog
@@ -33,10 +33,10 @@
       win_shell: '{{ script_location }}\Tasks\Clean\del_iislogs.ps1 >> {{ script_location }}\Tasks\Clean\del_iislogs.ps1.txt chdir={{ script_location }}\Tasks\Clean'
       register: result1
       become: yes
-      become_method: runas
-      become_user: "{{user_id}}"
-      vars:
-        ansible_become_password: "{{pass_id}}"
+      #become_method: runas
+      #become_user: "{{user_id}}"
+      #vars:
+      #  ansible_become_password: "{{pass_id}}"
       tags:
         - iislog
 
@@ -48,7 +48,7 @@
     - name: message "End IISlog task is running.." {{env}}
       win_shell: |
         $info = "{{env}} - clean IISlog task has finished"
-        #Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
+        Invoke-RestMethod "{{webapi_skynex}}/bot_api_skype.php?message=$info&API={{API}}&skypeid={{skypeid}}"
       ignore_errors: true
       tags:
         - iislog
