@@ -90,7 +90,6 @@ build_image_{{ service_name }}_azure:
   dependencies:
     - transform_config_{{ service_name }}_azure
 {% endif %}
-{% endif %}
 #gc
 build_image_{{ service_name }}_gc:
   extends:
