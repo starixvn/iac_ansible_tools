@@ -112,3 +112,11 @@
   with_items: '{{ services }}'
   become: yes
   when: team_name != "nex3" and team_name != "pentagon"
+
+- name: Build deploy-gc.gitlab-ci.yml for each service
+  template:
+    src: templates/docker-swarm/.gitlab-ci/deploy-gc.gitlab-ci.yml.j2
+    dest: /var/ci-scripts/{{repo_name}}/.gitlab-ci/{{item.name | replace('-','_')}}/deploy-gc.gitlab-ci.yml
+  with_items: '{{ services }}'
+  become: yes
+  when: team_name != "nex3" and team_name != "pentagon"

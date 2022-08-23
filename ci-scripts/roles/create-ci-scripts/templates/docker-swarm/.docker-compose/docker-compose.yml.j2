@@ -64,7 +64,7 @@ services:
 {% endif %}
 {% endif %}
 {% if team_name != "nex3" and team_name != "pentagon" %}
-{% if env == "local" or env == "nexprod" or env == "azure" or env == "aws" %}
+{% if env == "local" or env == "nexprod" or env == "azure" or env == "gc" or env == "aws" %}
     image: hub.nexdev.net/{{team_name}}/{{project_name}}_{{service_name}}:{{environment}}-latest
 {% else %}
     image: nexhub.starixplay.com/kbt/{{team_name}}/{{project_name}}_{{service_name}}:{{environment}}-latest
@@ -162,6 +162,14 @@ services:
       replicas: {{item.number_of_replicas_azure | default('1') }}
 {% endif %}
 {% endif %}
+{% if env == "gc"%}
+#Google Cloud
+{% if item.number_of_replicas_gc is defined and item.number_of_replicas_gc > 2 %}
+      replicas: 2
+{% else %}
+      replicas: {{item.number_of_replicas_gc | default('1') }}
+{% endif %}
+{% endif %}
 {% if env == "uat"%}
 {% if item.number_of_replicas_uat is defined and item.number_of_replicas_uat > 2 %}
       replicas: 2
@@ -222,6 +230,11 @@ services:
 {% endif %}
 {% if env == "azure"%}
 {% if item.port_azure is undefined %}
+      endpoint_mode: dnsrr
+{% endif %}
+{% endif %}
+{% if env == "gc"%}
+{% if item.port_gc is undefined %}
       endpoint_mode: dnsrr
 {% endif %}
 {% endif %}
@@ -290,6 +303,10 @@ services:
     ports:
       - {{item.port_azure}}:{{item.port | default('5000')}}
 {% endif %}
+{% if env == "gc" and item.port_gc is defined %}
+    ports:
+      - {{item.port_gc}}:{{item.port | default('5000')}}
+{% endif %}
 {% if item.disable_health_check is undefined or item.disable_health_check == false %}
 {% if item.framework is defined and item.framework == "dotnet" %}
     healthcheck:
@@ -304,7 +321,7 @@ services:
       - SYS_PTRACE
 {% endif %}
     labels:
-{% if env == "prod" or env == "aws" or env == "azure" %}
+{% if env == "prod" or env == "aws" or env == "azure" or env == "gc" %}
       - "io.portainer.accesscontrol.teams={{team_name | upper}}_LEADERS"
 {% else %}
       - "io.portainer.accesscontrol.teams={{team_name | upper}}"
