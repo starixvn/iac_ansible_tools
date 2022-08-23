@@ -16,6 +16,7 @@ nexcel_network_version_uat: ''
 nexcel_network_version_prod: ''
 nexcel_network_version_aws: ''
 nexcel_network_version_azure: ''
+nexcel_network_version_gc: ''
 
 registry_team_group_id: [
   { 

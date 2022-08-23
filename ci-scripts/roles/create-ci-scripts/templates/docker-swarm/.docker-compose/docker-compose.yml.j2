@@ -344,7 +344,7 @@ volumes:
        device: {{gluster_path}}{{volume.src}}/{{environment}}
 {% endif %}
     labels:
-{% if env == "prod" or env == "aws" or env == "azure" %}
+{% if env == "prod" or env == "aws" or env == "azure" or env == "gc"%}
       - "io.portainer.accesscontrol.teams={{team_name | upper}}_LEADERS"
 {% else %}
       - "io.portainer.accesscontrol.teams={{team_name | upper}}"
