@@ -63,8 +63,6 @@ scan_image_{{ service_name }}_azure:
 {% endif %}
     - .env:azure
     - .deploy:azure:{{service_name}}:rules
-{% endif %}
-####
 ####GC
 scan_config_{{ service_name }}_gc:
   extends:
