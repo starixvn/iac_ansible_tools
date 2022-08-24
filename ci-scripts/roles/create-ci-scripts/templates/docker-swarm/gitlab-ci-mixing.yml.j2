@@ -13,3 +13,4 @@ include:
   - .gitlab-ci/{{service.name | replace('-','_') }}/deploy-vars.gitlab-ci.yml
   - .gitlab-ci/{{service.name | replace('-','_') }}/rules.gitlab-ci.yml
   - .gitlab-ci/{{service.name | replace('-','_') }}/deploy.gitlab-ci.yml
+{%endfor%}
