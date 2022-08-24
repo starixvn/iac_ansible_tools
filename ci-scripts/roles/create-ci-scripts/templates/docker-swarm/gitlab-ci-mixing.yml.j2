@@ -12,14 +12,4 @@ include:
 {%endif%}
   - .gitlab-ci/{{service.name | replace('-','_') }}/deploy-vars.gitlab-ci.yml
   - .gitlab-ci/{{service.name | replace('-','_') }}/rules.gitlab-ci.yml
-  - .gitlab-ci/{{service.name | replace('-','_') }}/deploy-local.gitlab-ci.yml
-{% if team_name != 'pentagon' and team_name != 'nex3' %}
-  - .gitlab-ci/{{service.name | replace('-','_') }}/deploy-nexprod.gitlab-ci.yml
-  - .gitlab-ci/{{service.name | replace('-','_') }}/deploy-azure.gitlab-ci.yml
-  - .gitlab-ci/{{service.name | replace('-','_') }}/deploy-gc.gitlab-ci.yml
-{%endif%}
-  - .gitlab-ci/{{service.name | replace('-','_') }}/deploy-sit.gitlab-ci.yml
-  - .gitlab-ci/{{service.name | replace('-','_') }}/deploy-uat.gitlab-ci.yml
-  - .gitlab-ci/{{service.name | replace('-','_') }}/deploy-prod.gitlab-ci.yml
-  - .gitlab-ci/{{service.name | replace('-','_') }}/deploy-aws.gitlab-ci.yml
-{% endfor %}
+  - .gitlab-ci/{{service.name | replace('-','_') }}/deploy.gitlab-ci.yml

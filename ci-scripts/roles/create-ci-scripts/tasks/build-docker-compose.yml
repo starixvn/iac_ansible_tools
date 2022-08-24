@@ -1,9 +1,8 @@
 - name: Delete .docker-compose directory for each service
   file:
-    path: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.name | replace('-','_')}}
+    path: /var/ci-scripts/{{repo_name}}/.docker-compose
     state: absent    
   become: yes
-  with_items: "{{services}}"
 
 - name: Create .docker-compose directory for each service
   file:
