@@ -1,7 +1,7 @@
 version: '2.3'
 services:
   log:
-    image: registry.nexdev.net:5050/docker/goharbor/harbor-log:v2.5.0
+    image: goharbor/harbor-log:v2.5.0
     container_name: harbor-log
     restart: always
     cap_drop:
@@ -24,7 +24,7 @@ services:
     networks:
       - harbor
   registry:
-    image: registry.nexdev.net:5050/docker/goharbor/registry-photon:v2.5.0
+    image: goharbor/registry-photon:v2.5.0
     container_name: registry
     restart: always
     cap_drop:
@@ -52,7 +52,7 @@ services:
         syslog-address: "tcp://localhost:1514"
         tag: "registry"
   registryctl:
-    image: registry.nexdev.net:5050/docker/goharbor/harbor-registryctl:v2.5.0
+    image: goharbor/harbor-registryctl:v2.5.0
     container_name: registryctl
     env_file:
       - ./common/config/registryctl/env
@@ -82,7 +82,7 @@ services:
         syslog-address: "tcp://localhost:1514"
         tag: "registryctl"
   postgresql:
-    image: registry.nexdev.net:5050/docker/goharbor/harbor-db:v2.5.0
+    image: goharbor/harbor-db:v2.5.0
     container_name: harbor-db
     restart: always
     cap_drop:
@@ -107,7 +107,7 @@ services:
         tag: "postgresql"
     shm_size: '1gb'
   core:
-    image: registry.nexdev.net:5050/docker/goharbor/harbor-core:v2.5.0
+    image: goharbor/harbor-core:v2.5.0
     container_name: harbor-core
     env_file:
       - ./common/config/core/env
@@ -146,7 +146,7 @@ services:
         syslog-address: "tcp://localhost:1514"
         tag: "core"
   portal:
-    image: registry.nexdev.net:5050/docker/goharbor/harbor-portal:v2.5.0
+    image: goharbor/harbor-portal:v2.5.0
     container_name: harbor-portal
     restart: always
     cap_drop:
@@ -171,7 +171,7 @@ services:
         tag: "portal"
 
   jobservice:
-    image: registry.nexdev.net:5050/docker/goharbor/harbor-jobservice:v2.5.0
+    image: goharbor/harbor-jobservice:v2.5.0
     container_name: harbor-jobservice
     env_file:
       - ./common/config/jobservice/env
@@ -200,7 +200,7 @@ services:
         syslog-address: "tcp://localhost:1514"
         tag: "jobservice"
   redis:
-    image: registry.nexdev.net:5050/docker/goharbor/redis-photon:v2.5.0
+    image: goharbor/redis-photon:v2.5.0
     container_name: redis
     restart: always
     cap_drop:
@@ -221,7 +221,7 @@ services:
         syslog-address: "tcp://localhost:1514"
         tag: "redis"
   proxy:
-    image: registry.nexdev.net:5050/docker/goharbor/nginx-photon:v2.5.0
+    image: goharbor/nginx-photon:v2.5.0
     container_name: nginx
     restart: always
     cap_drop:
@@ -252,7 +252,7 @@ services:
         tag: "proxy"
   trivy-adapter:
     container_name: trivy-adapter
-    image: registry.nexdev.net:5050/docker/goharbor/trivy-adapter-photon:v2.5.0
+    image: goharbor/trivy-adapter-photon:v2.5.0
     restart: always
     cap_drop:
       - ALL

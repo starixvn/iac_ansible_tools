@@ -6,16 +6,32 @@
   with_items:
     - docker-compose.yml
 
+- name: Copy docker-compose cfg - Internal
+  template:
+    src: 'templates/{{ item }}.j2'
+    dest: '{{working_path}}/docker-compose.yml'
+  become: yes
+  when: internal is defined and internal =='yes'
+  with_items:
+    - docker-compose_internal.yml
+
 - name: Copy trivy configs
   copy:
     src: "files/config/trivy-adapter"
     dest: "{{working_path}}/common/config/"
   become: yes
 
-- name: Build up and run container
+- name: Login Internal Registry
   shell: |
     cd {{working_path}}
     docker login --username=gitlab-ci --password=Vv3AQX-aaSZ3M6PtvyD4 registry.nexdev.net:5050
+  become: yes
+  when: internal is defined and internal =='yes'
+  #run_once: true
+
+- name: Build up and run container
+  shell: |
+    cd {{working_path}}
     docker-compose pull && docker-compose up -d
   become: yes
   #run_once: true

@@ -27,15 +27,26 @@
     - install.sh
     - prepare
 
+- name: Copy harbor template cfg - internal
+  template:
+    src: 'templates/{{ item }}'
+    dest: '{{working_path}}/prepare'
+  become: yes
+  when: internal is defined and internal =='yes'
+  with_items:
+    - prepare_internal
+
 - name: Build up and run container
   #when: inventory_hostname in groups['swarm_managers']
   shell: |
     docker login --username=gitlab-ci --password=Vv3AQX-aaSZ3M6PtvyD4 registry.nexdev.net:5050
-    cd {{working_path}} && chmod 777 common.sh install.sh prepare
   become: yes
+  when: internal is defined and internal =='yes'
 
 - name: Execute the script Init install.sh
-  shell: cd {{ working_path }} && /bin/bash install.sh --with-trivy
+  shell: |
+    cd {{working_path}} && chmod 777 common.sh install.sh prepare
+    cd {{ working_path }} && /bin/bash install.sh --with-trivy
   register: console
   become: yes
 
