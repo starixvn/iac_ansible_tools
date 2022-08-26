@@ -34,6 +34,20 @@
 - debug:
     msg: '{{ proxy_cfg.stdout }}'
 
+- name: Login registry NEXCEL root
+  shell: docker login --username={{item.user}} --password={{item.pass}} {{item.url}}
+  become: yes
+  with_items:
+    - "{{nexcel_local_registry_login}}"
+  when: org == "nexcel" and env == "local" or org == "nexcel" and env == "nexprod"
+
+- name: Login registry NEXCEL  root
+  shell: docker login --username={{item.user}} --password={{item.pass}} {{item.url}}
+  become: yes
+  with_items:
+    - "{{nexcel_kbt_registry_login}}"
+  when: org == "nexcel" and env == "prod" or org == "nexcel" and env == "uat" or org == "nexcel" and env == "sit"
+
 - name: Login registry NEXCEL
   shell: docker login --username={{item.user}} --password={{item.pass}} {{item.url}}
   with_items:
@@ -46,7 +60,28 @@
     - "{{nexcel_kbt_registry_login}}"
   when: org == "nexcel" and env == "prod" or org == "nexcel" and env == "uat" or org == "nexcel" and env == "sit"
 ### LUMI
-- name: Login registry LUMI
+- name: Login registry LUMI  root
+  shell: docker login --username={{item.user}} --password={{item.pass}} {{item.url}}
+  become: yes
+  with_items:
+    - "{{luminet_local_registry_login}}"
+  when: org == "luminet" and env == "local"
+
+- name: Login registry LUMI  root
+  shell: docker login --username={{item.user}} --password={{item.pass}} {{item.url}}
+  become: yes
+  with_items:
+    - "{{luminet_kbt_registry_login}}"
+  when: org == "luminet" and env == "prod" or org == "luminet" and env == "uat" or org == "luminet" and env == "sit"
+
+- name: Login registry LUMI  root
+  shell: docker login --username={{item.user}} --password={{item.pass}} {{item.url}}
+  become: yes
+  with_items:
+    - "{{luminet_kbt_registry_login}}"
+  when: org_nex3 is defined and org_nex3 == "luminet"
+
+- name: Login registry LUMI 
   shell: docker login --username={{item.user}} --password={{item.pass}} {{item.url}}
   with_items:
     - "{{luminet_local_registry_login}}"
