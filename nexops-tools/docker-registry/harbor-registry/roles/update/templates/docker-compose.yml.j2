@@ -19,9 +19,6 @@ services:
       - type: bind
         source: ./common/config/log/rsyslog_docker.conf
         target: /etc/rsyslog.d/rsyslog_docker.conf
-    logging:
-      options:
-        max-size: 100m
     ports:
       - 127.0.0.1:1514:10514
     networks:
@@ -54,7 +51,6 @@ services:
       options:
         syslog-address: "tcp://localhost:1514"
         tag: "registry"
-        max-size: 100m
   registryctl:
     image: goharbor/harbor-registryctl:v2.5.0
     container_name: registryctl
@@ -85,7 +81,6 @@ services:
       options:
         syslog-address: "tcp://localhost:1514"
         tag: "registryctl"
-        max-size: 100m
   postgresql:
     image: goharbor/harbor-db:v2.5.0
     container_name: harbor-db
@@ -110,7 +105,6 @@ services:
       options:
         syslog-address: "tcp://localhost:1514"
         tag: "postgresql"
-        max-size: 100m
     shm_size: '1gb'
   core:
     image: goharbor/harbor-core:v2.5.0
@@ -151,7 +145,6 @@ services:
       options:
         syslog-address: "tcp://localhost:1514"
         tag: "core"
-        max-size: 100m
   portal:
     image: goharbor/harbor-portal:v2.5.0
     container_name: harbor-portal
@@ -176,7 +169,6 @@ services:
       options:
         syslog-address: "tcp://localhost:1514"
         tag: "portal"
-        max-size: 100m
 
   jobservice:
     image: goharbor/harbor-jobservice:v2.5.0
@@ -207,7 +199,6 @@ services:
       options:
         syslog-address: "tcp://localhost:1514"
         tag: "jobservice"
-        max-size: 100m
   redis:
     image: goharbor/redis-photon:v2.5.0
     container_name: redis
@@ -229,7 +220,6 @@ services:
       options:
         syslog-address: "tcp://localhost:1514"
         tag: "redis"
-        max-size: 100m
   proxy:
     image: goharbor/nginx-photon:v2.5.0
     container_name: nginx
@@ -260,7 +250,6 @@ services:
       options:
         syslog-address: "tcp://localhost:1514"
         tag: "proxy"
-        max-size: 100m
   trivy-adapter:
     container_name: trivy-adapter
     image: goharbor/trivy-adapter-photon:v2.5.0
@@ -287,7 +276,6 @@ services:
       options:
         syslog-address: "tcp://localhost:1514"
         tag: "trivy-adapter"
-        max-size: 100m
     env_file:
       ./common/config/trivy-adapter/env
 networks:
