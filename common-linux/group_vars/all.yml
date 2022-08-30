@@ -28,6 +28,7 @@ nexcel_kbt_registry_login:
 - url: "lumhub.starixplay.com"
   user: "gitlab-ci"
   pass: "H5nF5ywy262wt881ZWpq"
+  
 
 ##### LUMI
 luminet_local_registry_login:

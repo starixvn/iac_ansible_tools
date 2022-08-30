@@ -46,13 +46,13 @@
   become: yes
   with_items:
     - "{{nexcel_kbt_registry_login}}"
-  when: org == "nexcel" and env == "prod" or org == "nexcel" and env == "uat" or org == "nexcel" and env == "sit"
+  when: org == "nexcel" and env == "prod" or org == "nexcel" and env == "uat" or org == "nexcel" and env == "sit" or org == "nexcel" and env == "prod-alpha" or org == "nexcel" and env == "prod-fps"
 
 - name: Login registry NEXCEL
   shell: docker login --username={{item.user}} --password={{item.pass}} {{item.url}}
   with_items:
     - "{{nexcel_local_registry_login}}"
-  when: org == "nexcel" and env == "local" or org == "nexcel" and env == "nexprod"
+  when: org == "nexcel" and env == "local" or org == "nexcel" and env == "nexprod" or org == "nexcel" and env == "gc" or org == "nexcel" and env == "aws"
 
 - name: Login registry NEXCEL
   shell: docker login --username={{item.user}} --password={{item.pass}} {{item.url}}
