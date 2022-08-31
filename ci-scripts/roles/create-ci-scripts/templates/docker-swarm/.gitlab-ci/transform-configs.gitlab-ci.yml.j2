@@ -33,17 +33,30 @@ transform_config_{{ service_name }}_nexprod:
     - .env:nexprod
     - .deploy:nexprod:{{service_name}}:rules
 
-transform_config_{{ service_name }}_azure:
+transform_config_{{ service_name }}_aws2:
   extends: 
     - .base_transform_config_{{ service_name }}
-    - .env:azure
-    - .deploy:azure:{{service_name}}:rules
+    - .env:aws2
+    - .deploy:aws2:{{service_name}}:rules
 
 transform_config_{{ service_name }}_gc:
   extends: 
     - .base_transform_config_{{ service_name }}
     - .env:gc
     - .deploy:gc:{{service_name}}:rules
+
+transform_config_{{ service_name }}_prod-alpha:
+  extends: 
+    - .base_transform_config_{{ service_name }}
+    - .env:prod-alpha
+    - .deploy:prod-alpha:{{service_name}}:rules
+
+transform_config_{{ service_name }}_prod-fps:
+  extends: 
+    - .base_transform_config_{{ service_name }}
+    - .env:prod-fps
+    - .deploy:prod-fps:{{service_name}}:rules
+
 {% endif %}
 
 transform_config_{{ service_name }}_sit:
