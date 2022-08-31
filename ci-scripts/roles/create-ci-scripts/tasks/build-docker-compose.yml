@@ -72,7 +72,7 @@
     src: templates/docker-swarm/.docker-compose/docker-compose.yml.j2
     dest: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.name | replace('-','_')}}/{{env | upper}}.docker-compose.yml
   vars:
-    env: 'prod-alpha'
+    env: prod_alpha
   with_items: "{{services}}"
   become: yes
   when: team_name != "nex3" and team_name != "pentagon"
@@ -82,7 +82,7 @@
     src: templates/docker-swarm/.docker-compose/docker-compose.yml.j2
     dest: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.name | replace('-','_')}}/{{env | upper}}.docker-compose.yml
   vars:
-    env: 'prod-fps'
+    env: prod_fps
   with_items: "{{services}}"
   become: yes
   when: team_name != "nex3" and team_name != "pentagon"

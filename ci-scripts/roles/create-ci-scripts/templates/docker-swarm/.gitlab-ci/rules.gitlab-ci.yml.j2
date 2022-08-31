@@ -13,11 +13,11 @@
 .if-deploy-{{rule_name}}-gc: &if-deploy-{{rule_name}}-gc
   if: '$CI_COMMIT_TAG =~ /^deploy-{{rule_name}}-gc\d*- */ && $DEPLOY_BY == "rocketor"'
 
-.if-deploy-{{rule_name}}-prod-alpha: &if-deploy-{{rule_name}}-prod-alpha
-  if: '$CI_COMMIT_TAG =~ /^deploy-{{rule_name}}-prod-alpha\d*- */ && $DEPLOY_BY == "rocketor"'
+.if-deploy-{{rule_name}}-prod_alpha: &if-deploy-{{rule_name}}-prod_alpha
+  if: '$CI_COMMIT_TAG =~ /^deploy-{{rule_name}}-prod_alpha\d*- */ && $DEPLOY_BY == "rocketor"'
 
-.if-deploy-{{rule_name}}-prod-fps: &if-deploy-{{rule_name}}-prod-fps
-  if: '$CI_COMMIT_TAG =~ /^deploy-{{rule_name}}-prod-fps\d*- */ && $DEPLOY_BY == "rocketor"'
+.if-deploy-{{rule_name}}-prod_fps: &if-deploy-{{rule_name}}-prod_fps
+  if: '$CI_COMMIT_TAG =~ /^deploy-{{rule_name}}-prod_fps\d*- */ && $DEPLOY_BY == "rocketor"'
 
 {% endif %}
 
@@ -54,9 +54,9 @@
       when: always
     - <<: *if-deploy-{{rule_name}}-gc
       when: always
-    - <<: *if-deploy-{{rule_name}}-prod-fps
+    - <<: *if-deploy-{{rule_name}}-prod_fps
       when: always
-    - <<: *if-deploy-{{rule_name}}-prod-alpha
+    - <<: *if-deploy-{{rule_name}}-prod_alpha
       when: always  
 {% endif %}
     - <<: *if-deploy-{{rule_name}}-sit
@@ -79,9 +79,9 @@
       when: on_success
     - <<: *if-deploy-{{rule_name}}-gc
       when: on_success
-    - <<: *if-deploy-{{rule_name}}-prod-alpha
+    - <<: *if-deploy-{{rule_name}}-prod_alpha
       when: on_success
-    - <<: *if-deploy-{{rule_name}}-prod-fps
+    - <<: *if-deploy-{{rule_name}}-prod_fps
       when: on_success
 {% endif %}
     - <<: *if-deploy-{{rule_name}}-sit
@@ -137,27 +137,27 @@
       when: manual
     - when: never
 
-.deploy:prod-fps:{{service_name}}:rules:
+.deploy:prod_fps:{{service_name}}:rules:
   rules:
-    - <<: *if-deploy-{{rule_name}}-prod-fps
+    - <<: *if-deploy-{{rule_name}}-prod_fps
       when: on_success
     - when: never
 
-.deploy:prod-fps:{{service_name}}:manual:rules:
+.deploy:prod_fps:{{service_name}}:manual:rules:
   rules:
-    - <<: *if-deploy-{{rule_name}}-prod-fps
+    - <<: *if-deploy-{{rule_name}}-prod_fps
       when: manual
     - when: never
 
-.deploy:prod-alpha:{{service_name}}:rules:
+.deploy:prod_alpha:{{service_name}}:rules:
   rules:
-    - <<: *if-deploy-{{rule_name}}-prod-alpha
+    - <<: *if-deploy-{{rule_name}}-prod_alpha
       when: on_success
     - when: never
 
-.deploy:prod-alpha:{{service_name}}:manual:rules:
+.deploy:prod_alpha:{{service_name}}:manual:rules:
   rules:
-    - <<: *if-deploy-{{rule_name}}-prod-alpha
+    - <<: *if-deploy-{{rule_name}}-prod_alpha
       when: manual
     - when: never
 

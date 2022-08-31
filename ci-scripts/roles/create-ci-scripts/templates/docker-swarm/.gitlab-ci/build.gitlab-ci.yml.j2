@@ -97,8 +97,8 @@ build_image_{{ service_name }}_gc:
   dependencies:
     - transform_config_{{ service_name }}_gc
 {% endif %}
-#prod-alpha
-build_image_{{ service_name }}_prod-alpha:
+#prod_alpha
+build_image_{{ service_name }}_prod_alpha:
   extends:
     - .deploy_vars_{{ service_name }}
 {% if item.multi_stage is undefined or item.multi_stage == false %}
@@ -109,12 +109,12 @@ build_image_{{ service_name }}_prod-alpha:
     - .env:gc
     - .deploy:gc:{{service_name}}:rules
 {% if transform_config is defined and transform_config == true %}  
-  needs: ['transform_config_{{ service_name }}_prod-alpha']
+  needs: ['transform_config_{{ service_name }}_prod_alpha']
   dependencies:
-    - transform_config_{{ service_name }}_prod-alpha
+    - transform_config_{{ service_name }}_prod_alpha
 {% endif %}
-#prod-fps
-build_image_{{ service_name }}_prod-fps:
+#prod_fps
+build_image_{{ service_name }}_prod_fps:
   extends:
     - .deploy_vars_{{ service_name }}
 {% if item.multi_stage is undefined or item.multi_stage == false %}
@@ -126,9 +126,9 @@ build_image_{{ service_name }}_prod-fps:
     - .deploy:gc:{{service_name}}:rules
 
 {% if transform_config is defined and transform_config == true %}  
-  needs: ['transform_config_{{ service_name }}_prod-fps']
+  needs: ['transform_config_{{ service_name }}_prod_fps']
   dependencies:
-    - transform_config_{{ service_name }}_prod-fps
+    - transform_config_{{ service_name }}_prod_fps
 {% endif %}
 
 {% endif %}

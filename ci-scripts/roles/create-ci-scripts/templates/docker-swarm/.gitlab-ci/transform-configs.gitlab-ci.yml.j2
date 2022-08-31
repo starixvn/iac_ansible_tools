@@ -45,11 +45,11 @@ transform_config_{{ service_name }}_gc:
     - .env:gc
     - .deploy:gc:{{service_name}}:rules
 
-transform_config_{{ service_name }}_prod-alpha:
+transform_config_{{ service_name }}_prod_alpha:
   extends: 
     - .base_transform_config_{{ service_name }}
-    - .env:prod-alpha
-    - .deploy:prod-alpha:{{service_name}}:rules
+    - .env:prod_alpha
+    - .deploy:prod_alpha:{{service_name}}:rules
 
 transform_config_{{ service_name }}_prod-fps:
   extends: 
