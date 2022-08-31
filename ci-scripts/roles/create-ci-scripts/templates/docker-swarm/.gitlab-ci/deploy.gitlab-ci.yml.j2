@@ -1,7 +1,6 @@
 {% set service_name = project_name ~ '_' ~ item.name | replace('-','_') %}
 
 #LOCAL
-{% if item.platform is undefined or item.platform == "linux" %}
 post_build_{{service_name}}_local:
   extends:
     - .deploy_vars_{{service_name}}
@@ -12,7 +11,6 @@ post_build_{{service_name}}_local:
   needs: ['scan_image_{{service_name}}']
 {% else %}
   needs: ['scan_image_{{service_name}}_local']
-{% endif %}
 {% endif %}
 
 deploy_{{service_name}}_local:
