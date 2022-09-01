@@ -1,7 +1,6 @@
 {% set service_name = project_name ~ '_' ~ item.name | replace('-','_') %}
 
 #LOCAL
-{% if item.platform is undefined or item.platform == "linux" %}
 post_build_{{service_name}}_local:
   extends:
     - .deploy_vars_{{service_name}}
@@ -12,7 +11,6 @@ post_build_{{service_name}}_local:
   needs: ['scan_image_{{service_name}}']
 {% else %}
   needs: ['scan_image_{{service_name}}_local']
-{% endif %}
 {% endif %}
 
 deploy_{{service_name}}_local:
@@ -27,8 +25,8 @@ deploy_{{service_name}}_local:
 {% endif %}
 
 {% if team_name != "nex3" and team_name != "pentagon" %}
-#NEXPROD
 {% if item.platform is undefined or item.platform == "linux" %}
+#NEXPROD
 post_build_{{service_name}}_nexprod:
   extends:
     - .deploy_vars_{{service_name}}
@@ -40,20 +38,96 @@ post_build_{{service_name}}_nexprod:
 {% else %}
   needs: ['scan_image_{{service_name}}_nexprod']
 {% endif %}
-{% endif %}
 
 deploy_{{service_name}}_nexprod:
   extends:
     - .deploy_vars_{{service_name}}
     - .deploy:nexprod:base:swarm:stack
     - .deploy:nexprod:{{service_name}}:rules
-{% if item.platform is undefined or item.platform == "linux" %}
   needs: ['post_build_{{service_name}}_nexprod']
+
+#aws2
+post_build_{{service_name}}_aws2:
+  extends:
+    - .deploy_vars_{{service_name}}
+    - .post_build
+    - .env:aws2
+    - .deploy:aws2:{{service_name}}:rules
+{% if item.multiple_image_env is undefined or item.multiple_image_env == false %}
+  needs: ['scan_image_{{service_name}}']
 {% else %}
-  needs: ['build_image_{{service_name}}_nexprod']
-{% endif %}
+  needs: ['scan_image_{{service_name}}_aws2']
 {% endif %}
 
+deploy_{{service_name}}_aws2:
+  extends:
+    - .deploy_vars_{{service_name}}
+    - .deploy:aws2:base:swarm:stack
+    - .deploy:aws2:{{service_name}}:rules
+  needs: ['post_build_{{service_name}}_aws2']
+
+#gc
+post_build_{{service_name}}_gc:
+  extends:
+    - .deploy_vars_{{service_name}}
+    - .post_build
+    - .env:gc
+    - .deploy:gc:{{service_name}}:rules
+{% if item.multiple_image_env is undefined or item.multiple_image_env == false %}
+  needs: ['scan_image_{{service_name}}']
+{% else %}
+  needs: ['scan_image_{{service_name}}_gc']
+{% endif %}
+
+deploy_{{service_name}}_gc:
+  extends:
+    - .deploy_vars_{{service_name}}
+    - .deploy:gc:base:swarm:stack
+    - .deploy:gc:{{service_name}}:rules
+  needs: ['post_build_{{service_name}}_gc']
+
+#alphaprod
+post_build_{{service_name}}_alphaprod:
+  extends:
+    - .deploy_vars_{{service_name}}
+    - .post_build
+    - .env:alphaprod
+    - .deploy:alphaprod:{{service_name}}:rules
+{% if item.multiple_image_env is undefined or item.multiple_image_env == false %}
+  needs: ['scan_image_{{service_name}}']
+{% else %}
+  needs: ['scan_image_{{service_name}}_alphaprod']
+{% endif %}
+
+deploy_{{service_name}}_alphaprod:
+  extends:
+    - .deploy_vars_{{service_name}}
+    - .deploy:alphaprod:base:swarm:stack
+    - .deploy:alphaprod:{{service_name}}:rules
+  needs: ['post_build_{{service_name}}_alphaprod']
+
+#fpsprod
+post_build_{{service_name}}_fpsprod:
+  extends:
+    - .deploy_vars_{{service_name}}
+    - .post_build
+    - .env:fpsprod
+    - .deploy:fpsprod:{{service_name}}:rules
+{% if item.multiple_image_env is undefined or item.multiple_image_env == false %}
+  needs: ['scan_image_{{service_name}}']
+{% else %}
+  needs: ['scan_image_{{service_name}}_fpsprod']
+{% endif %}
+
+deploy_{{service_name}}_fpsprod:
+  extends:
+    - .deploy_vars_{{service_name}}
+    - .deploy:fpsprod:base:swarm:stack
+    - .deploy:fpsprod:{{service_name}}:rules
+  needs: ['post_build_{{service_name}}_fpsprod']
+
+{% endif %}
+{% endif %}
 #SIT
 {% if item.platform is undefined or item.platform == "linux" %}
 post_build_{{service_name}}_sit:
@@ -156,58 +230,4 @@ deploy_{{service_name}}_aws:
   needs: ['post_build_{{service_name}}_aws']
 {% else %}
   needs: ['build_image_{{service_name}}_aws']
-{% endif %}
-
-{% if team_name != "nex3" and team_name != "pentagon" %}
-#AZURE
-{% if item.platform is undefined or item.platform == "linux" %}
-post_build_{{service_name}}_azure:
-  extends:
-    - .deploy_vars_{{service_name}}
-    - .post_build
-    - .env:azure
-    - .deploy:azure:{{service_name}}:rules
-{% if item.multiple_image_env is undefined or item.multiple_image_env == false %}
-  needs: ['scan_image_{{service_name}}']
-{% else %}
-  needs: ['scan_image_{{service_name}}_azure']
-{% endif %}
-{% endif %}
-
-deploy_{{service_name}}_azure:
-  extends:
-    - .deploy_vars_{{service_name}}
-    - .deploy:azure:base:swarm:stack
-    - .deploy:azure:{{service_name}}:rules
-{% if item.platform is undefined or item.platform == "linux" %}
-  needs: ['post_build_{{service_name}}_azure']
-{% else %}
-  needs: ['build_image_{{service_name}}_azure']
-{% endif %}
-
-#GC
-{% if item.platform is undefined or item.platform == "linux" %}
-post_build_{{service_name}}_gc:
-  extends:
-    - .deploy_vars_{{service_name}}
-    - .post_build
-    - .env:gc
-    - .deploy:gc:{{service_name}}:rules
-{% if item.multiple_image_env is undefined or item.multiple_image_env == false %}
-  needs: ['scan_image_{{service_name}}']
-{% else %}
-  needs: ['scan_image_{{service_name}}_gc']
-{% endif %}
-{% endif %}
-
-deploy_{{service_name}}_gc:
-  extends:
-    - .deploy_vars_{{service_name}}
-    - .deploy:gc:base:swarm:stack
-    - .deploy:gc:{{service_name}}:rules
-{% if item.platform is undefined or item.platform == "linux" %}
-  needs: ['post_build_{{service_name}}_gc']
-{% else %}
-  needs: ['build_image_{{service_name}}_gc']
-{% endif %}
 {% endif %}

@@ -25,19 +25,14 @@
 {% set org_node_label = org_name ~ storage_label if platform == "linux" else org_name ~ "_WINDOWS" %}
 {% set network = org_name | lower ~ '_' ~ env | lower ~ lookup('vars', org_name + '_network_version_' + env) %}
 {% set separator_char = '/' if platform == "linux" else '\\' %}
-
-{% if env == "sit"%}
-version: '3.4'
-{% else %}
 version: '3.8'
-{% endif %}
 
 {% if config_file is defined %}
 configs:
   {{service_name}}_{{ environment }}_config_@CONFIG_VERSION:
     file: {{working_path}}/{{environment}}/configs/{{config_file}}
     labels:
-{% if env == "prod" or env == "aws" or env == "azure" %}
+{% if env == "prod" or env == "aws" or env == "aws2" or env == "alphaprod" or env == "fpsprod" or env == "aws2" or env == "gc"%}
       - "io.portainer.accesscontrol.teams={{team_name | upper}}_LEADERS"
 {% else %}
       - "io.portainer.accesscontrol.teams={{team_name | upper}}"
@@ -46,7 +41,7 @@ configs:
   {{service_name}}_{{ environment }}_sp_config_@CONFIG_VERSION:
     file: {{working_path}}/{{environment}}/configs/{{sp_file}}
     labels:
-{% if env == "prod" or env == "aws" or env == "azure" %}
+{% if env == "prod" or env == "aws" or env == "aws2" or env == "alphaprod" or env == "fpsprod" or env == "aws2" or env == "gc"%}
       - "io.portainer.accesscontrol.teams={{team_name | upper}}_LEADERS"
 {% else %}
       - "io.portainer.accesscontrol.teams={{team_name | upper}}"
@@ -57,14 +52,14 @@ configs:
 services:
   {{service_name}}_{{environment}}:
 {% if team_name == "nex3" or team_name == "pentagon" %}
-{% if env == "local" or env == "azure" or env == "aws" %}
+{% if env == "local" or env == "aws2" or env == "aws" %}
     image: hub.lumigame.com/{{team_name}}/{{project_name}}_{{service_name}}:{{environment}}-latest
 {% else %}
     image: lumhub.starixplay.com/kbt/{{team_name}}/{{project_name}}_{{service_name}}:{{environment}}-latest
 {% endif %}
 {% endif %}
 {% if team_name != "nex3" and team_name != "pentagon" %}
-{% if env == "local" or env == "nexprod" or env == "azure" or env == "gc" or env == "aws" %}
+{% if env == "local" or env == "nexprod" or env == "aws2" or env == "gc" or env == "aws" %}
     image: hub.nexdev.net/{{team_name}}/{{project_name}}_{{service_name}}:{{environment}}-latest
 {% else %}
     image: nexhub.starixplay.com/kbt/{{team_name}}/{{project_name}}_{{service_name}}:{{environment}}-latest
@@ -154,20 +149,36 @@ services:
       replicas: {{item.number_of_replicas_aws | default('1') }}
 {% endif %}
 {% endif %}
-{% if env == "azure"%}
-#Azure
-{% if item.number_of_replicas_azure is defined and item.number_of_replicas_azure > 2 %}
+{% if env == "aws2"%}
+#aws2
+{% if item.number_of_replicas_aws2 is defined and item.number_of_replicas_aws2 > 2 %}
       replicas: 2
 {% else %}
-      replicas: {{item.number_of_replicas_azure | default('1') }}
+      replicas: {{item.number_of_replicas_aws2 | default('1') }}
 {% endif %}
 {% endif %}
 {% if env == "gc"%}
-#Google Cloud
+#gc
 {% if item.number_of_replicas_gc is defined and item.number_of_replicas_gc > 2 %}
       replicas: 2
 {% else %}
       replicas: {{item.number_of_replicas_gc | default('1') }}
+{% endif %}
+{% endif %}
+{% if env == "fpsprod"%}
+#fpsprod
+{% if item.number_of_replicas_fpsprod is defined and item.number_of_replicas_fpsprod > 2 %}
+      replicas: 2
+{% else %}
+      replicas: {{item.number_of_replicas_fpsprod | default('1') }}
+{% endif %}
+{% endif %}
+{% if env == "alphaprod"%}
+#alphaprod
+{% if item.number_of_replicas_alphaprod is defined and item.number_of_replicas_alphaprod > 2 %}
+      replicas: 2
+{% else %}
+      replicas: {{item.number_of_replicas_alphaprod | default('1') }}
 {% endif %}
 {% endif %}
 {% if env == "uat"%}
@@ -228,13 +239,23 @@ services:
       endpoint_mode: dnsrr
 {% endif %}
 {% endif %}
-{% if env == "azure"%}
-{% if item.port_azure is undefined %}
+{% if env == "aws2"%}
+{% if item.port_aws2 is undefined %}
       endpoint_mode: dnsrr
 {% endif %}
 {% endif %}
 {% if env == "gc"%}
 {% if item.port_gc is undefined %}
+      endpoint_mode: dnsrr
+{% endif %}
+{% endif %}
+{% if env == "fpsprod"%}
+{% if item.port_fpsprod is undefined %}
+      endpoint_mode: dnsrr
+{% endif %}
+{% endif %}
+{% if env == "alphaprod"%}
+{% if item.port_alphaprod is undefined %}
       endpoint_mode: dnsrr
 {% endif %}
 {% endif %}
@@ -299,13 +320,21 @@ services:
     ports:
       - {{item.port_aws}}:{{item.port | default('5000')}}
 {% endif %}
-{% if env == "azure" and item.port_azure is defined %}
+{% if env == "aws2" and item.port_aws2 is defined %}
     ports:
-      - {{item.port_azure}}:{{item.port | default('5000')}}
+      - {{item.port_aws2}}:{{item.port | default('5000')}}
 {% endif %}
 {% if env == "gc" and item.port_gc is defined %}
     ports:
       - {{item.port_gc}}:{{item.port | default('5000')}}
+{% endif %}
+{% if env == "fpsprod" and item.port_fpsprod is defined %}
+    ports:
+      - {{item.port_fpsprod}}:{{item.port | default('5000')}}
+{% endif %}
+{% if env == "alphaprod" and item.port_alphaprod is defined %}
+    ports:
+      - {{item.port_alphaprod}}:{{item.port | default('5000')}}
 {% endif %}
 {% if item.disable_health_check is undefined or item.disable_health_check == false %}
 {% if item.framework is defined and item.framework == "dotnet" %}
@@ -321,7 +350,7 @@ services:
       - SYS_PTRACE
 {% endif %}
     labels:
-{% if env == "prod" or env == "aws" or env == "azure" or env == "gc" %}
+{% if env == "prod" or env == "aws" or env == "aws2" or env == "alphaprod" or env == "fpsprod" or env == "aws2" or env == "gc"%}
       - "io.portainer.accesscontrol.teams={{team_name | upper}}_LEADERS"
 {% else %}
       - "io.portainer.accesscontrol.teams={{team_name | upper}}"
@@ -344,7 +373,7 @@ volumes:
        device: {{gluster_path}}{{volume.src}}/{{environment}}
 {% endif %}
     labels:
-{% if env == "prod" or env == "aws" or env == "azure" or env == "gc"%}
+{% if env == "prod" or env == "aws" or env == "aws2" or env == "alphaprod" or env == "fpsprod" or env == "aws2" or env == "gc"%}
       - "io.portainer.accesscontrol.teams={{team_name | upper}}_LEADERS"
 {% else %}
       - "io.portainer.accesscontrol.teams={{team_name | upper}}"

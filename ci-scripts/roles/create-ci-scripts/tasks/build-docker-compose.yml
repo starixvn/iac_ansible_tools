@@ -72,7 +72,27 @@
     src: templates/docker-swarm/.docker-compose/docker-compose.yml.j2
     dest: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.name | replace('-','_')}}/{{env | upper}}.docker-compose.yml
   vars:
-    env: azure
+    env: alphaprod
+  with_items: "{{services}}"
+  become: yes
+  when: team_name != "nex3" and team_name != "pentagon"
+
+- name: Build docker-compose for {{env}}
+  template:
+    src: templates/docker-swarm/.docker-compose/docker-compose.yml.j2
+    dest: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.name | replace('-','_')}}/{{env | upper}}.docker-compose.yml
+  vars:
+    env: fpsprod
+  with_items: "{{services}}"
+  become: yes
+  when: team_name != "nex3" and team_name != "pentagon"
+
+- name: Build docker-compose for {{env}}
+  template:
+    src: templates/docker-swarm/.docker-compose/docker-compose.yml.j2
+    dest: /var/ci-scripts/{{repo_name}}/.docker-compose/{{item.name | replace('-','_')}}/{{env | upper}}.docker-compose.yml
+  vars:
+    env: aws2
   with_items: "{{services}}"
   become: yes
   when: team_name != "nex3" and team_name != "pentagon"

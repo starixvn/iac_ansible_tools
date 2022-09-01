@@ -58,18 +58,13 @@ build_image_{{ service_name }}_nexprod:
     - .env:nexprod
     - .deploy:nexprod:{{service_name}}:rules
     
-{% if item.framework is defined and item.framework == "cocos" %}  
-  needs: ['build_cocos_web_{{ service_name }}_nexprod']
-  dependencies:
-    - build_cocos_web_{{ service_name }}_nexprod
-{% endif %}
 {% if transform_config is defined and transform_config == true %}  
   needs: ['transform_config_{{ service_name }}_nexprod']
   dependencies:
     - transform_config_{{ service_name }}_nexprod
 {% endif %}
-#AZURE
-build_image_{{ service_name }}_azure:
+#aws2
+build_image_{{ service_name }}_aws2:
   extends:
     - .deploy_vars_{{ service_name }}
 {% if item.multi_stage is undefined or item.multi_stage == false %}
@@ -77,18 +72,13 @@ build_image_{{ service_name }}_azure:
 {% else %}
     - .build:default:{{base_image}}:multistage
 {% endif %}
-    - .env:azure
-    - .deploy:azure:{{service_name}}:rules
-    
-{% if item.framework is defined and item.framework == "cocos" %}  
-  needs: ['build_cocos_web_{{ service_name }}_azure']
-  dependencies:
-    - build_cocos_web_{{ service_name }}_azure
-{% endif %}
+    - .env:aws2
+    - .deploy:aws2:{{service_name}}:rules
+
 {% if transform_config is defined and transform_config == true %}  
-  needs: ['transform_config_{{ service_name }}_azure']
+  needs: ['transform_config_{{ service_name }}_aws2']
   dependencies:
-    - transform_config_{{ service_name }}_azure
+    - transform_config_{{ service_name }}_aws2
 {% endif %}
 #gc
 build_image_{{ service_name }}_gc:
@@ -101,17 +91,46 @@ build_image_{{ service_name }}_gc:
 {% endif %}
     - .env:gc
     - .deploy:gc:{{service_name}}:rules
-    
-{% if item.framework is defined and item.framework == "cocos" %}  
-  needs: ['build_cocos_web_{{ service_name }}_gc']
-  dependencies:
-    - build_cocos_web_{{ service_name }}_gc
-{% endif %}
+
 {% if transform_config is defined and transform_config == true %}  
   needs: ['transform_config_{{ service_name }}_gc']
   dependencies:
     - transform_config_{{ service_name }}_gc
 {% endif %}
+#alphaprod
+build_image_{{ service_name }}_alphaprod:
+  extends:
+    - .deploy_vars_{{ service_name }}
+{% if item.multi_stage is undefined or item.multi_stage == false %}
+    - .build:default:{{base_image}}
+{% else %}
+    - .build:default:{{base_image}}:multistage
+{% endif %}
+    - .env:gc
+    - .deploy:gc:{{service_name}}:rules
+{% if transform_config is defined and transform_config == true %}  
+  needs: ['transform_config_{{ service_name }}_alphaprod']
+  dependencies:
+    - transform_config_{{ service_name }}_alphaprod
+{% endif %}
+#fpsprod
+build_image_{{ service_name }}_fpsprod:
+  extends:
+    - .deploy_vars_{{ service_name }}
+{% if item.multi_stage is undefined or item.multi_stage == false %}
+    - .build:default:{{base_image}}
+{% else %}
+    - .build:default:{{base_image}}:multistage
+{% endif %}
+    - .env:gc
+    - .deploy:gc:{{service_name}}:rules
+
+{% if transform_config is defined and transform_config == true %}  
+  needs: ['transform_config_{{ service_name }}_fpsprod']
+  dependencies:
+    - transform_config_{{ service_name }}_fpsprod
+{% endif %}
+
 {% endif %}
 build_image_{{ service_name }}_sit:
   extends:
@@ -196,5 +215,4 @@ build_image_{{ service_name }}_aws:
   dependencies:
     - transform_config_{{ service_name }}_aws
 {% endif %}
-
 {% endif %}
