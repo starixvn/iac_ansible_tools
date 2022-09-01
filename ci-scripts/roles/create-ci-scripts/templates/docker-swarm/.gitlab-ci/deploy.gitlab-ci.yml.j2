@@ -74,37 +74,37 @@ deploy_{{service_name}}_gc:
     - .deploy:gc:{{service_name}}:rules
   needs: ['post_build_{{service_name}}_gc']
 
-#prod_alpha
-post_build_{{service_name}}_prod_alpha:
+#alphaprod
+post_build_{{service_name}}_alphaprod:
   extends:
     - .deploy_vars_{{service_name}}
     - .post_build
-    - .env:prod_alpha
-    - .deploy:prod_alpha:{{service_name}}:rules
-  needs: ['scan_image_{{service_name}}_prod_alpha']
+    - .env:alphaprod
+    - .deploy:alphaprod:{{service_name}}:rules
+  needs: ['scan_image_{{service_name}}_alphaprod']
 
-deploy_{{service_name}}_prod_alpha:
+deploy_{{service_name}}_alphaprod:
   extends:
     - .deploy_vars_{{service_name}}
-    - .deploy:prod_alpha:base:swarm:stack
-    - .deploy:prod_alpha:{{service_name}}:rules
-  needs: ['post_build_{{service_name}}_prod_alpha']
+    - .deploy:alphaprod:base:swarm:stack
+    - .deploy:alphaprod:{{service_name}}:rules
+  needs: ['post_build_{{service_name}}_alphaprod']
 
-#prod_fps
-post_build_{{service_name}}_prod_fps:
+#fpsprod
+post_build_{{service_name}}_fpsprod:
   extends:
     - .deploy_vars_{{service_name}}
     - .post_build
-    - .env:prod_fps
-    - .deploy:prod_fps:{{service_name}}:rules
-  needs: ['scan_image_{{service_name}}_prod_fps']
+    - .env:fpsprod
+    - .deploy:fpsprod:{{service_name}}:rules
+  needs: ['scan_image_{{service_name}}_fpsprod']
 
-deploy_{{service_name}}_prod_fps:
+deploy_{{service_name}}_fpsprod:
   extends:
     - .deploy_vars_{{service_name}}
-    - .deploy:prod_fps:base:swarm:stack
-    - .deploy:prod_fps:{{service_name}}:rules
-  needs: ['post_build_{{service_name}}_prod_fps']
+    - .deploy:fpsprod:base:swarm:stack
+    - .deploy:fpsprod:{{service_name}}:rules
+  needs: ['post_build_{{service_name}}_fpsprod']
 
 {% endif %}
 {% endif %}

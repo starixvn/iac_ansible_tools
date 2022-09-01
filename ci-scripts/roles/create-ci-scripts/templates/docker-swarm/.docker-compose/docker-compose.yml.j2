@@ -32,7 +32,7 @@ configs:
   {{service_name}}_{{ environment }}_config_@CONFIG_VERSION:
     file: {{working_path}}/{{environment}}/configs/{{config_file}}
     labels:
-{% if env == "prod" or env == "aws" or env == "aws2" or env == "prod_alpha" or env == "prod_fps" or env == "aws2" or env == "gc"%}
+{% if env == "prod" or env == "aws" or env == "aws2" or env == "alphaprod" or env == "fpsprod" or env == "aws2" or env == "gc"%}
       - "io.portainer.accesscontrol.teams={{team_name | upper}}_LEADERS"
 {% else %}
       - "io.portainer.accesscontrol.teams={{team_name | upper}}"
@@ -41,7 +41,7 @@ configs:
   {{service_name}}_{{ environment }}_sp_config_@CONFIG_VERSION:
     file: {{working_path}}/{{environment}}/configs/{{sp_file}}
     labels:
-{% if env == "prod" or env == "aws" or env == "aws2" or env == "prod_alpha" or env == "prod_fps" or env == "aws2" or env == "gc"%}
+{% if env == "prod" or env == "aws" or env == "aws2" or env == "alphaprod" or env == "fpsprod" or env == "aws2" or env == "gc"%}
       - "io.portainer.accesscontrol.teams={{team_name | upper}}_LEADERS"
 {% else %}
       - "io.portainer.accesscontrol.teams={{team_name | upper}}"
@@ -165,20 +165,20 @@ services:
       replicas: {{item.number_of_replicas_gc | default('1') }}
 {% endif %}
 {% endif %}
-{% if env == "prod_fps"%}
-#prod_fps
-{% if item.number_of_replicas_prod_fps is defined and item.number_of_replicas_prod_fps > 2 %}
+{% if env == "fpsprod"%}
+#fpsprod
+{% if item.number_of_replicas_fpsprod is defined and item.number_of_replicas_fpsprod > 2 %}
       replicas: 2
 {% else %}
-      replicas: {{item.number_of_replicas_prod_fps | default('1') }}
+      replicas: {{item.number_of_replicas_fpsprod | default('1') }}
 {% endif %}
 {% endif %}
-{% if env == "prod_alpha"%}
-#prod_alpha
-{% if item.number_of_replicas_prod_alpha is defined and item.number_of_replicas_prod_alpha > 2 %}
+{% if env == "alphaprod"%}
+#alphaprod
+{% if item.number_of_replicas_alphaprod is defined and item.number_of_replicas_alphaprod > 2 %}
       replicas: 2
 {% else %}
-      replicas: {{item.number_of_replicas_prod_alpha | default('1') }}
+      replicas: {{item.number_of_replicas_alphaprod | default('1') }}
 {% endif %}
 {% endif %}
 {% if env == "uat"%}
@@ -249,13 +249,13 @@ services:
       endpoint_mode: dnsrr
 {% endif %}
 {% endif %}
-{% if env == "prod_fps"%}
-{% if item.port_prod_fps is undefined %}
+{% if env == "fpsprod"%}
+{% if item.port_fpsprod is undefined %}
       endpoint_mode: dnsrr
 {% endif %}
 {% endif %}
-{% if env == "prod_alpha"%}
-{% if item.port_prod_alpha is undefined %}
+{% if env == "alphaprod"%}
+{% if item.port_alphaprod is undefined %}
       endpoint_mode: dnsrr
 {% endif %}
 {% endif %}
@@ -328,13 +328,13 @@ services:
     ports:
       - {{item.port_gc}}:{{item.port | default('5000')}}
 {% endif %}
-{% if env == "prod_fps" and item.port_prod_fps is defined %}
+{% if env == "fpsprod" and item.port_fpsprod is defined %}
     ports:
-      - {{item.port_prod_fps}}:{{item.port | default('5000')}}
+      - {{item.port_fpsprod}}:{{item.port | default('5000')}}
 {% endif %}
-{% if env == "prod_alpha" and item.port_prod_alpha is defined %}
+{% if env == "alphaprod" and item.port_alphaprod is defined %}
     ports:
-      - {{item.port_prod_alpha}}:{{item.port | default('5000')}}
+      - {{item.port_alphaprod}}:{{item.port | default('5000')}}
 {% endif %}
 {% if item.disable_health_check is undefined or item.disable_health_check == false %}
 {% if item.framework is defined and item.framework == "dotnet" %}
@@ -350,7 +350,7 @@ services:
       - SYS_PTRACE
 {% endif %}
     labels:
-{% if env == "prod" or env == "aws" or env == "aws2" or env == "prod_alpha" or env == "prod_fps" or env == "aws2" or env == "gc"%}
+{% if env == "prod" or env == "aws" or env == "aws2" or env == "alphaprod" or env == "fpsprod" or env == "aws2" or env == "gc"%}
       - "io.portainer.accesscontrol.teams={{team_name | upper}}_LEADERS"
 {% else %}
       - "io.portainer.accesscontrol.teams={{team_name | upper}}"
@@ -373,7 +373,7 @@ volumes:
        device: {{gluster_path}}{{volume.src}}/{{environment}}
 {% endif %}
     labels:
-{% if env == "prod" or env == "aws" or env == "aws2" or env == "prod_alpha" or env == "prod_fps" or env == "aws2" or env == "gc"%}
+{% if env == "prod" or env == "aws" or env == "aws2" or env == "alphaprod" or env == "fpsprod" or env == "aws2" or env == "gc"%}
       - "io.portainer.accesscontrol.teams={{team_name | upper}}_LEADERS"
 {% else %}
       - "io.portainer.accesscontrol.teams={{team_name | upper}}"

@@ -78,14 +78,14 @@ scan_image_{{ service_name }}_gc:
     - .env:gc
     - .deploy:gc:{{service_name}}:rules
 
-####prod_alpha
-scan_config_{{ service_name }}_prod_alpha:
+####alphaprod
+scan_config_{{ service_name }}_alphaprod:
   extends:
     - .deploy_vars_{{ service_name }}
     - .scan_config
     - .scan:config:{{ service_name }}:rules
 
-scan_image_{{ service_name }}_prod_alpha:
+scan_image_{{ service_name }}_alphaprod:
   extends:
     - .deploy_vars_{{ service_name }}
 {% if item.multi_stage is undefined or item.multi_stage == false %}
@@ -93,16 +93,16 @@ scan_image_{{ service_name }}_prod_alpha:
 {% else %}
     - .scan:default:image:multistage
 {% endif %}
-    - .env:prod_alpha
-    - .deploy:prod_alpha:{{service_name}}:rules
-####prod_fps
-scan_config_{{ service_name }}_prod_fps:
+    - .env:alphaprod
+    - .deploy:alphaprod:{{service_name}}:rules
+####fpsprod
+scan_config_{{ service_name }}_fpsprod:
   extends:
     - .deploy_vars_{{ service_name }}
     - .scan_config
     - .scan:config:{{ service_name }}:rules
 
-scan_image_{{ service_name }}_prod_fps:
+scan_image_{{ service_name }}_fpsprod:
   extends:
     - .deploy_vars_{{ service_name }}
 {% if item.multi_stage is undefined or item.multi_stage == false %}
@@ -110,8 +110,8 @@ scan_image_{{ service_name }}_prod_fps:
 {% else %}
     - .scan:default:image:multistage
 {% endif %}
-    - .env:prod_fps
-    - .deploy:prod_fps:{{service_name}}:rules
+    - .env:fpsprod
+    - .deploy:fpsprod:{{service_name}}:rules
 
 {% endif %}
 ####
