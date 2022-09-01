@@ -33,7 +33,11 @@ post_build_{{service_name}}_nexprod:
     - .post_build
     - .env:nexprod
     - .deploy:nexprod:{{service_name}}:rules
+{% if item.multiple_image_env is undefined or item.multiple_image_env == false %}
+  needs: ['scan_image_{{service_name}}']
+{% else %}
   needs: ['scan_image_{{service_name}}_nexprod']
+{% endif %}
 
 deploy_{{service_name}}_nexprod:
   extends:
@@ -49,7 +53,11 @@ post_build_{{service_name}}_aws2:
     - .post_build
     - .env:aws2
     - .deploy:aws2:{{service_name}}:rules
+{% if item.multiple_image_env is undefined or item.multiple_image_env == false %}
+  needs: ['scan_image_{{service_name}}']
+{% else %}
   needs: ['scan_image_{{service_name}}_aws2']
+{% endif %}
 
 deploy_{{service_name}}_aws2:
   extends:
@@ -65,7 +73,11 @@ post_build_{{service_name}}_gc:
     - .post_build
     - .env:gc
     - .deploy:gc:{{service_name}}:rules
+{% if item.multiple_image_env is undefined or item.multiple_image_env == false %}
+  needs: ['scan_image_{{service_name}}']
+{% else %}
   needs: ['scan_image_{{service_name}}_gc']
+{% endif %}
 
 deploy_{{service_name}}_gc:
   extends:
@@ -81,7 +93,11 @@ post_build_{{service_name}}_alphaprod:
     - .post_build
     - .env:alphaprod
     - .deploy:alphaprod:{{service_name}}:rules
+{% if item.multiple_image_env is undefined or item.multiple_image_env == false %}
+  needs: ['scan_image_{{service_name}}']
+{% else %}
   needs: ['scan_image_{{service_name}}_alphaprod']
+{% endif %}
 
 deploy_{{service_name}}_alphaprod:
   extends:
@@ -97,7 +113,11 @@ post_build_{{service_name}}_fpsprod:
     - .post_build
     - .env:fpsprod
     - .deploy:fpsprod:{{service_name}}:rules
+{% if item.multiple_image_env is undefined or item.multiple_image_env == false %}
+  needs: ['scan_image_{{service_name}}']
+{% else %}
   needs: ['scan_image_{{service_name}}_fpsprod']
+{% endif %}
 
 deploy_{{service_name}}_fpsprod:
   extends:
