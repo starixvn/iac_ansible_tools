@@ -135,7 +135,7 @@ services:
 {% else %}
           memory: {{ item.max_memory | default('2048') }}M
 {% endif %}
-{% if env == "prod"%}
+{% if env == "prod" or env == "alphaprod" or env == "fpsprod"%}
 {% if item.number_of_replicas_prod is defined and item.number_of_replicas_prod > 6 %}
       replicas: 6
 {% else %}
@@ -163,22 +163,6 @@ services:
       replicas: 2
 {% else %}
       replicas: {{item.number_of_replicas_gc | default('1') }}
-{% endif %}
-{% endif %}
-{% if env == "fpsprod"%}
-#fpsprod
-{% if item.number_of_replicas_fpsprod is defined and item.number_of_replicas_fpsprod > 2 %}
-      replicas: 2
-{% else %}
-      replicas: {{item.number_of_replicas_fpsprod | default('1') }}
-{% endif %}
-{% endif %}
-{% if env == "alphaprod"%}
-#alphaprod
-{% if item.number_of_replicas_alphaprod is defined and item.number_of_replicas_alphaprod > 2 %}
-      replicas: 2
-{% else %}
-      replicas: {{item.number_of_replicas_alphaprod | default('1') }}
 {% endif %}
 {% endif %}
 {% if env == "uat"%}
@@ -229,7 +213,7 @@ services:
       endpoint_mode: dnsrr
 {% endif %}
 {% endif %}
-{% if env == "prod"%}
+{% if env == "prod" or env == "fpsprod" or env == "alphaprod"%}
 {% if item.port_prod is undefined %}
       endpoint_mode: dnsrr
 {% endif %}
@@ -246,16 +230,6 @@ services:
 {% endif %}
 {% if env == "gc"%}
 {% if item.port_gc is undefined %}
-      endpoint_mode: dnsrr
-{% endif %}
-{% endif %}
-{% if env == "fpsprod"%}
-{% if item.port_fpsprod is undefined %}
-      endpoint_mode: dnsrr
-{% endif %}
-{% endif %}
-{% if env == "alphaprod"%}
-{% if item.port_alphaprod is undefined %}
       endpoint_mode: dnsrr
 {% endif %}
 {% endif %}
@@ -312,7 +286,7 @@ services:
     ports:
       - {{item.port_sit}}:{{item.port | default('5000')}}
 {% endif %}
-{% if env == "prod" and item.port_prod is defined %}
+{% if (env == "prod" or env == "fpsprod" or env == "alphaprod") and item.port_prod is defined %}
     ports:
       - {{item.port_prod}}:{{item.port | default('5000')}}
 {% endif %}
@@ -327,14 +301,6 @@ services:
 {% if env == "gc" and item.port_gc is defined %}
     ports:
       - {{item.port_gc}}:{{item.port | default('5000')}}
-{% endif %}
-{% if env == "fpsprod" and item.port_fpsprod is defined %}
-    ports:
-      - {{item.port_fpsprod}}:{{item.port | default('5000')}}
-{% endif %}
-{% if env == "alphaprod" and item.port_alphaprod is defined %}
-    ports:
-      - {{item.port_alphaprod}}:{{item.port | default('5000')}}
 {% endif %}
 {% if item.disable_health_check is undefined or item.disable_health_check == false %}
 {% if item.framework is defined and item.framework == "dotnet" %}
