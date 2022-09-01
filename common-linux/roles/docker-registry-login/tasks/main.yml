@@ -46,7 +46,7 @@
   become: yes
   with_items:
     - "{{nexcel_kbt_registry_login}}"
-  when: org == "nexcel" and env == "prod" or org == "nexcel" and env == "uat" or org == "nexcel" and env == "sit" or org == "nexcel" and env == "prod_alpha" or org == "nexcel" and env == "prod_fps"
+  when: org == "nexcel" and env == "prod" or org == "nexcel" and env == "uat" or org == "nexcel" and env == "sit" or org == "nexcel" and env == "alphaprod" or org == "nexcel" and env == "fpsprod"
 
 - name: Login registry NEXCEL
   shell: docker login --username={{item.user}} --password={{item.pass}} {{item.url}}
@@ -58,7 +58,7 @@
   shell: docker login --username={{item.user}} --password={{item.pass}} {{item.url}}
   with_items:
     - "{{nexcel_kbt_registry_login}}"
-  when: org == "nexcel" and env == "prod" or org == "nexcel" and env == "uat" or org == "nexcel" and env == "sit"
+  when: org == "nexcel" and env == "prod" or org == "nexcel" and env == "uat" or org == "nexcel" and env == "sit" or org == "nexcel" and env == "alphaprod" or org == "nexcel" and env == "fpsprod"
 ### LUMI
 - name: Login registry LUMI  root
   shell: docker login --username={{item.user}} --password={{item.pass}} {{item.url}}

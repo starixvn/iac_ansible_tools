@@ -15,8 +15,8 @@ nexcel_image_nexprod: hub.nexdev.net/base
 nexcel_image_sit: nexhub.starixplay.com/kbt/base
 nexcel_image_uat: nexhub.starixplay.com/kbt/base
 nexcel_image_prod: nexhub.starixplay.com/kbt/base
-nexcel_image_prod_alpha: nexhub.starixplay.com/kbt/base
-nexcel_image_prod_fps: nexhub.starixplay.com/kbt/base
+nexcel_image_alphaprod: nexhub.starixplay.com/kbt/base
+nexcel_image_fpsprod: nexhub.starixplay.com/kbt/base
 nexcel_image_aws: nexhub.starixplay.com/kbt/base
 ###
 luminet_image_local: hub.lumigame.com/base
