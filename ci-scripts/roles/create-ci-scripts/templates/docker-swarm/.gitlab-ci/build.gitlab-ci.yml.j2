@@ -106,8 +106,8 @@ build_image_{{ service_name }}_alphaprod:
 {% else %}
     - .build:default:{{base_image}}:multistage
 {% endif %}
-    - .env:gc
-    - .deploy:gc:{{service_name}}:rules
+    - .env:alphaprod
+    - .deploy:alphaprod:{{service_name}}:rules
 {% if transform_config is defined and transform_config == true %}  
   needs: ['transform_config_{{ service_name }}_alphaprod']
   dependencies:
@@ -122,8 +122,8 @@ build_image_{{ service_name }}_fpsprod:
 {% else %}
     - .build:default:{{base_image}}:multistage
 {% endif %}
-    - .env:gc
-    - .deploy:gc:{{service_name}}:rules
+    - .env:fpsprod
+    - .deploy:fpsprod:{{service_name}}:rules
 
 {% if transform_config is defined and transform_config == true %}  
   needs: ['transform_config_{{ service_name }}_fpsprod']
