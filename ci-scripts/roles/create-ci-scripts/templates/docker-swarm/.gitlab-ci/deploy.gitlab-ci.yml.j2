@@ -47,7 +47,11 @@ deploy_{{service_name}}_nexprod:
     - .deploy_vars_{{service_name}}
     - .deploy:nexprod:base:swarm:stack
     - .deploy:nexprod:{{service_name}}:rules
+{% if item.platform is undefined or item.platform == "linux" %}
   needs: ['post_build_{{service_name}}_nexprod']
+{% else %}
+  needs: ['build_image_{{service_name}}_nexprod']
+{% endif %}
 
 #aws2
 {% if item.platform is undefined or item.platform == "linux" %}
@@ -69,7 +73,11 @@ deploy_{{service_name}}_aws2:
     - .deploy_vars_{{service_name}}
     - .deploy:aws2:base:swarm:stack
     - .deploy:aws2:{{service_name}}:rules
+{% if item.platform is undefined or item.platform == "linux" %}
   needs: ['post_build_{{service_name}}_aws2']
+{% else %}
+  needs: ['build_image_{{service_name}}_aws2']
+{% endif %}
 
 #gc
 {% if item.platform is undefined or item.platform == "linux" %}
@@ -91,7 +99,11 @@ deploy_{{service_name}}_gc:
     - .deploy_vars_{{service_name}}
     - .deploy:gc:base:swarm:stack
     - .deploy:gc:{{service_name}}:rules
+{% if item.platform is undefined or item.platform == "linux" %}
   needs: ['post_build_{{service_name}}_gc']
+{% else %}
+  needs: ['build_image_{{service_name}}_gc']
+{% endif %}
 
 #alphaprod
 {% if item.platform is undefined or item.platform == "linux" %}
@@ -113,7 +125,11 @@ deploy_{{service_name}}_alphaprod:
     - .deploy_vars_{{service_name}}
     - .deploy:alphaprod:base:swarm:stack
     - .deploy:alphaprod:{{service_name}}:rules
+{% if item.platform is undefined or item.platform == "linux" %}
   needs: ['post_build_{{service_name}}_alphaprod']
+{% else %}
+  needs: ['build_image_{{service_name}}_alphaprod']
+{% endif %}
 
 #fpsprod
 {% if item.platform is undefined or item.platform == "linux" %}
@@ -135,7 +151,11 @@ deploy_{{service_name}}_fpsprod:
     - .deploy_vars_{{service_name}}
     - .deploy:fpsprod:base:swarm:stack
     - .deploy:fpsprod:{{service_name}}:rules
+{% if item.platform is undefined or item.platform == "linux" %}
   needs: ['post_build_{{service_name}}_fpsprod']
+{% else %}
+  needs: ['build_image_{{service_name}}_fpsprod']
+{% endif %}
 
 {% endif %}
 #SIT
