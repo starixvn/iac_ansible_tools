@@ -4,16 +4,6 @@ scan_config_{{ service_name }}:
     - .deploy_vars_{{ service_name }}
     - .scan_config
     - .scan:config:{{ service_name }}:rules
-scan_image_{{ service_name }}:
-  extends:
-    - .deploy_vars_{{ service_name }}
-{% if item.multi_stage is undefined or item.multi_stage == false %}  
-    - .scan:default:image:noenv
-{% else %}
-    - .scan:default:image:noenv:multistage
-{% endif %}
-    - .scan:image:{{ service_name }}:rules
-  needs: ['build_image_{{service_name}}']
 
 scan_image_{{ service_name }}_local:
   extends:
