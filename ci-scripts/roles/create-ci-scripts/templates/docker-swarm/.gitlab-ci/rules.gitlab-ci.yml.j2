@@ -7,8 +7,8 @@
 .if-deploy-{{rule_name}}-nexprod: &if-deploy-{{rule_name}}-nexprod
   if: '$CI_COMMIT_TAG =~ /^deploy-{{rule_name}}-nexprod\d*- */ && $DEPLOY_BY == "rocketor"'
 
-.if-deploy-{{rule_name}}-aws2: &if-deploy-{{rule_name}}-aws2
-  if: '$CI_COMMIT_TAG =~ /^deploy-{{rule_name}}-aws2\d*- */ && $DEPLOY_BY == "rocketor"'
+.if-deploy-{{rule_name}}-nexaws: &if-deploy-{{rule_name}}-nexaws
+  if: '$CI_COMMIT_TAG =~ /^deploy-{{rule_name}}-nexaws\d*- */ && $DEPLOY_BY == "rocketor"'
 
 .if-deploy-{{rule_name}}-gc: &if-deploy-{{rule_name}}-gc
   if: '$CI_COMMIT_TAG =~ /^deploy-{{rule_name}}-gc\d*- */ && $DEPLOY_BY == "rocketor"'
@@ -50,7 +50,7 @@
 {% if team_name != "nex3" and team_name != "pentagon" %}
     - <<: *if-deploy-{{rule_name}}-nexprod
       when: always
-    - <<: *if-deploy-{{rule_name}}-aws2
+    - <<: *if-deploy-{{rule_name}}-nexaws
       when: always
     - <<: *if-deploy-{{rule_name}}-gc
       when: always
@@ -75,7 +75,7 @@
 {% if team_name != "nex3" and team_name != "pentagon" %}
     - <<: *if-deploy-{{rule_name}}-nexprod
       when: on_success
-    - <<: *if-deploy-{{rule_name}}-aws2
+    - <<: *if-deploy-{{rule_name}}-nexaws
       when: on_success
     - <<: *if-deploy-{{rule_name}}-gc
       when: on_success
@@ -113,15 +113,15 @@
       when: manual
     - when: never
 
-.deploy:aws2:{{service_name}}:rules:
+.deploy:nexaws:{{service_name}}:rules:
   rules:
-    - <<: *if-deploy-{{rule_name}}-aws2
+    - <<: *if-deploy-{{rule_name}}-nexaws
       when: on_success
     - when: never
 
-.deploy:aws2:{{service_name}}:manual:rules:
+.deploy:nexaws:{{service_name}}:manual:rules:
   rules:
-    - <<: *if-deploy-{{rule_name}}-aws2
+    - <<: *if-deploy-{{rule_name}}-nexaws
       when: manual
     - when: never
 

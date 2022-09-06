@@ -46,14 +46,14 @@ scan_image_{{ service_name }}_nexprod:
 {% endif %}
     - .env:nexprod
     - .deploy:nexprod:{{service_name}}:rules
-####aws2
-scan_config_{{ service_name }}_aws2:
+####nexaws
+scan_config_{{ service_name }}_nexaws:
   extends:
     - .deploy_vars_{{ service_name }}
     - .scan_config
     - .scan:config:{{ service_name }}:rules
 
-scan_image_{{ service_name }}_aws2:
+scan_image_{{ service_name }}_nexaws:
   extends:
     - .deploy_vars_{{ service_name }}
 {% if item.multi_stage is undefined or item.multi_stage == false %}
@@ -61,8 +61,8 @@ scan_image_{{ service_name }}_aws2:
 {% else %}
     - .scan:default:image:multistage
 {% endif %}
-    - .env:aws2
-    - .deploy:aws2:{{service_name}}:rules
+    - .env:nexaws
+    - .deploy:nexaws:{{service_name}}:rules
 ####GC
 scan_config_{{ service_name }}_gc:
   extends:

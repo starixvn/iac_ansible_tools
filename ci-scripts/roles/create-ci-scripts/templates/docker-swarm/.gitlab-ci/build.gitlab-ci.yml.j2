@@ -63,8 +63,8 @@ build_image_{{ service_name }}_nexprod:
   dependencies:
     - transform_config_{{ service_name }}_nexprod
 {% endif %}
-#aws2
-build_image_{{ service_name }}_aws2:
+#nexaws
+build_image_{{ service_name }}_nexaws:
   extends:
     - .deploy_vars_{{ service_name }}
 {% if item.multi_stage is undefined or item.multi_stage == false %}
@@ -72,13 +72,13 @@ build_image_{{ service_name }}_aws2:
 {% else %}
     - .build:default:{{base_image}}:multistage
 {% endif %}
-    - .env:aws2
-    - .deploy:aws2:{{service_name}}:rules
+    - .env:nexaws
+    - .deploy:nexaws:{{service_name}}:rules
 
 {% if transform_config is defined and transform_config == true %}  
-  needs: ['transform_config_{{ service_name }}_aws2']
+  needs: ['transform_config_{{ service_name }}_nexaws']
   dependencies:
-    - transform_config_{{ service_name }}_aws2
+    - transform_config_{{ service_name }}_nexaws
 {% endif %}
 #gc
 build_image_{{ service_name }}_gc:
