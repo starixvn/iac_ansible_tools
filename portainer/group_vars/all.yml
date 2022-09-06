@@ -8,7 +8,7 @@ portainer_admin_password: password1234
 portainer_agent_secret: mysecrettoken
 gluster_path: /var/www/gluster/nexops
 nexcel_image_local: hub.nexdev.net/base
-nexcel_image_aws2: hub.nexdev.net/base
+nexcel_image_nexaws: hub.nexdev.net/base
 nexcel_image_gc: hub.nexdev.net/base
 nexcel_image_local_test: hub.nexdev.net/base
 nexcel_image_nexprod: hub.nexdev.net/base
