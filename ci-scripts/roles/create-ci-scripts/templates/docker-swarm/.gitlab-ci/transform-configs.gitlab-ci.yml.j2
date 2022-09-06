@@ -33,11 +33,11 @@ transform_config_{{ service_name }}_nexprod:
     - .env:nexprod
     - .deploy:nexprod:{{service_name}}:rules
 
-transform_config_{{ service_name }}_aws2:
+transform_config_{{ service_name }}_nexaws:
   extends: 
     - .base_transform_config_{{ service_name }}
-    - .env:aws2
-    - .deploy:aws2:{{service_name}}:rules
+    - .env:nexaws
+    - .deploy:nexaws:{{service_name}}:rules
 
 transform_config_{{ service_name }}_gc:
   extends: 

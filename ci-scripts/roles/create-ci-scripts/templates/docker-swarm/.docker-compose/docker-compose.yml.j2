@@ -32,7 +32,7 @@ configs:
   {{service_name}}_{{ environment }}_config_@CONFIG_VERSION:
     file: {{working_path}}/{{environment}}/configs/{{config_file}}
     labels:
-{% if env == "prod" or env == "aws" or env == "aws2" or env == "alphaprod" or env == "fpsprod" or env == "aws2" or env == "gc"%}
+{% if env == "prod" or env == "aws" or env == "nexaws" or env == "alphaprod" or env == "fpsprod" or env == "nexaws" or env == "gc"%}
       - "io.portainer.accesscontrol.teams={{team_name | upper}}_LEADERS"
 {% else %}
       - "io.portainer.accesscontrol.teams={{team_name | upper}}"
@@ -41,7 +41,7 @@ configs:
   {{service_name}}_{{ environment }}_sp_config_@CONFIG_VERSION:
     file: {{working_path}}/{{environment}}/configs/{{sp_file}}
     labels:
-{% if env == "prod" or env == "aws" or env == "aws2" or env == "alphaprod" or env == "fpsprod" or env == "aws2" or env == "gc"%}
+{% if env == "prod" or env == "aws" or env == "nexaws" or env == "alphaprod" or env == "fpsprod" or env == "nexaws" or env == "gc"%}
       - "io.portainer.accesscontrol.teams={{team_name | upper}}_LEADERS"
 {% else %}
       - "io.portainer.accesscontrol.teams={{team_name | upper}}"
@@ -52,14 +52,14 @@ configs:
 services:
   {{service_name}}_{{environment}}:
 {% if team_name == "nex3" or team_name == "pentagon" %}
-{% if env == "local" or env == "aws2" or env == "aws" %}
+{% if env == "local" or env == "nexaws" or env == "aws" %}
     image: hub.lumigame.com/{{team_name}}/{{project_name}}_{{service_name}}:{{environment}}-latest
 {% else %}
     image: lumhub.starixplay.com/kbt/{{team_name}}/{{project_name}}_{{service_name}}:{{environment}}-latest
 {% endif %}
 {% endif %}
 {% if team_name != "nex3" and team_name != "pentagon" %}
-{% if env == "local" or env == "nexprod" or env == "aws2" or env == "gc" or env == "aws" %}
+{% if env == "local" or env == "nexprod" or env == "nexaws" or env == "gc" or env == "aws" %}
     image: hub.nexdev.net/{{team_name}}/{{project_name}}_{{service_name}}:{{environment}}-latest
 {% else %}
     image: nexhub.starixplay.com/kbt/{{team_name}}/{{project_name}}_{{service_name}}:{{environment}}-latest
@@ -149,12 +149,12 @@ services:
       replicas: {{item.number_of_replicas_aws | default('1') }}
 {% endif %}
 {% endif %}
-{% if env == "aws2"%}
-#aws2
-{% if item.number_of_replicas_aws2 is defined and item.number_of_replicas_aws2 > 2 %}
+{% if env == "nexaws"%}
+#nexaws
+{% if item.number_of_replicas_nexaws is defined and item.number_of_replicas_nexaws > 2 %}
       replicas: 2
 {% else %}
-      replicas: {{item.number_of_replicas_aws2 | default('1') }}
+      replicas: {{item.number_of_replicas_nexaws | default('1') }}
 {% endif %}
 {% endif %}
 {% if env == "gc"%}
@@ -223,8 +223,8 @@ services:
       endpoint_mode: dnsrr
 {% endif %}
 {% endif %}
-{% if env == "aws2"%}
-{% if item.port_aws2 is undefined %}
+{% if env == "nexaws"%}
+{% if item.port_nexaws is undefined %}
       endpoint_mode: dnsrr
 {% endif %}
 {% endif %}
@@ -294,9 +294,9 @@ services:
     ports:
       - {{item.port_aws}}:{{item.port | default('5000')}}
 {% endif %}
-{% if env == "aws2" and item.port_aws2 is defined %}
+{% if env == "nexaws" and item.port_nexaws is defined %}
     ports:
-      - {{item.port_aws2}}:{{item.port | default('5000')}}
+      - {{item.port_nexaws}}:{{item.port | default('5000')}}
 {% endif %}
 {% if env == "gc" and item.port_gc is defined %}
     ports:
@@ -316,7 +316,7 @@ services:
       - SYS_PTRACE
 {% endif %}
     labels:
-{% if env == "prod" or env == "aws" or env == "aws2" or env == "alphaprod" or env == "fpsprod" or env == "aws2" or env == "gc"%}
+{% if env == "prod" or env == "aws" or env == "nexaws" or env == "alphaprod" or env == "fpsprod" or env == "nexaws" or env == "gc"%}
       - "io.portainer.accesscontrol.teams={{team_name | upper}}_LEADERS"
 {% else %}
       - "io.portainer.accesscontrol.teams={{team_name | upper}}"
@@ -339,7 +339,7 @@ volumes:
        device: {{gluster_path}}{{volume.src}}/{{environment}}
 {% endif %}
     labels:
-{% if env == "prod" or env == "aws" or env == "aws2" or env == "alphaprod" or env == "fpsprod" or env == "aws2" or env == "gc"%}
+{% if env == "prod" or env == "aws" or env == "nexaws" or env == "alphaprod" or env == "fpsprod" or env == "nexaws" or env == "gc"%}
       - "io.portainer.accesscontrol.teams={{team_name | upper}}_LEADERS"
 {% else %}
       - "io.portainer.accesscontrol.teams={{team_name | upper}}"
