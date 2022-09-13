@@ -43,24 +43,23 @@
     state: restarted
 
 - name: Schedule Task to run docker commands
-      win_scheduled_task:
-        name: Run Docker Stats command every 1 min
-        description: Create task Windows Schedule for run every 1 min to run docker stats commands
-        actions:
-        - path: powershell.exe
-          arguments: -File "C:\Program Files\Zabbix Agent\taskScheduleRun.ps1"
-        allow_demand_start: true
-        execution_time_limit: PT0S
-        #  date:
-        enabled: true
-        logon_type: password
-        username: "{{ username }}"
-        password: "{{ password }}"
-        run_level: highest
-        state: present
-        triggers:
-        - type: daily
-          repetition:
-            interval: PT1M
-            # duration: indefinitely
-          start_boundary: "{{ time }}"
+  win_scheduled_task:
+    name: Run Docker Stats command every 1 min
+    description: Create task Windows Schedule for run every 1 min to run docker stats commands
+    actions:
+    - path: powershell.exe
+      arguments: -File "C:\Program Files\Zabbix Agent\taskScheduleRun.ps1"
+    allow_demand_start: true
+    execution_time_limit: PT0S
+    enabled: true
+    logon_type: password
+    username: "{{ username }}"
+    password: "{{ password }}"
+    run_level: highest
+    state: present
+    triggers:
+    - type: daily
+      repetition:
+        interval: PT1M
+        # duration: indefinitely
+      start_boundary: "{{ time }}"
