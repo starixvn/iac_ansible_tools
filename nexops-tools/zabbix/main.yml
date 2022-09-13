@@ -13,3 +13,8 @@
   roles:
     - role: docker-windows
   tags: docker-windows
+
+- hosts: all
+  roles:
+    - role: IIS-container
+  tags: iis-container
