@@ -33,7 +33,7 @@
 - name: Copy Script Run docker-stats
   win_copy:
     src: templates/scriptWindowsContainer/{{item}}
-    dest: "{{ working_dir }}/zabbix_agentd/{{item}}"
+    dest: "{{ working_dir }}/zabbix_agentd.d/{{item}}"
   with_items: 
     - taskScheduleRun.ps1
 
