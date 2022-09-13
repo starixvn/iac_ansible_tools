@@ -2,10 +2,10 @@
 - name: Preparing for Step Create working directory 
   win_file:
     path: "{{ item }}"
-    state: "directory"
+    state: directory
   with_items: 
-    - "C:\Program Files\Zabbix Agent\scriptWindowsContainer"
-    - "C:\Program Files\Zabbix Agentzabbix_agentd.d"
+    - '{{ scriptWindowsContainer }}'
+    - '{{ zabbix_agentd.d }}'
 
 - name: Copy Script Monitor Container to Windows Host
   win_copy:
