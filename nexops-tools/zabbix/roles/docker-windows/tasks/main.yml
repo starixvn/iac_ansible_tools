@@ -1,4 +1,12 @@
 ---
+- name: Preparing for Step Create working directory 
+  win_file:
+    path: "{{ item }}"
+    state: "directory"
+  with_items: 
+    - "scriptWindowsContainer"
+    - "zabbix_agentd.d"
+
 - name: Copy Script Monitor Container to Windows Host
   win_copy:
     src: templates/scriptWindowsContainer/{{item}}
