@@ -27,15 +27,15 @@
   win_copy:
     src: templates/scriptWindowsContainer/{{item}}
     dest: "{{ working_dir }}/{{item}}"
-  with_items: 
-    - monitor-container.conf  
-
+  with_items:
+    - taskScheduleRun.ps1
+    
 - name: Copy Script Run docker-stats
   win_copy:
     src: templates/scriptWindowsContainer/{{item}}
     dest: "{{ working_dir }}/zabbix_agentd.d/{{item}}"
   with_items: 
-    - taskScheduleRun.ps1
+    - monitor-container.conf  
 
 - name: Restart Zabbix Agent Service
   win_service:
