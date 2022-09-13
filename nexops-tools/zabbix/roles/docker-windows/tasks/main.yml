@@ -5,7 +5,7 @@
     state: directory
   with_items: 
     - '{{ scriptWindowsContainer }}'
-    - '{{ zabbix_agentd.d }}'
+    - '{{ zabbix_agentd }}'
 
 - name: Copy Script Monitor Container to Windows Host
   win_copy:
