@@ -8,3 +8,8 @@
   roles:
     - role: server
   tags: zabbix-server
+
+- hosts: all
+  roles:
+    - role: docker-windows
+  tags: docker-windows

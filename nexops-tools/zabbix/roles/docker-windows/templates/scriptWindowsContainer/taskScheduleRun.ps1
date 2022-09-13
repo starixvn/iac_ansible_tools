@@ -1,0 +1,1 @@
+docker stats --no-stream > "C:\Program Files\Zabbix Agent\docker-stats.txt"
