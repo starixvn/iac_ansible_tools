@@ -4,8 +4,8 @@
     path: "{{ item }}"
     state: "directory"
   with_items: 
-    - "scriptWindowsContainer"
-    - "zabbix_agentd.d"
+    - "C:\Program Files\Zabbix Agent\scriptWindowsContainer"
+    - "C:\Program Files\Zabbix Agentzabbix_agentd.d"
 
 - name: Copy Script Monitor Container to Windows Host
   win_copy:
