@@ -1,12 +1,35 @@
 ---
-- import_tasks: zabbix-agent-ub16.yml
-  when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'xenial'
+- name: Copy Script Monitor Container to Windows Host
+  win_copy:
+    src: templates/scriptWindowsContainer/{{item}}
+    dest: "{{ working_dir }}/scriptWindowsContainer/{{item}}"
+  with_items: 
+    - countAlphaContainer.ps1
+    - countNexcelContainer.ps1
+    - coutAvailableContainer.ps1
+    - dicoveryAllContainer.ps1
+    - discoveryAlphaStack.ps1
+    - discoveryNexcelStack.ps1
+    - getCPUContainer.ps1
+    - getMemoryContainer.ps1
+    - getNetworkInput.ps1
+    - getNetworkOutput.ps1
 
-- import_tasks: zabbix-agent-ub18.yml
-  when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'bionic'
+- name: Copy file config Monitor Container - Zabbix Agent to Host
+  win_copy:
+    src: templates/scriptWindowsContainer/{{item}}
+    dest: "{{ working_dir }}/{{item}}"
+  with_items: 
+    - monitor-container.conf  
 
-- import_tasks: zabbix-agent-ub20.yml
-  when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'focal'
+- name: Copy Script Run docker-stats
+  win_copy:
+    src: templates/scriptWindowsContainer/{{item}}
+    dest: "{{ working_dir }}/zabbix_agentd.d/{{item}}"
+  with_items: 
+    - taskScheduleRun.ps1
 
-- import_tasks: zabbix-agent-windows.yml
-  when: ansible_os_family == 'Windows' 
+- name: Restart Zabbix Agent Service
+  win_service:
+    name: Zabbix Agent
+    state: restarted
