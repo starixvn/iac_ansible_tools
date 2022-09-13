@@ -21,7 +21,7 @@
     
 - name: Copy Script Run docker-stats
   win_copy:
-    src: templates/scriptWindowsContainer/{{item}}
+    src: templates/scriptMonitorIISContainer/{{item}}
     dest: "{{ working_dir }}/zabbix_agentd.d/{{item}}"
   with_items: 
     - monitor-iis-container.conf  
