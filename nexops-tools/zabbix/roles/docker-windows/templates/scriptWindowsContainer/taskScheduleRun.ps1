@@ -1,1 +1,1 @@
-docker stats --no-stream > "C:\Program Files\Zabbix Agent\docker-stats.txt"
+docker stats --no-stream | Out-File -FilePath "C:\Program Files\Zabbix Agent\docker-stats.txt"
