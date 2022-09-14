@@ -1,0 +1,65 @@
+---
+- name: Preparing for Step Create working directory 
+  win_file:
+    path: "{{ item }}"
+    state: directory
+  with_items: 
+    - "{{ scriptWindowsContainer }}"
+    - "{{ zabbix_agentd }}"
+
+- name: Copy Script Monitor Container to Windows Host
+  win_copy:
+    src: templates/scriptWindowsContainer/{{item}}
+    dest: "{{ working_dir }}/scriptWindowsContainer/{{item}}"
+  with_items: 
+    - countAlphaContainer.ps1
+    - countNexcelContainer.ps1
+    - coutAvailableContainer.ps1
+    - dicoveryAllContainer.ps1
+    - discoveryAlphaStack.ps1
+    - discoveryNexcelStack.ps1
+    - getCPUContainer.ps1
+    - getMemoryContainer.ps1
+    - getNetworkInput.ps1
+    - getNetworkOutput.ps1
+
+- name: Copy file config Monitor Container - Zabbix Agent to Host
+  win_copy:
+    src: templates/scriptWindowsContainer/{{item}}
+    dest: "{{ working_dir }}/{{item}}"
+  with_items:
+    - taskScheduleRun.ps1
+    
+- name: Copy Script Run docker-stats
+  win_copy:
+    src: templates/scriptWindowsContainer/{{item}}
+    dest: "{{ working_dir }}/zabbix_agentd.d/{{item}}"
+  with_items: 
+    - monitor-container.conf  
+
+- name: Restart Zabbix Agent Service
+  win_service:
+    name: Zabbix Agent
+    state: restarted
+
+- name: Schedule Task to run docker commands
+  win_scheduled_task:
+    name: Run Docker Stats command every 1 min
+    description: Create task Windows Schedule for run every 1 min to run docker stats commands
+    actions:
+    - path: powershell.exe
+      arguments: -File "C:\Program Files\Zabbix Agent\taskScheduleRun.ps1"
+    allow_demand_start: true
+    execution_time_limit: PT0S
+    enabled: true
+    logon_type: password
+    username: "{{ username }}"
+    password: "{{ password }}"
+    run_level: highest
+    state: present
+    triggers:
+    - type: daily
+      repetition:
+        interval: PT1M
+        # duration: indefinitely
+      start_boundary: "{{ time }}"

@@ -1,0 +1,32 @@
+---
+- name: Preparing for Step Create working directory 
+  win_file:
+    path: "{{ item }}"
+    state: directory
+  with_items: 
+    - "{{ scriptMonitorIISContainer }}"
+
+- name: Copy Script Monitor Container to Windows Host
+  win_copy:
+    src: templates/scriptMonitorIISContainer/{{item}}
+    dest: "{{ working_dir }}/scriptMonitorIISContainer/{{item}}"
+  with_items: 
+    - GetCurrentConnection.ps1
+    - GetRequestExcuting.ps1
+    - GetRequestExcutionTime.ps1
+    - GetRequestPerSecond.ps1
+    - GetRequestQueued.ps1
+    - GetRequestRejected.ps1
+    - GetRequestWaitTime.ps1
+    
+- name: Copy Script Run docker-stats
+  win_copy:
+    src: templates/scriptMonitorIISContainer/{{item}}
+    dest: "{{ working_dir }}/zabbix_agentd.d/{{item}}"
+  with_items: 
+    - monitor-iis-container.conf  
+
+- name: Restart Zabbix Agent Service
+  win_service:
+    name: Zabbix Agent
+    state: restarted
