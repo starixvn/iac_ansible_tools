@@ -1,5 +1,5 @@
 - name: Prune images
   shell: |
-    docker image prune --all -f --filter "until=1440h"
+    docker image prune -f --filter "until=1440h"
   become: yes
   ignore_errors: yes
