@@ -77,6 +77,6 @@
 
 - name: Merge multi gitlab-ci files into a file
   assemble:
-    src: "/var/ci-scripts/{{repo_name}}/.gitlab-ci/{{item.name | replace('-','_')}}/"
-    dest: "/var/ci-scripts/{{repo_name}}/.gitlab-ci/{{item.name | replace('-','_')}}.gitlab-ci.yml"
+    src: "/var/ci-scripts/{{repo_name}}/.gitlab-ci/{{services[0].name | replace('-','_')}}/"
+    dest: "/var/ci-scripts/{{repo_name}}/.gitlab-ci/{{services[0].name | replace('-','_')}}.gitlab-ci.yml"
   become: yes
