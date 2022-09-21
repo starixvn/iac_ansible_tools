@@ -68,7 +68,7 @@ services:
 {% if platform == "linux" %}
     hostname: "swarm-{{'{{'}}.Service.Name{{'}}'}}-{{'{{'}}.Task.Slot{{'}}'}}"
 {% else %}
-    hostname: "{{service_name | regex_search('\w{3,4}')}}{{'{{'}}.Task.Slot{{'}}'}}-{{environment}}"
+    hostname: "{{service_name | regex_search('\w{3,9}')}}-{{'{{'}}.Task.ID{{'}}'}}"
 {% endif %}
 
 {% if config_file is defined %}
