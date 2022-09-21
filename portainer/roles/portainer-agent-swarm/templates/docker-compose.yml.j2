@@ -10,7 +10,7 @@ services:
       - target: 9001
         published: {{portainer_port | default("3333")}}
         protocol: tcp
-        mode: host
+        mode: ingress
     networks:
       - {{swarm_network_nexops}}
     environment:

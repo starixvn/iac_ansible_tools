@@ -19,7 +19,10 @@ services:
     image: {{ lookup('vars', org + '_image_' + env)}}/nexops-tools/portainer:server #portainer/portainer-ce
     command: -H tcp://tasks.agent:9001 --tlsskipverify
     ports:
-      - 9000:9000
+      - target: 9000
+        published: {{portainer_port | default("9000")}}
+        protocol: tcp
+        mode: ingress
     volumes:
       - {{portainer_volume_name}}:/data
     networks:
