@@ -105,4 +105,4 @@ include:
     file: 'smoke-test/smoke-test-sc2.gitlab-ci.yml'
 {%endif%}
 {%endif%}
-  - .gitlab-ci/{{service.name | replace('-','_') }}.gitlab-ci.yml
+  - .gitlab-ci/{{services[0].name | replace('-','_') }}.gitlab-ci.yml
