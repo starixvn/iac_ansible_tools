@@ -6,7 +6,7 @@
 
 - hosts: all
   roles:
-    - role: haproxy
+    - role: install-haproxy
     - role: keepalived
   tags: install-haproxy-keepalived
 
