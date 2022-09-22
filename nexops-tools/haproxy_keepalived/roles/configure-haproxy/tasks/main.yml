@@ -32,3 +32,4 @@
 - name: Configure | HAProxy to start at boot
   become: yes
   service: name=haproxy enabled=yes state=started
+  ignore_errors: true
