@@ -30,6 +30,7 @@
   become: yes
   with_items:
     - prometheus
+#    - prometheus_keepalived
   #ignore_errors: yes
 
 - name: remove service and config
