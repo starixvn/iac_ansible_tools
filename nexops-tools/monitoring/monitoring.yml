@@ -18,6 +18,11 @@
 
 - hosts: all
   roles:
+    - role: deploy-prometheus-only
+  tags: deploy-prometheus-only
+
+- hosts: all
+  roles:
     - deploy-nettool
   tags: deploy-nettool
 
