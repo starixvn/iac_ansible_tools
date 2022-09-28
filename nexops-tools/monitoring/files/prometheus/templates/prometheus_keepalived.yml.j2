@@ -71,14 +71,14 @@ scrape_configs:
 {%endif%}
 {%if keepaliveds is defined%}
 {%for keepalived in keepaliveds%}
-    - job_name: '{{keepalived.name}}'
-      scrape_interval: '{{scrape_interval}}'
-      scrape_timeouts: 5s
-      metrics_path: '{{keepalived.metric}}'
-      scheme: '{{keepalived.scheme}}'
-      static_configs:
-        - targets: ['{{keepalived.url}}']
-          labels:
+  - job_name: '{{keepalived.name}}'
+    scrape_interval: '{{scrape_interval}}'
+    scrape_timeouts: 5s
+    metrics_path: '{{keepalived.metric}}'
+    scheme: '{{keepalived.scheme}}'
+    static_configs:
+      - targets: ['{{keepalived.url}}']
+        labels:
             service: '{{keepalived.service}}'
 {%endfor%}
 {%endif%}
