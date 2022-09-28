@@ -29,7 +29,7 @@ services:
   prometheus:
     image: registry.nexdev.net:5050/docker/nexops-tools/prometheus
     ports:
-      - '9091:9091'
+      - "{{prometheus_port | default ('9091')}}:9090"
     networks:
       - net
       - swarm_{{org}}_{{env}}
