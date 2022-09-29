@@ -10,7 +10,7 @@ scrape_configs:
 {%if keepaliveds is defined%}
 {%for keepalived in keepaliveds%}
   - job_name: '{{keepalived.name}}'
-    scrape_interval: '{{scrape_interval}}'
+    scrape_interval: 5s
     scrape_timeouts: 5s
     metrics_path: '{{keepalived.metric}}'
     scheme: '{{keepalived.scheme}}'
