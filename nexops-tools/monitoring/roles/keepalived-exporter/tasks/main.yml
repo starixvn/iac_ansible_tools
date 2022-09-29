@@ -3,12 +3,14 @@
   copy:
     src: 'files/keepalived-exporter/keepalived-exporter'
     dest: '/usr/local/bin/keepalived-exporter'
+    owner: root
   become: yes       
   
 - name: Copy script check VIP
   copy:
     src: 'files/keepalived-exporter/script_check_VIP.sh'
     dest: '/etc/keepalived/script_check_VIP.sh'
+    owner: root
     mode: '0755'
   become: yes
     
@@ -16,6 +18,7 @@
   copy:
     src: 'files/keepalived-exporter/keepalived-exporter.service'
     dest: '/etc/systemd/system/keepalived-exporter.service'
+    owner: root
   become: yes
 
 - name: Reload daemmon
