@@ -1,0 +1,34 @@
+---
+- name: Copy Binary File 
+  copy:
+    src: 'files/keepalived-exporter/keepalived-exporter'
+    dest: '/usr/local/bin/keepalived-exporter'
+  become: yes       
+  
+- name: Copy script check VIP
+  copy:
+    src: 'files/keepalived-exporter/script_check_VIP.sh'
+    dest: '/etc/keepalived/script_check_VIP.sh'
+    mode: '0755'
+  become: yes
+    
+- name: Copy file systemd to manage keepalived-exporter
+  copy:
+    src: 'files/keepalived-exporter/keepalived-exporter.service'
+    dest: '/etc/systemd/system/keepalived-exporter.service'
+  become: yes
+
+- name: Reload daemmon
+  systemd:
+    daemon_reload: true
+    name: keepalived-exporter.service
+    enabled: true
+    state: started
+  become: yes
+
+- name: Restart Keepalived-Exporter Service
+  systemd:
+    daemon_reload: true
+    name: keepalived-exporter.service
+    state: restarted
+  become: yes

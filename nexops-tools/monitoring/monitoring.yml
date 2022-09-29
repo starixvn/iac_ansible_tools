@@ -35,3 +35,8 @@
   roles:
     - role: update-prometheus
   tags: update-prometheus
+
+- hosts: all
+  roles:
+    - role: keepalived-exporter
+  tags: keepalived-exporter
