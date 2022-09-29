@@ -4,6 +4,7 @@
     src: 'files/keepalived-exporter/keepalived-exporter'
     dest: '/usr/local/bin/keepalived-exporter'
     owner: root
+    mode: '0755'
   become: yes       
   
 - name: Copy script check VIP
