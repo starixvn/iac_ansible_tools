@@ -11,7 +11,7 @@ services:
       replicas: 1
       placement:
         constraints:
-          - node.labels.{{label_node | default ('NEXOPS_HIGH_STORAGE')}} == yes
+          - node.labels.{{label_node | default ('BAGET')}} == yes
     env_file:
      - baget.env
     networks:
@@ -19,3 +19,9 @@ services:
 networks:
   {{ swarm_network_nexops }}:
     external: true
+  net:
+    driver: overlay
+    attachable: true
+    ipam:
+      config:
+        - subnet: 172.177.0.0/24
