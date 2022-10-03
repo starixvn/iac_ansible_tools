@@ -1,4 +1,12 @@
 ---
+- name: Create working directory {{ working_directory }}
+  file:
+    path: '{{ working_directory }}/data'
+    mode: '0755'
+    state: directory
+  become: yes
+  ignore_errors: yes
+
 - name: Copy docker-compose template
   template:
     src: 'deploy-compose/prometheus-keepalived.docker-compose.yml.j2'
