@@ -12,12 +12,12 @@ version: '3.3'
 networks:
   swarm_{{org}}_{{env}}:
     external: true
-  net:
-    driver: overlay
-    attachable: true
-    ipam:
-      config:
-        - subnet: 172.177.0.0/24
+  #net:
+  #  driver: overlay
+  #  attachable: true
+  #  ipam:
+  #    config:
+  #      - subnet: 172.177.0.0/24
 
 volumes:
   {{prometheus_volume | default ('prometheus_data')}}:
@@ -36,7 +36,7 @@ services:
     ports:
       - "{{prometheus_port | default ('9091')}}:9090"
     networks:
-      - net
+      #- net
       - swarm_{{org}}_{{env}}
     command:
       - '--config.file=/etc/prometheus/prometheus_custom.yml'
