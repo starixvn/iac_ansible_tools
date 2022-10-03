@@ -1,7 +1,7 @@
 ---
 - name: Create working directory {{ working_directory }}
   file:
-    path: '{{ working_directory }}/data'
+    path: '{{ working_directory }}/prometheus/data'
     mode: '0755'
     state: directory
   become: yes
