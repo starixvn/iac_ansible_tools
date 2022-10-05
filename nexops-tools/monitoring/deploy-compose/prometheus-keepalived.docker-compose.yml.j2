@@ -51,6 +51,7 @@ services:
       - '--storage.tsdb.path=/prometheus'
       - '--storage.tsdb.retention=24h'
     volumes:
+      - ./prometheus:/etc/prometheus
       - prometheus_data:/prometheus
     configs:
       - source: prometheus_config  
