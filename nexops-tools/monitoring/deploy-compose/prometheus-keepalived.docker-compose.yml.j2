@@ -40,7 +40,7 @@ configs:
 
 services:
   prometheus:
-    image: registry.nexdev.net:5050/docker/nexops-tools/prometheus
+    image: prom/prometheus:latest
     ports:
       - "{{prometheus_port | default ('9091')}}:9090"
     networks:
