@@ -69,7 +69,7 @@ services:
 
 
   alertmanager:
-    image: registry.nexdev.net:5050/docker/nexops-tools/alertmanager
+    image: prom/alertmanager:latest
     ports:
       - "{{alertmanager_port | default ('9099')}}:9093"
     networks:
