@@ -71,7 +71,7 @@ services:
   alertmanager:
     image: registry.nexdev.net:5050/docker/nexops-tools/alertmanager
     ports:
-      - "{{alertmanager_port | default ('9093')}}:9093"
+      - "{{alertmanager_port | default ('9099')}}:9093"
     networks:
       - swarm_{{org}}_{{env}}
     volumes:
