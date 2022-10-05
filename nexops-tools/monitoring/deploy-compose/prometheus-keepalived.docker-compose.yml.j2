@@ -40,7 +40,7 @@ configs:
 
 services:
   prometheus:
-    image: prom/prometheus:latest
+    image: registry.nexdev.net:5050/docker/nexops-tools/prometheus:latest
     ports:
       - "{{prometheus_port | default ('9091')}}:9090"
     networks:
@@ -76,9 +76,9 @@ services:
       - swarm_{{org}}_{{env}}
     volumes:
       - alertmanager_data:/etc/alertmanager
-#    configs:
-#      - source: alertmanager_config
-#        target: /etc/alertmanager/alertmanager.yml
+    configs:
+      - source: alertmanager_config
+        target: /etc/alertmanager/alertmanager.yml
     command:
       - '--config.file=/etc/alertmanager/alertmanager.yml'
       - '--storage.path=/alertmanager'
