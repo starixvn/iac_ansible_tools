@@ -76,7 +76,8 @@ services:
     networks:
       - swarm_{{org}}_{{env}}
     volumes:
-      - alertmanager_data:/etc/alertmanager
+      - ./alertmanager:/etc/alertmanager
+      - alertmanager_data:/alertmanager
     configs:
       - source: alertmanager_config
         target: /etc/alertmanager/alertmanager.yml
