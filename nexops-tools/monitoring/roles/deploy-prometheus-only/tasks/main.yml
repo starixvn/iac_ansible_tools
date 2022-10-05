@@ -7,6 +7,14 @@
   become: yes
   ignore_errors: yes
 
+- name: Create working directory alertmanager {{ working_directory }}
+  file:
+    path: '{{ working_directory }}/alertmanager/data'
+    mode: '0755'
+    state: directory
+  become: yes
+  ignore_errors: yes
+
 - name: Copy docker-compose template
   template:
     src: 'deploy-compose/prometheus-keepalived.docker-compose.yml.j2'
@@ -27,6 +35,7 @@
   become: yes
   with_items:
     - prometheus
+    - alertmanager
   ignore_errors: yes
 
 - name: Generate configs from templates

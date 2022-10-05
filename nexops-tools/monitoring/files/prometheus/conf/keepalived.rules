@@ -1,0 +1,31 @@
+groups:
+- name: keepalived_monitor
+  rules:
+  - alert: Keepalived Service Down
+    expr: keepalived_up{service=~"keepalived_.*"} == 0
+    for: 1m
+    labels:
+      team: Team NexOps
+      severity: Critical
+    annotations:
+      summary: "Keepalived Service go down on host {{ $labels.instance  }}. VALUE = {{ $value  }}"
+      description: "Keepalived Service is down on {{ $labels.instance  }} now with job name {{ $labels.job  }} , please check."
+  - alert: HAProxy Service Down
+    expr: keepalived_script_status{service=~"keepalived_.*"} == 0
+    for: 1m
+    labels:
+      team: Team NexOps  
+      severity: Warning
+    annotations:
+      summary: "Can not find  process of HAProxy Container on {{ $labels.instance  }}"
+      description: "Script check HAProxy Container with script name {{ $labels.name  }} return fail result on {{ $labels.instance  }}, value = {{ $value  }}, please check."
+
+  - alert: VIP Can not Access
+    expr: keepalived_exporter_check_script_status{service=~"keepalived_.*"} == 0 
+    for: 1m
+    labels:
+      team: Team NexOps  
+      severity: Warning
+    annotations:
+      summary: "VIP {{ $labels.ip_address  }} can not access from node {{ $labels.instance  }}"
+      description: "VIP {{ $labels.ip_address }} can not access from node {{ $labels.instance }} in 1 minutes- vrid = {{ $labels.vrid }}, please check."

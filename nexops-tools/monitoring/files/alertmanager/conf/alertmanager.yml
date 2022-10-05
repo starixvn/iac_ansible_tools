@@ -1,11 +1,27 @@
+global:
 route:
-    receiver: 'slack'
+  group_by: ['alertname']
+  group_wait: 10s
+  group_interval: 1m
+  repeat_interval: 1m
+  receiver: telegramne
+
+  routes:
+  - receiver: telegramne
+    matchers:
+    - severity="critical"
+
 
 receivers:
-    - name: 'slack'
-      slack_configs:
-          - send_resolved: true
-            text: "{{ .CommonAnnotations.description }}"
-            #username: <user>#
-            #channel: <channel>#
-            #api_url: <url>#
+- name: 'telepush'
+  webhook_configs:
+  - url: 'https://telepush.dev/api/inlets/alertmanager/e85ba5'    # add your Telepush token here
+    http_config:
+- name: 'telegramne'
+  telegram_configs:
+  - bot_token: "5704675481:AAHDUxICKkzHUmkL1KXZbfLGqiALwrqe4GI"
+    chat_id: -686047898
+    api_url: https://api.telegram.org
+    parse_mode: "HTML"
+templates:
+- /etc/alertmanager/alert-message.tmpl
