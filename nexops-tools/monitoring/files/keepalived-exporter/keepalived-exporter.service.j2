@@ -1,0 +1,10 @@
+[Unit]
+Description=KeepAlived-Exporter Service
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/keepalived-exporter --cs "/etc/keepalived/script_check_VIP.sh {{ vip_cluster }}"
+
+[Install]
+WantedBy=multi-user.target

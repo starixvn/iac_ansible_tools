@@ -16,9 +16,9 @@
   become: yes
     
 - name: Copy file systemd to manage keepalived-exporter
-  copy:
-    src: 'files/keepalived-exporter/keepalived-exporter.service'
+  template:
     dest: '/etc/systemd/system/keepalived-exporter.service'
+    src: 'files/keepalived-exporter/keepalived-exporter.service.j2'
     owner: root
   become: yes
 
