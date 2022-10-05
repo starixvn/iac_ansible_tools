@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStart=/usr/local/bin/keepalived-exporter --cs "/etc/keepalived/script_check_VIP.sh {{ vip_cluster }}"
+ExecStart=/usr/local/bin/keepalived-exporter --cs "/etc/keepalived/script_check_VIP.sh {{ vip }}"
 
 [Install]
 WantedBy=multi-user.target
