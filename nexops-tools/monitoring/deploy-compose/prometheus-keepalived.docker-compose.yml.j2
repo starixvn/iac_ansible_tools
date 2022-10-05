@@ -47,14 +47,16 @@ services:
       #- net
       - swarm_{{org}}_{{env}}
     command:
-      - '--config.file=/etc/prometheus/prometheus_custom.yml'
+#      - '--config.file=/etc/prometheus/prometheus_custom.yml'
+      - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
       - '--storage.tsdb.retention=24h'
     volumes:
       - prometheus_data:/prometheus
     configs:
       - source: prometheus_config
-        target: /etc/prometheus/prometheus_custom.yml
+        target: /etc/prometheus/prometheus.yml      
+#        target: /etc/prometheus/prometheus_custom.yml
     deploy:
       mode: replicated
       replicas: 1
