@@ -40,23 +40,21 @@ configs:
 
 services:
   prometheus:
-    image: registry.nexdev.net:5050/docker/nexops-tools/prometheus:latest
+    image: registry.nexdev.net:5050/docker/nexops-tools/prometheus
     ports:
       - "{{prometheus_port | default ('9091')}}:9090"
     networks:
       #- net
       - swarm_{{org}}_{{env}}
     command:
-#      - '--config.file=/etc/prometheus/prometheus_custom.yml'
-      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--config.file=/etc/prometheus/prometheus_custom.yml'
       - '--storage.tsdb.path=/prometheus'
       - '--storage.tsdb.retention=24h'
     volumes:
       - prometheus_data:/prometheus
     configs:
-      - source: prometheus_config
-        target: /etc/prometheus/prometheus.yml      
-#        target: /etc/prometheus/prometheus_custom.yml
+      - source: prometheus_config  
+        target: /etc/prometheus/prometheus_custom.yml
     deploy:
       mode: replicated
       replicas: 1
