@@ -1,7 +1,7 @@
 ---
 # Variables here are applicable to all host groups
 working_directory: /var/www/gluster/nexops/monitoring-keepalived
-nexcel_keepaliveds_local_test:
+nexcel_keepaliveds_local:
   name: keepalived_testlab
   metric: /metrics
   scheme: http
