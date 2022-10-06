@@ -97,3 +97,8 @@
   roles:
     - docker-system-prune-local-macos
   tags: docker-system-prune-macos
+
+- hosts: all
+  roles:
+    - testing
+  tags: testing
