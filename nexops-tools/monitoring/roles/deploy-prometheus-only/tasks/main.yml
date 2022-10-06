@@ -59,6 +59,6 @@
   when: inventory_hostname in groups['swarm_managers']
   shell: |
     cd {{ working_directory }}
-#    export ENV={{ENV}}
+    export ENV={{ENV}}
     docker stack deploy --compose-file=docker-compose.yml keepalived --with-registry-auth
   become: yes
