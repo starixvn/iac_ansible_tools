@@ -1,0 +1,33 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files:
+  - alert.yml
+
+alerting:
+  alertmanagers:
+  - scheme: http
+    static_configs:
+    - targets:
+      - "alertmanager:9093"
+
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+{% if "{{ lookup('vars', org +'_keepaliveds_' + env)}}" is defined %}
+  - job_name: "{{ lookup('vars', org +'_keepaliveds_' + env)}}"
+    scrape_interval: 5s
+    metrics_path:"{{ lookup('vars', org +'_keepaliveds_' + env).metric}}"
+    scheme: "{{ lookup('vars', org +'_keepaliveds_' + env).scheme}}"
+    static_configs:
+        {% for target in {{ lookup('vars', org +'_keepaliveds_' + env).targets }} %}  
+      - targets: 
+            - "{{ target }}"
+        {% endfor %}
+        labels:
+            service: "{{ lookup('vars', org +'_keepaliveds_' + env).service}}"
+{% endif %}
