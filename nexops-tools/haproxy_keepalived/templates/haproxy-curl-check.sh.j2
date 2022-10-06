@@ -2,7 +2,7 @@
 # Check Web Healtcheck Status (200 OR NOT)
 #MR.NUTSS
 
-curl=$(curl -LI http://{{inventory_hostname}}:8001/checkstatus -o /dev/null -w '%{http_code}\n' -s)
+curl=$(curl -LI http://{{inventory_hostname}}:8405/check -o /dev/null -w '%{http_code}\n' -s)
 
 if [ $curl != 200 ]
 then
