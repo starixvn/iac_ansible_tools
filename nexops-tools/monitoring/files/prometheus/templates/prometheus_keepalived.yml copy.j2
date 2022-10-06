@@ -19,7 +19,7 @@ scrape_configs:
       - targets: ['localhost:9090']
 
 {% if "{{ lookup('vars', org +'_keepaliveds_' + env)}}" is defined %}
-  - job_name: "{{ lookup('vars', org +'_keepaliveds_' + env)}}"
+  - job_name: "{{ lookup('vars', org +'_keepaliveds_' + env).name}}"
     scrape_interval: 5s
     metrics_path:"{{ lookup('vars', org +'_keepaliveds_' + env).metric}}"
     scheme: "{{ lookup('vars', org +'_keepaliveds_' + env).scheme}}"
