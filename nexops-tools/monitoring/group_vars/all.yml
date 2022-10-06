@@ -9,3 +9,15 @@ nexcel_keepaliveds_testlab:
     - '10.70.70.31:9165'
     - '10.70.70.33:9165'
   service: keepalived_testlab
+
+nexcel_keepaliveds_local:
+  name: keepalived_local
+  metric: /metrics
+  scheme: http
+  targets:
+    - '10.18.200.203:9165'
+    - '10.18.200.204:9165'
+    - '10.18.200.138:9165'
+  service: keepalived_local
+
+
