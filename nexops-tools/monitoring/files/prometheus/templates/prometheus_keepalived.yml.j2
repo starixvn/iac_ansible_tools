@@ -18,16 +18,16 @@ scrape_configs:
     static_configs:
       - targets: ['localhost:9090']
 
-{%if keepaliveds is defined%}
-{%for keepalived in keepaliveds%}
-  - job_name: '{{keepalived.name}}'
+{% if "{{ lookup('vars', org +'_keepaliveds_' + env)}}" is defined %}
+  - job_name: "{{ lookup('vars', org +'_keepaliveds_' + env)}}"
     scrape_interval: 5s
-    #scrape_timeouts: 5s
-    metrics_path: '{{keepalived.metric}}'
-    scheme: '{{keepalived.scheme}}'
+    metrics_path:"{{ lookup('vars', org +'_keepaliveds_' + env).metric}}"
+    scheme: "{{ lookup('vars', org +'_keepaliveds_' + env).scheme}}"
     static_configs:
-      - targets: ['{{keepalived.url}}']
+        {% for target in {{ lookup('vars', org +'_keepaliveds_' + env).targets }} %}  
+      - targets: 
+            - "{{ target }}"
+        {% endfor %}
         labels:
-            service: '{{keepalived.service}}'
-{%endfor%}
-{%endif%}
+            service: "{{ lookup('vars', org +'_keepaliveds_' + env).service}}"
+{% endif %}
