@@ -47,6 +47,15 @@
     - prometheus
   #ignore_errors: yes
 
+- name: Generate configs from templates Alertmanager
+  template:
+    src: 'files/{{item}}/templates/alertmanager.yml.j2'
+    dest: '{{ working_directory }}/{{item}}/{{item}}.yml'
+  become: yes
+  with_items:
+    - alertmanager
+  #ignore_errors: yes
+
 - name: remove service and config
   when: inventory_hostname in groups['swarm_managers']
   shell: |
