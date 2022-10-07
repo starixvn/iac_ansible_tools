@@ -1,7 +1,7 @@
 ---
 - name: Backup database Gitlab
   shell: |
-    docker exec -i {{ container_name }} gitlab-backup create 
+    docker exec -i {{ container_name }} gitlab-backup create SKIP=registry RAILS_ENV=production
   become: yes
 
 - name: Copy Gitlab latest backup file to restore_server
