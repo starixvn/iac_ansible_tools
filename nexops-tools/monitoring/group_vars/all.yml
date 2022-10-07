@@ -21,6 +21,17 @@ nexcel_keepaliveds_local:
   service: nexcel_keepalived_local
 
 
+nexcel_keepaliveds_uat:
+  name: nexcel_keepalived_uat
+  metric: /metrics
+  scheme: http
+  targets:
+    - '10.2.190.68:9165'
+    - '10.2.190.79:9165'
+  service: nexcel_keepalived_uat
+
+
+
 luminet_keepaliveds_local:
   name: luminet_keepalived_local
   metric: /metrics
@@ -30,6 +41,8 @@ luminet_keepaliveds_local:
     - '10.10.50.39:9165'
     - '10.10.50.40:9165'
   service: luminet_keepalived_local
+
+
 
 
 
