@@ -1,6 +1,16 @@
 groups:
 - name: keepalived_monitor
   rules:
+  - alert: Keepalived-Export Down on Host
+    expr: up{job=~"keepalived_.*"} == 0
+    for: 10s
+    labels:
+      team: Team NexOps
+      severity: Critical
+    annotations:
+      summary: "Keepalived Exporter go down on host {{ $labels.instance  }}."
+      description: "Keepalived Export can not show data on host {{ $labels.instance }}, job name {{ $labels.job  }}, service {{ $labels.service }}"
+
   - alert: Keepalived Service Down
     expr: keepalived_up{service=~"keepalived_.*"} == 0
     for: 1m
