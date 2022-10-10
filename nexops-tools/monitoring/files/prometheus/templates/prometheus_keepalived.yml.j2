@@ -27,9 +27,11 @@ scrape_configs:
         labels:
           service: {{ lookup('vars', org +'_keepaliveds_' + env).service}}
 
-  - job_name: 'node-exporter'
-    dns_sd_configs:
-      - names: 
-          - 'tasks.node-exporter'
-        type: 'A'
-        port: 9100
+
+  - job_name: {{ lookup('vars', org +'_haproxy_' + env).name}}
+    metrics_path: {{ lookup('vars', org +'_haproxy_' + env).metric}}
+    scheme: {{ lookup('vars', org +'_haproxy_' + env).scheme}}
+    static_configs:
+      - targets: {{ lookup('vars', org +'_haproxy_' + env).targets}}
+        labels:
+          service: {{ lookup('vars', org +'_haproxy_' + env).service}}
