@@ -23,6 +23,31 @@ nexcel_haproxy_local:
   service: nexcel_haproxy_local
 
 
+
+
+nexcel_keepaliveds_nexprod:
+  name: nexcel_keepalived_nexprod
+  metric: /metrics
+  scheme: http
+  targets:
+    - '10.18.200.151:9165'
+    - '10.18.200.152:9165'
+    - '10.18.200.153:9165'
+  service: nexcel_keepalived_nexprod
+
+
+nexcel_haproxy_nexprod:
+  name: nexcel_haproxy_nexprod
+  metric: /metrics
+  scheme: http
+  targets:
+    - '10.18.200.151:8001'
+    - '10.18.200.152:8001'
+    - '10.18.200.153:8001'
+  service: nexcel_haproxy_nexprod
+
+
+
 nexcel_keepaliveds_uat:
   name: nexcel_keepalived_uat
   metric: /metrics
