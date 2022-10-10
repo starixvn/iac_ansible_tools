@@ -26,3 +26,10 @@ scrape_configs:
       - targets: {{ lookup('vars', org +'_keepaliveds_' + env).targets}}
         labels:
           service: {{ lookup('vars', org +'_keepaliveds_' + env).service}}
+
+  - job_name: 'node-exporter'
+    dns_sd_configs:
+      - names: 
+          - 'tasks.node-exporter'
+        type: 'A'
+        port: 9100
