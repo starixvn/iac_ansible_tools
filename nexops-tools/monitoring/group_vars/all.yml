@@ -1,15 +1,6 @@
 ---
 # Variables here are applicable to all host groups
 working_directory: /var/www/gluster/nexops/monitoring-keepalived
-nexcel_keepaliveds_testlab:
-  name: keepalived_testlab
-  metric: /metrics
-  scheme: http
-  targets:
-    - '10.70.70.31:9165'
-    - '10.70.70.33:9165'
-  service: keepalived_testlab
-
 nexcel_keepaliveds_local:
   name: nexcel_keepalived_local
   metric: /metrics
@@ -19,6 +10,17 @@ nexcel_keepaliveds_local:
     - '10.18.200.204:9165'
     - '10.18.200.138:9165'
   service: nexcel_keepalived_local
+
+
+nexcel_haproxy_local:
+  name: nexcel_haproxy_local
+  metric: /metrics
+  scheme: http
+  targets:
+    - '10.18.200.203:8001'
+    - '10.18.200.204:8001'
+    - '10.18.200.138:8001'
+  service: nexcel_haproxy_local
 
 
 nexcel_keepaliveds_uat:
