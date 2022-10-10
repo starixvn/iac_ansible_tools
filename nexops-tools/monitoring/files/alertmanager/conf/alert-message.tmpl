@@ -1,11 +1,10 @@
 {{ define "telegram.default.message" }}
-{{ range .Alerts }}
-{{ if eq .Status "firing"}}🔥 <b>{{ .Labels.alertname }} [Problem]</b> 🔥 {{ else }}✅ <b>{{ .Labels.alertname }} [Resolved]</b> ✅ {{ end }}
-<b>Labels:</b>{{ range $key, $value := .Labels }}{{ if ne $key "alertname" }}
-    {{ $key }}: {{ $value }}{{ end }}{{end}} 
-<b>Annotations:</b>{{ range $key, $value := .Annotations }}
-    {{ $key }}: {{ $value }}{{ end }}{{ if eq .Status "firing"}}
+{{ range .Alerts  }}
+{{ if eq .Status "firing"}}🔥  <b>{{ .Labels.alertname }} [PROBLEM]</b> 🔥  {{ else }}✅  <b>{{ .Labels.alertname }} [RESOLVED] </b> ✅ {{ end }}
+<b>Host:</b> {{ .Labels.instance }}
+<b>Service:</b> {{ .Labels.service }}
+<b>Summary:</b>  {{ .Annotations.summary  }}{{ if eq .Status "firing"}}
 <b>StartTime:</b> {{ .StartsAt }}{{ else }}
 <b>Ended:</b> {{ .EndsAt }}{{ end }}
 {{ end }}
-{{ end }}
+{{ end  }}
