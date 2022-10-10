@@ -28,10 +28,10 @@ scrape_configs:
           service: {{ lookup('vars', org +'_keepaliveds_' + env).service}}
 
 
-  - job_name: {{ lookup('vars', org +'_haproxy_' + env).name}}
-    metrics_path: {{ lookup('vars', org +'_haproxy_' + env).metric}}
-    scheme: {{ lookup('vars', org +'_haproxy_' + env).scheme}}
-    static_configs:
-      - targets: {{ lookup('vars', org +'_haproxy_' + env).targets}}
-        labels:
-          service: {{ lookup('vars', org +'_haproxy_' + env).service}}
+#  - job_name: {{ lookup('vars', org +'_haproxy_' + env).name}}
+#    metrics_path: {{ lookup('vars', org +'_haproxy_' + env).metric}}
+#    scheme: {{ lookup('vars', org +'_haproxy_' + env).scheme}}
+#    static_configs:
+#      - targets: {{ lookup('vars', org +'_haproxy_' + env).targets}}
+#        labels:
+#          service: {{ lookup('vars', org +'_haproxy_' + env).service}}
