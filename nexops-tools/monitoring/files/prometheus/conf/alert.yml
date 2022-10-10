@@ -8,7 +8,7 @@ groups:
       team: Team NexOps
       severity: Critical
     annotations:
-      summary: "Keepalived Exporter go down on host {{ $labels.instance  }}."
+      summary: "Keepalived Exporter  down on host {{ $labels.instance  }}."
       description: "Keepalived Export can not show data on host {{ $labels.instance }}, job name {{ $labels.job  }}, service {{ $labels.service }}"
 
   - alert: Keepalived Service
@@ -18,7 +18,7 @@ groups:
       team: Team NexOps
       severity: Critical
     annotations:
-      summary: "Keepalived Service go down on host {{ $labels.instance  }}. VALUE = {{ $value  }}"
+      summary: "Keepalived Service  down on host {{ $labels.instance  }}."
       description: "Keepalived Service is down on {{ $labels.instance  }} now with job name {{ $labels.job  }} , please check."
   - alert: HAProxy Service
     expr: keepalived_script_status{service=~"keepalived_.*"} == 0
