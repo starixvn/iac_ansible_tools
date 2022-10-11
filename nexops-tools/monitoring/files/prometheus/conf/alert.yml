@@ -2,7 +2,7 @@ groups:
 - name: keepalived_monitor
   rules:
   - alert: Keepalived-Export on Host
-    expr: up{job=~"keepalived_.*"} == 0
+    expr: up{job=~".*_keepalived_.*"} == 0
     for: 10s
     labels:
       team: Team NexOps
@@ -12,7 +12,7 @@ groups:
       description: "Keepalived Export can not show data on host {{ $labels.instance }}, job name {{ $labels.job  }}, service {{ $labels.service }}"
 
   - alert: Keepalived Service
-    expr: keepalived_up{service=~"keepalived_.*"} == 0
+    expr: keepalived_up{job=~".*_keepalived_.*"} == 0
     for: 1m
     labels:
       team: Team NexOps
@@ -21,7 +21,7 @@ groups:
       summary: "Keepalived Service  down on host {{ $labels.instance  }}."
       description: "Keepalived Service is down on {{ $labels.instance  }} now with job name {{ $labels.job  }} , please check."
   - alert: HAProxy Service
-    expr: keepalived_script_status{service=~"keepalived_.*"} == 0
+    expr: keepalived_script_status{job=~".*_keepalived_.*"} == 0
     for: 1m
     labels:
       team: Team NexOps  
@@ -31,7 +31,7 @@ groups:
       description: "Script check HAProxy Container with script name {{ $labels.name  }} return fail result on {{ $labels.instance  }}, value = {{ $value  }}, please check."
 
   - alert: VIP Can not Access
-    expr: keepalived_exporter_check_script_status{service=~"keepalived_.*"} == 0 
+    expr: keepalived_exporter_check_script_status{job=~".*_keepalived_.*"} == 0 
     for: 1m
     labels:
       team: Team NexOps  
