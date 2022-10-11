@@ -56,11 +56,19 @@
     - alertmanager
   #ignore_errors: yes
 
-- name: remove service and config
+- name: remove service and config prometheus
   when: inventory_hostname in groups['swarm_managers']
   shell: |
     docker service rm keepalived_prometheus
     docker config rm keepalived_prometheus_config
+  become: yes
+  ignore_errors: yes
+
+- name: remove service and config alertmanager
+  when: inventory_hostname in groups['swarm_managers']
+  shell: |
+    docker service rm keepalived_alertmanager
+    docker config rm keepalived_alertmanager_config
   become: yes
   ignore_errors: yes
   
