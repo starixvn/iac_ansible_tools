@@ -1,6 +1,7 @@
 ---
 # Variables here are applicable to all host groups
 working_directory: /var/www/gluster/nexops/monitoring-keepalived
+##############NEXCEL LOCAL###################
 nexcel_keepaliveds_local:
   name: nexcel_keepalived_local
   metric: /metrics
@@ -21,10 +22,12 @@ nexcel_haproxy_local:
     - '10.18.200.204:8001'
     - '10.18.200.138:8001'
   service: nexcel_haproxy_local
+##############NEXCEL LOCAL###################
 
 
 
 
+##############NEXCEL NEXPROD###################
 nexcel_keepaliveds_nexprod:
   name: nexcel_keepalived_nexprod
   metric: /metrics
@@ -45,9 +48,11 @@ nexcel_haproxy_nexprod:
     - '10.18.200.152:8001'
     - '10.18.200.153:8001'
   service: nexcel_haproxy_nexprod
+##############NEXCEL NEXPROD###################
 
 
 
+##############NEXCEL UAT###################
 nexcel_keepaliveds_uat:
   name: nexcel_keepalived_uat
   metric: /metrics
@@ -58,7 +63,19 @@ nexcel_keepaliveds_uat:
   service: nexcel_keepalived_uat
 
 
+nexcel_haproxy_uat:
+  name: nexcel_haproxy_uat
+  metric: /metrics
+  scheme: http
+  targets:
+    - '10.2.190.68:8088'
+    - '10.2.190.79:8088'
+  service: nexcel_haproxy_uat
+##############NEXCEL UAT###################
 
+
+
+##############LUMINET LOCAL###################
 luminet_keepaliveds_local:
   name: luminet_keepalived_local
   metric: /metrics
@@ -79,9 +96,12 @@ luminet_haproxy_local:
     - '10.10.50.39:8088'
     - '10.10.50.40:8088'
   service: luminet_haproxy_local
+##############LUMINET LOCAL###################
 
 
 
+
+##############LUMINET UAT###################
 luminet_keepaliveds_uat:
   name: luminet_keepalived_uat
   metric: /metrics
@@ -92,7 +112,17 @@ luminet_keepaliveds_uat:
     - '10.2.190.83:9165'
   service: luminet_keepalived_uat
 
+luminet_haproxy_uat:
+  name: luminet_haproxy_uat
+  metric: /metrics
+  scheme: http
+  targets:
+    - '10.2.190.65:8088'
+    - '10.2.190.78:8088'
+    - '10.2.190.83:8088'
+  service: luminet_haproxy_uat
 
+##############LUMINET UAT###################
 
 
 
