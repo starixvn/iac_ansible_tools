@@ -20,10 +20,11 @@
     DOCKER_FILE_PATH: {{item.docker_file_path | default(".")}}
     DOCKER_FILE_NAME: {{item.docker_file_name | default("Dockerfile")}}
     CONFIG_FILE_PATH: {{item.config_file_path | default(".") | replace(separator_char,'/') }}
-{% if item.sp_mapper is defined and item.sp_mapper == true %}
+{% if item.sp_file_name is defined and item.sp_file_name != '' %}
     SP_FILE_PATH: {{item.sp_file_path | default("./App_Data") | replace(separator_char,'/') }}
-    SP_FILE_NAME: {{item.sp_file_name | default("SpNames")}}
+    SP_FILE_NAME: {{item.sp_file_name}}
     SP_FILE_EXTENSION: {{item.sp_file_extension | default("xml")}}
+    SP_FILE_TRANSFORM: {{item.sp_mapper | default('false')}}
 {%endif%}
 {% if item.config_file_name is defined %}
     CONFIG_FILE_NAME: {{ item.config_file_name }}

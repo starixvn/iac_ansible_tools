@@ -17,8 +17,8 @@
 {% endif %}
 {% set config_container_path = item.config_container_path | default ('.') %}
 {% set container_root_path = item.container_root_path | default ('/app') %}
-{% if item.sp_mapper is defined and item.sp_mapper == true %}
-{% set sp_file = item.sp_file_name | default("SpNames") ~ '.' ~ item.sp_file_extension | default("xml") %}
+{% if item.sp_file_name is defined and item.sp_file_name != '' %}
+{% set sp_file = item.sp_file_name ~ '.' ~ item.sp_file_extension | default("xml") %}
 {% set sp_container_path = item.sp_container_path | default ('App_Data') %}
 {% endif %}
 {% set storage_label = '_LOW_STORAGE' if high_storage is undefined or high_storage == false else '_HIGH_STORAGE'%}
