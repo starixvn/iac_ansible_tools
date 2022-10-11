@@ -27,7 +27,7 @@ groups:
       team: Team NexOps  
       severity: Warning
     annotations:
-      summary: "Can not find  process of HAProxy Container on {{ $labels.instance  }}"
+      summary: "Can not find  process of HAProxy Container on {{ $labels.instance  }}."
       description: "Script check HAProxy Container with script name {{ $labels.name  }} return fail result on {{ $labels.instance  }}, value = {{ $value  }}, please check."
 
   - alert: VIP Can not Access
@@ -37,5 +37,5 @@ groups:
       team: Team NexOps  
       severity: Warning
     annotations:
-      summary: "VIP {{ $labels.ip_address  }} can not access from node {{ $labels.instance  }}"
+      summary: "VIP {{ $labels.ip_address  }} can not access from node {{ $labels.instance  }}."
       description: "VIP {{ $labels.ip_address }} can not access from node {{ $labels.instance }} in 1 minutes- vrid = {{ $labels.vrid }}, please check."
