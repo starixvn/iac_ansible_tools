@@ -71,5 +71,17 @@ luminet_keepaliveds_local:
 
 
 
+luminet_keepaliveds_uat:
+  name: luminet_keepalived_uat
+  metric: /metrics
+  scheme: http
+  targets:
+    - '10.2.190.65:9165'
+    - '10.2.190.78:9165'
+    - '10.2.190.83:9165'
+  service: luminet_keepalived_uat
+
+
+
 
 
